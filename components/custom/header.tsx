@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { User } from "lucide-react";
 const Header = () => {
   return (
     <nav className="w-full bg-white shadow-md sticky top-0 z-50">
@@ -25,27 +26,31 @@ const Header = () => {
             <NavigationMenu>
               <NavigationMenuList className="flex space-x-4">
                 <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
+                  <NavigationMenuLink asChild className="text-md">
                     <Link href="/">Home</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>🔮</NavigationMenuTrigger>
+                  <NavigationMenuTrigger>
+                    <User size={20} />
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid gap-4 p-4">
-                      <NavigationMenuLink asChild>
-                        <Link href="/products/1">Login</Link>
+                    <div className="grid gap-4 p-1 w-[100px] text-center">
+                      <NavigationMenuLink asChild className="text-md">
+                        <Link href="/signin">Sign In</Link>
                       </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link href="/products/2">Signup</Link>
+                      <NavigationMenuLink asChild className="text-md">
+                        <Link href="/signup" className="text-md">
+                          Sign Up
+                        </Link>
                       </NavigationMenuLink>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
+                  <NavigationMenuLink asChild className="text-md">
                     <Link href="/about">About</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>

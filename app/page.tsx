@@ -4,7 +4,7 @@ import { SectionCardProps } from "@/lib/types";
 export default function Home() {
   const sections: SectionCardProps[] = [
     {
-      title: "Logical Reasoning",
+      title: "Reasoning",
       description:
         "Sharpen your problem-solving and analytical skills with interactive reasoning exercises.",
       linkTo: "/SSC/reasoning",
@@ -25,9 +25,9 @@ export default function Home() {
       buttonText: "Start Learning",
     },
     {
-      title: "General Knowledge",
+      title: "GK Ocean",
       description:
-        "Test and expand your GK knowledge to stay ahead in competitive exams.",
+        "Test and expand your General knowledge to stay ahead in competitive exams.",
       linkTo: "/SSC/gk",
       buttonText: "Explore GK",
     },

@@ -27,15 +27,16 @@ const SectionCard: React.FC<SectionCardProps> = ({
         <p className="text-md text-slate-500">{description}</p>
       </CardContent>
       <CardFooter>
-        <Button className="w-full justify-center">
-          <Link
-            href={linkTo}
-            className="flex items-center justify-center gap-2"
-          >
+        <Link
+          href={linkTo}
+          className="flex w-full items-center justify-center gap-2"
+        >
+          {" "}
+          <Button className="w-full justify-center cursor-pointer">
             <Play />
             {buttonText}
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );
