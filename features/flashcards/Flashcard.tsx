@@ -5,6 +5,14 @@ interface FlashCardBackProps {
   hindi_example: string;
 }
 
+interface Card {
+  front: string;
+  back: string;
+  example_sentence?: string; // optional example usage
+  hindi_meaning?: string; // optional hindi meaning
+  hindi_sentence?: string;
+}
+
 interface FlashCardProps {
   card: Card;
   isFlipped: boolean;
