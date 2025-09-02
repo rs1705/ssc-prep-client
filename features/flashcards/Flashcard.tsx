@@ -1,16 +1,16 @@
-interface FlashCardBackProps {
-  definition: string;
-  example: string;
-  hindi_definition: string;
-  hindi_example: string;
+interface Card {
+  front: string; // word/question
+  back: string; // definition/answer
+  example_sentence?: string; // optional example usage
+  hindi_meaning?: string; // optional Hindi meaning
+  hindi_sentence?: string; // optional Hindi sentence
 }
 
-interface Card {
-  front: string;
-  back: string;
-  example_sentence?: string; // optional example usage
-  hindi_meaning?: string; // optional hindi meaning
-  hindi_sentence?: string;
+interface FlashCardBackProps {
+  definition: string;
+  example?: string; // make optional (matches Card.example_sentence)
+  hindi_definition?: string; // make optional (matches Card.hindi_meaning)
+  hindi_example?: string; // make optional (matches Card.hindi_sentence)
 }
 
 interface FlashCardProps {
