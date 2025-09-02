@@ -1,107 +1,1602 @@
 [
-  { "front": "Abate", "back": "To reduce or lessen" },
-  { "front": "Aberration", "back": "A departure from what is normal" },
-  { "front": "Abhor", "back": "To hate deeply" },
-  { "front": "Abjure", "back": "To renounce or reject solemnly" },
-  { "front": "Alacrity", "back": "Eagerness, cheerful readiness" },
-  { "front": "Ameliorate", "back": "To make better or improve" },
-  { "front": "Anomaly", "back": "Something unusual or abnormal" },
-  { "front": "Antipathy", "back": "Strong dislike" },
-  { "front": "Apathy", "back": "Lack of interest or emotion" },
-  { "front": "Apprehensive", "back": "Fearful about the future" },
-  { "front": "Arduous", "back": "Difficult, requiring effort" },
-  { "front": "Assiduous", "back": "Hardworking, diligent" },
-  { "front": "Audacious", "back": "Bold, daring" },
-  { "front": "Auspicious", "back": "Favorable, promising" },
-  { "front": "Avarice", "back": "Extreme greed" },
-  { "front": "Benevolent", "back": "Kind, charitable" },
-  { "front": "Bolster", "back": "To support or strengthen" },
-  { "front": "Bombastic", "back": "High-sounding but meaningless" },
-  { "front": "Brevity", "back": "Conciseness" },
-  { "front": "Cacophony", "back": "Harsh, jarring noise" },
-  { "front": "Cajole", "back": "Persuade by flattery" },
-  { "front": "Capricious", "back": "Impulsive, unpredictable" },
-  { "front": "Caustic", "back": "Sarcastic, biting" },
-  { "front": "Censure", "back": "Strong disapproval" },
-  { "front": "Chicanery", "back": "Deception, trickery" },
-  { "front": "Clandestine", "back": "Secret, hidden" },
-  { "front": "Coerce", "back": "Force someone to do something" },
-  { "front": "Cogent", "back": "Clear, logical, convincing" },
-  { "front": "Colloquial", "back": "Informal, conversational" },
-  { "front": "Complacent", "back": "Self-satisfied, unconcerned" },
-  { "front": "Concise", "back": "Brief and clear" },
-  { "front": "Concur", "back": "To agree" },
-  { "front": "Condone", "back": "To overlook or pardon" },
-  { "front": "Conspicuous", "back": "Easily noticeable" },
-  { "front": "Contrite", "back": "Remorseful" },
-  { "front": "Copious", "back": "Abundant, plentiful" },
-  { "front": "Credulous", "back": "Gullible, too trusting" },
-  { "front": "Cursory", "back": "Hasty, superficial" },
-  { "front": "Dauntless", "back": "Fearless" },
-  { "front": "Debacle", "back": "Sudden disaster" },
-  { "front": "Debilitate", "back": "Weaken, enfeeble" },
-  { "front": "Decorum", "back": "Proper behavior" },
-  { "front": "Deference", "back": "Respect, submission" },
-  { "front": "Deliberate", "back": "To consider carefully" },
-  { "front": "Demur", "back": "Raise objections" },
-  { "front": "Deride", "back": "To mock or ridicule" },
-  { "front": "Despot", "back": "Tyrannical ruler" },
-  { "front": "Deter", "back": "To discourage" },
-  { "front": "Devious", "back": "Dishonest, tricky" },
-  { "front": "Didactic", "back": "Instructive" },
-  { "front": "Diffident", "back": "Shy, lacking confidence" },
-  { "front": "Dilatory", "back": "Tending to delay" },
-  { "front": "Diligent", "back": "Hardworking" },
-  { "front": "Disdain", "back": "Contempt" },
-  { "front": "Disparage", "back": "To belittle" },
-  { "front": "Disparate", "back": "Different, distinct" },
-  { "front": "Dispel", "back": "To drive away" },
-  { "front": "Disseminate", "back": "To spread widely" },
-  { "front": "Dogged", "back": "Persistent" },
-  { "front": "Dogmatic", "back": "Opinionated" },
-  { "front": "Dubious", "back": "Doubtful" },
-  { "front": "Ebullient", "back": "Cheerful, full of energy" },
-  { "front": "Eccentric", "back": "Unconventional" },
-  { "front": "Eclectic", "back": "From diverse sources" },
-  { "front": "Eloquent", "back": "Fluent, persuasive in speech" },
-  { "front": "Elucidate", "back": "To explain clearly" },
-  { "front": "Emulate", "back": "To imitate" },
-  { "front": "Enervate", "back": "To weaken" },
-  { "front": "Engender", "back": "To produce or cause" },
-  { "front": "Enigma", "back": "Mystery, puzzle" },
-  { "front": "Ephemeral", "back": "Lasting a short time" },
-  { "front": "Equanimity", "back": "Calmness under stress" },
-  { "front": "Equivocate", "back": "Speak ambiguously" },
-  { "front": "Erudite", "back": "Scholarly, learned" },
-  { "front": "Esoteric", "back": "Intended for few" },
-  { "front": "Euphemism", "back": "Mild expression for harsh term" },
-  { "front": "Euphoria", "back": "Intense happiness" },
-  { "front": "Exacerbate", "back": "To worsen" },
-  { "front": "Exculpate", "back": "To free from blame" },
-  { "front": "Exigent", "back": "Requiring immediate action" },
-  { "front": "Exonerate", "back": "To clear from blame" },
-  { "front": "Expedite", "back": "To speed up" },
-  { "front": "Explicit", "back": "Clear, definite" },
-  { "front": "Extraneous", "back": "Irrelevant" },
-  { "front": "Facilitate", "back": "To make easier" },
-  { "front": "Fallacious", "back": "Based on false reasoning" },
-  { "front": "Fastidious", "back": "Very attentive to detail" },
-  { "front": "Fatuous", "back": "Silly, foolish" },
-  { "front": "Fervent", "back": "Passionate" },
-  { "front": "Flagrant", "back": "Obviously offensive" },
-  { "front": "Flamboyant", "back": "Showy, flashy" },
-  { "front": "Fortuitous", "back": "Happening by chance" },
-  { "front": "Frivolous", "back": "Not serious, silly" },
-  { "front": "Frugal", "back": "Economical, thrifty" },
-  { "front": "Garrulous", "back": "Talkative" },
-  { "front": "Gregarious", "back": "Sociable" },
-  { "front": "Guile", "back": "Cunning, deceit" },
-  { "front": "Hackneyed", "back": "Overused, cliché" },
-  { "front": "Harangue", "back": "Lengthy aggressive speech" },
-  { "front": "Heinous", "back": "Shockingly evil" },
-  { "front": "Hypocrite", "back": "One who pretends to have virtues" },
-  { "front": "Iconoclast", "back": "One who attacks traditions" },
-  { "front": "Idiosyncrasy", "back": "Peculiarity, quirk" },
-  { "front": "Ignominious", "back": "Disgraceful" },
-  { "front": "Illicit", "back": "Illegal, unlawful" }
+  {
+    "id": 1,
+    "front": "abate",
+    "back": "to reduce in intensity",
+    "example_sentence": "The storm began to abate by evening.",
+    "hindi_meaning": "कम होना/घटाना",
+    "hindi_sentence": "शाम तक तूफान कम होने लगा।"
+  },
+  {
+    "id": 2,
+    "front": "aberration",
+    "back": "a deviation from what is normal",
+    "example_sentence": "His angry outburst was an aberration.",
+    "hindi_meaning": "विचलन/असामान्यता",
+    "hindi_sentence": "उसकी गुस्से भरी प्रतिक्रिया एक असामान्यता थी।"
+  },
+  {
+    "id": 3,
+    "front": "abhor",
+    "back": "to hate deeply",
+    "example_sentence": "She abhors cruelty to animals.",
+    "hindi_meaning": "घृणा करना",
+    "hindi_sentence": "वह जानवरों पर क्रूरता से घृणा करती है।"
+  },
+  {
+    "id": 4,
+    "front": "abridge",
+    "back": "to shorten without losing meaning",
+    "example_sentence": "The editor abridged the long article.",
+    "hindi_meaning": "संक्षेप करना",
+    "hindi_sentence": "संपादक ने लंबे लेख को संक्षेप किया।"
+  },
+  {
+    "id": 5,
+    "front": "abstain",
+    "back": "to refrain from doing something",
+    "example_sentence": "Many voters chose to abstain in the referendum.",
+    "hindi_meaning": "परहेज़ करना/विरत रहना",
+    "hindi_sentence": "कई मतदाता जनमत संग्रह में विरत रहना पसंद करते हैं।"
+  },
+  {
+    "id": 6,
+    "front": "accolade",
+    "back": "praise or award",
+    "example_sentence": "The scientist received accolades for her research.",
+    "hindi_meaning": "सम्मान/प्रशंसा",
+    "hindi_sentence": "वैज्ञानिक को उसके शोध के लिए सम्मान मिला।"
+  },
+  {
+    "id": 7,
+    "front": "acquiesce",
+    "back": "to accept reluctantly",
+    "example_sentence": "He acquiesced to the committee’s decision.",
+    "hindi_meaning": "अनिच्छा से मान लेना",
+    "hindi_sentence": "उसने समिति के निर्णय को अनिच्छा से मान लिया।"
+  },
+  {
+    "id": 8,
+    "front": "acrimony",
+    "back": "bitterness or ill-will",
+    "example_sentence": "The debate ended without acrimony.",
+    "hindi_meaning": "कटुता",
+    "hindi_sentence": "बहस बिना कटुता के समाप्त हुई।"
+  },
+  {
+    "id": 9,
+    "front": "adamant",
+    "back": "firm and unyielding",
+    "example_sentence": "She was adamant about not resigning.",
+    "hindi_meaning": "दृढ़/अटल",
+    "hindi_sentence": "वह इस्तीफा न देने के बारे में अटल थी।"
+  },
+  {
+    "id": 10,
+    "front": "adept",
+    "back": "skilled or proficient",
+    "example_sentence": "He is adept at negotiating deals.",
+    "hindi_meaning": "निपुण/कुशल",
+    "hindi_sentence": "वह सौदों में निपुण है।"
+  },
+  {
+    "id": 11,
+    "front": "admonish",
+    "back": "to warn or scold mildly",
+    "example_sentence": "The teacher admonished the student for being late.",
+    "hindi_meaning": "समझाना/डाँटना",
+    "hindi_sentence": "शिक्षक ने देर होने पर छात्र को समझाया।"
+  },
+  {
+    "id": 12,
+    "front": "adroit",
+    "back": "clever or skillful",
+    "example_sentence": "An adroit surgeon performed the operation successfully.",
+    "hindi_meaning": "कुशल/निपुण",
+    "hindi_sentence": "एक कुशल सर्जन ने सफल ऑपरेशन किया।"
+  },
+  {
+    "id": 13,
+    "front": "aegis",
+    "back": "protection or sponsorship",
+    "example_sentence": "The project was launched under the aegis of the ministry.",
+    "hindi_meaning": "संरक्षण/प्रायोजन",
+    "hindi_sentence": "परियोजना मंत्रालय के संरक्षण में शुरू की गई।"
+  },
+  {
+    "id": 14,
+    "front": "affluent",
+    "back": "wealthy or prosperous",
+    "example_sentence": "They live in an affluent neighborhood.",
+    "hindi_meaning": "समृद्ध/धनी",
+    "hindi_sentence": "वे एक समृद्ध मोहल्ले में रहते हैं।"
+  },
+  {
+    "id": 15,
+    "front": "alacrity",
+    "back": "eagerness or cheerful willingness",
+    "example_sentence": "She accepted the invitation with alacrity.",
+    "hindi_meaning": "तत्परता",
+    "hindi_sentence": "उन्होंने तत्परता से निमंत्रण स्वीकार किया।"
+  },
+  {
+    "id": 16,
+    "front": "alleviate",
+    "back": "to make less severe",
+    "example_sentence": "Medication helped alleviate his pain.",
+    "hindi_meaning": "कम करना/उपशम",
+    "hindi_sentence": "दवा ने उसके दर्द को कम किया।"
+  },
+  {
+    "id": 17,
+    "front": "aloof",
+    "back": "distant or reserved",
+    "example_sentence": "He remained aloof during the conversation.",
+    "hindi_meaning": "उदासीन/अलग-थलग",
+    "hindi_sentence": "वह बातचीत के दौरान उदासीन रहा।"
+  },
+  {
+    "id": 18,
+    "front": "ambiguous",
+    "back": "unclear; having more than one meaning",
+    "example_sentence": "The sentence was ambiguous and confusing.",
+    "hindi_meaning": "अस्पष्ट/द्वैधार्थी",
+    "hindi_sentence": "वाक्य अस्पष्ट और भ्रमित करने वाला था।"
+  },
+  {
+    "id": 19,
+    "front": "ambivalent",
+    "back": "having mixed feelings",
+    "example_sentence": "She felt ambivalent about the move abroad.",
+    "hindi_meaning": "द्विविधाग्रस्त",
+    "hindi_sentence": "वह विदेश जाने को लेकर द्विविधा में थी।"
+  },
+  {
+    "id": 20,
+    "front": "amiable",
+    "back": "friendly and pleasant",
+    "example_sentence": "He has an amiable personality.",
+    "hindi_meaning": "सौम्य/मिलनसार",
+    "hindi_sentence": "उसका व्यक्तित्व सौम्य है।"
+  },
+  {
+    "id": 21,
+    "front": "anachronism",
+    "back": "something out of its proper time",
+    "example_sentence": "Using archaic words feels like an anachronism in modern writing.",
+    "hindi_meaning": "कालवधि-भ्रष्टता",
+    "hindi_sentence": "आधुनिक लेखन में पुरानी शब्दावली कालवधि-भ्रष्टता लगती है।"
+  },
+  {
+    "id": 22,
+    "front": "anachronistic",
+    "back": "out of chronological order",
+    "example_sentence": "The movie’s costumes seemed anachronistic.",
+    "hindi_meaning": "कालानुचित/असमयोजित",
+    "hindi_sentence": "फिल्म के पोशाक असमयोजित लग रहे थे।"
+  },
+  {
+    "id": 23,
+    "front": "analogy",
+    "back": "comparison showing similarity",
+    "example_sentence": "She drew an analogy between the two problems.",
+    "hindi_meaning": "सादृश्य/तुलना",
+    "hindi_sentence": "उसने दोनों समस्याओं के बीच सादृश्य निकाला।"
+  },
+  {
+    "id": 24,
+    "front": "animosity",
+    "back": "strong hostility",
+    "example_sentence": "Old animosities resurfaced during the debate.",
+    "hindi_meaning": "द्वेष/शत्रुता",
+    "hindi_sentence": "पुरानी शत्रुता बहस के दौरान फिर उभरी।"
+  },
+  {
+    "id": 25,
+    "front": "anomaly",
+    "back": "something irregular or abnormal",
+    "example_sentence": "The scientist noticed an anomaly in the data.",
+    "hindi_meaning": "विसंगति/असामान्यता",
+    "hindi_sentence": "वैज्ञानिक ने आँकड़ों में विसंगति देखी।"
+  },
+  {
+    "id": 26,
+    "front": "antagonize",
+    "back": "to provoke hostility",
+    "example_sentence": "His remarks antagonized many listeners.",
+    "hindi_meaning": "विरोध भड़काना",
+    "hindi_sentence": "उसकी टिप्पणियों ने कई श्रोताओं को भड़काया।"
+  },
+  {
+    "id": 27,
+    "front": "antidote",
+    "back": "a remedy to counteract",
+    "example_sentence": "The doctor administered the antidote immediately.",
+    "hindi_meaning": "प्रतिऔषध/उपचार",
+    "hindi_sentence": "डॉक्टर ने तुरंत प्रतिऔषध दिया।"
+  },
+  {
+    "id": 28,
+    "front": "antipathy",
+    "back": "a strong dislike",
+    "example_sentence": "She felt antipathy toward dishonesty.",
+    "hindi_meaning": "विरोध/घृणा",
+    "hindi_sentence": "वह बेइमानी से घृणा करती थी।"
+  },
+  {
+    "id": 29,
+    "front": "apathy",
+    "back": "lack of interest or concern",
+    "example_sentence": "Apathy among voters reduced turnout.",
+    "hindi_meaning": "उदासीनता",
+    "hindi_sentence": "मतदाताओं में उदासीनता से मतदान घट गया।"
+  },
+  {
+    "id": 30,
+    "front": "appease",
+    "back": "to calm or pacify",
+    "example_sentence": "They tried to appease the angry crowd.",
+    "hindi_meaning": "तुष्ट करना/शांत करना",
+    "hindi_sentence": "उन्होंने क्रोधित भीड़ को शांत करने की कोशिश की।"
+  },
+  {
+    "id": 31,
+    "front": "apprehensive",
+    "back": "anxious or fearful about the future",
+    "example_sentence": "She felt apprehensive before the exam.",
+    "hindi_meaning": "चिन्तित/भयभीत",
+    "hindi_sentence": "परीक्षा से पहले वह चिंतित थी।"
+  },
+  {
+    "id": 32,
+    "front": "arbitrary",
+    "back": "based on random choice or whim",
+    "example_sentence": "The rule seemed arbitrary to many employees.",
+    "hindi_meaning": "मनमाना/यदाचित",
+    "hindi_sentence": "कई कर्मचारियों को नियम मनमाना लगा।"
+  },
+  {
+    "id": 33,
+    "front": "ardent",
+    "back": "very passionate or enthusiastic",
+    "example_sentence": "He is an ardent supporter of the team.",
+    "hindi_meaning": "उत्साही/प्रबल",
+    "hindi_sentence": "वह टीम का प्रबल समर्थक है।"
+  },
+  {
+    "id": 34,
+    "front": "arduous",
+    "back": "difficult and tiring",
+    "example_sentence": "Climbing the steep hill was arduous.",
+    "hindi_meaning": "कठिन/श्रमसाध्य",
+    "hindi_sentence": "ऊँची ढलान पर चढ़ना कठिन था।"
+  },
+  {
+    "id": 35,
+    "front": "articulate",
+    "back": "able to express ideas clearly",
+    "example_sentence": "She is articulate and persuasive.",
+    "hindi_meaning": "स्पष्ट भाषी/व्यक्त करने में सक्षम",
+    "hindi_sentence": "वह स्पष्ट और प्रभावशाली बोलती है।"
+  },
+  {
+    "id": 36,
+    "front": "ascertain",
+    "back": "to find out or discover",
+    "example_sentence": "We must ascertain the cause of the accident.",
+    "hindi_meaning": "सुनिश्चित करना/पता लगाना",
+    "hindi_sentence": "हमें हादसे का कारण पता लगाना चाहिए।"
+  },
+  {
+    "id": 37,
+    "front": "ascetic",
+    "back": "severe self-discipline, simple lifestyle",
+    "example_sentence": "He lived an ascetic life in the monastery.",
+    "hindi_meaning": "संयमी/तपस्वी",
+    "hindi_sentence": "वह मठ में संयमी जीवन जीता था।"
+  },
+  {
+    "id": 38,
+    "front": "assiduous",
+    "back": "showing persistent effort",
+    "example_sentence": "Assiduous students prepare well for exams.",
+    "hindi_meaning": "परिश्रमी/निष्ठावान",
+    "hindi_sentence": "परिश्रमी छात्र परीक्षाओं के लिए अच्छी तैयारी करते हैं।"
+  },
+  {
+    "id": 39,
+    "front": "astute",
+    "back": "shrewd and perceptive",
+    "example_sentence": "An astute manager saved the company money.",
+    "hindi_meaning": "चतुर/सूझबूझ वाला",
+    "hindi_sentence": "एक चतुर प्रबंधक ने कंपनी को पैसे बचाए।"
+  },
+  {
+    "id": 40,
+    "front": "audacious",
+    "back": "bold and daring",
+    "example_sentence": "The audacious plan succeeded against the odds.",
+    "hindi_meaning": "साहसी/दुस्साहसी",
+    "hindi_sentence": "साहसी योजना असंभव दिखने के बाद भी सफल हुई।"
+  },
+  {
+    "id": 41,
+    "front": "augment",
+    "back": "to increase or add to",
+    "example_sentence": "They augmented their income with freelance work.",
+    "hindi_meaning": "बढ़ाना/सुधारना",
+    "hindi_sentence": "उन्होंने फ्रीलांस काम से अपनी आय बढ़ाई।"
+  },
+  {
+    "id": 42,
+    "front": "auspicious",
+    "back": "promising success; favorable",
+    "example_sentence": "The clear sky was an auspicious sign for the event.",
+    "hindi_meaning": "शुभ/अनुकूल",
+    "hindi_sentence": "स्पष्ट आकाश कार्यक्रम के लिए शुभ संकेत था।"
+  },
+  {
+    "id": 43,
+    "front": "avarice",
+    "back": "extreme greed for wealth",
+    "example_sentence": "Avarice led him to commit crimes.",
+    "hindi_meaning": "लोभ/लालच",
+    "hindi_sentence": "लोभ ने उसे अपराध करने पर मजबूर किया।"
+  },
+  {
+    "id": 44,
+    "front": "aver",
+    "back": "to state or assert positively",
+    "example_sentence": "She averred her innocence in court.",
+    "hindi_meaning": "दावा करना/सत्य बताना",
+    "hindi_sentence": "उसने अदालत में अपनी निर्दोषता का दावा किया।"
+  },
+  {
+    "id": 45,
+    "front": "avid",
+    "back": "having a keen interest; enthusiastic",
+    "example_sentence": "He is an avid reader of history.",
+    "hindi_meaning": "उत्साही/प्रबल इच्छुक",
+    "hindi_sentence": "वह इतिहास का उत्साही पाठक है।"
+  },
+  {
+    "id": 46,
+    "front": "banal",
+    "back": "so lacking in originality as to be obvious",
+    "example_sentence": "The dialogue was banal and predictable.",
+    "hindi_meaning": "घिसा-पिटा/साधारण",
+    "hindi_sentence": "संवाद साधारण और अनुमानित था।"
+  },
+  {
+    "id": 47,
+    "front": "bane",
+    "back": "a cause of great distress or annoyance",
+    "example_sentence": "Poverty is the bane of many regions.",
+    "hindi_meaning": "विनाश का कारण/अवरोध",
+    "hindi_sentence": "गरीबी कई क्षेत्रों का अभिशाप है।"
+  },
+  {
+    "id": 48,
+    "front": "belie",
+    "back": "to give a false impression of",
+    "example_sentence": "Her calm manner belied her nervousness.",
+    "hindi_meaning": "भ्रामित करना/छुपाना",
+    "hindi_sentence": "उसका शांत व्यवहार उसकी घबराहट को छिपाता था।"
+  },
+  {
+    "id": 49,
+    "front": "benevolent",
+    "back": "well-meaning and kindly",
+    "example_sentence": "A benevolent donor funded the school.",
+    "hindi_meaning": "परोपकारी/दयालु",
+    "hindi_sentence": "एक परोपकारी दाता ने स्कूल को वित्तपोषित किया।"
+  },
+  {
+    "id": 50,
+    "front": "benign",
+    "back": "harmless; gentle",
+    "example_sentence": "The tumor was found to be benign.",
+    "hindi_meaning": "सौम्य/निरदोष",
+    "hindi_sentence": "ट्यूमर को सौम्य पाया गया।"
+  },
+  {
+    "id": 51,
+    "front": "bequeath",
+    "back": "to leave by will (property)",
+    "example_sentence": "He bequeathed his books to the library.",
+    "hindi_meaning": "वसीयत में देना/सोपना",
+    "hindi_sentence": "उसने अपनी किताबें पुस्तकालय को वसीयत में दीं।"
+  },
+  {
+    "id": 52,
+    "front": "berate",
+    "back": "to scold or criticize harshly",
+    "example_sentence": "The coach berated the team after the loss.",
+    "hindi_meaning": "कड़ी फटकार/भर्त्सना",
+    "hindi_sentence": "हार के बाद कोच ने टीम को कड़ी फटकारा।"
+  },
+  {
+    "id": 53,
+    "front": "bereft",
+    "back": "deprived of or lacking something",
+    "example_sentence": "After the theft, we were bereft of valuables.",
+    "hindi_meaning": "विहन/वंचित",
+    "hindi_sentence": "चोरी के बाद हम धन-संपत्ति विहन हो गए।"
+  },
+  {
+    "id": 54,
+    "front": "beseech",
+    "back": "to beg eagerly for",
+    "example_sentence": "He beseeched her to stay.",
+    "hindi_meaning": "विनती करना/भीख माँगना",
+    "hindi_sentence": "उसने उससे रहने की विनती की।"
+  },
+  {
+    "id": 55,
+    "front": "bizarre",
+    "back": "very strange or unusual",
+    "example_sentence": "A bizarre incident startled the town.",
+    "hindi_meaning": "अजीब/विचित्र",
+    "hindi_sentence": "एक अजीब घटना ने शहर को चौंका दिया।"
+  },
+  {
+    "id": 56,
+    "front": "blatant",
+    "back": "completely obvious in an offensive way",
+    "example_sentence": "It was a blatant lie.",
+    "hindi_meaning": "निर्लज्ज/खुले तौर पर",
+    "hindi_sentence": "यह एक खुला झूठ था।"
+  },
+  {
+    "id": 57,
+    "front": "blithe",
+    "back": "carefree and lighthearted",
+    "example_sentence": "She lived a blithe and optimistic life.",
+    "hindi_meaning": "ख़ुशमिजाज/निर्भीक",
+    "hindi_sentence": "वह खुशमिजाज और आशावादी जीवन जीती थी।"
+  },
+  {
+    "id": 58,
+    "front": "bolster",
+    "back": "to support or strengthen",
+    "example_sentence": "Extra funds will bolster the program.",
+    "hindi_meaning": "मज़बूत करना/सहारा देना",
+    "hindi_sentence": "अतिरिक्त धन कार्यक्रम को मजबूत करेगा।"
+  },
+  {
+    "id": 59,
+    "front": "bombastic",
+    "back": "pompous or pretentious speech",
+    "example_sentence": "His speech was loud and bombastic.",
+    "hindi_meaning": "बड़बोलापन/ढोंग",
+    "hindi_sentence": "उसका भाषण ऊँचा और बड़बोलापन भरा था।"
+  },
+  {
+    "id": 60,
+    "front": "boon",
+    "back": "a timely benefit or blessing",
+    "example_sentence": "The new policy is a boon to small businesses.",
+    "hindi_meaning": "उपकार/लाभ",
+    "hindi_sentence": "नई नीति छोटे व्यवसायों के लिए लाभकारी है।"
+  },
+  {
+    "id": 61,
+    "front": "bucolic",
+    "back": "relating to the pleasant aspects of the countryside",
+    "example_sentence": "They enjoyed bucolic scenery on their trip.",
+    "hindi_meaning": "ग्रामीण/देहाती सुखद",
+    "hindi_sentence": "उन्होंने अपनी यात्रा में देहाती दृश्यों का आनंद लिया।"
+  },
+  {
+    "id": 62,
+    "front": "buffet",
+    "back": "to strike repeatedly or batter",
+    "example_sentence": "Waves buffeted the small boat all night.",
+    "hindi_meaning": "प्रहार करना/पीटना",
+    "hindi_sentence": "लहरों ने रातभर छोटी नाव को पीटा।"
+  },
+  {
+    "id": 63,
+    "front": "bumptious",
+    "back": "offensively self-assertive",
+    "example_sentence": "His bumptious attitude annoyed colleagues.",
+    "hindi_meaning": "दौड़-धूप वाला/घमंडी",
+    "hindi_sentence": "उसका घमंडी रवैया सहकर्मियों को परेशान कर गया।"
+  },
+  {
+    "id": 64,
+    "front": "bungle",
+    "back": "to carry out clumsily; botch",
+    "example_sentence": "They bungled the renovation project.",
+    "hindi_meaning": "नासमझी से करना/गड़बड़ करना",
+    "hindi_sentence": "उन्होंने नवीनीकरण परियोजना में गड़बड़ी कर दी।"
+  },
+  {
+    "id": 65,
+    "front": "buoyant",
+    "back": "able to float; cheerful and optimistic",
+    "example_sentence": "The economy remained buoyant despite worries.",
+    "hindi_meaning": "तैरने योग्य/उत्साही",
+    "hindi_sentence": "चिंताओं के बावजूद अर्थव्यवस्था उत्साही बनी रही।"
+  },
+  {
+    "id": 66,
+    "front": "cadre",
+    "back": "a small group of trained people",
+    "example_sentence": "A cadre of experts supervised the scheme.",
+    "hindi_meaning": "कुशल समूह/समूह",
+    "hindi_sentence": "विशेषज्ञों के एक समूह ने योजना की निगरानी की।"
+  },
+  {
+    "id": 67,
+    "front": "calamity",
+    "back": "a great misfortune or disaster",
+    "example_sentence": "The flood was a calamity for the region.",
+    "hindi_meaning": "आपदा/विशाल विपत्ति",
+    "hindi_sentence": "बाढ़ क्षेत्र के लिए एक आपदा थी।"
+  },
+  {
+    "id": 68,
+    "front": "callous",
+    "back": "emotionally hardened; unfeeling",
+    "example_sentence": "His callous remarks offended many.",
+    "hindi_meaning": "निर्दयी/कठोर",
+    "hindi_sentence": "उसकी कठोर टिप्पणियों ने कई लोगों को आहत किया।"
+  },
+  {
+    "id": 69,
+    "front": "calumny",
+    "back": "a false and malicious statement",
+    "example_sentence": "He sued the paper for calumny.",
+    "hindi_meaning": "मानहानि/झूठा आरोप",
+    "hindi_sentence": "उसने अखबार के खिलाफ मानहानि का मुक़दमा दायर किया।"
+  },
+  {
+    "id": 70,
+    "front": "candor",
+    "back": "the quality of being open and honest",
+    "example_sentence": "I appreciate your candor in this matter.",
+    "hindi_meaning": "ईमानदारी/स्पष्टवादिता",
+    "hindi_sentence": "मैं इस मामले में आपकी स्पष्टवादिता की सराहना करता हूँ।"
+  },
+  {
+    "id": 71,
+    "front": "capacious",
+    "back": "having a lot of space; roomy",
+    "example_sentence": "They moved into a capacious apartment.",
+    "hindi_meaning": "विशाल/फैलावदार",
+    "hindi_sentence": "वे एक विशाल अपार्टमेंट में चले गए।"
+  },
+  {
+    "id": 72,
+    "front": "capitulate",
+    "back": "to surrender or give in",
+    "example_sentence": "The rebels capitulated after negotiations.",
+    "hindi_meaning": "आत्मसमर्पण करना",
+    "hindi_sentence": "समझौतों के बाद विद्रोहियों ने आत्मसमर्पण कर दिया।"
+  },
+  {
+    "id": 73,
+    "front": "capricious",
+    "back": "given to sudden changes of mood or behavior",
+    "example_sentence": "Weather here is capricious in spring.",
+    "hindi_meaning": "चंचल/अप्रत्याशित",
+    "hindi_sentence": "यहाँ वसंत में मौसम चंचल होता है।"
+  },
+  {
+    "id": 74,
+    "front": "carping",
+    "back": "complaining constantly; difficult to please",
+    "example_sentence": "Her carping criticism demoralized the team.",
+    "hindi_meaning": "निखरता हुआ आलोचना/कठोर आलोचना",
+    "hindi_sentence": "उसकी नखरेदार आलोचना ने टीम को हतोत्साहित किया।"
+  },
+  {
+    "id": 75,
+    "front": "castigate",
+    "back": "to criticize severely",
+    "example_sentence": "The committee castigated the poor safety standards.",
+    "hindi_meaning": "कड़ी निंदा/भर्त्सना",
+    "hindi_sentence": "समिति ने ख़राब सुरक्षा मानकों की कड़ी निंदा की।"
+  },
+  {
+    "id": 76,
+    "front": "cathartic",
+    "back": "providing psychological relief through open expression",
+    "example_sentence": "The film had a cathartic effect on viewers.",
+    "hindi_meaning": "मनोरोगमुक्ति/मन की राहत देने वाला",
+    "hindi_sentence": "फिल्म ने दर्शकों पर मानसिक राहत का प्रभाव डाला।"
+  },
+  {
+    "id": 77,
+    "front": "caustic",
+    "back": "sarcastic and scathing",
+    "example_sentence": "His caustic comments hurt her feelings.",
+    "hindi_meaning": "कटु/तीखा",
+    "hindi_sentence": "उसकी कटु टिप्पणियों ने उसके भावनाओं को आहत किया।"
+  },
+  {
+    "id": 78,
+    "front": "censure",
+    "back": "to express severe disapproval",
+    "example_sentence": "The council censured the official for misconduct.",
+    "hindi_meaning": "निंदा/प्रतीकात्मक फटकार",
+    "hindi_sentence": "काउंसिल ने अनुचित आचरण के लिए अधिकारी की निंदा की।"
+  },
+  {
+    "id": 79,
+    "front": "chary",
+    "back": "cautious or wary",
+    "example_sentence": "Be chary of unverified reports.",
+    "hindi_meaning": "सावधान/संकोची",
+    "hindi_sentence": "अमान्य रिपोर्टों के प्रति सावधान रहें।"
+  },
+  {
+    "id": 80,
+    "front": "chicanery",
+    "back": "trickery or deception",
+    "example_sentence": "The contract involved legal chicanery.",
+    "hindi_meaning": "चालबाज़ी/धोखा",
+    "hindi_sentence": "सौदे में कानूनी चालबाज़ी शामिल थी।"
+  },
+  {
+    "id": 81,
+    "front": "choleric",
+    "back": "easily angered; irritable",
+    "example_sentence": "His choleric temper caused problems at work.",
+    "hindi_meaning": "क्रोधी/चिड़चिड़ा",
+    "hindi_sentence": "उसका चिड़चिड़ा स्वभाव काम पर समस्याएँ लाया।"
+  },
+  {
+    "id": 82,
+    "front": "chronic",
+    "back": "continuing for a long time; persistent",
+    "example_sentence": "He suffers from chronic back pain.",
+    "hindi_meaning": "दीर्घकालिक/लगातार",
+    "hindi_sentence": "उसे दीर्घकालिक पीठ दर्द है।"
+  },
+  {
+    "id": 83,
+    "front": "clandestine",
+    "back": "kept secret or done secretly",
+    "example_sentence": "They held a clandestine meeting at night.",
+    "hindi_meaning": "गुप्त/छिपा हुआ",
+    "hindi_sentence": "उन्होंने रात में एक गुप्त बैठक की।"
+  },
+  {
+    "id": 84,
+    "front": "clement",
+    "back": "merciful or lenient",
+    "example_sentence": "The judge was clement and reduced the sentence.",
+    "hindi_meaning": "दयालु/क्षमाशील",
+    "hindi_sentence": "न्यायाधीश दयालु था और सजा कम कर दी।"
+  },
+  {
+    "id": 85,
+    "front": "coerce",
+    "back": "to force someone to do something",
+    "example_sentence": "They were coerced into signing the agreement.",
+    "hindi_meaning": "ज़बरदस्ती करना",
+    "hindi_sentence": "उन्हें समझौते पर हस्ताक्षर करने के लिए ज़बरदस्ती किया गया।"
+  },
+  {
+    "id": 86,
+    "front": "cogent",
+    "back": "clear, logical, and convincing",
+    "example_sentence": "She gave a cogent explanation for the delay.",
+    "hindi_meaning": "प्रभावी/तर्कसंगत",
+    "hindi_sentence": "उसने देरी के लिए प्रभावी स्पष्टीकरण दिया।"
+  },
+  {
+    "id": 87,
+    "front": "commensurate",
+    "back": "corresponding in size or degree",
+    "example_sentence": "Salary should be commensurate with experience.",
+    "hindi_meaning": "अनुपातिक/संगत",
+    "hindi_sentence": "वेतन अनुभव के अनुरूप होना चाहिए।"
+  },
+  {
+    "id": 88,
+    "front": "complacent",
+    "back": "self-satisfied and unconcerned",
+    "example_sentence": "Don’t become complacent after one success.",
+    "hindi_meaning": "आत्मसंतुष्ट/निरपरवाह",
+    "hindi_sentence": "एक सफलता के बाद आत्मसंतुष्ट न हों।"
+  },
+  {
+    "id": 89,
+    "front": "comprehensive",
+    "back": "complete and inclusive",
+    "example_sentence": "We need a comprehensive plan to tackle the issue.",
+    "hindi_meaning": "व्यापक/समग्र",
+    "hindi_sentence": "समस्या से निपटने के लिए हमें एक व्यापक योजना चाहिए।"
+  },
+  {
+    "id": 90,
+    "front": "concur",
+    "back": "to agree or happen together",
+    "example_sentence": "Most experts concur on the approach.",
+    "hindi_meaning": "सहमत होना/मिलना-जुलना",
+    "hindi_sentence": "अधिकांश विशेषज्ञ इस दृष्टिकोण से सहमत हैं।"
+  },
+  {
+    "id": 91,
+    "front": "conducive",
+    "back": "making a situation likely or possible",
+    "example_sentence": "Silence is conducive to studying.",
+    "hindi_meaning": "अनुकूल/सहायक",
+    "hindi_sentence": "मौन अध्ययन के लिए अनुकूल है।"
+  },
+  {
+    "id": 92,
+    "front": "connoisseur",
+    "back": "an expert judge in matters of taste",
+    "example_sentence": "He is a connoisseur of fine wines.",
+    "hindi_meaning": "विशेषज्ञ/प्रवीण",
+    "hindi_sentence": "वह उत्तम वाइन का विशेषज्ञ है।"
+  },
+  {
+    "id": 93,
+    "front": "conscientious",
+    "back": "wishing to do what is right; diligent",
+    "example_sentence": "She is conscientious about meeting deadlines.",
+    "hindi_meaning": "कर्तव्यनिष्ठ/ईमानदार",
+    "hindi_sentence": "वह समय सीमा का पालन करने में कर्तव्यनिष्ठ है।"
+  },
+  {
+    "id": 94,
+    "front": "consensus",
+    "back": "general agreement among a group",
+    "example_sentence": "The committee reached a consensus quickly.",
+    "hindi_meaning": "सर्वसम्मति",
+    "hindi_sentence": "समिति ने जल्दी ही सर्वसम्मति पर पहुँच गई।"
+  },
+  {
+    "id": 95,
+    "front": "conspicuous",
+    "back": "easily seen or noticed",
+    "example_sentence": "A conspicuous error remained in the report.",
+    "hindi_meaning": "स्पष्ट/दृष्य",
+    "hindi_sentence": "रिपोर्ट में एक स्पष्ट त्रुटि रह गई।"
+  },
+  {
+    "id": 96,
+    "front": "consternation",
+    "back": "feelings of anxiety or dismay",
+    "example_sentence": "The news caused consternation among residents.",
+    "hindi_meaning": "घबराहट/हतप्रभता",
+    "hindi_sentence": "समाचार से निवासियों में घबराहट फैल गई।"
+  },
+  {
+    "id": 97,
+    "front": "construe",
+    "back": "to interpret or understand in a particular way",
+    "example_sentence": "His silence was construed as agreement.",
+    "hindi_meaning": "अर्थ निकालना/व्याख्यायित करना",
+    "hindi_sentence": "उसकी चुप्पी को सहमति के रूप में देखा गया।"
+  },
+  {
+    "id": 98,
+    "front": "contend",
+    "back": "to struggle or assert",
+    "example_sentence": "Scholars contend that climate change is accelerating.",
+    "hindi_meaning": "दलील देना/संघर्ष करना",
+    "hindi_sentence": "वैज्ञानिक दावा करते हैं कि जलवायु परिवर्तन तेज़ हो रहा है।"
+  },
+  {
+    "id": 99,
+    "front": "contentious",
+    "back": "causing or likely to cause disagreement",
+    "example_sentence": "Tax reform remains a contentious issue.",
+    "hindi_meaning": "विवादास्पद/झगड़ालू",
+    "hindi_sentence": "कर सुधार एक विवादास्पद मुद्दा बना हुआ है।"
+  },
+  {
+    "id": 100,
+    "front": "contrite",
+    "back": "feeling remorse or guilt",
+    "example_sentence": "He was contrite after the misunderstanding.",
+    "hindi_meaning": "पश्चातापी/खेदित",
+    "hindi_sentence": "ग़लतफ़हमी के बाद वह पश्चातापी था।"
+  },
+  {
+    "id": 101,
+    "front": "conundrum",
+    "back": "a confusing and difficult problem",
+    "example_sentence": "They faced the conundrum of budget cuts.",
+    "hindi_meaning": "पहेली/दुविधा",
+    "hindi_sentence": "उन्होंने बजट कटौती की दुविधा का सामना किया।"
+  },
+  {
+    "id": 102,
+    "front": "convoluted",
+    "back": "extremely complex and difficult to follow",
+    "example_sentence": "The legal argument was convoluted.",
+    "hindi_meaning": "जटिल/घुमावदार",
+    "hindi_sentence": "कानूनी तर्क जटिल था।"
+  },
+  {
+    "id": 103,
+    "front": "copious",
+    "back": "abundant in supply or quantity",
+    "example_sentence": "She took copious notes during lectures.",
+    "hindi_meaning": "प्रचुर/विस्तृत",
+    "hindi_sentence": "उसने व्याख्यानों के दौरान प्रचुर नोट्स लिए।"
+  },
+  {
+    "id": 104,
+    "front": "corroborate",
+    "back": "to confirm or give support to",
+    "example_sentence": "The witness corroborated the victim’s account.",
+    "hindi_meaning": "पुष्टि करना/समर्थन करना",
+    "hindi_sentence": "गवाह ने पीड़ित की बात की पुष्टि की।"
+  },
+  {
+    "id": 105,
+    "front": "coup",
+    "back": "a sudden, violent, and successful act",
+    "example_sentence": "The military staged a coup.",
+    "hindi_meaning": "कुचल/तख़्ता पलट",
+    "hindi_sentence": "फौज ने तख़्ता पलट किया।"
+  },
+  {
+    "id": 106,
+    "front": "covet",
+    "back": "to desire wrongfully",
+    "example_sentence": "Do not covet others’ possessions.",
+    "hindi_meaning": "लालच करना/लालसा",
+    "hindi_sentence": "दूसरों की संपत्ति की लालसा मत करो।"
+  },
+  {
+    "id": 107,
+    "front": "covert",
+    "back": "hidden or secret",
+    "example_sentence": "They carried out a covert operation.",
+    "hindi_meaning": "गुप्त/छिपा हुआ",
+    "hindi_sentence": "उन्होंने एक गुप्त अभियान चलाया।"
+  },
+  {
+    "id": 108,
+    "front": "craven",
+    "back": "cowardly; lacking courage",
+    "example_sentence": "His craven decision disappointed allies.",
+    "hindi_meaning": "कायर/निडरता नहीं",
+    "hindi_sentence": "उसका कायर निर्णय सहयोगियों को निराश कर गया।"
+  },
+  {
+    "id": 109,
+    "front": "credence",
+    "back": "belief in or acceptance of something as true",
+    "example_sentence": "The report lent credence to the theory.",
+    "hindi_meaning": "विश्वास/मान्यता",
+    "hindi_sentence": "रिपोर्ट ने सिद्धांत को मान्यता दी।"
+  },
+  {
+    "id": 110,
+    "front": "credulous",
+    "back": "too ready to believe; gullible",
+    "example_sentence": "Credulous customers fell for the scam.",
+    "hindi_meaning": "भोला-भाला/विश्वासी",
+    "hindi_sentence": "भोले-भाले ग्राहक धोखे का शिकार हुए।"
+  },
+  {
+    "id": 111,
+    "front": "culpable",
+    "back": "deserving blame",
+    "example_sentence": "The official was found culpable for negligence.",
+    "hindi_meaning": "दोषी/अपराधी",
+    "hindi_sentence": "अधिकारी को लापरवाही के लिए दोषी पाया गया।"
+  },
+  {
+    "id": 112,
+    "front": "cursory",
+    "back": "hasty and therefore not thorough",
+    "example_sentence": "He gave a cursory glance at the report.",
+    "hindi_meaning": "सरसरी/उपर्युक्त",
+    "hindi_sentence": "उसने रिपोर्ट पर सरसरी नज़र डाली।"
+  },
+  {
+    "id": 113,
+    "front": "curtail",
+    "back": "to reduce or limit",
+    "example_sentence": "They curtailed spending to balance the budget.",
+    "hindi_meaning": "घटना/सीमित करना",
+    "hindi_sentence": "बजट संतुलित करने के लिए उन्होंने खर्च घटाया।"
+  },
+  {
+    "id": 114,
+    "front": "daunt",
+    "back": "to intimidate or discourage",
+    "example_sentence": "The challenge did not daunt the young team.",
+    "hindi_meaning": "भयभीत करना/हतोत्साहित करना",
+    "hindi_sentence": "चुनौती ने युवा टीम को हतोत्साहित नहीं किया।"
+  },
+  {
+    "id": 115,
+    "front": "dearth",
+    "back": "a scarcity or lack of something",
+    "example_sentence": "There is a dearth of skilled workers.",
+    "hindi_meaning": "कमी/अभाव",
+    "hindi_sentence": "कुशल मजदूरों की कमी है।"
+  },
+  {
+    "id": 116,
+    "front": "debacle",
+    "back": "a sudden and ignominious failure",
+    "example_sentence": "The product launch turned into a debacle.",
+    "hindi_meaning": "विफलता/ध्वंस",
+    "hindi_sentence": "उत्पाद लॉन्च एक बड़ी विफलता बन गई।"
+  },
+  {
+    "id": 117,
+    "front": "debilitate",
+    "back": "to weaken or make feeble",
+    "example_sentence": "Illness can debilitate even the strongest persons.",
+    "hindi_meaning": "कमज़ोर करना/क्षीण करना",
+    "hindi_sentence": "बीमारी सबसे मजबूत व्यक्ति को भी कमजोर कर सकती है।"
+  },
+  {
+    "id": 118,
+    "front": "decry",
+    "back": "to publicly denounce or criticize",
+    "example_sentence": "Activists decried the policy as unjust.",
+    "hindi_meaning": "निंदा करना/कड़ी आलोचना",
+    "hindi_sentence": "कार्यकर्ताओं ने नीति की निंदा की।"
+  },
+  {
+    "id": 119,
+    "front": "defer",
+    "back": "to postpone or yield to",
+    "example_sentence": "We decided to defer the meeting until Monday.",
+    "hindi_meaning": "स्थगित करना/मान लेना",
+    "hindi_sentence": "हमने बैठक सोमवार तक स्थगित करने का निर्णय लिया।"
+  },
+  {
+    "id": 120,
+    "front": "defunct",
+    "back": "no longer existing or functioning",
+    "example_sentence": "The defunct factory has been demolished.",
+    "hindi_meaning": "निष्क्रिय/ख़त्म",
+    "hindi_sentence": "निष्क्रिय कारखाना ध्वस्त कर दिया गया है।"
+  },
+  {
+    "id": 121,
+    "front": "deleterious",
+    "back": "harmful or injurious",
+    "example_sentence": "Smoking has deleterious effects on health.",
+    "hindi_meaning": "हानिकारक/विघातक",
+    "hindi_sentence": "धूम्रपान स्वास्थ्य के लिये हानिकारक है।"
+  },
+  {
+    "id": 122,
+    "front": "deliberate",
+    "back": "done consciously and intentionally",
+    "example_sentence": "It was a deliberate and careful plan.",
+    "hindi_meaning": "जानबूझकर/विचारित",
+    "hindi_sentence": "यह जानबूझकर और सावधानीपूर्वक तैयार की गई योजना थी।"
+  },
+  {
+    "id": 123,
+    "front": "delineate",
+    "back": "to describe or portray precisely",
+    "example_sentence": "The report delineates the new policy steps.",
+    "hindi_meaning": "वर्णन करना/रेखा खींचना",
+    "hindi_sentence": "रिपोर्ट में नई नीति के चरणों का वर्णन है।"
+  },
+  {
+    "id": 124,
+    "front": "demure",
+    "back": "quiet and modest; reserved",
+    "example_sentence": "She looked demure in the traditional attire.",
+    "hindi_meaning": "संकोची/शालीन",
+    "hindi_sentence": "परिधान में वह शालीन दिखी।"
+  },
+  {
+    "id": 125,
+    "front": "denounce",
+    "back": "publicly declare to be wrong or evil",
+    "example_sentence": "Leaders denounced the violent attack.",
+    "hindi_meaning": "निंदा करना/समालोचना",
+    "hindi_sentence": "नेताओं ने हिंसक हमले की निंदा की।"
+  },
+  {
+    "id": 126,
+    "front": "deplore",
+    "back": "to feel or express strong disapproval",
+    "example_sentence": "We deplore the rise in intolerance.",
+    "hindi_meaning": "निंदनीय समझना/खेद प्रकट करना",
+    "hindi_sentence": "हम असहिष्णुता में वृद्धि की निंदा करते हैं।"
+  },
+  {
+    "id": 127,
+    "front": "deride",
+    "back": "to mock or ridicule",
+    "example_sentence": "Critics derided the new policy as naive.",
+    "hindi_meaning": "उपहास करना/ठट्ठा उडाना",
+    "hindi_sentence": "आलोचकों ने नई नीति का उपहास उड़ाया।"
+  },
+  {
+    "id": 128,
+    "front": "derivative",
+    "back": "imitative and unoriginal",
+    "example_sentence": "The director’s film felt derivative and uninspired.",
+    "hindi_meaning": "नकल/अनौठा",
+    "hindi_sentence": "निर्देशक की फिल्म नकल लगती और नीरस थी।"
+  },
+  {
+    "id": 129,
+    "front": "despondent",
+    "back": "in low spirits from loss of hope",
+    "example_sentence": "After repeated failures he was despondent.",
+    "hindi_meaning": "हताश/निराश",
+    "hindi_sentence": "बार-बार असफलताओं के बाद वह निराश हो गया।"
+  },
+  {
+    "id": 130,
+    "front": "destitute",
+    "back": "without basic necessities; extremely poor",
+    "example_sentence": "The charity helped destitute families.",
+    "hindi_meaning": "निर्धन/बेबस",
+    "hindi_sentence": "सांस्था ने निर्धन परिवारों की मदद की।"
+  },
+  {
+    "id": 131,
+    "front": "desultory",
+    "back": "lacking a plan or purpose; random",
+    "example_sentence": "Their conversation was desultory and unfocused.",
+    "hindi_meaning": "बेपरवाह/विचलित",
+    "hindi_sentence": "उनकी बातचीत बिखरी और असंगठित थी।"
+  },
+  {
+    "id": 132,
+    "front": "deter",
+    "back": "to discourage or prevent from acting",
+    "example_sentence": "Strong penalties deter red-handed thefts.",
+    "hindi_meaning": "रोकना/निरुत्साहित करना",
+    "hindi_sentence": "कठोर सजा तुरन्त पकड़ लिये जाने वाले चोरों को रोकेगी।"
+  },
+  {
+    "id": 133,
+    "front": "detrimental",
+    "back": "causing harm or damage",
+    "example_sentence": "Pollution is detrimental to health.",
+    "hindi_meaning": "हानिकारक/नुकसानदेह",
+    "hindi_sentence": "प्रदूषण स्वास्थ्य के लिए हानिकारक है।"
+  },
+  {
+    "id": 134,
+    "front": "devious",
+    "back": "showing a skillful use of dishonest tactics",
+    "example_sentence": "He used devious methods to get ahead.",
+    "hindi_meaning": "चालाक/कपटी",
+    "hindi_sentence": "उसने आगे बढ़ने के लिए कपटी तरीक़े अपनाए।"
+  },
+  {
+    "id": 135,
+    "front": "dexterous",
+    "back": "skillful with hands or mind",
+    "example_sentence": "A dexterous craftsman carved the statue.",
+    "hindi_meaning": "कुशल/फुर्तीला",
+    "hindi_sentence": "एक कुशल शिल्पकार ने मूर्ति तराश दी।"
+  },
+  {
+    "id": 136,
+    "front": "didactic",
+    "back": "intended to teach; instructive",
+    "example_sentence": "The lecture was didactic but useful.",
+    "hindi_meaning": "शिक्षाप्रद/उपदेशात्मक",
+    "hindi_sentence": "व्याख्यान शिक्षाप्रद था और उपयोगी भी।"
+  },
+  {
+    "id": 137,
+    "front": "diligent",
+    "back": "showing persistent effort; hardworking",
+    "example_sentence": "Diligent students often excel.",
+    "hindi_meaning": "परिश्रमी/मेहनती",
+    "hindi_sentence": "परिश्रमी विद्यार्थी अक्सर उत्कृष्ट होते हैं।"
+  },
+  {
+    "id": 138,
+    "front": "discerning",
+    "back": "having good judgment or insight",
+    "example_sentence": "A discerning reader notices subtle themes.",
+    "hindi_meaning": "सूझबूझ वाला/विवेकी",
+    "hindi_sentence": "सूझबूझ वाला पाठक सूक्ष्म विषयों को पहचानता है।"
+  },
+  {
+    "id": 139,
+    "front": "discreet",
+    "back": "careful and prudent in speech or action",
+    "example_sentence": "Be discreet with confidential information.",
+    "hindi_meaning": "समझदार/सावधान",
+    "hindi_sentence": "गोपनीय जानकारी के साथ समझदारी बरतें।"
+  },
+  {
+    "id": 140,
+    "front": "discrete",
+    "back": "distinct or separate",
+    "example_sentence": "The project has several discrete phases.",
+    "hindi_meaning": "अलग/विभिन्न",
+    "hindi_sentence": "परियोजना के कई अलग चरण हैं।"
+  },
+  {
+    "id": 141,
+    "front": "disparage",
+    "back": "to belittle or speak slightingly of",
+    "example_sentence": "Do not disparage the efforts of others.",
+    "hindi_meaning": "तुच्छ बताना/अपमानित करना",
+    "hindi_sentence": "दूसरों के प्रयासों को तुच्छ न बताएं।"
+  },
+  {
+    "id": 142,
+    "front": "disparity",
+    "back": "a great difference",
+    "example_sentence": "There is a disparity between rich and poor.",
+    "hindi_meaning": "असमानता/विरोधाभास",
+    "hindi_sentence": "धनी और गरीब में असमानता है।"
+  },
+  {
+    "id": 143,
+    "front": "dispassionate",
+    "back": "impartial; calm and unemotional",
+    "example_sentence": "A judge must remain dispassionate.",
+    "hindi_meaning": "निष्पक्ष/निर्विकार",
+    "hindi_sentence": "न्यायाधीश को निर्विकार बने रहना चाहिए।"
+  },
+  {
+    "id": 144,
+    "front": "dispel",
+    "back": "to drive away or eliminate",
+    "example_sentence": "The facts dispelled the rumors.",
+    "hindi_meaning": "दूर करना/भटकाव हटाना",
+    "hindi_sentence": "तथ्यों ने अफवाहों को दूर किया।"
+  },
+  {
+    "id": 145,
+    "front": "disseminate",
+    "back": "to spread widely",
+    "example_sentence": "Campaigns disseminate public health messages.",
+    "hindi_meaning": "विस्तारित करना/प्रसारित करना",
+    "hindi_sentence": "अभियान सार्वजनिक स्वास्थ्य संदेश प्रसारित करते हैं।"
+  },
+  {
+    "id": 146,
+    "front": "dissent",
+    "back": "to disagree or differ in opinion",
+    "example_sentence": "A few members dissented from the majority view.",
+    "hindi_meaning": "विभेद/असहमत होना",
+    "hindi_sentence": "कुछ सदस्य बहुमत के विचार से असहमत रहे।"
+  },
+  {
+    "id": 147,
+    "front": "dissipate",
+    "back": "to disappear or scatter; squander",
+    "example_sentence": "Fog will dissipate by noon.",
+    "hindi_meaning": "विखरना/नष्ट होना",
+    "hindi_sentence": "कोहरे का noon तक खतम हो जाना तय है।"
+  },
+  {
+    "id": 148,
+    "front": "divergent",
+    "back": "separating or moving in different directions",
+    "example_sentence": "They had divergent opinions on the plan.",
+    "hindi_meaning": "विभिन्न/विभाजित",
+    "hindi_sentence": "उनकी योजना पर विभिन्न रायें थीं।"
+  },
+  {
+    "id": 149,
+    "front": "divulge",
+    "back": "to reveal or make known",
+    "example_sentence": "He refused to divulge the source.",
+    "hindi_meaning": "खुलासा करना/प्रकटीकरण",
+    "hindi_sentence": "उसने स्रोत का खुलासा करने से इंकार किया।"
+  },
+  {
+    "id": 150,
+    "front": "docile",
+    "back": "easily taught or led; obedient",
+    "example_sentence": "The students were docile and attentive.",
+    "hindi_meaning": "आज्ञाकारी/सरल",
+    "hindi_sentence": "छात्र आज्ञाकारी और ध्यानपूर्वक थे।"
+  },
+  {
+    "id": 151,
+    "front": "dormant",
+    "back": "temporarily inactive or asleep",
+    "example_sentence": "The volcano has been dormant for decades.",
+    "hindi_meaning": "विश्रामधीन/निष्क्रिय",
+    "hindi_sentence": "ज्वालामुखी वर्षों से निष्क्रिय रहा है।"
+  },
+  {
+    "id": 152,
+    "front": "doubtless",
+    "back": "without doubt; certainly",
+    "example_sentence": "He will doubtless succeed with such skill.",
+    "hindi_meaning": "निश्चित रूप से/निःसंशय",
+    "hindi_sentence": "ऐसी दक्षता के साथ वह निश्चित रूप से सफल होगा।"
+  },
+  {
+    "id": 153,
+    "front": "draconian",
+    "back": "excessively harsh and severe",
+    "example_sentence": "They imposed draconian sanctions on the violators.",
+    "hindi_meaning": "कठोर/भयंकर",
+    "hindi_sentence": "उल्लंघन करने वालों पर कठोर प्रतिबंध लगाए गए।"
+  },
+  {
+    "id": 154,
+    "front": "dubious",
+    "back": "hesitating or doubting; questionable",
+    "example_sentence": "The claim sounded dubious to experts.",
+    "hindi_meaning": "संदिग्ध/असंदिग्ध",
+    "hindi_sentence": "दावा विशेषज्ञों को संदिग्ध लगा।"
+  },
+  {
+    "id": 155,
+    "front": "duress",
+    "back": "compulsion by threat; coercion",
+    "example_sentence": "He signed the confession under duress.",
+    "hindi_meaning": "ज़बरदस्ती/दबाव",
+    "hindi_sentence": "उसने दबाव में आकर बयान पर हस्ताक्षर किए।"
+  },
+  {
+    "id": 156,
+    "front": "ebullient",
+    "back": "cheerful and full of energy",
+    "example_sentence": "The crowd was ebullient at the festival.",
+    "hindi_meaning": "उत्साही/उल्लसित",
+    "hindi_sentence": "महोत्सव में भीड़ उल्लसित थी।"
+  },
+  {
+    "id": 157,
+    "front": "eclectic",
+    "back": "deriving ideas or style from diverse sources",
+    "example_sentence": "Her taste in music is eclectic.",
+    "hindi_meaning": "विविध/चयनित",
+    "hindi_sentence": "उसकी संगीत की पसंद विविध है।"
+  },
+  {
+    "id": 158,
+    "front": "ecumenical",
+    "back": "promoting unity among churches or groups",
+    "example_sentence": "They called for ecumenical dialogue.",
+    "hindi_meaning": "एकता-सम्बन्धी/सहयोगी",
+    "hindi_sentence": "उन्होंने एकात्मक संवाद की मांग की।"
+  },
+  {
+    "id": 159,
+    "front": "edify",
+    "back": "to instruct morally or spiritually",
+    "example_sentence": "Good literature can edify the young mind.",
+    "hindi_meaning": "शिक्षित करना/उन्नत करना",
+    "hindi_sentence": "अच्छी साहित्य युवा मन को उपदेशात्मक बना सकती है।"
+  },
+  {
+    "id": 160,
+    "front": "efface",
+    "back": "to erase or wipe out",
+    "example_sentence": "Time cannot efface the memory of the tragedy.",
+    "hindi_meaning": "मिटाना/हटाना",
+    "hindi_sentence": "समय उस त्रासदी की स्मृति को मिटा नहीं सकता।"
+  },
+  {
+    "id": 161,
+    "front": "effervescent",
+    "back": "vivacious and enthusiastic",
+    "example_sentence": "Her effervescent personality cheered everyone up.",
+    "hindi_meaning": "उत्साही/चुलबुला",
+    "hindi_sentence": "उसका उत्साही व्यक्तित्व सबके मूड को अच्छा कर गया।"
+  },
+  {
+    "id": 162,
+    "front": "egregious",
+    "back": "remarkably bad; outrageous",
+    "example_sentence": "The error was so egregious it made headlines.",
+    "hindi_meaning": "भयंकर/घोर",
+    "hindi_sentence": "त्रुटि इतनी भयंकर थी कि वह सुर्खियों में आ गई।"
+  },
+  {
+    "id": 163,
+    "front": "elucidate",
+    "back": "to make clear; explain",
+    "example_sentence": "Could you elucidate your point further?",
+    "hindi_meaning": "स्पष्ट करना/व्याख्या करना",
+    "hindi_sentence": "क्या आप अपना विचार और स्पष्ट कर सकते हैं?"
+  },
+  {
+    "id": 164,
+    "front": "elusive",
+    "back": "difficult to find or grasp",
+    "example_sentence": "A clear solution remains elusive.",
+    "hindi_meaning": "दुर्लभ/पकड़ में नहीं आने वाला",
+    "hindi_sentence": "स्पष्ट समाधान अभी भी पकड़ में नहीं आ रहा।"
+  },
+  {
+    "id": 165,
+    "front": "emulate",
+    "back": "to imitate with the intent to equal or surpass",
+    "example_sentence": "Young athletes emulate their heroes.",
+    "hindi_meaning": "अनुकरण करना/अभिनव करना",
+    "hindi_sentence": "युवा खिलाड़ी अपने आदर्शों का अनुकरण करते हैं।"
+  },
+  {
+    "id": 166,
+    "front": "enervate",
+    "back": "to weaken or drain of energy",
+    "example_sentence": "The heat enervated the workers.",
+    "hindi_meaning": "क्षीण करना/कमज़ोर करना",
+    "hindi_sentence": "गर्मी ने कामगारों को कमजोर कर दिया।"
+  },
+  {
+    "id": 167,
+    "front": "engender",
+    "back": "to cause or give rise to",
+    "example_sentence": "Poor planning engendered many problems.",
+    "hindi_meaning": "उत्पन्न करना/जनना",
+    "hindi_sentence": "खराब योजना ने कई समस्याएँ उत्पन्न कीं।"
+  },
+  {
+    "id": 168,
+    "front": "enigmatic",
+    "back": "mysterious and difficult to understand",
+    "example_sentence": "He had an enigmatic smile.",
+    "hindi_meaning": "रहस्यमय/गूढ़",
+    "hindi_sentence": "उसके होंठों पर रहस्यमय मुस्कान थी।"
+  },
+  {
+    "id": 169,
+    "front": "enmity",
+    "back": "deep-seated hostility",
+    "example_sentence": "Years of enmity between the groups persisted.",
+    "hindi_meaning": "शत्रुता/घृणा",
+    "hindi_sentence": "समूहों के बीच वर्षों पुरानी शत्रुता जारी रही।"
+  },
+  {
+    "id": 170,
+    "front": "entreat",
+    "back": "to beg or plead earnestly",
+    "example_sentence": "She entreated him to reconsider his decision.",
+    "hindi_meaning": "प्रार्थना करना/विनती करना",
+    "hindi_sentence": "उसने उससे अपना निर्णय पुनर्विचार करने की विनती की।"
+  },
+  {
+    "id": 171,
+    "front": "ephemeral",
+    "back": "lasting a very short time",
+    "example_sentence": "Fashions are ephemeral and constantly changing.",
+    "hindi_meaning": "क्षणभंगुर/क्षणिक",
+    "hindi_sentence": "फैशन क्षणभंगुर होते हैं और लगातार बदलते रहते हैं।"
+  },
+  {
+    "id": 172,
+    "front": "equanimity",
+    "back": "calmness and composure under pressure",
+    "example_sentence": "She faced the crisis with equanimity.",
+    "hindi_meaning": "समभाव/धैर्य",
+    "hindi_sentence": "उसने संकट का सामना धैर्य से किया।"
+  },
+  {
+    "id": 173,
+    "front": "equitable",
+    "back": "fair and just",
+    "example_sentence": "An equitable distribution of resources was needed.",
+    "hindi_meaning": "न्यायसंगत/समान",
+    "hindi_sentence": "संसाधनों का न्यायसंगत वितरण आवश्यक था।"
+  },
+  {
+    "id": 174,
+    "front": "equivocal",
+    "back": "ambiguous or open to more than one interpretation",
+    "example_sentence": "His answer was equivocal and unclear.",
+    "hindi_meaning": "अस्पष्ट/द्व्यर्थी",
+    "hindi_sentence": "उसका उत्तर अस्पष्ट और द्व्यर्थी था।"
+  },
+  {
+    "id": 175,
+    "front": "eradicate",
+    "back": "to completely eliminate",
+    "example_sentence": "Efforts were made to eradicate disease.",
+    "hindi_meaning": "उन्मूलन करना/खत्म करना",
+    "hindi_sentence": "रोग का उन्मूलन करने के प्रयास किए गए।"
+  },
+  {
+    "id": 176,
+    "front": "erratic",
+    "back": "irregular or unpredictable",
+    "example_sentence": "Erratic behavior worried the parents.",
+    "hindi_meaning": "अनियमित/अस्थिर",
+    "hindi_sentence": "अनियमित व्यवहार ने माता-पिता को चिन्तित कर दिया।"
+  },
+  {
+    "id": 177,
+    "front": "erudite",
+    "back": "having great knowledge; scholarly",
+    "example_sentence": "The professor is known for his erudite lectures.",
+    "hindi_meaning": "विद्वान/पांडित्यपूर्ण",
+    "hindi_sentence": "प्रोफ़ेसर अपने विद्वतापूर्ण व्याख्यानों के लिए जाने जाते हैं।"
+  },
+  {
+    "id": 178,
+    "front": "eschew",
+    "back": "to deliberately avoid",
+    "example_sentence": "They eschew politics in public forums.",
+    "hindi_meaning": "टालना/परहेज़ करना",
+    "hindi_sentence": "वे सार्वजनिक मंचों पर राजनीति से परहेज़ करते हैं।"
+  },
+  {
+    "id": 179,
+    "front": "espouse",
+    "back": "to adopt or support a cause",
+    "example_sentence": "She espoused the cause of education reform.",
+    "hindi_meaning": "समर्थन करना/अपनाना",
+    "hindi_sentence": "उसने शिक्षा सुधार के कारण का समर्थन किया।"
+  },
+  {
+    "id": 180,
+    "front": "ethereal",
+    "back": "extremely delicate or refined; heavenly",
+    "example_sentence": "The dancer moved with ethereal grace.",
+    "hindi_meaning": "अलौकिक/सूक्ष्म",
+    "hindi_sentence": "नर्तकी ने अलौकिक कोमलता से नृत्य किया।"
+  },
+  {
+    "id": 181,
+    "front": "euphoria",
+    "back": "a feeling of great happiness or well-being",
+    "example_sentence": "There was euphoria after the team's victory.",
+    "hindi_meaning": "उत्साह/उत्कट आनंद",
+    "hindi_sentence": "टीम की जीत के बाद हर्षोल्लास था।"
+  },
+  {
+    "id": 182,
+    "front": "evanescent",
+    "back": "soon passing out of sight, memory, or existence",
+    "example_sentence": "The rainbow's colors were evanescent.",
+    "hindi_meaning": "क्षणभंगुर/छलकती",
+    "hindi_sentence": "इंद्रधनुष के रंग क्षणभंगुर थे।"
+  },
+  {
+    "id": 183,
+    "front": "evade",
+    "back": "to escape or avoid",
+    "example_sentence": "He tried to evade the question.",
+    "hindi_meaning": "बचना/टालना",
+    "hindi_sentence": "उसने प्रश्न से बचने की कोशिश की।"
+  },
+  {
+    "id": 184,
+    "front": "exacerbate",
+    "back": "to make worse or more severe",
+    "example_sentence": "Delay will exacerbate the problem.",
+    "hindi_meaning": "बिगाड़ना/तीव्र करना",
+    "hindi_sentence": "देरी समस्या को और बढ़ा देगी।"
+  },
+  {
+    "id": 185,
+    "front": "exacting",
+    "back": "making great demands on one's skill or attention",
+    "example_sentence": "The job requires an exacting level of precision.",
+    "hindi_meaning": "कठोर/आवश्यकता-पूर्ण",
+    "hindi_sentence": "नौकरी में सटीकता की कड़ी आवश्यकता है।"
+  },
+  {
+    "id": 186,
+    "front": "exemplary",
+    "back": "worthy of imitation; commendable",
+    "example_sentence": "Her conduct was exemplary during the crisis.",
+    "hindi_meaning": "उदाहरणीय/प्रशंसायोग्य",
+    "hindi_sentence": "संकट के दौरान उसका आचरण उदाहरणीय था।"
+  },
+  {
+    "id": 187,
+    "front": "exonerate",
+    "back": "to clear from blame or fault",
+    "example_sentence": "The evidence exonerated the accused.",
+    "hindi_meaning": "दोषमुक्त करना/निर्दोष सिद्ध करना",
+    "hindi_sentence": "सबूत ने आरोपी को निर्दोष सिद्ध किया।"
+  },
+  {
+    "id": 188,
+    "front": "expedite",
+    "back": "to speed up or hasten",
+    "example_sentence": "We need to expedite the approval process.",
+    "hindi_meaning": "तेज़ करना/शीघ्र करना",
+    "hindi_sentence": "हमें अनुमोदन प्रक्रिया को तीव्र करना चाहिए।"
+  },
+  {
+    "id": 189,
+    "front": "expunge",
+    "back": "to erase or remove completely",
+    "example_sentence": "The record was expunged after investigation.",
+    "hindi_meaning": "मिटाना/हटाना",
+    "hindi_sentence": "जांच के बाद रिकॉर्ड मिटा दिया गया।"
+  },
+  {
+    "id": 190,
+    "front": "extol",
+    "back": "to praise highly",
+    "example_sentence": "Critics extolled the film's performances.",
+    "hindi_meaning": "सराहना करना/उत्साहपूर्वक प्रशंसा",
+    "hindi_sentence": "आलोचकों ने फिल्म के प्रदर्शन की प्रशंसा की।"
+  },
+  {
+    "id": 191,
+    "front": "extraneous",
+    "back": "irrelevant or unrelated to the subject",
+    "example_sentence": "Remove extraneous information from the report.",
+    "hindi_meaning": "अनावश्यक/बाहरी",
+    "hindi_sentence": "रिपोर्ट से अनावश्यक जानकारी हटा दें।"
+  },
+  {
+    "id": 192,
+    "front": "exuberant",
+    "back": "filled with lively energy and excitement",
+    "example_sentence": "Children were exuberant at the park.",
+    "hindi_meaning": "उत्साही/प्रफुल्लित",
+    "hindi_sentence": "बच्चे पार्क में उत्साही थे।"
+  },
+  {
+    "id": 193,
+    "front": "facilitate",
+    "back": "to make easier or less difficult",
+    "example_sentence": "New software will facilitate workflow.",
+    "hindi_meaning": "सुगम बनाना/सहायक होना",
+    "hindi_sentence": "नई सॉफ़्टवेयर कार्यप्रवाह को सुगम करेगा।"
+  },
+  {
+    "id": 194,
+    "front": "fallacious",
+    "back": "based on a mistaken belief",
+    "example_sentence": "That argument is fallacious and unsound.",
+    "hindi_meaning": "भ्रामक/गलत धारणा पर आधारित",
+    "hindi_sentence": "वही तर्क भ्रामक और असंगत है।"
+  },
+  {
+    "id": 195,
+    "front": "fastidious",
+    "back": "very attentive to detail; hard to please",
+    "example_sentence": "He is fastidious about cleanliness.",
+    "hindi_meaning": "नुकीला/चुनौतीपूर्ण",
+    "hindi_sentence": "वह सफाई के बारे में बहुत नुकीला है।"
+  },
+  {
+    "id": 196,
+    "front": "fathom",
+    "back": "to understand after much thought",
+    "example_sentence": "I cannot fathom his motives.",
+    "hindi_meaning": "गहराई से समझना/भांपना",
+    "hindi_sentence": "मैं उसके इरादों को समझ नहीं सकता।"
+  },
+  {
+    "id": 197,
+    "front": "feasible",
+    "back": "possible and achievable",
+    "example_sentence": "Is the proposed plan feasible?",
+    "hindi_meaning": "संभव/व्यावहारिक",
+    "hindi_sentence": "क्या प्रस्तावित योजना व्यावहारिक है?"
+  },
+  {
+    "id": 198,
+    "front": "feckless",
+    "back": "lacking initiative or responsibility",
+    "example_sentence": "His feckless attitude led to missed deadlines.",
+    "hindi_meaning": "बेकार/बेपरवाह",
+    "hindi_sentence": "उसके उदासीन रवैये के कारण समय सीमा छूटी।"
+  },
+  {
+    "id": 199,
+    "front": "fecund",
+    "back": "fruitful; intellectually productive",
+    "example_sentence": "The region is fecund and yields abundant crops.",
+    "hindi_meaning": "उर्वर/फलदायक",
+    "hindi_sentence": "क्षेत्र उर्वर है और प्रचुर फसल देती है।"
+  },
+  {
+    "id": 200,
+    "front": "flagrant",
+    "back": "conspicuously and outrageously bad",
+    "example_sentence": "The company committed a flagrant violation of regulations.",
+    "hindi_meaning": "घोर/खुला उल्लंघन",
+    "hindi_sentence": "कंपनी ने नियमों का भड़काऊ उल्लंघन किया।"
+  }
 ]

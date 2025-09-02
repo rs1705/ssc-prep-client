@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { SectionCardProps } from "@/lib/types";
 
@@ -21,7 +21,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   return (
     <Card className="shadow-md hover:shadow-lg w-full h-full flex flex-col">
       <CardHeader>
-        <CardTitle className="text-3xl font-semibold">{title}</CardTitle>
+        <CardTitle className="text-3xl font-bold">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-md text-slate-500">{description}</p>

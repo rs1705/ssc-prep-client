@@ -5,3 +5,4 @@ export interface SectionCardProps {
   buttonText: string;
   className?:string;
 };
+
