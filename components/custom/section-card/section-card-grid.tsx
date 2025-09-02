@@ -1,7 +1,12 @@
 import React from "react";
 import { SectionCardProps } from "@/lib/types";
 import SectionCard from "./section-card";
-const SectionCardGrid = ({ sections }) => {
+
+type SectionCardGridProps = {
+  sections: SectionCardProps[];
+};
+
+const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections }) => {
   return (
     <div className="flex flex-wrap justify-center gap-5">
       {sections.map((item: SectionCardProps, index: number) => (
