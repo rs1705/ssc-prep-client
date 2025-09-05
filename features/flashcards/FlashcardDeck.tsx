@@ -40,6 +40,20 @@ const FlashcardDeck = () => {
         setIsFlipped={setIsFlipped}
       />
       <br />
+
+      <div className="flex justify-center gap-1">
+        <Button className="hover:cursor-pointer">
+          <MoveLeft />
+          Hard
+        </Button>
+        <Button className="hover:cursor-pointer ">Medium</Button>
+        <Button className="hover:cursor-pointer ">Easy</Button>
+        <Button className="hover:cursor-pointer">
+          Next
+          <MoveRight />
+        </Button>
+      </div>
+      <br />
       <div className="flex justify-center gap-1">
         <Button onClick={prevCard} className="hover:cursor-pointer">
           <MoveLeft />
