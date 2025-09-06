@@ -3,6 +3,7 @@ export interface SectionCardProps {
   description: string;
   linkTo: string;
   buttonText: string;
+  knowMoreText?:string
   className?:string;
 };
 

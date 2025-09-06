@@ -17,6 +17,7 @@ const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections }) => {
             description={item.description}
             linkTo={item.linkTo}
             buttonText={item.buttonText}
+            knowMoreText={item.knowMoreText}
           />
         </div>
       ))}

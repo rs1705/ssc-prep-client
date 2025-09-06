@@ -2,9 +2,9 @@ import React from "react";
 
 const About = () => {
   return (
-    <section className="bg-gray-50 py-12 px-6 md:px-16 lg:px-32">
+    <section className="px-6 md:px-16 lg:px-32">
       <div className="max-w-4xl mx-auto text-center">
-        <h2 className="lg:text-5xl md:text-4xl font-bold text-black mb-4">
+        <h2 className="text-2xl lg:text-4xl md:text-4xl font-bold text-black mb-4">
           About Us
         </h2>
         <p className="text-lg text-gray-600 mb-6">

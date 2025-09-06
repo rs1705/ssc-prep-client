@@ -7,30 +7,30 @@ export default function Home() {
   const { user } = useAuth();
   const sections: SectionCardProps[] = [
     {
-      title: "Reasoning 🧩",
+      title: "🧩 Reasoning",
       description:
         "Challenge your mind with fun reasoning puzzles and boost problem-solving speed.",
       linkTo: "/SSC/reasoning",
       buttonText: "Start Reasoning",
     },
     {
-      title: "Maths Mastery 🧮",
+      title: "🧮 Maths",
       description:
         "Practice smart maths tricks, sharpen accuracy, and solve questions with confidence.",
       linkTo: "/SSC/maths",
       buttonText: "Practice Maths",
     },
     {
-      title: "English Excellence 👩🏼‍🎓",
+      title: "👩🏼‍🎓 English",
       description:
         "Enhance your grammar, vocabulary, and fluency to score higher in every test.",
       linkTo: "/SSC/english",
       buttonText: "Start Learning",
     },
     {
-      title: "GK Ocean 🌊",
+      title: "🌊 GK",
       description:
-        "Dive into current affairs, history, and world facts to stay ahead in exams.",
+        "Dive into the vast ocean of General knowledge to stay ahead and ace in exams.",
       linkTo: "/SSC/gk",
       buttonText: "Explore GK",
     },

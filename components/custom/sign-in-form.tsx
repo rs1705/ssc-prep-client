@@ -5,12 +5,12 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormDescription,
-  FormMessage,
   FormField,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { CircleUserRound } from "lucide-react";
+import Link from "next/link";
 
 type FormData = {
   email: string;
@@ -28,22 +28,25 @@ const SignInForm = () => {
   const onSubmit = (values: FormData) => {};
   return (
     <div>
-      <h2 className="font-bold text-3xl">Login</h2>
-      <p className="text-slate-600">
-        Enter your credentials to sign in with email and password
-      </p>
       <div>
+        <div className="flex justify-center">
+          <CircleUserRound size={80} />
+        </div>
+        <h2 className="font-bold text-4xl">Login</h2>
+        <p className="text-slate-500">
+          Please enter your details to log in to SSC Prep
+        </p>
+        <br />
+      </div>
+      <div className="w-full">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-[90%] sm:w-[80%] md:w-[50%] lg:w-[25%] space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg">Email</FormLabel>
+                  <FormLabel className="text-md">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -59,7 +62,7 @@ const SignInForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg">Password</FormLabel>
+                  <FormLabel className="text-md">Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -70,6 +73,13 @@ const SignInForm = () => {
                 </FormItem>
               )}
             ></FormField>
+            <div>
+              <p>
+                <Link href="" className="hover:underline">
+                  Forgot password?
+                </Link>
+              </p>
+            </div>
             <div className="flex justify-center">
               <Button type="submit" className="hover:cursor-pointer w-full">
                 Log In

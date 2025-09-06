@@ -4,7 +4,7 @@ import React from "react";
 const EnglishHomePage = () => {
   const sections: SectionCardProps[] = [
     {
-      title: "Flashcards",
+      title: "🎴 Flashcards",
       description:
         "Revise important words quickly with flip-cards designed for smart memory recall.",
       linkTo: "/SSC/english/flashcards",
@@ -36,7 +36,7 @@ const EnglishHomePage = () => {
   return (
     <>
       <div className="text-center">
-        <h1 className="text-5xl font-bold my-5">
+        <h1 className="text-4xl font-bold my-5">
           Master English with Smart Practice
         </h1>
         <p>

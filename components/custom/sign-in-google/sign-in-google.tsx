@@ -9,11 +9,13 @@ const SignInWithGoogle: React.FC<SignInWithGoogleProps> = ({
   onClickSignIn,
 }) => {
   return (
-    <div className="flex justify-center">
-      <Button onClick={onClickSignIn} className="hover:cursor-pointer">
-        Sign in with Google
-      </Button>
-    </div>
+    <Button
+      variant="outline"
+      onClick={onClickSignIn}
+      className="hover:cursor-pointer w-full"
+    >
+      Continue with Google
+    </Button>
   );
 };
 
