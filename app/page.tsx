@@ -1,7 +1,10 @@
+"use client";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
+import { useAuth } from "@/context/auth";
 import { SectionCardProps } from "@/lib/types";
 
 export default function Home() {
+  const { user } = useAuth();
   const sections: SectionCardProps[] = [
     {
       title: "Reasoning 🧩",
@@ -36,7 +39,8 @@ export default function Home() {
   return (
     <div>
       <div className="text-center">
-        <h1 className="text-5xl font-bold my-5">
+        <h1 className="text-4xl font-bold my-5">
+          Hi {user?.displayName || "Guest"}! <br />
           Welcome to your activity center.🔮
         </h1>
         <p>

@@ -10,47 +10,104 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { User } from "lucide-react";
+import { useAuth } from "@/context/auth";
+import { Button } from "../ui/button";
+import { LogIn, LucideLogOut, UserPlus } from "lucide-react";
 const Header = () => {
+  const { user, logout } = useAuth();
+
   return (
-    <nav className="w-full bg-white shadow-md sticky top-0 z-50">
+    <nav className="w-full bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <div className="font-bold text-base">
-            <Link href="/">SSC Prep</Link>
+          <div>
+            <Link className="font-bold text-lg" href="/">
+              SSC PREP
+            </Link>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-4">
             <NavigationMenu>
-              <NavigationMenuList className="flex space-x-4">
+              <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink asChild className="text-md">
+                  <NavigationMenuLink asChild className="text-lg font-semibold">
                     <Link href="/">Home</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>
-                    <User size={20} />
+                  <NavigationMenuTrigger className="text-lg font-semibold">
+                    <Link href="#">{user ? user.displayName : "Guest"}</Link>
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-4 p-1 w-[100px] text-center">
-                      <NavigationMenuLink asChild className="text-md">
-                        <Link href="/signin">Sign In</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild className="text-md">
-                        <Link href="/signup" className="text-md">
-                          Sign Up
-                        </Link>
-                      </NavigationMenuLink>
-                    </div>
-                  </NavigationMenuContent>
+                  {!user ? (
+                    <NavigationMenuContent>
+                      <ul className="w-[100]">
+                        <li>
+                          <NavigationMenuLink
+                            className="text-md font-semibold"
+                            asChild
+                          >
+                            <Link
+                              href="/signin"
+                              className="flex-row justify-around"
+                            >
+                              <LogIn
+                                size={20}
+                                stroke="gray"
+                                className="mt-[5px]"
+                              />
+                              Sign In
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                        <li>
+                          <NavigationMenuLink
+                            className="text-md font-semibold"
+                            asChild
+                          >
+                            <Link
+                              href="/signup"
+                              className="flex-row justify-around"
+                            >
+                              <UserPlus
+                                size={20}
+                                stroke="gray"
+                                className="mt-[5px]"
+                              />
+                              Sign up
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  ) : (
+                    <NavigationMenuContent>
+                      <ul>
+                        <li className="font-semibold text-md">
+                          <NavigationMenuLink
+                            className="text-md font-semibold flex items-center"
+                            asChild
+                          >
+                            <Button
+                              onClick={logout}
+                              variant="ghost"
+                              className="flex-row justify-center hover:cursor-pointer"
+                            >
+                              <LucideLogOut
+                                size={20}
+                                className="mt-[5px] hover:text-white"
+                              />
+                              Sign Out
+                            </Button>
+                          </NavigationMenuLink>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  )}
                 </NavigationMenuItem>
-
                 <NavigationMenuItem>
-                  <NavigationMenuLink asChild className="text-md">
+                  <NavigationMenuLink className="text-lg font-semibold" asChild>
                     <Link href="/about">About</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
