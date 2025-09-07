@@ -7,3 +7,16 @@ export interface SectionCardProps {
   className?:string;
 };
 
+export interface FlashCardInterface {
+  type:string,
+  front: string; // word/question
+  back:FlashCardBackProps,
+  bookmarked:boolean
+}
+
+export interface FlashCardBackProps {
+  definition_eng: string;
+  example_eng?: string; // make optional (matches Card.example_sentence)
+  definition_hindi?: string; // make optional (matches Card.hindi_meaning)
+  example_hindi?: string; // make optional (matches Card.hindi_sentence)
+}

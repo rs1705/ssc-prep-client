@@ -1,28 +1,33 @@
-interface Card {
-  front: string; // word/question
-  back: string; // definition/answer
-  example_sentence?: string; // optional example usage
-  hindi_meaning?: string; // optional Hindi meaning
-  hindi_sentence?: string; // optional Hindi sentence
-}
-
-interface FlashCardBackProps {
-  definition: string;
-  example?: string; // make optional (matches Card.example_sentence)
-  hindi_definition?: string; // make optional (matches Card.hindi_meaning)
-  hindi_example?: string; // make optional (matches Card.hindi_sentence)
-}
+import { FlashCardInterface, FlashCardBackProps } from "@/lib/types";
 
 interface FlashCardProps {
-  card: Card;
+  card: FlashCardInterface;
   isFlipped: boolean;
   setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const CardFront = ({ definition }: { definition: string }) => {
+  return (
+    <div>
+      <div className="absolute w-full h-full bg-slate-800 text-2xl flex items-center justify-center rounded-xl shadow-xl [backface-visibility:hidden] text-center">
+        <div>
+          <h2 className="text-3xl bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 bg-clip-text text-transparent font-bold ">
+            {definition.toUpperCase()}
+          </h2>
+          <p className="font-light  text-sm text-slate-300 italic">
+            Tap the card to reveal the meaning
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const CardBack = ({
-  definition,
-  example,
-  hindi_definition,
-  hindi_example,
+  definition_eng,
+  example_eng,
+  definition_hindi,
+  example_hindi,
 }: FlashCardBackProps) => {
   return (
     <div className="absolute w-full h-full bg-slate-800 text-black text-lg flex flex-col gap-10 justify-center rounded-xl shadow-xl [backface-visibility:hidden] [transform:rotateY(180deg)] p-4 text-center">
@@ -30,20 +35,20 @@ const CardBack = ({
         <p className="text-center text-sm text-slate-400 font-semibold">
           DEFINITION
         </p>
-        <h2 className="text-2xl text-white font-bold">
-          {definition.toUpperCase()}
+        <h2 className="text-2xl text-white font-semibold">
+          {definition_eng.charAt(0).toUpperCase() + definition_eng.slice(1)}
         </h2>
-        <p className="text-lg font-semibold bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 bg-clip-text text-transparent">
-          ({hindi_definition})
+        <p className="text-md bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 bg-clip-text text-transparent">
+          ({definition_hindi})
         </p>
       </div>
       <div>
         <p className="text-center  text-sm font-semibold text-slate-400">
           EXAMPLE
         </p>
-        <h2 className="text-2xl text-white font-bold">{example}</h2>
-        <p className="text-lg bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 bg-clip-text text-transparent font-semibold">
-          {hindi_example}
+        <h2 className="text-2xl text-white font-semibold">{example_eng}</h2>
+        <p className="text-md bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 bg-clip-text text-transparent">
+          {example_hindi}
         </p>
       </div>
     </div>
@@ -64,24 +69,13 @@ const Flashcard = ({ card, isFlipped, setIsFlipped }: FlashCardProps) => {
         }`}
       >
         {/* Front */}
-        <div>
-          <div className="absolute w-full h-full bg-slate-800 text-4xl flex items-center justify-center rounded-xl shadow-xl [backface-visibility:hidden] text-center">
-            <div>
-              <h2 className="text-4xl bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 bg-clip-text text-transparent font-bold ">
-                {card.front.toUpperCase()}
-              </h2>
-              <p className="font-light  text-sm text-slate-300 italic">
-                Tap the card to reveal the meaning
-              </p>
-            </div>
-          </div>
-        </div>
+        <CardFront definition={card.front} />
         {/* Back */}
         <CardBack
-          definition={card.back}
-          example={card.example_sentence}
-          hindi_definition={card.hindi_meaning}
-          hindi_example={card.hindi_sentence}
+          definition_eng={card.back.definition_eng}
+          example_eng={card.back.example_eng}
+          definition_hindi={card.back.definition_hindi}
+          example_hindi={card.back.example_hindi}
         />
       </div>
     </div>

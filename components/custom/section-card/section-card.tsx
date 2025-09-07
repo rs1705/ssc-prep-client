@@ -23,9 +23,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   return (
     <Card className="shadow-md hover:shadow-lg w-full h-full flex flex-col">
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold text-center">
-          {title}
-        </CardTitle>
+        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-slate-500">{description}</p>
