@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";
 import { MoveLeft, MoveRight } from "lucide-react";
+interface FlashcardDeckProps {
+  deck: [];
+}
 
-const FlashcardDeck = ({ deck }) => {
+const FlashcardDeck = ({ deck }: FlashcardDeckProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
