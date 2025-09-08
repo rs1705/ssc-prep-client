@@ -43,18 +43,15 @@ const FreestylePage = () => {
   ];
   return (
     <div>
-      <div className="flex "></div>
-
-      <div>
-        <h1 className="text-4xl font-bold text-center">Freestyle Mode</h1>
-        <br />
-        <p className="text-center text-slate-500">
-          Start learning with free mode by choosing a category of your liking.
+      <div className="flex flex-col items-center">
+        <h1 className="text-2xl font-bold text-center">Freestyle Mode</h1>
+        <p className="text-center text-slate-500 text-sm">
+          Choose from the below given categories and start learning
         </p>
         <div className="flex justify-center mt-2">
-          <div className="flex w-full max-w-sm flex-col gap-2">
+          <div className="flex w-full max-w-sm flex-row justify-center gap-2">
             <Tabs defaultValue={decks[0].type}>
-              <TabsList>
+              <TabsList className="w-full">
                 {decks.map((deck) => (
                   <TabsTrigger
                     key={deck.type}
@@ -67,7 +64,7 @@ const FreestylePage = () => {
               </TabsList>
               {decks.map((deck) => (
                 <TabsContent key={deck.id} value={deck.type}>
-                  <FlashcardDeck deck={deck.deckType} />
+                  <FlashcardDeck deck={deck.deckType}  deckId={deck.type}/>
                 </TabsContent>
               ))}
             </Tabs>

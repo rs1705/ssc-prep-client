@@ -58,7 +58,7 @@ const CardBack = ({
 const Flashcard = ({ card, isFlipped, setIsFlipped }: FlashCardProps) => {
   return (
     <div
-      className="w-100 h-100 [perspective:1000px] cursor-pointer flex justify-center"
+      className="w-107 h-105 [perspective:1000px] cursor-pointer"
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div
