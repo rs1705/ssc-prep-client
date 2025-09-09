@@ -4,26 +4,33 @@ import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";
 import { MoveLeft, MoveRight, Star, Undo2 } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { set } from "react-hook-form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId: string;
 }
-const LETTERS = Array.from({ length: 26 }, (_, i) =>
-  String.fromCharCode(65 + i)
-);
 
 const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [selectedLetter, setSelectedLetter] = useState<string>("");
+  const [isFilterOn, setIsFilterOn] = useState(false);
 
-  const filteredDeck = useMemo(() => {
-    if (!selectedLetter) return deck;
-    return deck.filter((d) => d.front.charAt(0) === selectedLetter);
-  }, [deck, selectedLetter]);
+  const availableLetters = useMemo(() => {
+    const letters = new Set(
+      deck.map((card) => card.front.charAt(0).toUpperCase())
+    );
+    return Array.from(letters);
+  }, [deck]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -36,86 +43,79 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isFlipped, currentIndex]);
 
-  useEffect(() => {
-    try {
-      const savedProgress = localStorage.getItem("savedProgress");
-      const allProgress = savedProgress ? JSON.parse(savedProgress) : {};
-
-      // --- Load on mount (when state is still at defaults) ---
-      if (allProgress[deckId] && selectedLetter === "" && currentIndex === 0) {
-        const deckProgress = allProgress[deckId];
-        setSelectedLetter(deckProgress.selectedLetter || "");
-        setCurrentIndex(deckProgress.currentIndex || 0);
-      } else {
-        // --- Save whenever state changes ---
-        const newProgress = {
-          ...allProgress,
-          [deckId]: {
-            selectedLetter,
-            currentIndex,
-          },
-        };
-        localStorage.setItem("savedProgress", JSON.stringify(newProgress));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [deckId, selectedLetter, currentIndex]);
+  const filterCardHandler = (alphabet: string) => {
+    const searchedAlphabetIndex = deck.findIndex(
+      (card) => card.front.startsWith(alphabet)
+    );
+    setCurrentIndex(searchedAlphabetIndex);
+  };
 
   const prevCard = () => {
     if (isFlipped) {
       setTimeout(() => {
-        setCurrentIndex(
-          (prev) => (prev - 1 + filteredDeck.length) % filteredDeck.length
-        );
+        setCurrentIndex((prev) => (prev - 1 + deck.length) % deck.length);
       }, 100);
       setIsFlipped(false);
     } else {
-      setCurrentIndex(
-        (prev) => (prev - 1 + filteredDeck.length) % filteredDeck.length
-      );
+      setCurrentIndex((prev) => (prev - 1 + deck.length) % deck.length);
     }
   };
   const nextCard = () => {
     if (isFlipped) {
       setTimeout(() => {
-        setCurrentIndex(
-          (prev) => (prev + 1 + filteredDeck.length) % filteredDeck.length
-        );
+        setCurrentIndex((prev) => (prev + 1 + deck.length) % deck.length);
       }, 100);
       setIsFlipped(false);
     } else {
-      setCurrentIndex(
-        (prev) => (prev + 1 + filteredDeck.length) % filteredDeck.length
-      );
+      setCurrentIndex((prev) => (prev + 1 + deck.length) % deck.length);
     }
   };
 
   return (
     <div>
-      <div className="p-1 rounded-xl">
-        <ToggleGroup
-          type="single"
-          size="default"
-          className="flex-wrap"
-          onValueChange={(val) => {
-            if (val) setSelectedLetter(val);
-          }}
-        >
-          {LETTERS.map((s) => (
-            <ToggleGroupItem
-              key={s}
-              value={s}
-              aria-label={`Toggle ${s}`}
-              className="hover:cursor-pointer hover:bg-white"
+      <div>
+        <div className="flex justify-center gap-2 w-full mb-2">
+          <div className="flex-none flex items-center gap-2 bg-slate-100 rounded-md px-2 py-1 w-40 justify-center">
+            <Label htmlFor="filter-switch" className="text-md font-bold">
+              Filter :
+            </Label>
+            <Switch
+              id="filter-switch"
+              checked={isFilterOn}
+              onCheckedChange={setIsFilterOn}
+              className="hover:cursor-pointer data-[state=checked]:bg-green-500 
+             data-[state=unchecked]:bg-slate-300"
+            />
+          </div>
+
+          <div className="flex-1 bg-slate-100 rounded-md">
+            <Select
+              disabled={!isFilterOn}
+              onValueChange={(value) => filterCardHandler(value)}
             >
-              {s}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+              <SelectTrigger className="w-full hover:cursor-pointer font-bold disabled:font-normal border-0">
+                <SelectValue
+                  placeholder={isFilterOn ? "Select a letter" : "Filter OFF"}
+                  className="color:black"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {availableLetters.map((letter) => (
+                  <SelectItem
+                    className="text-center"
+                    key={letter}
+                    value={letter}
+                  >
+                    {letter}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
       <Flashcard
-        card={filteredDeck[currentIndex]}
+        card={deck[currentIndex]}
         isFlipped={isFlipped}
         setIsFlipped={setIsFlipped}
       />
@@ -124,46 +124,54 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
           <div className="relative h-3 w-full bg-slate-300 rounded-full overflow-hidden">
             {/* Progress fill */}
             <div
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-300 via-teal-300 to-sky-400 transition-all duration-300"
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-300 transition-all duration-300"
               style={{
-                width: `${((currentIndex + 1) / filteredDeck.length) * 100}%`,
+                width: `${((currentIndex + 1) / deck.length) * 100}%`,
               }}
             />
 
             {/* Progress text */}
             <p
               className={`absolute inset-0 flex items-center justify-center text-xs font-semibold transition-colors duration-300 ${
-                (currentIndex + 1) / filteredDeck.length > 0.15
-                  ? "black"
-                  : "black"
+                (currentIndex + 1) / deck.length > 0.15 ? "black" : "black"
               }`}
             >
-              Card {currentIndex + 1} of {filteredDeck.length}
+              Card {currentIndex + 1} of {deck.length}
             </p>
           </div>
         </div>
 
         <div className="flex justify-center gap-1">
-          <Button onClick={prevCard} className="hover:cursor-pointer ">
-            <MoveLeft />
+          <Button
+            onClick={prevCard}
+            className="hover:cursor-pointer flex items-center gap-1 group"
+          >
+            <MoveLeft className="transition-transform duration-150 group-hover:-translate-x-1" />
             Previous
           </Button>
+
           <Button
             onClick={() => setIsFlipped((flipped) => !flipped)}
-            className="hover:cursor-pointer "
+            className="hover:cursor-pointer flex items-center gap-1 group"
           >
-            Flip <Undo2 />
+            Flip{" "}
+            <Undo2 className="transition-transform duration-150 group-hover:-translate-y-1" />
           </Button>
+
           <Button
             onClick={() => alert("Feature is in development currently.")}
-            className="hover:cursor-pointer "
+            className="hover:cursor-pointer flex items-center gap-1 group"
           >
-            <Star />
+            <Star className="transition-transform duration-400 group-hover:rotate-y-[360deg]" />
             Bookmark
           </Button>
-          <Button onClick={nextCard} className="hover:cursor-pointer ">
+
+          <Button
+            onClick={nextCard}
+            className="hover:cursor-pointer flex items-center gap-1 group"
+          >
             Next
-            <MoveRight />
+            <MoveRight className="transition-transform duration-150 group-hover:translate-x-1" />
           </Button>
         </div>
       </div>

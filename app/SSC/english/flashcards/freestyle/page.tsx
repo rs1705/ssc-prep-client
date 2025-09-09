@@ -64,7 +64,7 @@ const FreestylePage = () => {
               </TabsList>
               {decks.map((deck) => (
                 <TabsContent key={deck.id} value={deck.type}>
-                  <FlashcardDeck deck={deck.deckType}  deckId={deck.type}/>
+                  <FlashcardDeck deck={deck.deckType} deckId={deck.type} />
                 </TabsContent>
               ))}
             </Tabs>

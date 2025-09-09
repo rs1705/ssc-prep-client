@@ -11,7 +11,6 @@ export interface FlashCardInterface {
   type:string,
   front: string; // word/question
   back:FlashCardBackProps,
-  bookmarked:boolean
 }
 
 export interface FlashCardBackProps {

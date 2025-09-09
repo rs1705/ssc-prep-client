@@ -37,7 +37,10 @@ const Header = () => {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-lg font-semibold">
+                  <NavigationMenuTrigger
+                   
+                    className="text-lg font-semibold"
+                  >
                     <Link href="#">{user ? user.displayName : "Guest"}</Link>
                   </NavigationMenuTrigger>
                   {!user ? (
