@@ -44,10 +44,11 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   }, [isFlipped, currentIndex]);
 
   const filterCardHandler = (alphabet: string) => {
-    const searchedAlphabetIndex = deck.findIndex(
-      (card) => card.front.startsWith(alphabet)
+    const searchedAlphabetIndex = deck.findIndex((card) =>
+      card.front.startsWith(alphabet)
     );
     setCurrentIndex(searchedAlphabetIndex);
+    setIsFlipped(false);
   };
 
   const prevCard = () => {
