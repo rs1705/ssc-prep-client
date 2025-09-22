@@ -2,7 +2,6 @@
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import { useAuth } from "@/context/auth";
 import { SectionCardProps } from "@/lib/types";
-
 export default function Home() {
   const { user } = useAuth();
   const sections: SectionCardProps[] = [

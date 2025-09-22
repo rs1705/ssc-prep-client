@@ -3,19 +3,32 @@ export interface SectionCardProps {
   description: string;
   linkTo: string;
   buttonText: string;
-  knowMoreText?:string
-  className?:string;
-};
+  knowMoreText?: string;
+  className?: string;
+}
 
 export interface FlashCardInterface {
-  type:string,
-  front: string; // word/question
-  back:FlashCardBackProps,
+  _id: string;
+  type: string;
+  difficulty: string;
+  subject: string;
+  front: FlashCardFrontProps; // word/question
+  back: FlashCardBackProps;
+  tags: string[];
+}
+export interface FlashCardFrontProps {
+  text: string;
+  pronunciation?: {
+    english: string;
+    hindi: string;
+  };
 }
 
 export interface FlashCardBackProps {
-  definition_eng: string;
-  example_eng?: string; // make optional (matches Card.example_sentence)
-  definition_hindi?: string; // make optional (matches Card.hindi_meaning)
-  example_hindi?: string; // make optional (matches Card.hindi_sentence)
+  content_eng: string;
+  example_eng?: [string];
+  content_hindi?: [string];
+  example_hindi?: [string];
+  synonyms?: [string];
+  antonyms?: [string];
 }

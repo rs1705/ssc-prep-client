@@ -4,7 +4,7 @@ import React from "react";
 
 const sections: SectionCardProps[] = [
   {
-    title: "Freestyle Mode🕺🏼",
+    title: "🎲Freestyle Mode",
     description:
       "Learn at your own pace and enjoy flashcards your way. No schedules, no pressure—just flip, revise, and have fun!",
     linkTo: "/SSC/english/flashcards/freestyle",
@@ -13,7 +13,7 @@ const sections: SectionCardProps[] = [
     buttonText: "Practice freestyle",
   },
   {
-    title: "Leitner Mode 🗂️",
+    title: "🗂️Leitner Mode ",
     description:
       "Boost your memory with smart spaced repetition.\nFocus on what matters most and make your study time truly effective!",
     linkTo: "/SSC/english/flashcards/leitner",

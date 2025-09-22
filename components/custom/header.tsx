@@ -10,117 +10,127 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/context/auth";
 import { Button } from "../ui/button";
-import { LogIn, LucideLogOut, UserPlus } from "lucide-react";
+import {
+  BookOpen,
+  HomeIcon,
+  LogIn,
+  LucideLogOut,
+  UserIcon,
+  UserPlus,
+} from "lucide-react";
+
 const Header = () => {
   const { user, logout } = useAuth();
 
   return (
     <nav className="w-full bg-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between lg:justify-around h-16 items-center">
           {/* Logo */}
-          <div>
-            <Link className="font-bold text-lg" href="/">
-              SSC PREP
-            </Link>
-          </div>
+          <Link href="/" className="font-bold text-lg">
+            SSC PREP
+          </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden sm:flex items-center">
+            {/* Navigation links */}
             <NavigationMenu>
-              <NavigationMenuList>
+              <NavigationMenuList className="flex">
                 <NavigationMenuItem>
-                  <NavigationMenuLink asChild className="text-lg font-semibold">
-                    <Link href="/">Home</Link>
+                  <NavigationMenuLink asChild className="text-md px-3">
+                    <Link
+                      href="/"
+                      className="flex-row items-center font-semibold"
+                    >
+                      <HomeIcon stroke="black" />
+                      Home
+                    </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger
-                   
-                    className="text-lg font-semibold"
-                  >
-                    <Link href="#">{user ? user.displayName : "Guest"}</Link>
+                  <NavigationMenuLink asChild className="text-md px-3">
+                    <Link
+                      href="/about"
+                      className="flex-row items-center font-semibold"
+                    >
+                      <BookOpen stroke="black" />
+                      About
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            {/* User menu */}
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-md hover:cursor-pointer flex-row items-center font-semibold">
+                    {user ? (
+                      <div className="flex items-center gap-1">
+                        {user.displayName}
+                        <Avatar>
+                          <AvatarImage src="https://github.com/evilrabbit.png" />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <UserIcon stroke="black" size={20} />
+                        Guest
+                      </div>
+                    )}
                   </NavigationMenuTrigger>
-                  {!user ? (
-                    <NavigationMenuContent>
-                      <ul className="w-[100]">
+                  <NavigationMenuContent className="mr-5">
+                    {!user ? (
+                      <ul className="w-[95px] p-1">
                         <li>
-                          <NavigationMenuLink
-                            className="text-md font-semibold"
-                            asChild
-                          >
+                          <NavigationMenuLink asChild>
                             <Link
                               href="/signin"
-                              className="flex-row justify-around"
+                              className="flex-row items-center font-semibold"
                             >
-                              <LogIn
-                                size={20}
-                                stroke="gray"
-                                className="mt-[5px]"
-                              />
-                              Sign In
+                              <LogIn size={18} stroke="black" />
+                              Sign in
                             </Link>
                           </NavigationMenuLink>
                         </li>
                         <li>
-                          <NavigationMenuLink
-                            className="text-md font-semibold"
-                            asChild
-                          >
+                          <NavigationMenuLink asChild>
                             <Link
                               href="/signup"
-                              className="flex-row justify-around"
+                              className="flex-row items-center font-semibold"
                             >
-                              <UserPlus
-                                size={20}
-                                stroke="gray"
-                                className="mt-[5px]"
-                              />
+                              <UserPlus size={18} stroke="black" />
                               Sign up
                             </Link>
                           </NavigationMenuLink>
                         </li>
                       </ul>
-                    </NavigationMenuContent>
-                  ) : (
-                    <NavigationMenuContent>
-                      <ul>
-                        <li className="font-semibold text-md">
-                          <NavigationMenuLink
-                            className="text-md font-semibold flex items-center"
-                            asChild
-                          >
-                            <Button
-                              onClick={logout}
-                              variant="ghost"
-                              className="flex-row justify-center hover:cursor-pointer"
-                            >
-                              <LucideLogOut
-                                size={20}
-                                className="mt-[5px] hover:text-white"
-                              />
-                              Sign Out
-                            </Button>
-                          </NavigationMenuLink>
-                        </li>
-                      </ul>
-                    </NavigationMenuContent>
-                  )}
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink className="text-lg font-semibold" asChild>
-                    <Link href="/about">About</Link>
-                  </NavigationMenuLink>
+                    ) : (
+                      <NavigationMenuLink asChild className="m-0">
+                        <Button
+                          onClick={logout}
+                          variant="ghost"
+                          className="flex-row items-center font-semibold hover:cursor-pointer"
+                        >
+                          <LucideLogOut size={20} stroke="black" />
+                          Sign Out
+                        </Button>
+                      </NavigationMenuLink>
+                    )}
+                  </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
 
           {/* Mobile Hamburger */}
-          <div className="md:hidden">
-            <button className="p-2 rounded hover:bg-base/10">
+          <div className="sm:hidden">
+            <button className="p-2 rounded hover:bg-gray-100">
               <span className="sr-only">Open menu</span>
               <svg
                 className="w-6 h-6"
