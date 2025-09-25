@@ -11,38 +11,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useGetFilteredCardsQuery } from "@/redux/FlashcardApiSlice";
 import { PuffLoader } from "react-spinners";
+
 //custom imports
-import { resetFilter, updateFilter } from "@/redux/FilterSlice";
+import { resetFilter, TabFilter, updateFilter } from "@/redux/FilterSlice";
 import { RootState } from "@/redux/store";
 import FlashcardDeck from "@/features/flashcards/FlashcardDeck";
 import { MAIN_FILTERS, TABS } from "@/lib/english_filters";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  BowArrow,
+  BrushCleaning,
+  CircleCheck,
+  Key,
+  SlidersVertical,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const FreestylePage = () => {
   const filterStore = useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
 
-  const [isFilterOn, setIsFilterOn] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [draftFilters, setDraftFilters] = useState(filterStore[activeTab]);
-
-  const handleSwitchChange = (checked: boolean) => {
-    setIsFilterOn(checked);
-    if (!checked) {
-      dispatch(resetFilter({ tab: activeTab }));
-    }
-  };
+  const [open, setOpen] = useState(false);
 
   const handleSelectChange = (key: string, value: string) => {
     setDraftFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleFilterSubmit = () => {
+  const handleFilterSetClick = () => {
     dispatch(updateFilter({ tab: activeTab, filter: draftFilters }));
+  };
+
+  const handleFilterResetClick = () => {
+    dispatch(resetFilter({ tab: activeTab }));
   };
 
   const { data, isLoading, isError } = useGetFilteredCardsQuery(
@@ -52,6 +68,19 @@ const FreestylePage = () => {
   useEffect(() => {
     setDraftFilters(filterStore[activeTab]);
   }, [filterStore, activeTab]);
+
+  console.log(draftFilters);
+
+  const rawFilters = Object.entries(filterStore[activeTab]);
+  const activeFilters = rawFilters.reduce<string[]>((acc, [key, val]) => {
+    if (key === "subject" || key === "type") return acc;
+    if (key === "highFrequency") {
+      if (val === true) acc.push("High frequency");
+    } else if (val !== "all") {
+      acc.push(val as string);
+    }
+    return acc;
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -78,19 +107,7 @@ const FreestylePage = () => {
           </div>
 
           <div className="flex justify-center flex-col">
-            <div className="flex items-center gap-2  rounded-md justify-start px-2 w-full">
-              <Label htmlFor="filter-switch" className="text-md font-bold">
-                Filter :
-              </Label>
-              <Switch
-                id="filter-switch"
-                checked={isFilterOn}
-                onCheckedChange={() => handleSwitchChange(!isFilterOn)}
-                className="hover:cursor-pointer data-[state=checked]:bg-green-500 
-             data-[state=unchecked]:bg-slate-300"
-              />
-            </div>
-            <div className="flex w-full max-w-sm flex-row justify-center">
+            <div className="flex w-full max-w-md flex-row">
               <Tabs
                 defaultValue={activeTab}
                 onValueChange={(val) => setActiveTab(val)}
@@ -100,42 +117,142 @@ const FreestylePage = () => {
                     <TabsTrigger
                       key={tab}
                       value={tab}
-                      className="hover:cursor-pointer hover:bg-white w-[85px]"
+                      className="hover:cursor-pointer hover:bg-white"
                     >
                       {tab.toUpperCase()}
                     </TabsTrigger>
                   ))}
+                  <Sheet open={open} onOpenChange={setOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" className="hover:cursor-pointer">
+                        <SlidersVertical />
+                        Filters
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                      <SheetHeader className="text-center">
+                        <SheetTitle className="text-2xl">Filters</SheetTitle>
+                        <SheetDescription>
+                          Choose the filters from the following based on your
+                          preferences
+                        </SheetDescription>
+                      </SheetHeader>
+                      <div className="max-w-full px-4">
+                        {Object.entries(MAIN_FILTERS)
+                          .filter(([k]) => k !== "highFrequency")
+                          .map(([key, values]) => (
+                            <div key={key}>
+                              <div className="flex justify-between mb-2">
+                                <Label htmlFor={key} className="flex-3/12">
+                                  {key.toUpperCase()}
+                                </Label>
+
+                                <Select
+                                  value={
+                                    draftFilters[
+                                      key as keyof Omit<
+                                        TabFilter,
+                                        "highFrequency"
+                                      >
+                                    ]
+                                  }
+                                  onValueChange={(val) =>
+                                    handleSelectChange(key, val)
+                                  }
+                                >
+                                  <SelectTrigger
+                                    id={key}
+                                    className="flex-9/12 font-semibold shadow-sm hover:shadow-md hover:cursor-pointer"
+                                  >
+                                    <SelectValue placeholder="Select..." />{" "}
+                                  </SelectTrigger>
+
+                                  <SelectContent className="font-semibold">
+                                    <SelectItem value="all">All</SelectItem>
+                                    {values.map((val) => (
+                                      <SelectItem key={val} value={val}>
+                                        {val.toUpperCase()}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+                          ))}
+                        <div className="flex justify-between my-5">
+                          <Label className="hover:cursor-pointer">
+                            High frequency{" "}
+                            <Checkbox
+                              name="highfrequency"
+                              checked={draftFilters.highFrequency ?? false}
+                              onCheckedChange={(val: boolean) =>
+                                setDraftFilters((prev) => ({
+                                  ...prev,
+                                  highFrequency: val,
+                                }))
+                              }
+                            />
+                          </Label>
+                          <Label className="hover:cursor-pointer">
+                            Special words
+                            <Checkbox
+                              name="specialword"
+                              checked={false}
+                              onCheckedChange={(val: boolean) =>
+                                setDraftFilters((prev) => ({
+                                  ...prev,
+                                  specialword: val,
+                                }))
+                              }
+                            />
+                          </Label>
+                        </div>
+                      </div>
+                      <div className="flex flex-row justify-evenly  items-center px-4 gap-1 text-center">
+                        <Button
+                          className="w-[50%] hover:cursor-pointer"
+                          onClick={handleFilterSetClick}
+                          variant="secondary"
+                        >
+                          Apply
+                        </Button>
+                        <Button
+                          className="w-[50%] hover:cursor-pointer"
+                          variant="secondary"
+                          onClick={handleFilterResetClick}
+                        >
+                          Clear
+                        </Button>
+                      </div>
+                      <p className="text-center">or</p>
+                      <div className="flex flex-row justify-center px-4">
+                        <Button
+                          variant="default"
+                          className="w-full hover:cursor-pointer"
+                        >
+                          <BowArrow /> Start a session
+                        </Button>
+                      </div>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button
+                            variant="outline"
+                            className="hover:cursor-pointer"
+                          >
+                            Close
+                          </Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
                 </TabsList>
 
-                {isFilterOn && (
-                  <div className="flex flex-row justify-center gap-1 border-0 shadow-none p-0 transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-top-20">
-                    {Object.entries(MAIN_FILTERS).map(([key, values]) => (
-                      <div key={key} className="flex flex-col items-center">
-                        <Select
-                          disabled={!isFilterOn}
-                          value={draftFilters[key]}
-                          onValueChange={(val) => handleSelectChange(key, val)}
-                        >
-                          <SelectTrigger className="w-[95px] font-semibold shadow-sm hover:shadow-md hover:cursor-pointer">
-                            <SelectValue placeholder={key.toUpperCase()} />
-                          </SelectTrigger>
-                          <SelectContent className="font-semibold text-center ">
-                            <SelectItem value="all">All</SelectItem>
-                            {values.map((val) => (
-                              <SelectItem key={val} value={val}>
-                                {val.toUpperCase()}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                {activeFilters.length > 0 && (
+                  <div className="flex gap-1 p-1 rounded-md font-semibold">
+                    <span>Filters:</span>
+                    {activeFilters.map((f) => (
+                      <Badge key={f}>{f.toUpperCase()}</Badge>
                     ))}
-                    <Button
-                      className="hover:cursor-pointer"
-                      onClick={handleFilterSubmit}
-                    >
-                      🔎Filter
-                    </Button>
                   </div>
                 )}
                 <TabsContent value={activeTab}></TabsContent>

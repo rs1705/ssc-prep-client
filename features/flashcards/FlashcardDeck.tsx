@@ -63,7 +63,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
               <div className="relative h-3 w-full bg-slate-300 rounded-full overflow-hidden">
                 {/* Progress fill */}
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-300 transition-all duration-300"
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 transition-all duration-300"
                   style={{
                     width: `${((currentIndex + 1) / deck.length) * 100}%`,
                   }}
@@ -81,17 +81,6 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
             </div>
 
             <div className="flex justify-center gap-1">
-              {/* {isFlipped && (
-            <>
-              <Button className="bg-lime-500 text-lime-50 hover:cursor-pointer hover:bg-lime-600">
-                I knew it 🫣
-              </Button>
-              <Button className="bg-red-500 text-red-50  hover:cursor-pointer hover:bg-lime-600">
-                Iidn't know it
-              </Button>
-            </>
-          )} */}
-
               <Button
                 onClick={prevCard}
                 className="hover:cursor-pointer flex items-center gap-1 group"
@@ -127,10 +116,8 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
           </div>
         </div>
       ) : (
-        <div className="flex-col items-center justify-center text-center text-red-400 font-semibold transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-top-20 px-2">
-          <p className="w-[100%]">
-            Oops! <br /> 😵No data found for the selected filter.😵
-          </p>
+        <div className="w-[360px] text-center text-red-400 font-semibold transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-left-5">
+          <p>🥹Oops! No data found for the applied filter.🥹</p>
         </div>
       )}
     </>

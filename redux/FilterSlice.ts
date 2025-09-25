@@ -3,10 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface TabFilter {
   subject: string;
   exam?: string;
+  year?: string;
   type?: string;
   difficulty?: string;
   alphabet?: string;
-  year?: string;
+  highFrequency?: boolean;
 }
 
 export interface FilterState {
@@ -19,6 +20,7 @@ const defaultEnglishFilter: TabFilter = {
   exam: "all",
   difficulty: "all",
   year: "all",
+  highFrequency: false,
 };
 
 const initialState: FilterState = {
