@@ -12,7 +12,7 @@ export interface FlashCardInterface {
   type: string;
   difficulty: string;
   subject: string;
-  front: FlashCardFrontProps; // word/question
+  front: FlashCardFrontProps;
   back: FlashCardBackProps;
   tags: string[];
 }

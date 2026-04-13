@@ -31,13 +31,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  BowArrow,
-  BrushCleaning,
-  CircleCheck,
-  Key,
-  SlidersVertical,
-} from "lucide-react";
+import { BowArrow, SlidersVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -62,14 +56,12 @@ const FreestylePage = () => {
   };
 
   const { data, isLoading, isError } = useGetFilteredCardsQuery(
-    filterStore[activeTab]
+    filterStore[activeTab],
   );
 
   useEffect(() => {
     setDraftFilters(filterStore[activeTab]);
   }, [filterStore, activeTab]);
-
-  console.log(draftFilters);
 
   const rawFilters = Object.entries(filterStore[activeTab]);
   const activeFilters = rawFilters.reduce<string[]>((acc, [key, val]) => {
@@ -93,6 +85,7 @@ const FreestylePage = () => {
         <div className="flex justify-center items-center p-6">
           <p className="text-red-500 font-semibold">
             Oops! Something went wrong while loading flashcards.
+            {isError}
           </p>
         </div>
       ) : (

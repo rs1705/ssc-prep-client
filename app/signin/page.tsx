@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import SignInForm from "@/components/custom/sign-in-form";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
-const SignInPage = () => {
+import Link from "next/link";
+
+const SigninPage = () => {
   const router = useRouter();
   const { user, isLoading, signInWithGoogle } = useAuth();
 
@@ -32,11 +32,11 @@ const SignInPage = () => {
         </div>
         <br />
         <div>
-          <p>
-            Don&apos;t have any account yet?
-            <Button variant="link" className="text-md">
-              <Link href="/signup">Sign up</Link>
-            </Button>
+          <p className="text-md">
+            Don&apos;t have any account yet?&nbsp;
+            <Link href="/signup" className="font-semibold underline">
+              Sign up
+            </Link>
           </p>
         </div>
       </div>
@@ -44,4 +44,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SigninPage;

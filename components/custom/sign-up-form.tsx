@@ -1,4 +1,9 @@
+"use client";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Form,
   FormItem,
@@ -11,24 +16,22 @@ import { Input } from "../ui/input";
 import { CircleUserRound } from "lucide-react";
 import Link from "next/link";
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 const formSchema = z.object({
-  email: z.email({
-    message: "Email address invalid",
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
   }),
+  email: z.email(),
   password: z.string().min(6, {
     message: "Password should not be less than 6 characters",
   }),
 });
 type SignUpFormValues = z.infer<typeof formSchema>;
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -43,15 +46,34 @@ const SignInForm = () => {
         <div className="flex justify-center">
           <CircleUserRound size={80} />
         </div>
-        <h2 className="font-bold text-4xl">Sign In</h2>
+        <h2 className="font-bold text-4xl">Sign up</h2>
         <p className="text-slate-500">
-          Please enter your credentials to sign in to SSC Prep
+          Please enter your details to sign up for SSC Prep
         </p>
         <br />
       </div>
       <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md">Name</FormLabel>
+                  <p className="text-left text-sm text-red-600 font-semibold">
+                    {form.formState.errors.username?.message}
+                  </p>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Enter your name"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            ></FormField>
             <FormField
               control={form.control}
               name="email"
@@ -90,17 +112,20 @@ const SignInForm = () => {
                 </FormItem>
               )}
             ></FormField>
-            <div>
-              <p>
-                <Link href="" className="hover:underline">
-                  Forgot password?
-                </Link>
-              </p>
-            </div>
+
             <div className="flex justify-center">
               <Button type="submit" className="hover:cursor-pointer w-full">
-                Log In
+                Sign up
               </Button>
+            </div>
+
+            <div>
+              <p className="text-md">
+                Already have an account?&nbsp;
+                <Link href="/signin" className="font-semibold underline">
+                  Sign In
+                </Link>
+              </p>
             </div>
           </form>
         </Form>
@@ -109,4 +134,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

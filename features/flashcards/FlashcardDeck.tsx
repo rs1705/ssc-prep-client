@@ -1,10 +1,11 @@
 "use client";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";
-import { MoveLeft, MoveRight, Star, Undo2 } from "lucide-react";
+import { Check, MoveLeft, MoveRight, Star, X } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
-
+import { useSaveFlashcardInteractionMutation } from "@/redux/FlashcardApiSlice";
+import { useAuth } from "@/context/auth";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId: string;
@@ -13,7 +14,8 @@ interface FlashcardDeckProps {
 const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-
+  const [saveInteraction] = useSaveFlashcardInteractionMutation();
+  const { user } = useAuth();
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") prevCard();
@@ -49,15 +51,50 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     }
   };
 
+  const handleInteraction = (status: string) => {
+    const card = deck[currentIndex];
+    saveInteraction({
+      userId: user?.uid,
+      cardId: card._id,
+      status,
+    });
+    nextCard();
+  };
+
   return (
     <>
       {deck.length > 0 ? (
         <div>
-          <Flashcard
-            card={deck[currentIndex]}
-            isFlipped={isFlipped}
-            setIsFlipped={setIsFlipped}
-          />
+          <div className="relative flex justify-center items-center">
+            <button
+              onClick={prevCard}
+              className="absolute left-[-60px] top-1/2 -translate-y-1/2 
+           w-10 h-10 rounded-full bg-white text-black 
+           flex items-center justify-center 
+           transition-all duration-200 
+           opacity-50 hover:opacity-100 hover:scale-110 hover:cursor-pointer border-1 border-gray-950"
+            >
+              <MoveLeft />
+            </button>
+            {/* CARD */}
+            <Flashcard
+              card={deck[currentIndex]}
+              isFlipped={isFlipped}
+              setIsFlipped={setIsFlipped}
+            />
+
+            {/* RIGHT BUTTON */}
+            <button
+              onClick={nextCard}
+              className="absolute right-[-60px] top-1/2 -translate-y-1/2 
+               w-10 h-10 rounded-full bg-white text-black 
+           flex items-center justify-center 
+           transition-all duration-200 
+           opacity-50 hover:opacity-100 hover:scale-110 hover:cursor-pointer border-1 border-gray-950"
+            >
+              <MoveRight />
+            </button>
+          </div>
           <div>
             <div className="w-full my-2">
               <div className="relative h-3 w-full bg-slate-300 rounded-full overflow-hidden">
@@ -80,37 +117,27 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
               </div>
             </div>
 
-            <div className="flex justify-center gap-1">
+            <div className="flex justify-between primary-buttons gap-0.5">
               <Button
-                onClick={prevCard}
-                className="hover:cursor-pointer flex items-center gap-1 group"
+                className="bg-green-600 hover:cursor-pointer hover:bg-green-500 flex items-center gap-1 group font-semibold w-30"
+                onClick={() => handleInteraction("known")}
               >
-                <MoveLeft className="transition-transform duration-150 group-hover:-translate-x-1" />
-                Previous
+                <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
+                Known
               </Button>
-
               <Button
-                onClick={() => setIsFlipped((flipped) => !flipped)}
-                className="hover:cursor-pointer flex items-center gap-1 group"
+                className="bg-red-600 hover:cursor-pointer hover:bg-red-600 flex items-center gap-1 group font-semibold w-30"
+                onClick={() => handleInteraction("unknown")}
               >
-                Flip
-                <Undo2 className="transition-transform duration-150 group-hover:-translate-y-1" />
+                <X className="transition-transform duration-150 group-hover:-translate-y-1" />
+                Unknown
               </Button>
-
               <Button
-                onClick={() => alert("Feature is in development currently.")}
-                className="hover:cursor-pointer flex items-center gap-1 group"
+                className="bg-amber-500 hover:cursor-pointer hover:bg-amber-600 flex items-center gap-1 group font-semibold w-30"
+                onClick={() => handleInteraction("important")}
               >
-                <Star className="transition-transform duration-400 group-hover:rotate-y-[360deg]" />
-                Bookmark
-              </Button>
-
-              <Button
-                onClick={nextCard}
-                className="hover:cursor-pointer flex items-center gap-1 group"
-              >
-                Next
-                <MoveRight className="transition-transform duration-150 group-hover:translate-x-1" />
+                <Star className="transition-transform duration-150 group-hover:-translate-y-1" />
+                Important
               </Button>
             </div>
           </div>

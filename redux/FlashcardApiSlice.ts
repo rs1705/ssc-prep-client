@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const flashcardApi = createApi({
   reducerPath: "FlashcardApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/flashcards",
+    baseUrl: "http://localhost:8080/api/",
   }),
   endpoints: (builder) => ({
     getFilteredCards: builder.query({
@@ -36,10 +36,22 @@ export const flashcardApi = createApi({
           params.append("highFrequency", "true");
         }
 
-        return `getFilteredCards?${params.toString()}`;
+        return `/flashcards/getFilteredCards?${params.toString()}`;
       },
+    }),
+    saveFlashcardInteraction: builder.mutation({
+      query: ({ userId, cardId, status }) => ({
+        url: "/interaction/saveInteraction",
+        method: "POST",
+        body: {
+          userId,
+          cardId,
+          status,
+        },
+      }),
     }),
   }),
 });
 
-export const { useGetFilteredCardsQuery } = flashcardApi;
+export const { useGetFilteredCardsQuery, useSaveFlashcardInteractionMutation } =
+  flashcardApi;
