@@ -6,6 +6,14 @@ export default function Home() {
   const { user } = useAuth();
   const sections: SectionCardProps[] = [
     {
+      title: "👩🏼‍🎓 English",
+      description:
+        "Enhance your grammar, vocabulary, and fluency to score higher in every test.",
+      linkTo: "/SSC/english",
+      buttonText: "Start Learning",
+    },
+
+    {
       title: "🧩 Reasoning",
       description:
         "Challenge your mind with fun reasoning puzzles and boost problem-solving speed.",
@@ -19,13 +27,7 @@ export default function Home() {
       linkTo: "/SSC/maths",
       buttonText: "Practice Maths",
     },
-    {
-      title: "👩🏼‍🎓 English",
-      description:
-        "Enhance your grammar, vocabulary, and fluency to score higher in every test.",
-      linkTo: "/SSC/english",
-      buttonText: "Start Learning",
-    },
+
     {
       title: "🌊 GK",
       description:

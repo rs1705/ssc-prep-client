@@ -4,18 +4,32 @@ import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";
 import { Check, MoveLeft, MoveRight, Star, X } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
-import { useSaveFlashcardInteractionMutation } from "@/redux/FlashcardApiSlice";
+import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
+
+import {
+  handleUserAction,
+  ActionType,
+  initializeSession,
+} from "@/redux/sessionSlice";
 import { useAuth } from "@/context/auth";
+import { useDispatch, useSelector } from "react-redux";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId: string;
 }
 
 const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
+  const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [saveInteraction] = useSaveFlashcardInteractionMutation();
-  const { user } = useAuth();
+
+  const [saveInteraction] = useSaveFlashcardInteractionsMutation();
+  const dispatch = useDispatch();
+  const {
+    deck: sessionDeck,
+    currentCardId,
+    cardMeta,
+  } = useSelector((state: any) => state.session);
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") prevCard();
@@ -24,11 +38,43 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isFlipped, currentIndex]);
+  });
 
   useEffect(() => {
     setIsFlipped(false);
   }, [deckId]);
+
+  useEffect(() => {
+    if (deck && deck.length > 0) {
+      dispatch(
+        initializeSession({
+          deck: deck.map((card) => card._id),
+        }),
+      );
+    }
+  }, [deck, dispatch]);
+
+  const unknownCards = sessionDeck.filter(
+    (id: string) => cardMeta[id]?.status === "unknown",
+  );
+  const knownCards = sessionDeck.filter(
+    (id: string) => cardMeta[id]?.status === "known",
+  );
+  const importantCards = sessionDeck.filter(
+    (id: string) => cardMeta[id]?.isImportant,
+  );
+  const newCards = sessionDeck.filter(
+    (id: string) => cardMeta[id]?.status === "new",
+  );
+
+  const nextCardId = () => {
+    if (unknownCards.length > 0) return unknownCards[0];
+    if (knownCards.length > 0) return knownCards[0];
+    if (importantCards.length > 0) return importantCards[0];
+    if (newCards.length > 0) return newCards[0];
+
+    return null;
+  };
 
   const prevCard = () => {
     if (isFlipped) {
@@ -51,13 +97,16 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     }
   };
 
-  const handleInteraction = (status: string) => {
-    const card = deck[currentIndex];
+  const onActionClick = (action: ActionType) => {
+    const card = deck.find((card) => card._id === currentCardId);
+    if (!card) return;
+    dispatch(handleUserAction({ cardId: card._id, action }));
     saveInteraction({
       userId: user?.uid,
       cardId: card._id,
-      status,
+      action,
     });
+
     nextCard();
   };
 
@@ -117,29 +166,31 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
               </div>
             </div>
 
-            <div className="flex justify-between primary-buttons gap-0.5">
-              <Button
-                className="bg-green-600 hover:cursor-pointer hover:bg-green-500 flex items-center gap-1 group font-semibold w-30"
-                onClick={() => handleInteraction("known")}
-              >
-                <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
-                Known
-              </Button>
-              <Button
-                className="bg-red-600 hover:cursor-pointer hover:bg-red-600 flex items-center gap-1 group font-semibold w-30"
-                onClick={() => handleInteraction("unknown")}
-              >
-                <X className="transition-transform duration-150 group-hover:-translate-y-1" />
-                Unknown
-              </Button>
-              <Button
-                className="bg-amber-500 hover:cursor-pointer hover:bg-amber-600 flex items-center gap-1 group font-semibold w-30"
-                onClick={() => handleInteraction("important")}
-              >
-                <Star className="transition-transform duration-150 group-hover:-translate-y-1" />
-                Important
-              </Button>
-            </div>
+            {isFlipped && (
+              <div className="flex justify-between primary-buttons gap-0.5">
+                <Button
+                  className="fade-up [animation-delay:0.05s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3 hover:font-semibold hover:cursor-pointer hover:text-red-400 group"
+                  onClick={() => onActionClick("unknown")}
+                >
+                  <X className="transition-transform duration-150 group-hover:-translate-y-1" />
+                  AGAIN
+                </Button>
+                <Button
+                  className="ffade-up [animation-delay:0.30s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer hover:text-lime-500 group"
+                  onClick={() => onActionClick("known")}
+                >
+                  <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
+                  GOOD
+                </Button>
+                <Button
+                  className="fade-up [animation-delay:0.55s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer hover:text-amber-400 group"
+                  onClick={() => onActionClick("important")}
+                >
+                  <Star className="hover:transition-transform duration-150 group-hover:-translate-y-1" />
+                  IMPORTANT
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       ) : (
