@@ -10,6 +10,7 @@ import {
   handleUserAction,
   ActionType,
   initializeSession,
+  setCurrentCard,
 } from "@/redux/sessionSlice";
 import { useAuth } from "@/context/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +31,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     currentCardId,
     cardMeta,
   } = useSelector((state: any) => state.session);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") prevCard();
@@ -54,26 +56,33 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     }
   }, [deck, dispatch]);
 
-  const unknownCards = sessionDeck.filter(
-    (id: string) => cardMeta[id]?.status === "unknown",
-  );
-  const knownCards = sessionDeck.filter(
-    (id: string) => cardMeta[id]?.status === "known",
-  );
-  const importantCards = sessionDeck.filter(
-    (id: string) => cardMeta[id]?.isImportant,
-  );
-  const newCards = sessionDeck.filter(
-    (id: string) => cardMeta[id]?.status === "new",
-  );
+  const getNextCardId = () => {
+    let newCount = 0;
+    const pool: string[] = [];
+    sessionDeck.forEach((id: string) => {
+      if (id === currentCardId) return;
+      const meta = cardMeta[id];
+      if (!meta) return;
 
-  const nextCardId = () => {
-    if (unknownCards.length > 0) return unknownCards[0];
-    if (knownCards.length > 0) return knownCards[0];
-    if (importantCards.length > 0) return importantCards[0];
-    if (newCards.length > 0) return newCards[0];
+      if (meta.status === "unknown") {
+        pool.push(id, id, id, id);
+      }
+      if (meta.isImportant === true) {
+        pool.push(id, id, id);
+      }
+      if (meta.status === "new" && newCount < 3) {
+        pool.push(id, id);
+        newCount++;
+      }
+      if (meta.status === "known") {
+        if (Math.random() < 0.1) {
+          pool.push(id);
+        }
+      }
+    });
 
-    return null;
+    if (pool.length === 0) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
   };
 
   const prevCard = () => {
@@ -96,7 +105,6 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
       setCurrentIndex((prev) => (prev + 1 + deck.length) % deck.length);
     }
   };
-
   const onActionClick = (action: ActionType) => {
     const card = deck.find((card) => card._id === currentCardId);
     if (!card) return;
@@ -107,9 +115,15 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
       action,
     });
 
-    nextCard();
+    const currentIndex = sessionDeck.findIndex(
+      (id: string) => id === currentCardId,
+    );
+    const nextId = getNextCardId();
+    dispatch(setCurrentCard({ cardId: nextId }));
+    setIsFlipped(false);
   };
 
+  const currentCard = deck.find((card) => card._id === currentCardId);
   return (
     <>
       {deck.length > 0 ? (
@@ -125,13 +139,15 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
             >
               <MoveLeft />
             </button>
-            {/* CARD */}
-            <Flashcard
-              card={deck[currentIndex]}
-              isFlipped={isFlipped}
-              setIsFlipped={setIsFlipped}
-            />
-
+            {currentCard ? (
+              <Flashcard
+                card={currentCard}
+                isFlipped={isFlipped}
+                setIsFlipped={setIsFlipped}
+              />
+            ) : (
+              <div>Loading...</div>
+            )}
             {/* RIGHT BUTTON */}
             <button
               onClick={nextCard}

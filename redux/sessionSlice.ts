@@ -63,15 +63,7 @@ const sessionSlice = createSlice({
       if (userAction === "known") {
         card.seenCount += 1;
         card.correctCount += 1;
-        if (card.status === "new") {
-          card.status = "unknown";
-          return;
-        }
-        if (card.correctCount >= 2) {
-          card.status = "known";
-        } else {
-          card.status = "unknown";
-        }
+        card.status = "unknown";
       }
     },
     initializeSession: (
