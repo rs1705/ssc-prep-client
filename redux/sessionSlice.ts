@@ -52,7 +52,7 @@ const sessionSlice = createSlice({
       }
       const card = state.cardMeta[cardId];
       if (userAction === "important") {
-        card.isImportant = true;
+        card.isImportant = !card.isImportant;
         return;
       }
       if (userAction === "unknown") {
@@ -63,7 +63,7 @@ const sessionSlice = createSlice({
       if (userAction === "known") {
         card.seenCount += 1;
         card.correctCount += 1;
-        card.status = "unknown";
+        card.status = "known";
       }
     },
     initializeSession: (

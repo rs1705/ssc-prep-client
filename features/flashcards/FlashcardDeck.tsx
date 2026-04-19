@@ -57,34 +57,36 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   }, [deck, dispatch]);
 
   const getNextCardId = () => {
-    let newCount = 0;
-    const pool: string[] = [];
-    sessionDeck.forEach((id: string) => {
-      if (id === currentCardId) return;
+    const candidates = sessionDeck.filter((id: string) => id !== currentCardId);
+    if (candidates.length === 0) return currentCardId;
+
+    const unknown: string[] = [];
+    const important: string[] = [];
+    const newCards: string[] = [];
+    const known: string[] = [];
+
+    candidates.forEach((id: string) => {
       const meta = cardMeta[id];
-      if (!meta) return;
 
-      if (meta.status === "unknown") {
-        pool.push(id, id, id, id);
-      }
-      if (meta.isImportant === true) {
-        pool.push(id, id, id);
-      }
-      if (meta.status === "new" && newCount < 3) {
-        pool.push(id, id);
-        newCount++;
-      }
-      if (meta.status === "known") {
-        if (Math.random() < 0.1) {
-          pool.push(id);
-        }
-      }
+      if (!meta || meta.status === "new") newCards.push(id);
+      else if (meta.status === "unknown") unknown.push(id);
+      else if (meta.isImportant) important.push(id);
+      else if (meta.status === "known") known.push(id);
     });
+    const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+    const r = Math.random();
 
-    if (pool.length === 0) return null;
-    return pool[Math.floor(Math.random() * pool.length)];
+    if (r < 0.35 && unknown.length > 0) return pick(unknown);
+    if (r < 0.65 && important.length > 0) return pick(important);
+    if (r < 0.85 && newCards.length > 0) return pick(newCards);
+    if (known.length > 0) return pick(known);
+
+    // fallback if chosen bucket empty
+    console.log(cardMeta);
+    const all = [...unknown, ...important, ...newCards, ...known];
+
+    return all.length ? pick(all) : currentCardId;
   };
-
   const prevCard = () => {
     if (isFlipped) {
       setTimeout(() => {
@@ -109,11 +111,11 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     const card = deck.find((card) => card._id === currentCardId);
     if (!card) return;
     dispatch(handleUserAction({ cardId: card._id, action }));
-    saveInteraction({
-      userId: user?.uid,
-      cardId: card._id,
-      action,
-    });
+    // saveInteraction({
+    //   userId: user?.uid,
+    //   cardId: card._id,
+    //   action,
+    // });
 
     const currentIndex = sessionDeck.findIndex(
       (id: string) => id === currentCardId,
