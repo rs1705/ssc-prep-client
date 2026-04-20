@@ -36,7 +36,7 @@ const filterSlice = createSlice({
   reducers: {
     updateFilter: (
       state,
-      action: PayloadAction<{ tab: string; filter: Partial<TabFilter> }>
+      action: PayloadAction<{ tab: string; filter: Partial<TabFilter> }>,
     ) => {
       const { tab, filter } = action.payload;
       state[tab] = { ...state[tab], ...filter };

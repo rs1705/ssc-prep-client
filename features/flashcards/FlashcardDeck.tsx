@@ -12,30 +12,33 @@ import {
   initializeSession,
   setCurrentCard,
 } from "@/redux/sessionSlice";
-import { useAuth } from "@/context/auth";
 import { useDispatch, useSelector } from "react-redux";
+import { useAuth } from "@/context/auth";
+import { RootState } from "@/redux/store";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId: string;
 }
 
 const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
-  const { user } = useAuth();
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-
+  const [cardHistory, setCardHistory] = useState<string[]>([]);
+  const { user } = useAuth();
   const [saveInteraction] = useSaveFlashcardInteractionsMutation();
   const dispatch = useDispatch();
+
   const {
     deck: sessionDeck,
     currentCardId,
     cardMeta,
-  } = useSelector((state: any) => state.session);
+  } = useSelector((state: RootState) => state.session);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") prevCard();
-      if (e.key === "ArrowRight") nextCard();
+      if (e.key === "ArrowLeft") {
+      }
+      if (e.key === "ArrowRight") {
+      }
       if (e.key === " ") setIsFlipped((f) => !f);
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -81,58 +84,57 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     if (r < 0.85 && newCards.length > 0) return pick(newCards);
     if (known.length > 0) return pick(known);
 
-    // fallback if chosen bucket empty
-    console.log(cardMeta);
     const all = [...unknown, ...important, ...newCards, ...known];
 
     return all.length ? pick(all) : currentCardId;
   };
-  const prevCard = () => {
-    if (isFlipped) {
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev - 1 + deck.length) % deck.length);
-      }, 100);
-      setIsFlipped(false);
-    } else {
-      setCurrentIndex((prev) => (prev - 1 + deck.length) % deck.length);
-    }
-  };
-  const nextCard = () => {
-    if (isFlipped) {
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1 + deck.length) % deck.length);
-      }, 100);
-      setIsFlipped(false);
-    } else {
-      setCurrentIndex((prev) => (prev + 1 + deck.length) % deck.length);
-    }
-  };
+
   const onActionClick = (action: ActionType) => {
     const card = deck.find((card) => card._id === currentCardId);
     if (!card) return;
-    dispatch(handleUserAction({ cardId: card._id, action }));
-    // saveInteraction({
-    //   userId: user?.uid,
-    //   cardId: card._id,
-    //   action,
-    // });
 
-    const currentIndex = sessionDeck.findIndex(
-      (id: string) => id === currentCardId,
-    );
+    if (!currentCardId) return;
+    setCardHistory((prev) => [...prev, currentCardId]);
+
+    dispatch(handleUserAction({ cardId: card._id, action }));
+    saveInteraction({
+      userId: user?.uid,
+      cardId: card._id,
+      action,
+    });
+    const nextId = getNextCardId();
+
+    setTimeout(() => {
+      dispatch(setCurrentCard({ cardId: nextId }));
+    }, 100);
+    setIsFlipped(false);
+  };
+
+  const onNextClick = () => {
+    if (!currentCardId) return;
+    setCardHistory((prev) => [...prev, currentCardId]);
     const nextId = getNextCardId();
     dispatch(setCurrentCard({ cardId: nextId }));
     setIsFlipped(false);
   };
 
+  const onPrevClick = () => {
+    if (cardHistory.length === 0) return;
+    const prevId = cardHistory[cardHistory.length - 1];
+    setCardHistory((prev) => prev.slice(0, -1));
+    dispatch(setCurrentCard({ cardId: prevId }));
+    setIsFlipped(false);
+  };
+
   const currentCard = deck.find((card) => card._id === currentCardId);
+  console.log(cardHistory);
   return (
     <>
       {deck.length > 0 ? (
         <div>
           <div className="relative flex justify-center items-center">
             <button
-              onClick={prevCard}
+              onClick={onPrevClick}
               className="absolute left-[-60px] top-1/2 -translate-y-1/2 
            w-10 h-10 rounded-full bg-white text-black 
            flex items-center justify-center 
@@ -152,28 +154,26 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
             )}
             {/* RIGHT BUTTON */}
             <button
-              onClick={nextCard}
               className="absolute right-[-60px] top-1/2 -translate-y-1/2 
                w-10 h-10 rounded-full bg-white text-black 
            flex items-center justify-center 
            transition-all duration-200 
            opacity-50 hover:opacity-100 hover:scale-110 hover:cursor-pointer border-1 border-gray-950"
+              onClick={onNextClick}
             >
               <MoveRight />
             </button>
           </div>
           <div>
             <div className="w-full my-2">
-              <div className="relative h-3 w-full bg-slate-300 rounded-full overflow-hidden">
-                {/* Progress fill */}
+              {/* <div className="relative h-3 w-full bg-slate-300 rounded-full overflow-hidden">
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 transition-all duration-300"
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 transition-all duration-300"
                   style={{
                     width: `${((currentIndex + 1) / deck.length) * 100}%`,
                   }}
                 />
 
-                {/* Progress text */}
                 <p
                   className={`absolute inset-0 flex items-center justify-center text-xs font-semibold transition-colors duration-300 ${
                     (currentIndex + 1) / deck.length > 0.15 ? "black" : "black"
@@ -181,7 +181,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
                 >
                   Card {currentIndex + 1} of {deck.length}
                 </p>
-              </div>
+              </div> */}
             </div>
 
             {isFlipped && (

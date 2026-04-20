@@ -27,7 +27,7 @@ type InitializeSessionPayload = {
   deck: string[];
 };
 
-type SetCurrentCardPayload = {
+type SetCardPayload = {
   cardId: string;
 };
 const initialState: SessionState = {
@@ -85,7 +85,7 @@ const sessionSlice = createSlice({
 
       state.currentCardId = deck[0] || null;
     },
-    setCurrentCard: (state, action: PayloadAction<SetCurrentCardPayload>) => {
+    setCurrentCard: (state, action: PayloadAction<SetCardPayload>) => {
       state.currentCardId = action.payload.cardId;
     },
   },

@@ -27,7 +27,7 @@ const CardFront = ({ text, pronunciation }: FlashCardFrontProps) => {
       <div>
         <p
           key={text} // ensures React re-renders element
-          className={`text-3xl bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 bg-clip-text text-transparent font-bold opacity-0 ${
+          className={`text-3xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent font-bold opacity-0 ${
             animate ? "animate-fadeIn" : ""
           }`}
         >
@@ -70,7 +70,7 @@ const CardBack = ({
       <div id="flashcard_definition">
         <p className="text-xs text-slate-400">DEFINITION:</p>
         <p className="text-xl/tight text-white">{content_eng}</p>
-        <p className="text-sm font-semibold bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 bg-clip-text text-transparent">
+        <p className="text-sm font-semibold bg-gradient-to-r from-amber-400 via-amber-400 to-amber-400 bg-clip-text text-transparent">
           ({content_hindi?.join(", ")})
         </p>
       </div>
@@ -78,7 +78,7 @@ const CardBack = ({
         {synonyms && synonyms.length > 0 && (
           <div>
             <p className="text-xs text-slate-400">SYNONYMS:</p>
-            <p className="text-sm bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 bg-clip-text text-transparent">
+            <p className="text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent">
               {synonyms?.join(", ").toUpperCase()}
             </p>
           </div>
@@ -86,7 +86,7 @@ const CardBack = ({
         {antonyms && antonyms.length > 0 && (
           <div>
             <p className="text-xs text-slate-400 ">ANTONYMS:</p>
-            <p className="text-sm bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 bg-clip-text text-transparent">
+            <p className="text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent">
               {antonyms?.join(", ").toUpperCase()}
             </p>
           </div>
@@ -96,7 +96,7 @@ const CardBack = ({
         <p className="text-xs text-slate-400 ">EXAMPLE</p>
         <div>
           <p className="text-md text-white">{example_eng?.[0]}</p>
-          <span className="text-sm/tight bg-gradient-to-r from-sky-300 via-cyan-300 to-sky-300 bg-clip-text text-transparent">
+          <span className="text-sm/tight bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent">
             {hindiexample?.[0]}
             {"।"}
           </span>

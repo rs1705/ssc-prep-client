@@ -31,7 +31,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BowArrow, SlidersVertical } from "lucide-react";
+import { SlidersVertical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -49,10 +49,12 @@ const FreestylePage = () => {
 
   const handleFilterSetClick = () => {
     dispatch(updateFilter({ tab: activeTab, filter: draftFilters }));
+    setOpen(false);
   };
 
   const handleFilterResetClick = () => {
     dispatch(resetFilter({ tab: activeTab }));
+    setOpen(false);
   };
 
   const { data, isLoading, isError } = useGetFilteredCardsQuery(
@@ -186,7 +188,7 @@ const FreestylePage = () => {
                               }
                             />
                           </Label>
-                          <Label className="hover:cursor-pointer">
+                          {/* <Label className="hover:cursor-pointer">
                             Special words
                             <Checkbox
                               name="specialword"
@@ -198,7 +200,7 @@ const FreestylePage = () => {
                                 }))
                               }
                             />
-                          </Label>
+                          </Label> */}
                         </div>
                       </div>
                       <div className="flex flex-row justify-evenly  items-center px-4 gap-1 text-center">
@@ -217,7 +219,7 @@ const FreestylePage = () => {
                           Clear
                         </Button>
                       </div>
-                      <p className="text-center">or</p>
+                      {/* <p className="text-center">or</p>
                       <div className="flex flex-row justify-center px-4">
                         <Button
                           variant="default"
@@ -225,7 +227,7 @@ const FreestylePage = () => {
                         >
                           <BowArrow /> Start a session
                         </Button>
-                      </div>
+                      </div> */}
                       <SheetFooter>
                         <SheetClose asChild>
                           <Button
