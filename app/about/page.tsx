@@ -22,14 +22,14 @@ const About = () => {
           constantly improving and adding new features to give you the best
           experience.
         </p>
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <a
             href="#"
             className="inline-block px-6 py-3 text-white bg-slate-600 hover:bg-slate-700 rounded-lg shadow-md transition-all duration-300"
           >
             Join the Waitlist
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );
