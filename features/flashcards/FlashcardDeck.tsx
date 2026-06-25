@@ -59,34 +59,46 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     }
   }, [deck, dispatch]);
 
-  const getNextCardId = () => {
+  const getNextCardId = (history: string[] = cardHistory) => {
     const candidates = sessionDeck.filter((id: string) => id !== currentCardId);
     if (candidates.length === 0) return currentCardId;
+
+    // Filter out the last 3 seen cards to avoid immediate repetition
+    const recentHistory = history.slice(-3);
+    const nonRecentCandidates = candidates.filter(id => !recentHistory.includes(id));
+    
+    // Fallback if the deck is too small and all candidates were recently seen
+    const eligibleCandidates = nonRecentCandidates.length > 0 ? nonRecentCandidates : candidates;
 
     const unknown: string[] = [];
     const important: string[] = [];
     const newCards: string[] = [];
     const known: string[] = [];
 
-    candidates.forEach((id: string) => {
+    eligibleCandidates.forEach((id: string) => {
       const meta = cardMeta[id];
 
-      if (!meta || meta.status === "new") newCards.push(id);
-      else if (meta.status === "unknown") unknown.push(id);
-      else if (meta.isImportant) important.push(id);
-      else if (meta.status === "known") known.push(id);
-    });
-    const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
-    const r = Math.random();
+      if (!meta || meta.status === "new") {
+        newCards.push(id);
+      } else if (meta.status === "unknown") {
+        unknown.push(id);
+      } else if (meta.status === "known") {
+        known.push(id);
+      }
 
-    if (r < 0.35 && unknown.length > 0) return pick(unknown);
-    if (r < 0.65 && important.length > 0) return pick(important);
-    if (r < 0.85 && newCards.length > 0) return pick(newCards);
+      if (meta && meta.isImportant) {
+        important.push(id);
+      }
+    });
+
+    const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+    if (unknown.length > 0) return pick(unknown);
+    if (newCards.length > 0) return pick(newCards);
+    if (important.length > 0) return pick(important);
     if (known.length > 0) return pick(known);
 
-    const all = [...unknown, ...important, ...newCards, ...known];
-
-    return all.length ? pick(all) : currentCardId;
+    return currentCardId;
   };
 
   const onActionClick = (action: ActionType) => {
@@ -94,7 +106,8 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     if (!card) return;
 
     if (!currentCardId) return;
-    setCardHistory((prev) => [...prev, currentCardId]);
+    const newHistory = [...cardHistory, currentCardId];
+    setCardHistory(newHistory);
 
     dispatch(handleUserAction({ cardId: card._id, action }));
     saveInteraction({
@@ -102,7 +115,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
       cardId: card._id,
       action,
     });
-    const nextId = getNextCardId();
+    const nextId = getNextCardId(newHistory);
 
     setTimeout(() => {
       dispatch(setCurrentCard({ cardId: nextId }));
@@ -112,8 +125,9 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
 
   const onNextClick = () => {
     if (!currentCardId) return;
-    setCardHistory((prev) => [...prev, currentCardId]);
-    const nextId = getNextCardId();
+    const newHistory = [...cardHistory, currentCardId];
+    setCardHistory(newHistory);
+    const nextId = getNextCardId(newHistory);
     dispatch(setCurrentCard({ cardId: nextId }));
     setIsFlipped(false);
   };
@@ -127,7 +141,6 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   };
 
   const currentCard = deck.find((card) => card._id === currentCardId);
-  console.log(cardHistory);
   return (
     <>
       {deck.length > 0 ? (
