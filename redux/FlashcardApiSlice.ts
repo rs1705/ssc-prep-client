@@ -4,7 +4,7 @@ export const flashcardApi = createApi({
   reducerPath: "FlashcardApi",
   tagTypes: ["Interactions"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/",
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/",
   }),
   endpoints: (builder) => ({
     getFilteredCards: builder.query({
