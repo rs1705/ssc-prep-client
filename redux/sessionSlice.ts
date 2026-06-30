@@ -28,7 +28,7 @@ type InitializeSessionPayload = {
 };
 
 type SetCardPayload = {
-  cardId: string;
+  cardId: string | null;
 };
 const initialState: SessionState = {
   deck: [],
