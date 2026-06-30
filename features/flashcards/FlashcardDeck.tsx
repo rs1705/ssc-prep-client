@@ -60,13 +60,14 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   }, [deck, dispatch]);
 
   const getNextCardId = (history: string[] = cardHistory) => {
+    console.log(history);
     const candidates = sessionDeck.filter((id: string) => id !== currentCardId);
     if (candidates.length === 0) return currentCardId;
 
     // Filter out the last 3 seen cards to avoid immediate repetition
     const recentHistory = history.slice(-3);
     const nonRecentCandidates = candidates.filter(id => !recentHistory.includes(id));
-    
+
     // Fallback if the deck is too small and all candidates were recently seen
     const eligibleCandidates = nonRecentCandidates.length > 0 ? nonRecentCandidates : candidates;
 
