@@ -1,10 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { auth } from "@/firebase/config";
 export const flashcardApi = createApi({
   reducerPath: "FlashcardApi",
   tagTypes: ["Interactions"],
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/",
+    prepareHeaders: async (headers) => {
+      const token = await auth.currentUser?.getIdToken();
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    }
   }),
   endpoints: (builder) => ({
     getFilteredCards: builder.query({
