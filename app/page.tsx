@@ -1,4 +1,5 @@
 "use client";
+import { Info } from "lucide-react";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import { useAuth } from "@/context/auth";
 import { SectionCardProps } from "@/lib/types";
@@ -13,32 +14,38 @@ export default function Home() {
       buttonText: "Start Learning",
     },
 
-    {
-      title: "🧩 Reasoning",
-      description:
-        "Challenge your mind with fun reasoning puzzles and boost problem-solving speed.",
-      linkTo: "/SSC/reasoning",
-      buttonText: "Start Reasoning",
-    },
-    {
-      title: "🧮 Maths",
-      description:
-        "Practice smart maths tricks, sharpen accuracy, and solve questions with confidence.",
-      linkTo: "/SSC/maths",
-      buttonText: "Practice Maths",
-    },
+    // {
+    //   title: "🧩 Reasoning",
+    //   description:
+    //     "Challenge your mind with fun reasoning puzzles and boost problem-solving speed.",
+    //   linkTo: "/SSC/reasoning",
+    //   buttonText: "Start Reasoning",
+    // },
+    // {
+    //   title: "🧮 Maths",
+    //   description:
+    //     "Practice smart maths tricks, sharpen accuracy, and solve questions with confidence.",
+    //   linkTo: "/SSC/maths",
+    //   buttonText: "Practice Maths",
+    // },
 
-    {
-      title: "🌊 GK",
-      description:
-        "Dive into the vast ocean of General knowledge to stay ahead and ace in exams.",
-      linkTo: "/SSC/gk",
-      buttonText: "Explore GK",
-    },
+    // {
+    //   title: "🌊 GK",
+    //   description:
+    //     "Dive into the vast ocean of General knowledge to stay ahead and ace in exams.",
+    //   linkTo: "/SSC/gk",
+    //   buttonText: "Explore GK",
+    // },
   ];
 
   return (
     <div>
+      <div className="bg-primary/10 border-l-4 border-primary p-4 mb-8 rounded-r-xl max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 shadow-sm">
+        <Info className="w-6 h-6 text-primary shrink-0" />
+        <p className="text-primary/90 text-sm sm:text-base font-medium">
+          🚀 <strong className="font-bold">App in Development:</strong> We are currently rolling out our English modules. More features and subjects are on the way!
+        </p>
+      </div>
       <div className="text-center">
         <h1 className="text-4xl font-bold my-5">
           Hi {user?.displayName || "Guest"}! <br />

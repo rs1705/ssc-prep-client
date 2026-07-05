@@ -10,27 +10,27 @@ const EnglishHomePage = () => {
       linkTo: "/SSC/english/flashcards",
       buttonText: "Start Flashcards",
     },
-    {
-      title: "🕹️ Hangman",
-      description:
-        "Guess hidden words, practice spelling, and strengthen vocabulary while having fun.",
-      linkTo: "/SSC/english/hangman",
-      buttonText: "Play Hangman",
-    },
-    {
-      title: "🔀 Word Shuffle",
-      description:
-        "Unscramble mixed letters, build vocabulary, and improve quick-thinking skills instantly.",
-      linkTo: "/SSC/english/word-shuffle",
-      buttonText: "Play Shuffle",
-    },
-    {
-      title: "🧠 Crossword",
-      description:
-        "Solve word puzzles to sharpen grammar, vocabulary, and problem-solving skills easily.",
-      linkTo: "/SSC/english/crossword",
-      buttonText: "Play Crossword",
-    },
+    // {
+    //   title: "🕹️ Hangman",
+    //   description:
+    //     "Guess hidden words, practice spelling, and strengthen vocabulary while having fun.",
+    //   linkTo: "/SSC/english/hangman",
+    //   buttonText: "Play Hangman",
+    // },
+    // {
+    //   title: "🔀 Word Shuffle",
+    //   description:
+    //     "Unscramble mixed letters, build vocabulary, and improve quick-thinking skills instantly.",
+    //   linkTo: "/SSC/english/word-shuffle",
+    //   buttonText: "Play Shuffle",
+    // },
+    // {
+    //   title: "🧠 Crossword",
+    //   description:
+    //     "Solve word puzzles to sharpen grammar, vocabulary, and problem-solving skills easily.",
+    //   linkTo: "/SSC/english/crossword",
+    //   buttonText: "Play Crossword",
+    // },
   ];
 
   return (

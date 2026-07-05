@@ -13,13 +13,13 @@ const sections: SectionCardProps[] = [
     buttonText: "Practice freestyle",
   },
   {
-    title: "🗂️Leitner Mode ",
+    title: "📚Study Mode",
     description:
-      "Boost your memory with smart spaced repetition.\nFocus on what matters most and make your study time truly effective!",
-    linkTo: "/SSC/english/flashcards/leitner",
+      "Cards you struggle with appear more often, while mastered cards appear less frequently, ensuring efficient learning.",
+    linkTo: "/SSC/english/flashcards/fsrs",
     knowMoreText:
-      "1. Master concepts efficiently with the Leitner system—smart spaced repetition that boosts memory retention.\n\n2. Cards are organized into boxes based on how well you know them, so you focus on what needs practice most.\n\n3. Review difficult cards more often, while mastered cards appear less frequently, saving your time and effort.\n\nGreat for:\n\n ▪️ Retaining important concepts for the long term 🧠\n\n    ▪️ Time-efficient, focused study sessions ⏱️\n\n    ▪️ Tracking your progress and improving weak areas continuously ✅",
-    buttonText: "Practice leitner",
+      "1. Master concepts efficiently with the FSRS—smart spaced repetition that boosts memory retention.\n\n2. Cards are organized into boxes based on how well you know them, so you focus on what needs practice most.\n\n3. Review difficult cards more often, while mastered cards appear less frequently, saving your time and effort.\n\nGreat for:\n\n ▪️ Retaining important concepts for the long term 🧠\n\n    ▪️ Time-efficient, focused study sessions ⏱️\n\n    ▪️ Tracking your progress and improving weak areas continuously ✅",
+    buttonText: "Practice fsrs",
   },
 ];
 

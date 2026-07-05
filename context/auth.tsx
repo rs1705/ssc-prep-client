@@ -25,7 +25,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -66,8 +66,7 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
   return (
     <AuthContext.Provider value={AuthCtx}>
-      {isLoading && <LoadingOverlay />}
-      {children}
+      {isLoading ? <LoadingOverlay /> : children}
     </AuthContext.Provider>
   );
 };

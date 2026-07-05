@@ -48,25 +48,32 @@ export const flashcardApi = createApi({
       },
     }),
     saveFlashcardInteractions: builder.mutation({
-      query: ({ userId, cardId, action }) => ({
+      query: ({ cardId, rating }) => ({
         url: "/interactions/saveInteractions",
         method: "POST",
         body: {
-          userId,
           cardId,
-          action,
+          rating,
         },
       }),
       invalidatesTags: ["Interactions"],
     }),
 
     getFlashcardInteractions: builder.query({
-      query: (userId) => ({
-        url: `/interactions/getInteractions?userId=${userId}`,
+      query: () => ({
+        url: `/interactions/getInteractions`,
         method: "GET",
       }),
       providesTags: ["Interactions"],
     }),
+
+    getStudyDeck: builder.query({
+      query: () => ({
+        url: `/flashcards/getStudyDeck`,
+        method: "GET",
+      }),
+      providesTags: ["Interactions"],
+    })
   }),
 });
 
@@ -74,4 +81,5 @@ export const {
   useGetFilteredCardsQuery,
   useSaveFlashcardInteractionsMutation,
   useGetFlashcardInteractionsQuery,
+  useGetStudyDeckQuery
 } = flashcardApi;

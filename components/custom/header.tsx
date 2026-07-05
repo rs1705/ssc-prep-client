@@ -25,7 +25,7 @@ import {
   Sun,
   Moon
 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -149,45 +149,55 @@ const Header = () => {
                   <SheetTitle className="text-left">SSC PREP</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-4 mt-8">
-                  <Link href="/" className="flex items-center font-medium gap-3 px-2 py-2 rounded-md hover:bg-accent">
-                    <HomeIcon className="w-5 h-5" />
-                    Home
-                  </Link>
-                  <Link href="/about" className="flex items-center font-medium gap-3 px-2 py-2 rounded-md hover:bg-accent">
-                    <BookOpen className="w-5 h-5" />
-                    About
-                  </Link>
+                  <SheetClose asChild>
+                    <Link href="/" className="flex items-center font-medium gap-3 px-3 py-3 rounded-xl hover:bg-accent transition-all">
+                      <HomeIcon className="w-5 h-5 text-primary" />
+                      Home
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link href="/about" className="flex items-center font-medium gap-3 px-3 py-3 rounded-xl hover:bg-accent transition-all">
+                      <BookOpen className="w-5 h-5 text-primary" />
+                      About
+                    </Link>
+                  </SheetClose>
 
                   <div className="h-px w-full bg-border my-4"></div>
 
                   {user ? (
                     <div className="flex flex-col gap-4">
                       <div className="flex items-center gap-3 px-2">
-                        <Avatar className="w-10 h-10">
+                        <Avatar className="w-12 h-12 shadow-sm">
                           <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
                           <AvatarFallback>U</AvatarFallback>
                         </Avatar>
-                        <span className="font-medium">{user.displayName || 'User'}</span>
+                        <span className="font-semibold text-lg">{user.displayName || 'User'}</span>
                       </div>
-                      <Button onClick={logout} variant="outline" className="w-full justify-start gap-3">
-                        <LucideLogOut className="w-4 h-4" />
-                        Sign Out
-                      </Button>
+                      <SheetClose asChild>
+                        <Button onClick={logout} variant="secondary" className="w-full justify-center gap-2 h-12 rounded-xl text-md font-semibold hover:bg-red-50 hover:text-red-600 transition-colors">
+                          <LucideLogOut className="w-5 h-5" />
+                          Sign Out
+                        </Button>
+                      </SheetClose>
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-3">
-                      <Link href="/signin" className="w-full">
-                        <Button variant="outline" className="w-full justify-start gap-3">
-                          <LogIn className="w-4 h-4" />
-                          Sign In
-                        </Button>
-                      </Link>
-                      <Link href="/signup" className="w-full">
-                        <Button className="w-full justify-start gap-3 hover:cursor-pointer">
-                          <UserPlus className="w-4 h-4" />
-                          Sign Up
-                        </Button>
-                      </Link>
+                    <div className="flex flex-col gap-4 mt-4">
+                      <SheetClose asChild>
+                        <Link href="/signin" className="w-full">
+                          <Button variant="outline" className="w-full justify-center gap-2 h-12 rounded-xl text-md font-semibold border-primary/20 text-primary hover:bg-primary/10 transition-all">
+                            <LogIn className="w-5 h-5" />
+                            Sign In
+                          </Button>
+                        </Link>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Link href="/signup" className="w-full">
+                          <Button className="w-full justify-center gap-2 h-12 rounded-xl text-md font-semibold bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all">
+                            <UserPlus className="w-5 h-5" />
+                            Sign Up
+                          </Button>
+                        </Link>
+                      </SheetClose>
                     </div>
                   )}
                 </div>

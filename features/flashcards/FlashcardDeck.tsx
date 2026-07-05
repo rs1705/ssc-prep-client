@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";
 import { Check, MoveLeft, MoveRight, Star, X } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
-import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
+import { useSaveFlashcardInteractionsMutation, useGetStudyDeckQuery } from "@/redux/FlashcardApiSlice";
 
 import {
   handleUserAction,
@@ -17,12 +18,13 @@ import { useAuth } from "@/context/auth";
 import { RootState } from "@/redux/store";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
-  deckId: string;
+  deckId?: string;
 }
 
 const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
+  const [direction, setDirection] = useState(1);
   const { user } = useAuth();
   const [saveInteraction] = useSaveFlashcardInteractionsMutation();
   const dispatch = useDispatch();
@@ -107,6 +109,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
     if (!card) return;
 
     if (!currentCardId) return;
+    setDirection(1);
     const newHistory = [...cardHistory, currentCardId];
     setCardHistory(newHistory);
 
@@ -126,6 +129,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
 
   const onNextClick = () => {
     if (!currentCardId) return;
+    setDirection(1);
     const newHistory = [...cardHistory, currentCardId];
     setCardHistory(newHistory);
     const nextId = getNextCardId(newHistory);
@@ -135,6 +139,7 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
 
   const onPrevClick = () => {
     if (cardHistory.length === 0) return;
+    setDirection(-1);
     const prevId = cardHistory[cardHistory.length - 1];
     setCardHistory((prev) => prev.slice(0, -1));
     dispatch(setCurrentCard({ cardId: prevId }));
@@ -149,33 +154,51 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
           <div className="relative flex justify-center items-center">
             <button
               onClick={onPrevClick}
-              className="absolute left-[-60px] top-1/2 -translate-y-1/2 
-           w-10 h-10 rounded-full bg-white text-black 
-           flex items-center justify-center 
-           transition-all duration-200 
-           opacity-50 hover:opacity-100 hover:scale-110 hover:cursor-pointer border-1 border-gray-950"
+              className="absolute z-20 -left-2 sm:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200"
             >
-              <MoveLeft />
+              <MoveLeft className="w-5 h-5" />
             </button>
             {currentCard ? (
-              <Flashcard
-                card={currentCard}
-                isFlipped={isFlipped}
-                setIsFlipped={setIsFlipped}
-              />
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentCardId}
+                  custom={direction}
+                  initial={{
+                    x: direction > 0 ? 100 : -100,
+                    opacity: 0,
+                    rotate: direction > 0 ? 15 : -15,
+                    scale: 0.85
+                  }}
+                  animate={{
+                    x: 0,
+                    opacity: 1,
+                    rotate: 0,
+                    scale: 1
+                  }}
+                  exit={{
+                    x: direction > 0 ? -100 : 100,
+                    opacity: 0,
+                    rotate: direction > 0 ? -15 : 15,
+                    scale: 0.85
+                  }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                >
+                  <Flashcard
+                    card={currentCard}
+                    isFlipped={isFlipped}
+                    setIsFlipped={setIsFlipped}
+                  />
+                </motion.div>
+              </AnimatePresence>
             ) : (
               <div>Loading...</div>
             )}
             {/* RIGHT BUTTON */}
             <button
-              className="absolute right-[-60px] top-1/2 -translate-y-1/2 
-               w-10 h-10 rounded-full bg-white text-black 
-           flex items-center justify-center 
-           transition-all duration-200 
-           opacity-50 hover:opacity-100 hover:scale-110 hover:cursor-pointer border-1 border-gray-950"
+              className="absolute z-20 -right-2 sm:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200"
               onClick={onNextClick}
             >
-              <MoveRight />
+              <MoveRight className="w-5 h-5" />
             </button>
           </div>
           <div>
