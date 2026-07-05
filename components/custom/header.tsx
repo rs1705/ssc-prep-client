@@ -19,7 +19,6 @@ import {
   HomeIcon,
   LogIn,
   LucideLogOut,
-  UserIcon,
   UserPlus,
   Menu,
   Sun,

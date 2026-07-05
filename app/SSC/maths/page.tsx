@@ -1,4 +1,4 @@
-import SectionCard from "@/components/custom/section-card/section-card";
+import { SectionCardProps } from "@/lib/types";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import React from "react";
 
