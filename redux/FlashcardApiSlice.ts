@@ -59,7 +59,7 @@ export const flashcardApi = createApi({
       invalidatesTags: ["Interactions"],
     }),
 
-    getFlashcardInteractions: builder.query({
+    getFlashcardInteractions: builder.query<any, void>({
       query: () => ({
         url: `/interactions/getInteractions`,
         method: "GET",
@@ -67,7 +67,7 @@ export const flashcardApi = createApi({
       providesTags: ["Interactions"],
     }),
 
-    getStudyDeck: builder.query({
+    getStudyDeck: builder.query<any, void>({
       query: () => ({
         url: `/flashcards/getStudyDeck`,
         method: "GET",
