@@ -84,7 +84,7 @@ const FreestylePage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-x-hidden">
       {isLoading ? (
         <div className="flex flex-row justify-center">
           <PuffLoader />

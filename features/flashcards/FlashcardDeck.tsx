@@ -172,12 +172,12 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
   return (
     <>
       {deck.length > 0 ? (
-        <div className="flex flex-col items-center w-[85%] sm:w-[360px] mx-auto">
+        <div className="flex flex-col items-center w-[360px] mx-auto">
           <div className="relative grid place-items-center w-full min-h-[400px] [perspective:1000px]">
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-20 left-2 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""}`}
+              className={`absolute z-20 left-2 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
             >
               <MoveLeft className="w-5 h-5" />
             </button>
@@ -221,7 +221,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
             )}
             {/* RIGHT BUTTON */}
             <button
-              className={`absolute z-20 right-2 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""}`}
+              className={`absolute z-20 right-2 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
