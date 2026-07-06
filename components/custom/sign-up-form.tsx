@@ -114,7 +114,7 @@ const SignUpForm = () => {
             ></FormField>
 
             <div className="flex justify-center">
-              <Button type="submit" className="hover:cursor-pointer w-full">
+              <Button type="submit" className="hover:cursor-pointer w-full rounded-xl">
                 Sign up
               </Button>
             </div>

@@ -36,7 +36,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
           href={linkTo}
           className="flex w-full items-center justify-center"
         >
-          <Button className="w-full justify-center cursor-pointer gap-2 group">
+          <Button className="w-full justify-center cursor-pointer gap-2 group rounded-xl">
             <Play className="w-4 h-4 transition-transform group-hover:scale-110" />
             {buttonText}
           </Button>

@@ -33,12 +33,14 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
           <AlertDialogTitle className="text-2xl font-semibold">
             {title}
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-md ">
-            {description.split("\n\n").map((para, i) => (
-              <p key={i} className="mb-2">
-                {para}
-              </p>
-            ))}
+          <AlertDialogDescription asChild className="text-md">
+            <div>
+              {description.split("\n\n").map((para, i) => (
+                <p key={i} className="mb-2">
+                  {para}
+                </p>
+              ))}
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -40,10 +40,10 @@ export default function Home() {
 
   return (
     <div>
-      <div className="bg-primary/10 border-l-4 border-primary p-4 mb-8 rounded-r-xl max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 shadow-sm">
-        <Info className="w-6 h-6 text-primary shrink-0" />
-        <p className="text-primary/90 text-sm sm:text-base font-medium">
-          🚀 <strong className="font-bold">App in Development:</strong> We are currently rolling out our English modules. More features and subjects are on the way!
+      <div className="bg-sky-50 border-l-4 border-sky-500 p-3 mb-8 rounded-r-xl max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 shadow-sm">
+        <Info className="w-5 h-5 text-sky-500 shrink-0" />
+        <p className="text-sky-900 text-xs sm:text-sm font-medium">
+          🚀 <strong className="font-bold text-sky-950">App in Development:</strong> We are currently rolling out our English modules. More features and subjects are on the way!
         </p>
       </div>
       <div className="text-center">

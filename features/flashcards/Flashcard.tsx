@@ -5,13 +5,40 @@ import {
   FlashCardFrontProps,
 } from "@/lib/types";
 
+export interface ColorScheme {
+  bg: string;
+  textMain: string;
+  textSecondary: string;
+  accent: string;
+  accentBg: string;
+  border: string;
+}
+
 interface FlashCardProps {
   card: FlashCardInterface;
   onFlipChange?: (flipped: boolean) => void;
+  colorScheme?: ColorScheme;
+}
+
+interface CardFrontPropsWithStyle extends FlashCardFrontProps {
+  scheme?: ColorScheme;
+}
+
+interface CardBackPropsWithStyle extends FlashCardBackProps {
+  scheme?: ColorScheme;
 }
 
 
-const CardFront = ({ text, pronunciation }: FlashCardFrontProps) => {
+const DEFAULT_SCHEME: ColorScheme = {
+  bg: "from-slate-700 to-slate-800",
+  textMain: "text-white",
+  textSecondary: "text-slate-400",
+  accent: "text-amber-400",
+  accentBg: "bg-amber-400/10 border-amber-400/20",
+  border: "border border-slate-600/50"
+};
+
+const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPropsWithStyle) => {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
@@ -21,31 +48,28 @@ const CardFront = ({ text, pronunciation }: FlashCardFrontProps) => {
   }, [text]);
 
   return (
-    <div className="absolute w-full h-full bg-gradient-to-br from-slate-700 to-slate-800 flex flex-col items-center justify-center gap-2 rounded-2xl shadow-xl border border-slate-600/50 [backface-visibility:hidden] text-center px-6 py-4">
+    <div className={`absolute w-full h-full bg-gradient-to-br ${scheme.bg} flex flex-col items-center justify-center gap-2 rounded-2xl shadow-xl ${scheme.border} [backface-visibility:hidden] text-center px-6 py-4`}>
       <div className="flex-1 flex flex-col items-center justify-center w-full">
         <p
           key={text}
-          className={`text-4xl font-extrabold tracking-tight bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 bg-clip-text text-transparent opacity-0 pb-2 ${animate ? "animate-fadeIn" : ""
-            }`}
+          className={`text-4xl font-extrabold tracking-tight ${scheme.textMain} opacity-0 pb-2 ${animate ? "animate-fadeIn" : ""}`}
         >
           {text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()}
         </p>
         {pronunciation && (
           <div className="mt-3">
             <span
-              className={`text-slate-200 text-lg font-medium opacity-0 ${animate ? "animate-fadeIn" : ""
-                }`}
+              className={`${scheme.accent} text-lg font-bold opacity-0 ${animate ? "animate-fadeIn" : ""}`}
               style={{ animationDelay: "150ms" }}
             >
-              {pronunciation.hindi} &bull; {pronunciation.english}
+              {pronunciation.hindi}
             </span>
           </div>
         )}
       </div>
       <div className="pb-4">
         <div
-          className={`px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400 text-xs font-semibold tracking-wide opacity-0 ${animate ? "animate-dropIn" : ""
-            } animate-pulse shadow-sm`}
+          className={`px-4 py-1.5 rounded-full bg-white/40 border border-white/50 text-slate-800 text-sm font-medium tracking-wide opacity-0 ${animate ? "animate-dropIn" : ""} shadow-sm`}
           style={{ animationDelay: "300ms" }}
         >
           Tap the card to reveal the meaning
@@ -62,55 +86,74 @@ const CardBack = ({
   example_hindi,
   synonyms,
   antonyms,
-}: FlashCardBackProps) => {
+  scheme = DEFAULT_SCHEME
+}: CardBackPropsWithStyle) => {
   const hindiexample = example_hindi && example_hindi[0].split("।");
   return (
-    <div className="absolute w-full h-full bg-gradient-to-br from-slate-700 to-slate-800 text-slate-100 text-lg rounded-2xl flex flex-col gap-5 justify-start shadow-xl border border-slate-600/50 [backface-visibility:hidden] [transform:rotateY(180deg)] text-left leading-relaxed px-6 py-6 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className={`absolute w-full h-full bg-gradient-to-br ${scheme.bg} ${scheme.textMain} text-lg rounded-2xl flex flex-col gap-2.5 justify-start shadow-xl ${scheme.border} [backface-visibility:hidden] [transform:rotateY(180deg)] text-left leading-relaxed px-6 py-6 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]`}>
       <div id="flashcard_definition" className="space-y-1.5 mt-auto">
-        <p className="text-xs font-bold text-slate-400 tracking-widest uppercase">
+        <p className={`text-xs font-bold ${scheme.accent} tracking-widest uppercase`}>
           Definition
         </p>
-        <p className="text-xl font-medium leading-snug text-white">{content_eng}</p>
-        <p className="text-sm font-semibold bg-gradient-to-r from-amber-400 via-amber-400 to-amber-400 bg-clip-text text-transparent">
+        <p className="text-lg font-medium leading-snug">{content_eng}</p>
+        <p className={`text-sm font-semibold ${scheme.accent}`}>
           ({content_hindi?.join(", ")})
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex w-full gap-4 items-stretch">
         {synonyms && synonyms.length > 0 && (
-          <div className="space-y-1">
-            <p className="text-xs font-bold text-slate-400 tracking-widest uppercase">
+          <div className="flex-1 space-y-2 flex flex-col items-start text-left">
+            <p className={`text-xs font-bold ${scheme.accent} tracking-widest uppercase`}>
               Synonyms
             </p>
-            <p className="text-sm font-medium bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent">
-              {synonyms.slice(0, 3).join(", ").toUpperCase()}
-            </p>
+            <div className="flex flex-col gap-1.5 items-start w-full">
+              {synonyms.slice(0, 2).map((syn) => (
+                <span
+                  key={syn}
+                  className={`px-2 py-0.5 text-xs font-semibold rounded-md ${scheme.textMain} bg-white/40 border border-black/5 text-left`}
+                >
+                  {syn.toUpperCase()}
+                </span>
+              ))}
+            </div>
           </div>
         )}
+
+        {synonyms && synonyms.length > 0 && antonyms && antonyms.length > 0 && (
+          <div className="w-[1px] bg-black/10 self-stretch" />
+        )}
+
         {antonyms && antonyms.length > 0 && (
-          <div className="space-y-1">
-            <p className="text-xs font-bold text-slate-400 tracking-widest uppercase">
+          <div className="flex-1 space-y-2 flex flex-col items-start text-left">
+            <p className={`text-xs font-bold ${scheme.accent} tracking-widest uppercase`}>
               Antonyms
             </p>
-            <p className="text-sm font-medium bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent">
-              {antonyms.slice(0, 3).join(", ").toUpperCase()}
-            </p>
+            <div className="flex flex-col gap-1.5 items-start w-full">
+              {antonyms.slice(0, 2).map((ant) => (
+                <span
+                  key={ant}
+                  className={`px-2 py-0.5 text-xs font-semibold rounded-md ${scheme.textMain} bg-white/40 border border-black/5 text-left`}
+                >
+                  {ant.toUpperCase()}
+                </span>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
-      <div id="flashcard_examples" className="space-y-1.5 bg-transparent p-3 -mx-2 rounded-xl border border-slate-500/70">
-        <p className="text-xs font-bold text-slate-400 tracking-widest uppercase">
+      <div id="flashcard_examples" className={`space-y-1 bg-transparent p-3.5 -mx-1 rounded-xl border ${scheme.accentBg}`}>
+        <p className={`text-xs font-bold ${scheme.accent} tracking-widest uppercase`}>
           Example
         </p>
         <div>
-          <p className="text-base font-medium text-white">
-            {example_eng?.[0]}
+          <p className={`text-base font-semibold italic ${scheme.textMain} leading-normal`}>
+            "{example_eng?.[0]}"
           </p>
-          <p className="text-sm font-medium bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent mt-1">
+          <p className={`text-sm font-semibold ${scheme.textSecondary} mt-0.5 leading-normal`}>
             {hindiexample?.[0]}
             {hindiexample?.[0] ? "।" : ""}
-            <span className="text-slate-200 ml-1">{hindiexample?.[1]}</span>
           </p>
         </div>
       </div>
@@ -119,7 +162,7 @@ const CardBack = ({
   );
 };
 
-const Flashcard = ({ card, onFlipChange }: FlashCardProps) => {
+const Flashcard = ({ card, onFlipChange, colorScheme }: FlashCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleClick = () => {
@@ -142,6 +185,7 @@ const Flashcard = ({ card, onFlipChange }: FlashCardProps) => {
         <CardFront
           text={card.front.text}
           pronunciation={card.front.pronunciation}
+          scheme={colorScheme}
         />
         <CardBack
           content_eng={card.back.content_eng}
@@ -150,6 +194,7 @@ const Flashcard = ({ card, onFlipChange }: FlashCardProps) => {
           example_hindi={card.back.example_hindi}
           antonyms={card.back.antonyms}
           synonyms={card.back.synonyms}
+          scheme={colorScheme}
         />
       </div>
     </div>

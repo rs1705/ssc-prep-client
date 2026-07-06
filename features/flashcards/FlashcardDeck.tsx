@@ -22,6 +22,35 @@ interface FlashcardDeckProps {
   isLinear?: boolean;
 }
 
+export const COLOR_SCHEMES = [
+  { bg: "from-rose-50 to-rose-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-rose-700", accentBg: "bg-white/50 border-rose-200/80", barBg: "bg-gradient-to-r from-rose-400 to-rose-500", border: "border border-rose-300/80" },
+  { bg: "from-sky-50 to-sky-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-sky-600", accentBg: "bg-white/50 border-sky-200/80", barBg: "bg-gradient-to-r from-sky-400 to-sky-500", border: "border border-sky-300/80" },
+  { bg: "from-violet-50 to-violet-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-violet-700", accentBg: "bg-white/50 border-violet-200/80", barBg: "bg-gradient-to-r from-violet-400 to-violet-500", border: "border border-violet-300/80" },
+  { bg: "from-stone-50 to-stone-200", textMain: "text-stone-800", textSecondary: "text-stone-500", accent: "text-stone-700", accentBg: "bg-white/50 border-stone-200/80", barBg: "bg-gradient-to-r from-stone-400 to-stone-500", border: "border border-stone-300/80" },
+  { bg: "from-emerald-50 to-emerald-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-emerald-700", accentBg: "bg-white/50 border-emerald-200/80", barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500", border: "border border-emerald-300/80" },
+  { bg: "from-slate-50 to-slate-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-slate-600", accentBg: "bg-white/50 border-slate-200/80", barBg: "bg-gradient-to-r from-slate-400 to-slate-500", border: "border border-slate-300/80" },
+  { bg: "from-amber-50 to-amber-200", textMain: "text-stone-800", textSecondary: "text-stone-500", accent: "text-amber-900", accentBg: "bg-white/50 border-amber-200/80", barBg: "bg-gradient-to-r from-amber-500 to-amber-600", border: "border border-amber-300/80" },
+];
+
+/*
+  REFERENCE: ORIGINAL DARK COLOR SCHEME
+  If you ever want to revert back to the original dark styling, use these values:
+  
+  Card scheme (DEFAULT_SCHEME in Flashcard.tsx):
+  {
+    bg: "from-slate-700 to-slate-800",
+    textMain: "text-white",
+    textSecondary: "text-slate-400",
+    accent: "text-amber-400",
+    accentBg: "bg-amber-400/10 border-amber-400/20"
+  }
+
+  Progress Bar (FlashcardDeck.tsx):
+  - Container class: "relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border border-slate-600/50 shadow-inner"
+  - Progress fill class: "absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transition-all duration-300"
+  - Text class: "absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
+*/
+
 const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
@@ -36,6 +65,9 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
     currentCardId,
     cardMeta,
   } = useSelector((state: RootState) => state.session);
+
+  const currentIndex = deck.findIndex((card) => card._id === currentCardId);
+  const scheme = COLOR_SCHEMES[(currentIndex >= 0 ? currentIndex : 0) % COLOR_SCHEMES.length];
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -75,11 +107,9 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
     const candidates = sessionDeck.filter((id: string) => id !== currentCardId);
     if (candidates.length === 0) return currentCardId;
 
-    // Filter out the last 3 seen cards to avoid immediate repetition
     const recentHistory = history.slice(-3);
     const nonRecentCandidates = candidates.filter(id => !recentHistory.includes(id));
 
-    // Fallback if the deck is too small and all candidates were recently seen
     const eligibleCandidates = nonRecentCandidates.length > 0 ? nonRecentCandidates : candidates;
 
     const unknown: string[] = [];
@@ -167,7 +197,6 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
   };
 
   const currentCard = deck.find((card) => card._id === currentCardId);
-  const currentIndex = deck.findIndex((card) => card._id === currentCardId);
 
   return (
     <>
@@ -213,13 +242,13 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
                   <Flashcard
                     card={currentCard}
                     onFlipChange={setIsFlipped}
+                    colorScheme={scheme}
                   />
                 </motion.div>
               </AnimatePresence>
             ) : (
               <div>Loading...</div>
             )}
-            {/* RIGHT BUTTON */}
             <button
               className={`absolute z-20 -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
               onClick={onNextClick}
@@ -233,21 +262,21 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
               {isFlipped && (
                 <div className="flex justify-between primary-buttons gap-0.5">
                   <Button
-                    className="fade-up [animation-delay:0.05s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3 hover:font-semibold hover:cursor-pointer group"
+                    className="fade-up [animation-delay:0.05s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3 hover:font-semibold hover:cursor-pointer group rounded-xl"
                     onClick={() => onActionClick("unknown")}
                   >
                     <X className="transition-transform duration-150 group-hover:-translate-y-1" />
                     AGAIN
                   </Button>
                   <Button
-                    className="fade-up [animation-delay:0.30s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group"
+                    className="fade-up [animation-delay:0.30s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group rounded-xl"
                     onClick={() => onActionClick("known")}
                   >
                     <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
                     GOOD
                   </Button>
                   <Button
-                    className="fade-up [animation-delay:0.55s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group"
+                    className="fade-up [animation-delay:0.55s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group rounded-xl"
                     onClick={() => onActionClick("important")}
                   >
                     <Star className="hover:transition-transform duration-150 group-hover:-translate-y-1" />
@@ -258,19 +287,29 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
             </div>
 
             <div className="w-full mt-6 mb-2">
-              <div className="relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border border-slate-600/50 shadow-inner">
+              <div className="relative h-4 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/80 shadow-inner">
+                {/* Unfilled text (Black/Slate-800) */}
+                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider text-slate-800">
+                  CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
+                </div>
+
+                {/* Progress Fill */}
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transition-all duration-300"
+                  className={`absolute top-0 left-0 h-full ${scheme.barBg} transition-all duration-300 overflow-hidden`}
                   style={{
                     width: `${((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) * 100}%`,
                   }}
-                />
-
-                <p
-                  className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
                 >
-                  CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
-                </p>
+                  {/* Filled text (Pure White) - Locked to full progress bar width to prevent shifting */}
+                  <div
+                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white"
+                    style={{
+                      width: "358px",
+                    }}
+                  >
+                    CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

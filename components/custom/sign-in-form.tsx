@@ -98,7 +98,7 @@ const SignInForm = () => {
               </p>
             </div>
             <div className="flex justify-center">
-              <Button type="submit" className="hover:cursor-pointer w-full">
+              <Button type="submit" className="hover:cursor-pointer w-full rounded-xl">
                 Log In
               </Button>
             </div>

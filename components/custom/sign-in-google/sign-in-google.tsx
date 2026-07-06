@@ -12,7 +12,7 @@ const SignInWithGoogle: React.FC<SignInWithGoogleProps> = ({
     <Button
       variant="outline"
       onClick={onClickSignIn}
-      className="hover:cursor-pointer w-full"
+      className="hover:cursor-pointer w-full rounded-xl"
     >
       Continue with Google
     </Button>

@@ -108,13 +108,13 @@ const Header = () => {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/signin">
-                  <Button variant="ghost" className="font-semibold gap-2 hover:cursor-pointer">
+                  <Button variant="ghost" className="font-semibold gap-2 hover:cursor-pointer rounded-xl">
                     <LogIn className="w-4 h-4" />
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button className="font-semibold gap-2 hover:cursor-pointer">
+                  <Button className="font-semibold gap-2 hover:cursor-pointer rounded-xl">
                     <UserPlus className="w-4 h-4" />
                     Sign Up
                   </Button>
@@ -173,7 +173,7 @@ const Header = () => {
                         <span className="font-semibold text-lg">{user.displayName || 'User'}</span>
                       </div>
                       <SheetClose asChild>
-                        <Button onClick={logout} variant="secondary" className="w-full justify-center gap-2 h-12 rounded-xl text-md font-semibold hover:bg-red-50 hover:text-red-600 transition-colors">
+                        <Button onClick={logout} variant="secondary" className="w-full justify-center gap-2 h-12 rounded-xl text-md font-semibold hover:bg-red-50 hover:text-red-600 transition-colors rounded-xl mb-3">
                           <LucideLogOut className="w-5 h-5" />
                           Sign Out
                         </Button>
