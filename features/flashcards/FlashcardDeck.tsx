@@ -19,12 +19,14 @@ import { RootState } from "@/redux/store";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId?: string;
+  isLinear?: boolean;
 }
 
-const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
+const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
   const [direction, setDirection] = useState(1);
+  const [navCount, setNavCount] = useState(0);
   const { user } = useAuth();
   const [saveInteraction] = useSaveFlashcardInteractionsMutation();
   const dispatch = useDispatch();
@@ -49,7 +51,8 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
 
   useEffect(() => {
     setIsFlipped(false);
-  }, [deckId]);
+    setNavCount((prev) => prev + 1);
+  }, [deckId, currentCardId]);
 
   useEffect(() => {
     if (deck && deck.length > 0) {
@@ -62,7 +65,13 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   }, [deck, dispatch]);
 
   const getNextCardId = (history: string[] = cardHistory) => {
-    console.log(history);
+    if (isLinear) {
+      if (!deck || deck.length === 0) return currentCardId;
+      const currentIndex = deck.findIndex((c) => c._id === currentCardId);
+      const newIndex = (currentIndex + 1) % deck.length;
+      return deck[newIndex]._id;
+    }
+
     const candidates = sessionDeck.filter((id: string) => id !== currentCardId);
     if (candidates.length === 0) return currentCardId;
 
@@ -138,6 +147,17 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   };
 
   const onPrevClick = () => {
+    if (isLinear) {
+      if (!deck || deck.length === 0) return;
+      const currentIndex = deck.findIndex((c) => c._id === currentCardId);
+
+      setDirection(-1);
+      const newIndex = (currentIndex - 1 + deck.length) % deck.length;
+      dispatch(setCurrentCard({ cardId: deck[newIndex]._id }));
+      setIsFlipped(false);
+      return;
+    }
+
     if (cardHistory.length === 0) return;
     setDirection(-1);
     const prevId = cardHistory[cardHistory.length - 1];
@@ -147,46 +167,52 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
   };
 
   const currentCard = deck.find((card) => card._id === currentCardId);
+  const currentIndex = deck.findIndex((card) => card._id === currentCardId);
+
   return (
     <>
       {deck.length > 0 ? (
-        <div>
-          <div className="relative flex justify-center items-center">
+        <div className="flex flex-col items-center w-[85%] sm:w-[360px] mx-auto">
+          <div className="relative grid place-items-center w-full min-h-[400px] [perspective:1000px]">
             <button
               onClick={onPrevClick}
-              className="absolute z-20 -left-2 sm:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200"
+              disabled={deck.length <= 1}
+              className={`absolute z-20 left-2 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""}`}
             >
               <MoveLeft className="w-5 h-5" />
             </button>
             {currentCard ? (
-              <AnimatePresence mode="wait" custom={direction}>
+              <AnimatePresence custom={direction}>
                 <motion.div
-                  key={currentCardId}
+                  key={`${currentCardId}-${navCount}`}
+                  className="row-start-1 col-start-1 w-full"
                   custom={direction}
                   initial={{
-                    x: direction > 0 ? 100 : -100,
+                    x: direction > 0 ? 250 : -250,
                     opacity: 0,
-                    rotate: direction > 0 ? 15 : -15,
-                    scale: 0.85
+                    rotateY: direction > 0 ? -50 : 50,
+                    scale: 0.6,
+                    zIndex: 0
                   }}
                   animate={{
                     x: 0,
                     opacity: 1,
-                    rotate: 0,
-                    scale: 1
+                    rotateY: 0,
+                    scale: 1,
+                    zIndex: 10
                   }}
                   exit={{
-                    x: direction > 0 ? -100 : 100,
+                    x: direction > 0 ? -250 : 250,
                     opacity: 0,
-                    rotate: direction > 0 ? -15 : 15,
-                    scale: 0.85
+                    rotateY: direction > 0 ? 50 : -50,
+                    scale: 0.6,
+                    zIndex: 0
                   }}
-                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                  transition={{ type: "spring", stiffness: 350, damping: 30, mass: 1 }}
                 >
                   <Flashcard
                     card={currentCard}
-                    isFlipped={isFlipped}
-                    setIsFlipped={setIsFlipped}
+                    onFlipChange={setIsFlipped}
                   />
                 </motion.div>
               </AnimatePresence>
@@ -195,57 +221,58 @@ const FlashcardDeck = ({ deck, deckId }: FlashcardDeckProps) => {
             )}
             {/* RIGHT BUTTON */}
             <button
-              className="absolute z-20 -right-2 sm:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200"
+              className={`absolute z-20 right-2 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-90 hover:opacity-100 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""}`}
               onClick={onNextClick}
+              disabled={deck.length <= 1}
             >
               <MoveRight className="w-5 h-5" />
             </button>
           </div>
-          <div>
-            <div className="w-full my-2">
-              {/* <div className="relative h-3 w-full bg-slate-300 rounded-full overflow-hidden">
+          <div className="w-full">
+            <div className="w-full min-h-[40px] my-2">
+              {isFlipped && (
+                <div className="flex justify-between primary-buttons gap-0.5">
+                  <Button
+                    className="fade-up [animation-delay:0.05s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3 hover:font-semibold hover:cursor-pointer group"
+                    onClick={() => onActionClick("unknown")}
+                  >
+                    <X className="transition-transform duration-150 group-hover:-translate-y-1" />
+                    AGAIN
+                  </Button>
+                  <Button
+                    className="fade-up [animation-delay:0.30s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group"
+                    onClick={() => onActionClick("known")}
+                  >
+                    <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
+                    GOOD
+                  </Button>
+                  <Button
+                    className="fade-up [animation-delay:0.55s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group"
+                    onClick={() => onActionClick("important")}
+                  >
+                    <Star className="hover:transition-transform duration-150 group-hover:-translate-y-1" />
+                    IMPORTANT
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full mt-6 mb-2">
+              <div className="relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border border-slate-600/50 shadow-inner">
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 transition-all duration-300"
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transition-all duration-300"
                   style={{
-                    width: `${((currentIndex + 1) / deck.length) * 100}%`,
+                    width: `${((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) * 100}%`,
                   }}
                 />
 
                 <p
-                  className={`absolute inset-0 flex items-center justify-center text-xs font-semibold transition-colors duration-300 ${
-                    (currentIndex + 1) / deck.length > 0.15 ? "black" : "black"
-                  }`}
+                  className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
                 >
-                  Card {currentIndex + 1} of {deck.length}
+                  CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
                 </p>
-              </div> */}
-            </div>
-
-            {isFlipped && (
-              <div className="flex justify-between primary-buttons gap-0.5">
-                <Button
-                  className="fade-up [animation-delay:0.05s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3 hover:font-semibold hover:cursor-pointer hover:text-red-400 group"
-                  onClick={() => onActionClick("unknown")}
-                >
-                  <X className="transition-transform duration-150 group-hover:-translate-y-1" />
-                  AGAIN
-                </Button>
-                <Button
-                  className="ffade-up [animation-delay:0.30s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer hover:text-lime-500 group"
-                  onClick={() => onActionClick("known")}
-                >
-                  <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
-                  GOOD
-                </Button>
-                <Button
-                  className="fade-up [animation-delay:0.55s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer hover:text-amber-400 group"
-                  onClick={() => onActionClick("important")}
-                >
-                  <Star className="hover:transition-transform duration-150 group-hover:-translate-y-1" />
-                  IMPORTANT
-                </Button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       ) : (

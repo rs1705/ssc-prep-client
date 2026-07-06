@@ -21,6 +21,7 @@ const defaultEnglishFilter: TabFilter = {
   difficulty: "all",
   year: "all",
   highFrequency: false,
+  alphabet: "a",
 };
 
 const initialState: FilterState = {

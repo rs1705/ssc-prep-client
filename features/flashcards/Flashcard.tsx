@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   FlashCardInterface,
   FlashCardBackProps,
@@ -6,11 +7,9 @@ import {
 
 interface FlashCardProps {
   card: FlashCardInterface;
-  isFlipped: boolean;
-  setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  onFlipChange?: (flipped: boolean) => void;
 }
 
-import { useState, useEffect } from "react";
 
 const CardFront = ({ text, pronunciation }: FlashCardFrontProps) => {
   const [animate, setAnimate] = useState(false);
@@ -120,11 +119,19 @@ const CardBack = ({
   );
 };
 
-const Flashcard = ({ card, isFlipped, setIsFlipped }: FlashCardProps) => {
+const Flashcard = ({ card, onFlipChange }: FlashCardProps) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleClick = () => {
+    const newState = !isFlipped;
+    setIsFlipped(newState);
+    if (onFlipChange) onFlipChange(newState);
+  };
+
   return (
     <div
-      className="w-90 h-100 [perspective:1000px] cursor-pointer"
-      onClick={() => setIsFlipped(!isFlipped)}
+      className="w-full h-[380px] sm:h-[420px] [perspective:1000px] cursor-pointer"
+      onClick={handleClick}
     >
       <div
         className={`relative w-full h-full 

@@ -39,7 +39,7 @@ const FreestylePage = () => {
   const filterStore = useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
 
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("vocab");
   const [draftFilters, setDraftFilters] = useState(filterStore[activeTab]);
   const [open, setOpen] = useState(false);
 
@@ -65,9 +65,16 @@ const FreestylePage = () => {
     setDraftFilters(filterStore[activeTab]);
   }, [filterStore, activeTab]);
 
+  useEffect(() => {
+    const savedAlphabet = localStorage.getItem(`freestyle_alphabet_${activeTab}`);
+    if (savedAlphabet && savedAlphabet !== filterStore[activeTab]?.alphabet) {
+      dispatch(updateFilter({ tab: activeTab, filter: { alphabet: savedAlphabet } }));
+    }
+  }, [dispatch, activeTab, filterStore]);
+
   const rawFilters = Object.entries(filterStore[activeTab]);
   const activeFilters = rawFilters.reduce<string[]>((acc, [key, val]) => {
-    if (key === "subject" || key === "type") return acc;
+    if (key === "subject" || key === "type" || key === "alphabet") return acc;
     if (key === "highFrequency") {
       if (val === true) acc.push("High frequency");
     } else if (val !== "all") {
@@ -145,10 +152,10 @@ const FreestylePage = () => {
                                 <Select
                                   value={
                                     draftFilters[
-                                      key as keyof Omit<
-                                        TabFilter,
-                                        "highFrequency"
-                                      >
+                                    key as keyof Omit<
+                                      TabFilter,
+                                      "highFrequency"
+                                    >
                                     ]
                                   }
                                   onValueChange={(val) =>
@@ -242,16 +249,42 @@ const FreestylePage = () => {
                   </Sheet>
                 </TabsList>
 
+                <TabsContent value={activeTab}></TabsContent>
+
+                {/* A-Z Dropdown */}
+                <div className="flex flex-row items-center justify-between mb-2 px-4 w-full max-w-sm mx-auto">
+                  <p className="font-semibold text-slate-500">Jump to Letter</p>
+                  <Select
+                    value={filterStore[activeTab]?.alphabet || "a"}
+                    onValueChange={(val) => {
+                      dispatch(updateFilter({ tab: activeTab, filter: { alphabet: val } }));
+                      localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
+                    }}
+                  >
+                    <SelectTrigger className="w-[120px] font-semibold uppercase shadow-sm hover:shadow-md hover:cursor-pointer">
+                      <SelectValue placeholder="Letter" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {"abcdefghijklmnopqrstuvwxyz".split("").map((letter) => (
+                        <SelectItem key={letter} value={letter} className="uppercase font-semibold">
+                          {letter}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 {activeFilters.length > 0 && (
-                  <div className="flex gap-1 p-1 rounded-md font-semibold">
-                    <span>Filters:</span>
+                  <div className="flex gap-2 mb-2 rounded-md font-semibold justify-center items-center px-4 text-center flex-wrap">
+                    <span className="text-sm text-slate-500">Filters:</span>
                     {activeFilters.map((f) => (
-                      <Badge key={f}>{f.toUpperCase()}</Badge>
+                      <Badge variant="secondary" key={f}>{f.toUpperCase()}</Badge>
                     ))}
                   </div>
                 )}
-                <TabsContent value={activeTab}></TabsContent>
-                <FlashcardDeck deck={data} deckId={activeTab} />
+
+                <FlashcardDeck deck={data} deckId={activeTab} isLinear={true} />
+
               </Tabs>
             </div>
           </div>

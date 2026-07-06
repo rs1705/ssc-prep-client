@@ -1,4 +1,4 @@
-export const TABS = ["all", "vocab", "idiom", "ows"];
+export const TABS = ["vocab", "idiom", "ows"];
 export const MAIN_FILTERS = {
   exam: ["ssc cgl", "ssc chsl", "ssc mts", "ssc cpo", "ssc steno", "ssc gd"],
   year: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
