@@ -202,55 +202,62 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
     <>
       {deck.length > 0 ? (
         <div className="flex flex-col items-center w-[360px] mx-auto">
-          <div className="relative grid place-items-center w-full min-h-[400px] [perspective:1000px]">
+          <div className="relative w-full min-h-[400px]">
+            {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-20 -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
+              className={`absolute z-30 -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
             >
               <MoveLeft className="w-5 h-5" />
             </button>
-            {currentCard ? (
-              <AnimatePresence custom={direction}>
-                <motion.div
-                  key={`${currentCardId}-${navCount}`}
-                  className="row-start-1 col-start-1 w-full"
-                  custom={direction}
-                  initial={{
-                    x: direction > 0 ? 250 : -250,
-                    opacity: 0,
-                    rotateY: direction > 0 ? -50 : 50,
-                    scale: 0.6,
-                    zIndex: 0
-                  }}
-                  animate={{
-                    x: 0,
-                    opacity: 1,
-                    rotateY: 0,
-                    scale: 1,
-                    zIndex: 10
-                  }}
-                  exit={{
-                    x: direction > 0 ? -250 : 250,
-                    opacity: 0,
-                    rotateY: direction > 0 ? 50 : -50,
-                    scale: 0.6,
-                    zIndex: 0
-                  }}
-                  transition={{ type: "spring", stiffness: 350, damping: 30, mass: 1 }}
-                >
-                  <Flashcard
-                    card={currentCard}
-                    onFlipChange={setIsFlipped}
-                    colorScheme={scheme}
-                  />
-                </motion.div>
-              </AnimatePresence>
-            ) : (
-              <div>Loading...</div>
-            )}
+            
+            {/* 3D PERSPECTIVE WRAPPER */}
+            <div className="relative grid place-items-center w-full min-h-[400px] [perspective:1000px]">
+              {currentCard ? (
+                <AnimatePresence custom={direction}>
+                  <motion.div
+                    key={`${currentCardId}-${navCount}`}
+                    className="row-start-1 col-start-1 w-full"
+                    custom={direction}
+                    initial={{
+                      x: direction > 0 ? 250 : -250,
+                      opacity: 0,
+                      rotateY: direction > 0 ? -50 : 50,
+                      scale: 0.6,
+                      zIndex: 0
+                    }}
+                    animate={{
+                      x: 0,
+                      opacity: 1,
+                      rotateY: 0,
+                      scale: 1,
+                      zIndex: 10
+                    }}
+                    exit={{
+                      x: direction > 0 ? -250 : 250,
+                      opacity: 0,
+                      rotateY: direction > 0 ? 50 : -50,
+                      scale: 0.6,
+                      zIndex: 0
+                    }}
+                    transition={{ type: "spring", stiffness: 350, damping: 30, mass: 1 }}
+                  >
+                    <Flashcard
+                      card={currentCard}
+                      onFlipChange={setIsFlipped}
+                      colorScheme={scheme}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              ) : (
+                <div>Loading...</div>
+              )}
+            </div>
+
+            {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-20 -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
+              className={`absolute z-30 -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/40 backdrop-blur-md opacity-50 hover:bg-white hover:opacity-100 sm:bg-white sm:opacity-90" : "bg-white opacity-90 hover:opacity-100"}`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
