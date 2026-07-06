@@ -130,7 +130,7 @@ const Flashcard = ({ card, onFlipChange }: FlashCardProps) => {
 
   return (
     <div
-      className="w-full h-[380px] sm:h-[420px] [perspective:1000px] cursor-pointer"
+      className="w-full h-[420px] [perspective:1000px] cursor-pointer"
       onClick={handleClick}
     >
       <div
