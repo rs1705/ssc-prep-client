@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/context/auth";
-import { Flame, Target, BookOpen, BrainCircuit, ChevronRight, Trophy } from "lucide-react";
+import { Flame, Target, BrainCircuit, ChevronRight, Trophy } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
@@ -46,7 +46,7 @@ export default function Dashboard() {
       description: "Challenge your mind with fun reasoning puzzles and boost problem-solving speed.",
       linkTo: "#",
       buttonText: "Coming Soon",
-    }
+    },
   ];
 
   return (
@@ -60,7 +60,7 @@ export default function Dashboard() {
             Welcome back, <span className="text-orange-500">{user?.displayName?.toUpperCase() || "Champ"}</span>!
           </h1>
           <p className="text-muted-foreground text-lg">
-            You're on a great path. Ready to tackle your daily targets?
+            You&apos;re on a great path. Ready to tackle your daily targets?
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function Dashboard() {
           {/* Daily Goal */}
           <div>
             <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium text-muted-foreground">Today's Goal</span>
+              <span className="font-medium text-muted-foreground">Today&apos;s Goal</span>
               <span className="font-bold text-primary">{mockStats.todayGoal}%</span>
             </div>
             <div className="w-full h-2.5 bg-secondary rounded-full overflow-hidden">

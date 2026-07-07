@@ -12,7 +12,7 @@ interface LogoProps {
 }
 
 export const Logo = ({ className = "" }: LogoProps) => {
-  const [animationData, setAnimationData] = useState<any>(null);
+  const [animationData, setAnimationData] = useState<object | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
