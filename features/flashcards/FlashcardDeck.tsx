@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/context/auth";
 import { RootState } from "@/redux/store";
+import Loader from "@/components/custom/loader";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId?: string;
@@ -199,15 +200,15 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
   return (
     <>
       {deck.length > 0 ? (
-        <div className="flex flex-col items-center w-[360px] mx-auto">
+        <div className="flex flex-col items-center w-[375px] md:w-[500px] mx-auto">
           <div className="relative w-full min-h-[400px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-30 left-2 sm:-left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
+              className={`absolute z-30 -left-7 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
             >
-              <MoveLeft className="w-5 h-5" />
+              <MoveLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
@@ -249,30 +250,30 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
                   </motion.div>
                 </AnimatePresence>
               ) : (
-                <div>Loading...</div>
+                <Loader size="sm" />
               )}
             </div>
 
             {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-30 right-2 sm:-right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
+              className={`absolute z-30 -right-7 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
-              <MoveRight className="w-5 h-5" />
+              <MoveRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
           <div className="w-full">
-            <div className="w-full min-h-[40px] mt-2">
+            <div className="w-full h-12 mt-2 flex items-center">
               {isFlipped && (
-                <div className="flex primary-buttons gap-1">
+                <div className="flex primary-buttons gap-1 w-full">
                   {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map((actionKey) => {
                     const actionConfig = BUTTON_ACTIONS[actionKey];
                     return (
                       <Button
                         key={actionKey}
                         variant="outline"
-                        className={`fade-up active:scale-95 transition-all duration-200 flex-1 hover:font-bold hover:cursor-pointer rounded-xl py-5 text-xs font-semibold ${actionConfig.color}`}
+                        className={`fade-up active:scale-95 transition-all duration-200 flex-1 hover:font-bold hover:cursor-pointer rounded-xl py-3 text-xs font-semibold ${actionConfig.color}`}
                         onClick={() => onActionClick(actionKey)}
                       >
                         {actionConfig.label}
@@ -300,10 +301,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
                 >
                   {/* Filled text (Pure White) - Locked to full progress bar width to prevent shifting */}
                   <div
-                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white"
-                    style={{
-                      width: "358px",
-                    }}
+                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white w-[358px] md:w-[478px]"
                   >
                     CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
                   </div>
@@ -313,8 +311,14 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
           </div>
         </div>
       ) : (
-        <div className="w-[360px] text-center text-red-400 font-semibold transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-left-5">
-          <p>🥹Oops! No data found for the applied filter.🥹</p>
+        <div className="w-[375px] md:w-[500px] mx-auto transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-bottom-4">
+          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[350px] rounded-3xl bg-card border border-border shadow-sm">
+            <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
+            <h3 className="text-lg font-bold text-foreground mb-1.5">No Cards Found</h3>
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+              Oops! No flashcards match your current filters. Try changing the category or removing some filters above.
+            </p>
+          </div>
         </div>
       )}
     </>

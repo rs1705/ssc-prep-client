@@ -4,7 +4,7 @@ import { Target, BookOpen, Trophy } from "lucide-react";
 
 const About = () => {
   return (
-    <section className="px-6 md:px-16 lg:px-32 py-12 md:py-24">
+    <section className="w-full">
       <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
 
         {/* Brand Intro */}

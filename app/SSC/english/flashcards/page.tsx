@@ -28,12 +28,12 @@ const sections: SectionCardProps[] = [
 const FlashcardPage = () => {
   return (
     <div>
-      <div className="my-5 text-center">
-        <h2 className="text-center text-4xl font-bold">🎴Flashcards🎴</h2>
-        <br />
-        <p className="text-gray-600">
-          Flashcards are a simple and effective way to learn and remember words,
-          idioms, synonyms, and more. Pick the mode that suits you the best.
+      <div className="text-center mb-6 max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">
+          Flashcards
+        </h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">
+          Flashcards are a simple and effective way to learn and remember words, idioms, synonyms, and more. Pick the mode that suits you best.
         </p>
       </div>
       <div>

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useGetFilteredCardsQuery } from "@/redux/FlashcardApiSlice";
-import { PuffLoader } from "react-spinners";
+import Loader from "@/components/custom/loader";
 
 //custom imports
 import { resetFilter, TabFilter, updateFilter } from "@/redux/FilterSlice";
@@ -57,7 +57,7 @@ const FreestylePage = () => {
     setOpen(false);
   };
 
-  const { data, isLoading, isError } = useGetFilteredCardsQuery(
+  const { data, isLoading, isFetching, isError } = useGetFilteredCardsQuery(
     filterStore[activeTab],
   );
 
@@ -86,8 +86,8 @@ const FreestylePage = () => {
   return (
     <div className="flex flex-col overflow-x-hidden">
       {isLoading ? (
-        <div className="flex flex-row justify-center">
-          <PuffLoader />
+        <div className="flex flex-row justify-center min-h-[300px] items-center">
+          <Loader size="lg" text="Loading flashcards..." />
         </div>
       ) : isError ? (
         // Error State
@@ -98,22 +98,19 @@ const FreestylePage = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col items-center w-full max-w-md mx-auto">
+        <div className="flex flex-col items-center w-full max-w-md sm:max-w-xl md:max-w-2xl mx-auto">
           {/* Header */}
-          <div className="mb-2 text-center space-y-2 px-4">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 shadow-sm inline-block">
-              Freestyle
-            </span>
-            <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
-              🎲 Freestyle Practice🎲
+          <div className="mb-6 text-center px-4 max-w-2xl mx-auto">
+            <h1 className="text-2xl font-bold tracking-tight mb-2 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
+              Freestyle Practice
             </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto leading-relaxed">
-              Choose a category, set your filter preferences, and master high-frequency SSC vocabulary.
+            <p className="text-slate-500 dark:text-slate-400 text-sm">
+              Pick a category, apply filters, and start practising.
             </p>
           </div>
 
           <div className="flex justify-center flex-col">
-            <div className="flex w-full max-w-md flex-row items-center gap-2.5 px-4 mb-2">
+            <div className="flex w-full max-w-md sm:max-w-xl md:max-w-2xl flex-row items-center gap-2.5 px-4">
               <Tabs
                 defaultValue={activeTab}
                 onValueChange={(val) => setActiveTab(val)}
@@ -139,162 +136,140 @@ const FreestylePage = () => {
                         <span className="font-semibold text-xs text-slate-700 dark:text-slate-300">Filters</span>
                       </Button>
                     </SheetTrigger>
-                    <SheetContent>
-                      <SheetHeader className="text-center">
-                        <SheetTitle className="text-2xl">Filters</SheetTitle>
+                    <SheetContent className="flex flex-col h-full p-6">
+                      <SheetHeader className="text-left border-b border-border/40 pb-4 mb-4">
+                        <SheetTitle className="text-xl font-bold tracking-tight">Filter Cards</SheetTitle>
                         <SheetDescription>
-                          Choose the filters from the following based on your
-                          preferences
+                          Refine vocabulary cards by category, starting letter, and frequency.
                         </SheetDescription>
                       </SheetHeader>
-                      <div className="max-w-full px-4">
+
+                      <div className="flex-1 overflow-y-auto pr-1">
                         {Object.entries(MAIN_FILTERS)
                           .filter(([k]) => k !== "highFrequency")
                           .map(([key, values]) => (
-                            <div key={key}>
-                              <div className="flex justify-between mb-2">
-                                <Label htmlFor={key} className="flex-3/12">
-                                  {key.toUpperCase()}
-                                </Label>
+                            <div key={key} className="flex flex-col gap-1.5 mb-5">
+                              <Label htmlFor={key} className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                {key === "category" ? "Category" : key === "letter" ? "Starting Letter" : key.toUpperCase()}
+                              </Label>
 
-                                <Select
-                                  value={
-                                    draftFilters[
-                                    key as keyof Omit<
-                                      TabFilter,
-                                      "highFrequency"
-                                    >
-                                    ]
-                                  }
-                                  onValueChange={(val) =>
-                                    handleSelectChange(key, val)
-                                  }
+                              <Select
+                                value={
+                                  draftFilters[
+                                    key as keyof Omit<TabFilter, "highFrequency">
+                                  ]
+                                }
+                                onValueChange={(val) => handleSelectChange(key, val)}
+                              >
+                                <SelectTrigger
+                                  id={key}
+                                  className="w-full h-11 bg-background border-border rounded-xl shadow-xs font-semibold hover:cursor-pointer focus:ring-1 focus:ring-primary focus:ring-offset-0"
                                 >
-                                  <SelectTrigger
-                                    id={key}
-                                    className="flex-9/12 font-semibold shadow-sm hover:shadow-md hover:cursor-pointer"
-                                  >
-                                    <SelectValue placeholder="Select..." />{" "}
-                                  </SelectTrigger>
+                                  <SelectValue placeholder="Select..." />
+                                </SelectTrigger>
 
-                                  <SelectContent className="font-semibold">
-                                    <SelectItem value="all">All</SelectItem>
-                                    {values.map((val) => (
-                                      <SelectItem key={val} value={val}>
-                                        {val.toUpperCase()}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
+                                <SelectContent className="font-semibold rounded-xl">
+                                  <SelectItem value="all" className="rounded-lg">All</SelectItem>
+                                  {values.map((val) => (
+                                    <SelectItem key={val} value={val} className="rounded-lg">
+                                      {val.toUpperCase()}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
                           ))}
-                        <div className="flex justify-between my-5">
-                          <Label className="hover:cursor-pointer">
-                            High frequency{" "}
-                            <Checkbox
-                              name="highfrequency"
-                              checked={draftFilters.highFrequency ?? false}
-                              onCheckedChange={(val: boolean) =>
-                                setDraftFilters((prev) => ({
-                                  ...prev,
-                                  highFrequency: val,
-                                }))
-                              }
-                            />
-                          </Label>
-                          {/* <Label className="hover:cursor-pointer">
-                            Special words
-                            <Checkbox
-                              name="specialword"
-                              checked={false}
-                              onCheckedChange={(val: boolean) =>
-                                setDraftFilters((prev) => ({
-                                  ...prev,
-                                  specialword: val,
-                                }))
-                              }
-                            />
-                          </Label> */}
+
+                        <div className="flex items-center justify-between p-4 rounded-2xl bg-accent/20 border border-border/30 my-6 shadow-xs">
+                          <div className="flex flex-col gap-0.5 pr-2">
+                            <Label htmlFor="highFrequency" className="font-semibold text-sm text-foreground cursor-pointer select-none">
+                              High Frequency Cards
+                            </Label>
+                            <span className="text-[11px] text-muted-foreground leading-normal">
+                              Only show words frequently asked in SSC exams.
+                            </span>
+                          </div>
+                          <Checkbox
+                            id="highFrequency"
+                            checked={draftFilters.highFrequency ?? false}
+                            onCheckedChange={(val: boolean) =>
+                              setDraftFilters((prev) => ({
+                                ...prev,
+                                highFrequency: val,
+                              }))
+                            }
+                            className="h-5 w-5 rounded-md border-border data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground hover:cursor-pointer"
+                          />
                         </div>
                       </div>
-                      <div className="flex flex-row justify-evenly  items-center px-4 gap-1 text-center">
+
+                      <SheetFooter className="mt-auto pt-4 border-t border-border/40 flex-row gap-3">
                         <Button
-                          className="w-[50%] hover:cursor-pointer"
-                          onClick={handleFilterSetClick}
-                          variant="default"
-                        >
-                          Apply
-                        </Button>
-                        <Button
-                          className="w-[50%] hover:cursor-pointer"
-                          variant="default"
+                          className="flex-1 h-11 rounded-xl font-semibold hover:cursor-pointer transition-all"
+                          variant="outline"
                           onClick={handleFilterResetClick}
                         >
-                          Clear
+                          Clear Filters
                         </Button>
-                      </div>
-                      {/* <p className="text-center">or</p>
-                      <div className="flex flex-row justify-center px-4">
                         <Button
-                          variant="default"
-                          className="w-full hover:cursor-pointer"
+                          className="flex-1 h-11 rounded-xl font-bold hover:cursor-pointer transition-all shadow-sm"
+                          onClick={handleFilterSetClick}
                         >
-                          <BowArrow /> Start a session
+                          Apply Filters
                         </Button>
-                      </div> */}
-                      <SheetFooter>
-                        <SheetClose asChild>
-                          <Button
-                            variant="outline"
-                            className="hover:cursor-pointer"
-                          >
-                            Close
-                          </Button>
-                        </SheetClose>
                       </SheetFooter>
                     </SheetContent>
                   </Sheet>
                 </div>
 
-                <TabsContent value={activeTab}></TabsContent>
+                {/* Toolbar: Jump to Letter + Active Filters */}
+                <div className="flex flex-col gap-1.5 px-1 py-2 mt-0.5 mb-1 rounded-2xl bg-accent/30 dark:bg-slate-900/40 border border-border/40">
+                  {/* Jump to Letter */}
+                  <div className="flex items-center justify-between px-3">
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Jump to Letter</p>
+                    <Select
+                      value={filterStore[activeTab]?.alphabet || "a"}
+                      onValueChange={(val) => {
+                        dispatch(updateFilter({ tab: activeTab, filter: { alphabet: val } }));
+                        localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
+                      }}
+                    >
+                      <SelectTrigger className="w-16 h-8 text-xs font-bold uppercase shadow-sm hover:shadow-md bg-background border-border">
+                        <SelectValue placeholder="Letter" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[300px]">
+                        {"abcdefghijklmnopqrstuvwxyz".split("").map((letter) => (
+                          <SelectItem key={letter} value={letter} className="uppercase font-semibold text-xs">
+                            {letter}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* Jump to Letter bar */}
-                <div className="flex items-center px-1 justify-between rounded-xl">
-                  <p className="font-bold text-sm text-slate-600">Jump to Letter</p>
-                  <Select
-                    value={filterStore[activeTab]?.alphabet || "a"}
-                    onValueChange={(val) => {
-                      dispatch(updateFilter({ tab: activeTab, filter: { alphabet: val } }));
-                      localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
-                    }}
-                  >
-                    <SelectTrigger className="h-8 text-xs font-bold uppercase shadow-sm hover:shadow-md hover:cursor-pointer bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
-                      <SelectValue placeholder="Letter" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-[300px]">
-                      {"abcdefghijklmnopqrstuvwxyz".split("").map((letter) => (
-                        <SelectItem key={letter} value={letter} className="uppercase font-semibold text-xs">
-                          {letter}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  {/* Active Filters */}
+                  {activeFilters.length > 0 && (
+                    <>
+                      <div className="h-px bg-border/50 mx-3" />
+                      <div className="flex items-center gap-2 px-3 flex-wrap">
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider shrink-0">Filters</p>
+                        {activeFilters.map((f) => (
+                          <Badge variant="secondary" key={f} className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                            {f.toUpperCase()}
+                          </Badge>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
 
-                {/* Filter Badges */}
-                {activeFilters.length > 0 && (
-                  <div className="flex gap-1.5 mb-1 justify-start items-center px-1 flex-wrap">
-                    <p className="font-bold text-sm text-slate-600">Active filters</p>
-                    {activeFilters.map((f) => (
-                      <Badge variant="secondary" key={f} className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/40 dark:border-slate-700/40 text-slate-600 dark:text-slate-300">
-                        {f.toUpperCase()}
-                      </Badge>
-                    ))}
+                {isFetching ? (
+                  <div className="w-[375px] md:w-[500px] min-h-[400px] flex items-center justify-center mx-auto">
+                    <Loader size="md" />
                   </div>
+                ) : (
+                  <FlashcardDeck deck={data} deckId={activeTab} isLinear={true} mode="freestyle" />
                 )}
-
-                <FlashcardDeck deck={data} deckId={activeTab} isLinear={true} mode="freestyle" />
 
               </Tabs>
             </div>

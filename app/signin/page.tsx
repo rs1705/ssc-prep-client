@@ -19,7 +19,7 @@ const SigninPage = () => {
   }, [user, isLoading, router]);
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100vh-120px)] pt-16 pb-12 px-2 sm:px-6">
+    <div className="flex flex-col items-center min-h-[calc(100vh-200px)] py-4 sm:py-8 justify-center">
       <div className="w-full max-w-[540px] bg-card p-6 sm:p-12 rounded-[24px] border border-border shadow-sm flex flex-col gap-6">
         <SignInForm />
         
