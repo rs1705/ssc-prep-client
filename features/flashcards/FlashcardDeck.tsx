@@ -206,7 +206,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-30 -left-7 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
+              className={`absolute z-30 left-1.5 min-[450px]:-left-7 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
             >
               <MoveLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
@@ -256,7 +256,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
 
             {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-30 -right-7 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
+              className={`absolute z-30 right-1.5 min-[450px]:-right-7 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
@@ -311,8 +311,8 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
           </div>
         </div>
       ) : (
-        <div className="w-[375px] md:w-[500px] mx-auto transition-all duration-500 ease-in-out animate-in fade-in slide-in-from-bottom-4">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[350px] rounded-3xl bg-card border border-border shadow-sm">
+        <div className="w-[375px] md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
+          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[300px] rounded-3xl bg-card border border-border shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">No Cards Found</h3>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
