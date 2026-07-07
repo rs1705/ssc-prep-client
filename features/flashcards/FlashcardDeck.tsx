@@ -8,8 +8,6 @@ import { FlashCardInterface } from "@/lib/types";
 import { useSaveFlashcardInteractionsMutation, useGetStudyDeckQuery } from "@/redux/FlashcardApiSlice";
 
 import {
-  handleUserAction,
-  ActionType,
   initializeSession,
   setCurrentCard,
 } from "@/redux/sessionSlice";
@@ -20,6 +18,7 @@ interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId?: string;
   isLinear?: boolean;
+  mode?: "freestyle" | "study"
 }
 
 export const COLOR_SCHEMES = [
@@ -31,6 +30,14 @@ export const COLOR_SCHEMES = [
   { bg: "from-slate-50 to-slate-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-slate-600", accentBg: "bg-white/50 border-slate-200/80", barBg: "bg-gradient-to-r from-slate-400 to-slate-500", border: "border border-slate-300/80" },
   { bg: "from-amber-50 to-amber-200", textMain: "text-stone-800", textSecondary: "text-stone-500", accent: "text-amber-900", accentBg: "bg-white/50 border-amber-200/80", barBg: "bg-gradient-to-r from-amber-500 to-amber-600", border: "border border-amber-300/80" },
 ];
+
+export const BUTTON_ACTIONS = {
+  AGAIN: { label: "AGAIN", rating: 1, color: "hover:bg-red-50  border-red-300 bg-red-200" },
+  HARD: { label: "HARD", rating: 2, color: "hover:bg-orange-50  border-orange-300 bg-orange-200" },
+  GOOD: { label: "GOOD", rating: 3, color: "hover:bg-blue-50  border-blue-300 bg-blue-200" },
+  EASY: { label: "EASY", rating: 4, color: "hover:bg-emerald-50 border-emerald-300 bg-emerald-200" },
+} as const;
+export type ActionType = keyof typeof BUTTON_ACTIONS;
 
 /*
   REFERENCE: ORIGINAL DARK COLOR SCHEME
@@ -51,7 +58,7 @@ export const COLOR_SCHEMES = [
   - Text class: "absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
 */
 
-const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
+const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
   const [direction, setDirection] = useState(1);
@@ -133,7 +140,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
       }
     });
 
-    const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+    const pick = (arr: string[]) => arr[0];
 
     if (unknown.length > 0) return pick(unknown);
     if (newCards.length > 0) return pick(newCards);
@@ -143,7 +150,8 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
     return currentCardId;
   };
 
-  const onActionClick = (action: ActionType) => {
+  const onActionClick = (action: keyof typeof BUTTON_ACTIONS) => {
+    console.log(action);
     const card = deck.find((card) => card._id === currentCardId);
     if (!card) return;
 
@@ -152,13 +160,15 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
     const newHistory = [...cardHistory, currentCardId];
     setCardHistory(newHistory);
 
-    dispatch(handleUserAction({ cardId: card._id, action }));
-    saveInteraction({
-      userId: user?.uid,
-      cardId: card._id,
-      action,
-    });
-    const nextId = getNextCardId(newHistory);
+    if (mode === "study") {
+      saveInteraction({
+        cardId: card._id,
+        rating: BUTTON_ACTIONS[action].rating,
+      });
+    }
+    const currentIndex = deck.findIndex((c) => c._id === currentCardId);
+    const nextIndex = (currentIndex + 1) % deck.length;
+    const nextId = deck[nextIndex]._id;
 
     setTimeout(() => {
       dispatch(setCurrentCard({ cardId: nextId }));
@@ -167,34 +177,22 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
   };
 
   const onNextClick = () => {
-    if (!currentCardId) return;
+    if (!deck || deck.length === 0) return;
+    const currentIndex = deck.findIndex(c => c._id === currentCardId)
+    const nextIndex = (currentIndex + 1) % deck.length
     setDirection(1);
-    const newHistory = [...cardHistory, currentCardId];
-    setCardHistory(newHistory);
-    const nextId = getNextCardId(newHistory);
-    dispatch(setCurrentCard({ cardId: nextId }));
+    dispatch(setCurrentCard({ cardId: deck[nextIndex]._id }));
     setIsFlipped(false);
   };
 
   const onPrevClick = () => {
-    if (isLinear) {
-      if (!deck || deck.length === 0) return;
-      const currentIndex = deck.findIndex((c) => c._id === currentCardId);
-
-      setDirection(-1);
-      const newIndex = (currentIndex - 1 + deck.length) % deck.length;
-      dispatch(setCurrentCard({ cardId: deck[newIndex]._id }));
-      setIsFlipped(false);
-      return;
-    }
-
-    if (cardHistory.length === 0) return;
+    if (!deck || deck.length === 0) return;
+    const currentIndex = deck.findIndex((c) => c._id === currentCardId);
+    const prevIndex = (currentIndex - 1 + deck.length) % deck.length;
     setDirection(-1);
-    const prevId = cardHistory[cardHistory.length - 1];
-    setCardHistory((prev) => prev.slice(0, -1));
-    dispatch(setCurrentCard({ cardId: prevId }));
+    dispatch(setCurrentCard({ cardId: deck[prevIndex]._id }));
     setIsFlipped(false);
-  };
+  }
 
   const currentCard = deck.find((card) => card._id === currentCardId);
 
@@ -211,7 +209,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
             >
               <MoveLeft className="w-5 h-5" />
             </button>
-            
+
             {/* 3D PERSPECTIVE WRAPPER */}
             <div className="relative grid place-items-center w-full min-h-[400px] [perspective:1000px]">
               {currentCard ? (
@@ -265,35 +263,28 @@ const FlashcardDeck = ({ deck, deckId, isLinear }: FlashcardDeckProps) => {
             </button>
           </div>
           <div className="w-full">
-            <div className="w-full min-h-[40px] my-2">
+            <div className="w-full min-h-[40px] mt-2">
               {isFlipped && (
-                <div className="flex justify-between primary-buttons gap-0.5">
-                  <Button
-                    className="fade-up [animation-delay:0.05s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3 hover:font-semibold hover:cursor-pointer group rounded-xl"
-                    onClick={() => onActionClick("unknown")}
-                  >
-                    <X className="transition-transform duration-150 group-hover:-translate-y-1" />
-                    AGAIN
-                  </Button>
-                  <Button
-                    className="fade-up [animation-delay:0.30s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group rounded-xl"
-                    onClick={() => onActionClick("known")}
-                  >
-                    <Check className="transition-transform duration-150 group-hover:-translate-y-1" />
-                    GOOD
-                  </Button>
-                  <Button
-                    className="fade-up [animation-delay:0.55s] active:scale-95 transition-transform duration-100 hover:brightness-110 w-1/3  hover:font-semibold hover:cursor-pointer group rounded-xl"
-                    onClick={() => onActionClick("important")}
-                  >
-                    <Star className="hover:transition-transform duration-150 group-hover:-translate-y-1" />
-                    IMPORTANT
-                  </Button>
+                <div className="flex primary-buttons gap-1">
+                  {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map((actionKey) => {
+                    const actionConfig = BUTTON_ACTIONS[actionKey];
+                    return (
+                      <Button
+                        key={actionKey}
+                        variant="outline"
+                        className={`fade-up active:scale-95 transition-all duration-200 flex-1 hover:font-bold hover:cursor-pointer rounded-xl py-5 text-xs font-semibold ${actionConfig.color}`}
+                        onClick={() => onActionClick(actionKey)}
+                      >
+                        {actionConfig.label}
+                      </Button>
+                    );
+                  })}
                 </div>
+
               )}
             </div>
 
-            <div className="w-full mt-6 mb-2">
+            <div className="w-full mt-1 mb-2">
               <div className="relative h-4 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/80 shadow-inner">
                 {/* Unfilled text (Black/Slate-800) */}
                 <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider text-slate-800">

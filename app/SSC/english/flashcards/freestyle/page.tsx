@@ -98,37 +98,45 @@ const FreestylePage = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
-          <div className="mb-2">
-            <h1 className="text-3xl font-bold text-center">
-              🎲 Freestyle Mode 🎲
+        <div className="flex flex-col items-center w-full max-w-md mx-auto">
+          {/* Header */}
+          <div className="mb-2 text-center space-y-2 px-4">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 shadow-sm inline-block">
+              Freestyle
+            </span>
+            <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
+              🎲 Freestyle Practice🎲
             </h1>
-            <p className="text-center text-slate-600">
-              Your learning adventure starts here! Choose a category
+            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto leading-relaxed">
+              Choose a category, set your filter preferences, and master high-frequency SSC vocabulary.
             </p>
           </div>
 
           <div className="flex justify-center flex-col">
-            <div className="flex w-full max-w-md flex-row">
+            <div className="flex w-full max-w-md flex-row items-center gap-2.5 px-4 mb-2">
               <Tabs
                 defaultValue={activeTab}
                 onValueChange={(val) => setActiveTab(val)}
+                className="w-full"
               >
-                <TabsList className="w-full">
-                  {TABS.map((tab) => (
-                    <TabsTrigger
-                      key={tab}
-                      value={tab}
-                      className="hover:cursor-pointer hover:bg-white"
-                    >
-                      {tab.toUpperCase()}
-                    </TabsTrigger>
-                  ))}
+                <div className="flex flex-row items-center gap-2.5 w-full">
+                  <TabsList className="flex-1 dark:bg-slate-900/60 dark:border-slate-800/60 ">
+                    {TABS.map((tab) => (
+                      <TabsTrigger
+                        key={tab}
+                        value={tab}
+                        className="flex-1 hover:cursor-pointer hover:text-slate-900 dark:hover:text-white data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950 data-[state=active]:shadow-sm rounded-lg py-1.5 transition-all duration-200 font-bold uppercase text-xs text-slate-600 dark:text-slate-400 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white"
+                      >
+                        {tab}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+
                   <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
-                      <Button variant="ghost" className="hover:cursor-pointer">
-                        <SlidersVertical />
-                        Filters
+                      <Button variant="outline" className="h-10 hover:cursor-pointer border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all duration-200 rounded-xl px-3 flex items-center gap-1.5">
+                        <SlidersVertical className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                        <span className="font-semibold text-xs text-slate-700 dark:text-slate-300">Filters</span>
                       </Button>
                     </SheetTrigger>
                     <SheetContent>
@@ -214,13 +222,13 @@ const FreestylePage = () => {
                         <Button
                           className="w-[50%] hover:cursor-pointer"
                           onClick={handleFilterSetClick}
-                          variant="secondary"
+                          variant="default"
                         >
                           Apply
                         </Button>
                         <Button
                           className="w-[50%] hover:cursor-pointer"
-                          variant="secondary"
+                          variant="default"
                           onClick={handleFilterResetClick}
                         >
                           Clear
@@ -247,13 +255,13 @@ const FreestylePage = () => {
                       </SheetFooter>
                     </SheetContent>
                   </Sheet>
-                </TabsList>
+                </div>
 
                 <TabsContent value={activeTab}></TabsContent>
 
-                {/* A-Z Dropdown */}
-                <div className="flex flex-row items-center justify-between mb-2 px-4 w-full max-w-sm mx-auto">
-                  <p className="font-semibold text-slate-500">Jump to Letter</p>
+                {/* Jump to Letter bar */}
+                <div className="flex items-center px-1 justify-between rounded-xl">
+                  <p className="font-bold text-sm text-slate-600">Jump to Letter</p>
                   <Select
                     value={filterStore[activeTab]?.alphabet || "a"}
                     onValueChange={(val) => {
@@ -261,12 +269,12 @@ const FreestylePage = () => {
                       localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
                     }}
                   >
-                    <SelectTrigger className="w-[120px] font-semibold uppercase shadow-sm hover:shadow-md hover:cursor-pointer">
+                    <SelectTrigger className="h-8 text-xs font-bold uppercase shadow-sm hover:shadow-md hover:cursor-pointer bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
                       <SelectValue placeholder="Letter" />
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
                       {"abcdefghijklmnopqrstuvwxyz".split("").map((letter) => (
-                        <SelectItem key={letter} value={letter} className="uppercase font-semibold">
+                        <SelectItem key={letter} value={letter} className="uppercase font-semibold text-xs">
                           {letter}
                         </SelectItem>
                       ))}
@@ -274,16 +282,19 @@ const FreestylePage = () => {
                   </Select>
                 </div>
 
+                {/* Filter Badges */}
                 {activeFilters.length > 0 && (
-                  <div className="flex gap-2 mb-2 rounded-md font-semibold justify-center items-center px-4 text-center flex-wrap">
-                    <span className="text-sm text-slate-500">Filters:</span>
+                  <div className="flex gap-1.5 mb-1 justify-start items-center px-1 flex-wrap">
+                    <p className="font-bold text-sm text-slate-600">Active filters</p>
                     {activeFilters.map((f) => (
-                      <Badge variant="secondary" key={f}>{f.toUpperCase()}</Badge>
+                      <Badge variant="secondary" key={f} className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/40 dark:border-slate-700/40 text-slate-600 dark:text-slate-300">
+                        {f.toUpperCase()}
+                      </Badge>
                     ))}
                   </div>
                 )}
 
-                <FlashcardDeck deck={data} deckId={activeTab} isLinear={true} />
+                <FlashcardDeck deck={data} deckId={activeTab} isLinear={true} mode="freestyle" />
 
               </Tabs>
             </div>

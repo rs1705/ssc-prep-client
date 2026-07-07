@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { SectionCardProps } from "@/lib/types";
 import InfoDialog from "../info-dialog";
+import { useRouter } from "next/navigation";
 
 const SectionCard: React.FC<SectionCardProps> = ({
   title,
@@ -19,16 +20,38 @@ const SectionCard: React.FC<SectionCardProps> = ({
   linkTo,
   buttonText,
   knowMoreText,
+  icon,
 }: SectionCardProps) => {
+  const router = useRouter();
+  const isClickable = linkTo !== "#";
+
+  const handleCardClick = () => {
+    if (isClickable) {
+      router.push(linkTo);
+    }
+  };
+
   return (
-    <Card className="shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 w-full h-full flex flex-col border-slate-200 dark:border-slate-800">
+    <Card 
+      onClick={handleCardClick}
+      className={`group shadow-sm hover:shadow-md transition-all duration-300 w-full h-full flex flex-col border-border rounded-[18px] overflow-hidden ${
+        isClickable ? "hover:border-primary/30 cursor-pointer" : "opacity-80"
+      }`}
+    >
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+        {icon && (
+          <div className="text-3xl mb-2 transition-transform duration-300 origin-left group-hover:scale-125">
+            {icon}
+          </div>
+        )}
+        <CardTitle className="text-xl font-bold">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className="text-slate-500">{description}</p>
+      <CardContent className="flex-grow">
+        <p className="text-muted-foreground text-sm">{description}</p>
         {knowMoreText && (
-          <InfoDialog description={knowMoreText} title={title} />
+          <div className="mt-4">
+            <InfoDialog description={knowMoreText} title={title} />
+          </div>
         )}
       </CardContent>
       <CardFooter>
@@ -36,8 +59,12 @@ const SectionCard: React.FC<SectionCardProps> = ({
           href={linkTo}
           className="flex w-full items-center justify-center"
         >
-          <Button className="w-full justify-center cursor-pointer gap-2 group rounded-xl">
-            <Play className="w-4 h-4 transition-transform group-hover:scale-110" />
+          <Button 
+            variant={linkTo === "#" ? "outline" : "default"} 
+            disabled={linkTo === "#"} 
+            className="w-full justify-center cursor-pointer gap-2 group rounded-[12px] h-10"
+          >
+            {linkTo !== "#" && <Play className="w-4 h-4 transition-transform group-hover:scale-110" />}
             {buttonText}
           </Button>
         </Link>

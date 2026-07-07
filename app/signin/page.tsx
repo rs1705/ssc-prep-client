@@ -19,22 +19,22 @@ const SigninPage = () => {
   }, [user, isLoading, router]);
 
   return (
-    <div className="flex flex-col items-center text-center">
-      <div className="py-10 px-8 rounded-xl shadow-xl w-full sm:w-[65%] md:w-[480px] lg:w-[480px] xl:w-[480px]">
+    <div className="flex flex-col items-center min-h-[calc(100vh-120px)] pt-16 pb-12 px-2 sm:px-6">
+      <div className="w-full max-w-[540px] bg-card p-6 sm:p-12 rounded-[24px] border border-border shadow-sm flex flex-col gap-6">
         <SignInForm />
+        
         <div className="flex items-center gap-4">
-          <div className="flex-1 h-px bg-gray-300" />
-          <span className="text-gray-500 font-medium">OR</span>
-          <div className="flex-1 h-px bg-gray-300" />
+          <div className="flex-1 h-px bg-border" />
+          <span className="text-muted-foreground text-sm font-medium uppercase tracking-wider">or</span>
+          <div className="flex-1 h-px bg-border" />
         </div>
-        <div>
-          <SignInWithGoogle onClickSignIn={signInWithGoogle} />
-        </div>
-        <br />
-        <div>
-          <p className="text-md">
-            Don&apos;t have any account yet?&nbsp;
-            <Link href="/signup" className="font-semibold underline">
+        
+        <SignInWithGoogle onClickSignIn={signInWithGoogle} />
+        
+        <div className="text-center mt-2">
+          <p className="text-sm text-muted-foreground">
+            Don&apos;t have an account?&nbsp;
+            <Link href="/signup" className="font-semibold text-primary hover:underline transition-all">
               Sign up
             </Link>
           </p>

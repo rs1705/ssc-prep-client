@@ -5,32 +5,36 @@ import React from "react";
 const MathsHomePage = () => {
   const sections: SectionCardProps[] = [
     {
-      title: "📐 Mental Maths",
+      icon: "📐",
+      title: "Mental Maths",
       description:
         "Improve your calculation speed with timed sprints.",
-      linkTo: "/SSC/maths/mental-maths",
-      buttonText: "Become mental",
+      linkTo: "#",
+      buttonText: "Coming Soon",
     },
     {
-      title: "💡 Formulas & Tricks",
+      icon: "💡",
+      title: "Formulas & Tricks",
       description:
         "Learn and practice key formulas and shortcut tricks to solve problems faster.",
-      linkTo: "/SSC/maths/formulas-tricks",
-      buttonText: "Practice",
+      linkTo: "#",
+      buttonText: "Coming Soon",
     },
     {
-      title: "🎯 Topic Practice",
+      icon: "🎯",
+      title: "Topic Practice",
       description:
         "Practice chapter-wise questions to master each topic.",
-      linkTo: "/SSC/maths/topic-practice",
-      buttonText: "Practice",
+      linkTo: "#",
+      buttonText: "Coming Soon",
     },
     {
-      title: "🧾 Mock Tests",
+      icon: "🧾",
+      title: "Mock Tests",
       description:
         "Attempt timed mock tests to simulate exam conditions and track your progress.",
-      linkTo: "/SSC/maths/mock-tests",
-      buttonText: "Attempt Now",
+      linkTo: "#",
+      buttonText: "Coming Soon",
     },
   ];
   return (

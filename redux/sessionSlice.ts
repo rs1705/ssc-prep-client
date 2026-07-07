@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { ActionType } from "@/features/flashcards/FlashcardDeck";
 type CardStatus = "new" | "unknown" | "known";
 type CardMeta = {
   status: CardStatus;
@@ -16,7 +16,6 @@ type SessionState = {
   currentCardId: string | null;
 };
 
-export type ActionType = "known" | "unknown" | "important";
 
 export type HandleActionPayload = {
   cardId: string;
@@ -51,16 +50,12 @@ const sessionSlice = createSlice({
         };
       }
       const card = state.cardMeta[cardId];
-      if (userAction === "important") {
-        card.isImportant = !card.isImportant;
-        return;
-      }
-      if (userAction === "unknown") {
+      if (userAction === "AGAIN") {
         card.seenCount += 1;
         card.correctCount = 0;
         card.status = "unknown";
       }
-      if (userAction === "known") {
+      if (userAction === "HARD") {
         card.seenCount += 1;
         card.correctCount += 1;
         card.status = "known";

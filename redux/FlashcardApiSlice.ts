@@ -56,7 +56,6 @@ export const flashcardApi = createApi({
           rating,
         },
       }),
-      invalidatesTags: ["Interactions"],
     }),
 
     getFlashcardInteractions: builder.query<any, void>({
