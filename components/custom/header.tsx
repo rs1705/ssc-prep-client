@@ -22,7 +22,6 @@ import {
   LogIn,
   LucideLogOut,
   UserPlus,
-  Menu,
   Sun,
   Moon,
   ChevronDown
@@ -40,9 +39,13 @@ const Header = () => {
 
   const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
     const isDark = theme === "dark";
+    const doc = document as unknown as {
+      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
+    };
+
     if (
       typeof document === "undefined" ||
-      !(document as any).startViewTransition ||
+      !doc.startViewTransition ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       setTheme(isDark ? "light" : "dark");
@@ -56,7 +59,7 @@ const Header = () => {
       Math.max(y, window.innerHeight - y)
     );
 
-    const transition = (document as any).startViewTransition(() => {
+    const transition = doc.startViewTransition(() => {
       setTheme(isDark ? "light" : "dark");
     });
 
