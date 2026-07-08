@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 
@@ -19,14 +19,12 @@ import { Button } from "../ui/button";
 import {
   BookOpen,
   HomeIcon,
-  LogIn,
   LucideLogOut,
   UserPlus,
   Sun,
   Moon,
   ChevronDown
 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Logo } from "./logo";
 
 const Header = () => {
@@ -36,6 +34,18 @@ const Header = () => {
 
   const [hoveredSubject, setHoveredSubject] = useState<"english" | "maths" | "reasoning" | "gk">("english");
   const [activeMobileSubject, setActiveMobileSubject] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
 
   const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
     const isDark = theme === "dark";
@@ -86,7 +96,7 @@ const Header = () => {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <Logo />
+          <Logo onClick={() => setIsMobileMenuOpen(false)} />
 
           {/* Desktop Menu */}
           <div className="hidden sm:flex items-center gap-6">
@@ -408,52 +418,53 @@ const Header = () => {
               <span className="sr-only">Toggle theme</span>
             </Button>
 
-            <Sheet>
-              {user ? (
-                <SheetTrigger asChild>
-                  <button className="flex items-center justify-center rounded-full hover:opacity-85 transition-opacity focus:outline-none focus:ring-0 mr-1">
-                    <Avatar className="w-8 h-8 border border-border/50 shadow-sm">
-                      <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
-                      <AvatarFallback>U</AvatarFallback>
-                    </Avatar>
-                  </button>
-                </SheetTrigger>
-              ) : (
-                <Link href="/signin" className="mr-1.5">
-                  <Button variant="ghost" size="sm" className="h-9 px-3.5 text-sm font-semibold rounded-xl border border-border hover:bg-accent/60 transition-colors shadow-sm">
-                    Sign In
-                  </Button>
-                </Link>
-              )}
-
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="w-11 h-11 flex flex-col justify-center items-center gap-[4.5px] hover:cursor-pointer">
-                  <span className="w-6 h-[2px] bg-foreground rounded-full"></span>
-                  <span className="w-6 h-[2px] bg-foreground rounded-full"></span>
-                  <span className="w-6 h-[2px] bg-foreground rounded-full"></span>
-                  <span className="sr-only">Open menu</span>
+            {user ? (
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="flex items-center justify-center rounded-full hover:opacity-85 transition-opacity focus:outline-none focus:ring-0 mr-1"
+              >
+                <Avatar className="w-8 h-8 border border-border/50 shadow-sm">
+                  <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+              </button>
+            ) : (
+              <Link href="/signin" className="mr-1.5" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button variant="ghost" size="sm" className="h-9 px-3.5 text-sm font-semibold rounded-xl border border-border hover:bg-accent/60 transition-colors shadow-sm">
+                  Sign In
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <SheetHeader>
-                  <SheetTitle className="text-left flex items-center justify-start mb-2"><Logo /></SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-2 mt-6">
-                  <SheetClose asChild>
-                    <Link
-                      href="/"
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm ${pathname === "/"
-                        ? "bg-accent/80 text-foreground font-bold"
-                        : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
-                        }`}
-                    >
-                      <HomeIcon className={`w-4 h-4 ${pathname === "/" ? "text-primary" : ""}`} />
-                      Home
-                    </Link>
-                  </SheetClose>
+              </Link>
+            )}
 
-                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl my-1 border border-border/40 max-h-[380px] overflow-y-auto">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Subjects</p>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-11 h-11 flex flex-col justify-center items-center gap-[4.5px] hover:cursor-pointer"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <span className={`w-6 h-[2px] bg-foreground rounded-full transition-all duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-[6.5px]" : ""}`}></span>
+              <span className={`w-6 h-[2px] bg-foreground rounded-full transition-all duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`}></span>
+              <span className={`w-6 h-[2px] bg-foreground rounded-full transition-all duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-[6.5px]" : ""}`}></span>
+              <span className="sr-only">Open menu</span>
+            </Button>
+
+            {isMobileMenuOpen && (
+              <div className="fixed top-16 left-0 right-0 bottom-0 w-full h-[calc(100vh-64px)] bg-background z-40 border-t border-border flex flex-col animate-fadeIn overflow-y-auto">
+                <div className="flex flex-col gap-2 mt-6">
+                  <Link
+                    href="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-8 py-2.5 transition-all text-sm ${pathname === "/"
+                      ? "bg-accent/80 text-foreground font-bold"
+                      : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
+                      }`}
+                  >
+                    <HomeIcon className={`w-4 h-4 ${pathname === "/" ? "text-primary" : ""}`} />
+                    Home
+                  </Link>
+
+                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl mx-4 my-1 border border-border/40 max-h-[380px] overflow-y-auto">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 px-3">Subjects</p>
 
                     {/* English */}
                     <div className="flex flex-col gap-0.5">
@@ -464,37 +475,26 @@ const Header = () => {
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg">👩🏼‍🎓</span>
-                          <span className="text-sm font-semibold text-foreground">English</span>
+                          <span className="text-sm font-semibold">English</span>
                         </div>
-                        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${activeMobileSubject === "english" ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "english" ? "rotate-180" : ""}`} />
                       </div>
                       {activeMobileSubject === "english" && (
                         <div className="pl-10 flex flex-col gap-1.5 pb-2 pt-1 animate-fadeIn">
-                          <SheetClose asChild>
-                            <Link
-                              href="/SSC/english"
-                              className="text-sm font-semibold text-primary hover:underline py-0.5 block"
-                            >
-                              Go to English Homepage
-                            </Link>
-                          </SheetClose>
-                          <SheetClose asChild>
-                            <Link
-                              href="/SSC/english/flashcards"
-                              className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 block"
-                            >
-                              🎴 Flashcards
-                            </Link>
-                          </SheetClose>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            ☠️ Hangman <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🔀 Word Shuffle <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🧠 Crossword <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
+                          <Link
+                            href="/SSC/english"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                          >
+                            Go to English Homepage
+                          </Link>
+                          <Link
+                            href="/SSC/english/flashcards"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 block"
+                          >
+                            🎴 Flashcards
+                          </Link>
                         </div>
                       )}
                     </div>
@@ -508,31 +508,21 @@ const Header = () => {
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg">🧮</span>
-                          <span className="text-sm font-semibold text-foreground">Maths</span>
+                          <span className="text-sm font-semibold">Maths</span>
                         </div>
-                        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${activeMobileSubject === "maths" ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "maths" ? "rotate-180" : ""}`} />
                       </div>
                       {activeMobileSubject === "maths" && (
                         <div className="pl-10 flex flex-col gap-1.5 pb-2 pt-1 animate-fadeIn">
-                          <SheetClose asChild>
-                            <Link
-                              href="/SSC/maths"
-                              className="text-sm font-semibold text-primary hover:underline py-0.5 block"
-                            >
-                              Go to Maths Homepage
-                            </Link>
-                          </SheetClose>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            📐 Mental Maths <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            💡 Formulas & Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🎯 Topic Practice <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🧾 Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
+                          <Link
+                            href="/SSC/maths"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                          >
+                            Go to Maths Homepage
+                          </Link>
+                          <span className="text-sm font-semibold text-muted-foreground/60 py-0.5 flex items-center gap-2">
+                            🎴 Flashcards <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-muted-foreground px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider scale-90">Soon</span>
                           </span>
                         </div>
                       )}
@@ -547,31 +537,21 @@ const Header = () => {
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg">🧠</span>
-                          <span className="text-sm font-semibold text-foreground">Reasoning</span>
+                          <span className="text-sm font-semibold">Reasoning</span>
                         </div>
-                        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${activeMobileSubject === "reasoning" ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "reasoning" ? "rotate-180" : ""}`} />
                       </div>
                       {activeMobileSubject === "reasoning" && (
                         <div className="pl-10 flex flex-col gap-1.5 pb-2 pt-1 animate-fadeIn">
-                          <SheetClose asChild>
-                            <Link
-                              href="/SSC/reasoning"
-                              className="text-sm font-semibold text-primary hover:underline py-0.5 block"
-                            >
-                              Go to Reasoning Homepage
-                            </Link>
-                          </SheetClose>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🧩 Logic Puzzles <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🧠 Analytical Reasoning <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🎲 Spatial & Non-Verbal <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🧾 Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
+                          <Link
+                            href="/SSC/reasoning"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                          >
+                            Go to Reasoning Homepage
+                          </Link>
+                          <span className="text-sm font-semibold text-muted-foreground/60 py-0.5 flex items-center gap-2">
+                            🎴 Flashcards <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-muted-foreground px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider scale-90">Soon</span>
                           </span>
                         </div>
                       )}
@@ -586,100 +566,80 @@ const Header = () => {
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-lg">🌍</span>
-                          <span className="text-sm font-semibold text-foreground">GK</span>
+                          <span className="text-sm font-semibold">Gen Knowledge</span>
                         </div>
-                        <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${activeMobileSubject === "gk" ? "rotate-180" : ""}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "gk" ? "rotate-180" : ""}`} />
                       </div>
                       {activeMobileSubject === "gk" && (
                         <div className="pl-10 flex flex-col gap-1.5 pb-1.5 pt-1 animate-fadeIn">
-                          <SheetClose asChild>
-                            <Link
-                              href="/SSC/gk"
-                              className="text-sm font-semibold text-primary hover:underline py-0.5 block"
-                            >
-                              Go to GK Homepage
-                            </Link>
-                          </SheetClose>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            📰 Current Affairs <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🏛️ History & Polity <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🔬 General Science <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 block select-none cursor-not-allowed">
-                            🧾 Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-1">(Soon)</span>
+                          <Link
+                            href="/SSC/gk"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                          >
+                            Go to GK Homepage
+                          </Link>
+                          <span className="text-sm font-semibold text-muted-foreground/60 py-0.5 flex items-center gap-2">
+                            🎴 Flashcards <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-muted-foreground px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider scale-90">Soon</span>
                           </span>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <SheetClose asChild>
-                    <Link
-                      href="/about"
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm ${pathname === "/about"
-                        ? "bg-accent/80 text-foreground font-bold"
-                        : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
-                        }`}
-                    >
-                      <BookOpen className={`w-4 h-4 ${pathname === "/about" ? "text-primary" : ""}`} />
-                      About
-                    </Link>
-                  </SheetClose>
+                  <Link
+                    href="/about"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-8 py-2.5 transition-all text-sm ${pathname === "/about"
+                      ? "bg-accent/80 text-foreground font-bold"
+                      : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
+                      }`}
+                  >
+                    <BookOpen className={`w-4 h-4 ${pathname === "/about" ? "text-primary" : ""}`} />
+                    About
+                  </Link>
 
-                  <div className="h-px w-full bg-border my-4"></div>
-
-                  {user ? (
-                    <div className="flex flex-col gap-2 px-4">
-                      <div className="p-4 rounded-2xl bg-accent/30 border border-border/50 flex flex-col gap-3 mb-2">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">My Account</p>
-                        <div className="flex items-center gap-3">
-                          <Avatar className="w-8 h-8 border border-border/50 shadow-sm">
-                            <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
-                            <AvatarFallback>U</AvatarFallback>
-                          </Avatar>
-                          <span className="font-semibold text-sm text-foreground tracking-tight">
-                            {user.displayName?.toUpperCase() || 'USER'}
-                          </span>
+                  <div className="mt-8 border-t border-border/40 pt-6">
+                    {user ? (
+                      <div className="flex flex-col gap-2 px-8">
+                        <div className="p-4 rounded-2xl bg-accent/30 border border-border/50 flex flex-col gap-3 mb-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">My Account</p>
+                          <div className="flex items-center gap-3">
+                            <Avatar className="w-8 h-8 border border-border/50 shadow-sm">
+                              <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
+                              <AvatarFallback>U</AvatarFallback>
+                            </Avatar>
+                            <span className="font-semibold text-sm text-foreground tracking-tight">
+                              {user.displayName?.toUpperCase() || 'USER'}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <SheetClose asChild>
                         <Button
-                          onClick={logout}
+                          onClick={() => {
+                            logout();
+                            setIsMobileMenuOpen(false);
+                          }}
                           variant="outline"
-                          className="w-fit mx-auto justify-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold border-red-200/80 dark:border-red-950/80 text-red-600 hover:text-red-700 hover:bg-red-50/80 dark:hover:bg-red-950/20 transition-all shadow-sm"
+                          className="w-fit mx-auto justify-center gap-2 h-10 px-5 rounded-xl text-sm font-bold border-red-200/80 dark:border-red-950/80 text-red-600 hover:text-red-700 hover:bg-red-50/80 dark:hover:bg-red-950/20 transition-all shadow-sm"
                         >
-                          <LucideLogOut className="w-3.5 h-3.5" />
+                          <LucideLogOut className="w-4 h-4" />
                           Sign Out
                         </Button>
-                      </SheetClose>
-                    </div>
-                  ) : (
-                    <div className="flex gap-3 w-full px-4">
-                      <SheetClose asChild>
-                        <Link href="/signin" className="flex-1">
-                          <Button variant="outline" className="w-full justify-center gap-2 h-11 px-4 rounded-xl text-sm font-bold border-border hover:bg-accent hover:text-accent-foreground transition-all shadow-sm">
-                            <LogIn className="w-4 h-4" />
-                            Sign In
-                          </Button>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/signup" className="flex-1">
-                          <Button className="w-full justify-center gap-2 h-11 px-4 rounded-xl text-sm font-bold shadow-sm transition-all hover:opacity-90">
+                      </div>
+                    ) : (
+                      <div className="flex w-full px-8 justify-center">
+                        <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                          <Button className="justify-center gap-2 h-10 px-5 rounded-xl text-sm font-bold shadow-sm transition-all hover:opacity-90">
                             <UserPlus className="w-4 h-4" />
                             Sign Up
                           </Button>
                         </Link>
-                      </SheetClose>
-                    </div>
-                  )}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </SheetContent>
-            </Sheet>
+              </div>
+            )}
           </div>
         </div>
       </div>

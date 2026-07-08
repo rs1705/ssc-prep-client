@@ -28,7 +28,7 @@ const FsrsPage = () => {
                     </p>
                 </div>
 
-                <div className="w-[375px] md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
+                <div className="w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
                     <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl bg-card border border-border shadow-sm">
                         <span className="text-5xl mb-4 select-none animate-pulse">🔒</span>
                         <h3 className="text-lg font-bold text-foreground mb-1.5">Sign In Required</h3>

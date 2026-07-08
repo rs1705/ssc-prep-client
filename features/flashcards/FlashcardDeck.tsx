@@ -200,15 +200,15 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
   return (
     <>
       {deck.length > 0 ? (
-        <div className="flex flex-col items-center w-[375px] md:w-[500px] mx-auto">
+        <div className="flex flex-col items-center w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto">
           <div className="relative w-full min-h-[400px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-30 left-1.5 min-[450px]:-left-7 md:-left-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
+              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full text-slate-800 shadow-md items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "md:hidden" : ""} bg-white opacity-90 hover:opacity-100`}
             >
-              <MoveLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              <MoveLeft className="w-6 h-6" />
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
@@ -217,8 +217,19 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
                 <AnimatePresence custom={direction}>
                   <motion.div
                     key={`${currentCardId}-${navCount}`}
-                    className="row-start-1 col-start-1 w-full"
+                    className="row-start-1 col-start-1 w-full cursor-grab active:cursor-grabbing select-none"
                     custom={direction}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.7}
+                    onDragEnd={(event, info) => {
+                      const swipeThreshold = 80;
+                      if (info.offset.x < -swipeThreshold) {
+                        onNextClick();
+                      } else if (info.offset.x > swipeThreshold) {
+                        onPrevClick();
+                      }
+                    }}
                     initial={{
                       x: direction > 0 ? 250 : -250,
                       opacity: 0,
@@ -256,11 +267,11 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
 
             {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-30 right-1.5 min-[450px]:-right-7 md:-right-16 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 rounded-full text-slate-800 shadow-md flex items-center justify-center transition-all duration-200 sm:hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "hidden" : ""} ${isFlipped ? "bg-white/30 backdrop-blur-md opacity-40 sm:bg-white sm:opacity-90 sm:hover:bg-white sm:hover:opacity-100" : "bg-white opacity-90 sm:hover:opacity-100"}`}
+              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full text-slate-800 shadow-md items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "md:hidden" : ""} bg-white opacity-90 hover:opacity-100`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
-              <MoveRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              <MoveRight className="w-6 h-6" />
             </button>
           </div>
           <div className="w-full">
@@ -301,7 +312,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
                 >
                   {/* Filled text (Pure White) - Locked to full progress bar width to prevent shifting */}
                   <div
-                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white w-[358px] md:w-[478px]"
+                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white w-[calc(100vw-34px)] min-[375px]:w-[373px] md:w-[498px]"
                   >
                     CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
                   </div>
@@ -311,7 +322,7 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
           </div>
         </div>
       ) : (
-        <div className="w-[375px] md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
+        <div className="w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
           <div className="flex flex-col items-center justify-center text-center p-8 min-h-[300px] rounded-3xl bg-card border border-border shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">No Cards Found</h3>

@@ -9,9 +9,10 @@ const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 interface LogoProps {
   className?: string;
+  onClick?: () => void;
 }
 
-export const Logo = ({ className = "" }: LogoProps) => {
+export const Logo = ({ className = "", onClick }: LogoProps) => {
   const [animationData, setAnimationData] = useState<object | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -32,6 +33,7 @@ export const Logo = ({ className = "" }: LogoProps) => {
       className={`flex items-center gap-2 group ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       {/* Icon: Rocket in Blue Box */}
       <div className="bg-blue-700 rounded-lg p-1.5 shadow-md flex items-center justify-center transition-transform group-hover:scale-105 group-hover:-translate-y-0.5 overflow-hidden w-8 h-8">
