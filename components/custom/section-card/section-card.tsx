@@ -34,7 +34,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
   return (
     <Card 
       onClick={handleCardClick}
-      className={`group shadow-sm hover:shadow-md transition-all duration-300 w-full h-full flex flex-col border-border rounded-[18px] overflow-hidden ${
+      className={`group shadow-sm hover:shadow-md transition-all duration-300 w-full h-full flex flex-col border-border rounded-[18px] overflow-hidden select-none ${
         isClickable ? "hover:border-primary/30 cursor-pointer" : "opacity-80"
       }`}
     >

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 //ui imports
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -97,17 +98,10 @@ const FreestylePage = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col items-center w-full max-w-md sm:max-w-xl md:max-w-2xl mx-auto">
-          {/* Header */}
-          <div className="mb-6 text-center px-4 max-w-2xl mx-auto">
-            <h1 className="text-2xl font-bold tracking-tight mb-2 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
-              Freestyle Practice
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">
-              Pick a category, apply filters, and start practising.
-            </p>
-          </div>
-
+        <TopicPageLayout
+          title="Freestyle Practice"
+          description="Pick a category, apply filters, and start practising."
+        >
           <div className="flex justify-center flex-col">
             <div className="flex w-full max-w-md sm:max-w-xl md:max-w-2xl flex-row items-center gap-2.5 px-4">
               <Tabs
@@ -155,7 +149,7 @@ const FreestylePage = () => {
                               <Select
                                 value={
                                   draftFilters[
-                                    key as keyof Omit<TabFilter, "highFrequency">
+                                  key as keyof Omit<TabFilter, "highFrequency">
                                   ]
                                 }
                                 onValueChange={(val) => handleSelectChange(key, val)}
@@ -273,7 +267,7 @@ const FreestylePage = () => {
               </Tabs>
             </div>
           </div>
-        </div>
+        </TopicPageLayout>
       )}
     </div>
   );

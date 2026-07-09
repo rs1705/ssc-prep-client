@@ -9,8 +9,8 @@ const MathsHomePage = () => {
       title: "Mental Maths",
       description:
         "Improve your calculation speed with timed sprints.",
-      linkTo: "#",
-      buttonText: "Coming Soon",
+      linkTo: "/SSC/maths/mental-maths",
+      buttonText: "Start",
     },
     {
       icon: "💡",

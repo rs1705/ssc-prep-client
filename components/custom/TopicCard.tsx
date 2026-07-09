@@ -1,0 +1,78 @@
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Play, ArrowRight } from "lucide-react";
+
+export interface TopicCardProps {
+  name: string;
+  emoji: string;
+  description: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  stats: string;
+  onStartClick?: () => void;
+}
+
+export const TopicCard = ({
+  name,
+  emoji,
+  description,
+  difficulty,
+  stats,
+  onStartClick,
+}: TopicCardProps) => {
+  const getDifficultyStyles = (diff: "Easy" | "Medium" | "Hard") => {
+    switch (diff) {
+      case "Easy":
+        return "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400";
+      case "Medium":
+        return "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400";
+      case "Hard":
+        return "bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400";
+    }
+  };
+
+  return (
+    <div className="group relative flex flex-col justify-between p-5 rounded-3xl bg-card border border-border shadow-xs hover:shadow-md hover:border-primary/30 hover:ring-1 hover:ring-primary/30 transition-all duration-300 ease-out hover:-translate-y-0.5 animate-in fade-in zoom-in-95 select-none">
+      <div>
+        {/* Card Header Info */}
+        <div className="flex items-start justify-between mb-3.5">
+          <div className="flex items-center gap-3">
+            {/* Emoji box */}
+            <div className="flex items-center justify-center w-10 h-10 rounded-2xl bg-blue-700/10 border border-blue-700/20 text-blue-700 dark:text-blue-400 font-extrabold text-lg select-none">
+              {emoji}
+            </div>
+            <h3 className="font-bold text-foreground text-base tracking-tight">
+              {name}
+            </h3>
+          </div>
+
+          {/* Difficulty Badge */}
+          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${getDifficultyStyles(difficulty)}`}>
+            {difficulty}
+          </span>
+        </div>
+
+        {/* Description */}
+        <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+          {description}
+        </p>
+      </div>
+
+      {/* Bottom Row Controls */}
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/40">
+        <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 bg-accent/20 px-2.5 py-1 rounded-lg">
+          {stats}
+        </span>
+
+        <Button
+          size="sm"
+          onClick={onStartClick}
+          className="h-8 px-3 rounded-lg text-xs font-bold gap-1 shadow-xs hover:shadow-sm hover:translate-x-0.5 transition-all hover:cursor-pointer"
+        >
+          <Play className="w-3 h-3 fill-current" />
+          Start
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+        </Button>
+      </div>
+    </div>
+  );
+};
