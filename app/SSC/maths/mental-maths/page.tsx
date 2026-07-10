@@ -2,6 +2,7 @@
 
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { TopicCard } from "@/components/custom/TopicCard";
+import { useRouter } from "next/navigation";
 
 interface MathTopic {
     id: string;
@@ -104,6 +105,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
 ];
 
 const MentalMaths = () => {
+    const router = useRouter()
     return (
         <TopicPageLayout
             title="Mental Maths"
@@ -118,7 +120,7 @@ const MentalMaths = () => {
                         description={topic.description}
                         difficulty={topic.difficulty}
                         stats={topic.stats}
-                        onStartClick={() => console.log(`Starting ${topic.id}`)}
+                        onStartClick={() => router.push(`/SSC/maths/mental-maths/${topic.id}`)}
                     />
                 ))}
             </div>
