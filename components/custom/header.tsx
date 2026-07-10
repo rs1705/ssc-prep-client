@@ -230,9 +230,14 @@ const Header = () => {
                               </NavigationMenuLink>
                               <ul className="flex flex-col gap-2">
                                 <li>
-                                  <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>📐</span> Mental Maths <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
-                                  </span>
+                                  <NavigationMenuLink asChild>
+                                    <Link
+                                      href="/SSC/maths/mental-maths"
+                                      className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2"
+                                    >
+                                      <span>📐</span> Mental Maths
+                                    </Link>
+                                  </NavigationMenuLink>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
@@ -484,17 +489,26 @@ const Header = () => {
                           <Link
                             href="/SSC/english"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                            className="text-xs font-bold uppercase tracking-wider text-primary hover:underline pb-1"
                           >
                             Go to English Homepage
                           </Link>
                           <Link
                             href="/SSC/english/flashcards"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 block"
+                            className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 flex items-center gap-2"
                           >
-                            🎴 Flashcards
+                            <span>🎴</span> Flashcards
                           </Link>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>☠️</span> Hangman <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🔀</span> Word Shuffle <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🧠</span> Crossword <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
                         </div>
                       )}
                     </div>
@@ -517,12 +531,25 @@ const Header = () => {
                           <Link
                             href="/SSC/maths"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                            className="text-xs font-bold uppercase tracking-wider text-primary hover:underline pb-1"
                           >
                             Go to Maths Homepage
                           </Link>
-                          <span className="text-sm font-semibold text-muted-foreground/60 py-0.5 flex items-center gap-2">
-                            🎴 Flashcards <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-muted-foreground px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider scale-90">Soon</span>
+                          <Link
+                            href="/SSC/maths/mental-maths"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 flex items-center gap-2"
+                          >
+                            <span>📐</span> Mental Maths
+                          </Link>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>💡</span> Formulas & Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🎯</span> Topic Practice <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}
@@ -546,12 +573,21 @@ const Header = () => {
                           <Link
                             href="/SSC/reasoning"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                            className="text-xs font-bold uppercase tracking-wider text-primary hover:underline pb-1"
                           >
                             Go to Reasoning Homepage
                           </Link>
-                          <span className="text-sm font-semibold text-muted-foreground/60 py-0.5 flex items-center gap-2">
-                            🎴 Flashcards <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-muted-foreground px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider scale-90">Soon</span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🧩</span> Logic Puzzles <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🧠</span> Analytical Reasoning <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🎲</span> Spatial & Non-Verbal <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}
@@ -575,12 +611,21 @@ const Header = () => {
                           <Link
                             href="/SSC/gk"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="text-sm font-semibold text-primary hover:underline py-0.5 block"
+                            className="text-xs font-bold uppercase tracking-wider text-primary hover:underline pb-1"
                           >
                             Go to GK Homepage
                           </Link>
-                          <span className="text-sm font-semibold text-muted-foreground/60 py-0.5 flex items-center gap-2">
-                            🎴 Flashcards <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-muted-foreground px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider scale-90">Soon</span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>📰</span> Current Affairs <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🏛️</span> History & Polity <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🔬</span> General Science <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                          </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                            <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}

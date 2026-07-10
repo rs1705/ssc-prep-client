@@ -4,9 +4,6 @@ const DIFFICULTY = {
     HARD: "HARD",
 }
 
-const TOPICS = {
-
-}
 
 interface RangeConfig {
     easyMin: number;

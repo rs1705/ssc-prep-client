@@ -1,5 +1,6 @@
 import { SectionCardProps } from "@/lib/types";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
 
 const MathsHomePage = () => {
@@ -38,19 +39,12 @@ const MathsHomePage = () => {
     },
   ];
   return (
-    <>
-      <div className="text-center mb-8 max-w-2xl mx-auto">
-
-        <h1 className="text-4xl text-center font-bold mb-4 tracking-tight">
-          Mathematics
-        </h1>
-        <p className="text-center text-lg text-slate-500 dark:text-slate-400">
-          Think you&apos;re fast? Prove it. Drop the calculator, beat the clock, and leave the competition calculating their losses.
-        </p>
-      </div>
-
+    <TopicPageLayout
+      title="Mathematics"
+      description="Think you're fast? Prove it. Drop the calculator, beat the clock, and leave the competition calculating their losses."
+    >
       <SectionCardGrid sections={sections} />
-    </>
+    </TopicPageLayout>
   );
 };
 

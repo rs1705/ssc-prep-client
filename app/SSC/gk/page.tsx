@@ -1,5 +1,6 @@
 import { SectionCardProps } from "@/lib/types";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
 
 const GKHomePage = () => {
@@ -34,18 +35,12 @@ const GKHomePage = () => {
     },
   ];
   return (
-    <>
-      <div className="text-center mb-8 max-w-2xl mx-auto">
-        <h1 className="text-4xl text-center font-bold mb-4 tracking-tight">
-          General Knowledge
-        </h1>
-        <p className="text-center text-lg text-slate-500 dark:text-slate-400">
-          Knowledge is power. Build a massive factual arsenal to conquer the highest-scoring section of the exam in record time.
-        </p>
-      </div>
-     
+    <TopicPageLayout
+      title="General Knowledge"
+      description="Knowledge is power. Build a massive factual arsenal to conquer the highest-scoring section of the exam in record time."
+    >
       <SectionCardGrid sections={sections} />
-    </>
+    </TopicPageLayout>
   );
 };
 

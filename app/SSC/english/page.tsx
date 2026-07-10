@@ -1,5 +1,6 @@
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import { SectionCardProps } from "@/lib/types";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
 const EnglishHomePage = () => {
   const sections: SectionCardProps[] = [
@@ -38,18 +39,12 @@ const EnglishHomePage = () => {
   ];
 
   return (
-    <>
-      <div className="text-center mb-8 max-w-2xl mx-auto">
-        <h1 className="text-4xl text-center font-bold mb-4 tracking-tight">
-          English
-        </h1>
-        <p className="text-center text-lg text-slate-500 dark:text-slate-400">
-          Explore interactive tools and activities to boost your vocabulary, grammar, and comprehension for exam success.
-        </p>
-      </div>
-
+    <TopicPageLayout
+      title="English"
+      description="Explore interactive tools and activities to boost your vocabulary, grammar, and comprehension for exam success."
+    >
       <SectionCardGrid sections={sections} />
-    </>
+    </TopicPageLayout>
   );
 };
 

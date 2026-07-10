@@ -1,11 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Rocket } from "lucide-react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
-// Dynamically import Lottie to prevent Server-Side Rendering (SSR) issues
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 interface LogoProps {
   className?: string;

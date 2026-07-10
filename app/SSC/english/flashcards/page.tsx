@@ -1,5 +1,6 @@
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import { SectionCardProps } from "@/lib/types";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
 
 const sections: SectionCardProps[] = [
@@ -27,19 +28,12 @@ const sections: SectionCardProps[] = [
 
 const FlashcardPage = () => {
   return (
-    <div>
-      <div className="text-center mb-6 max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold tracking-tight mb-2 text-slate-900 dark:text-white">
-          Flashcards
-        </h1>
-        <p className="text-slate-500 dark:text-slate-400 text-sm">
-          Flashcards are a simple and effective way to learn and remember words, idioms, synonyms, and more. Pick the mode that suits you best.
-        </p>
-      </div>
-      <div>
-        <SectionCardGrid sections={sections} />
-      </div>
-    </div>
+    <TopicPageLayout
+      title="Flashcards"
+      description="Flashcards are a simple and effective way to learn and remember words, idioms, synonyms, and more. Pick the mode that suits you best."
+    >
+      <SectionCardGrid sections={sections} />
+    </TopicPageLayout>
   );
 };
 

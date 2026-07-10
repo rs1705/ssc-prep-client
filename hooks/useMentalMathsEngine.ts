@@ -36,7 +36,7 @@ export const initialGameState: GameState = {
     status: "idle",
     difficulty: "medium",
     mode: "timed",
-    questionLimit: null,
+    questionLimit: 10,
     timeLimit: 60,
     timeRemaining: null,
     score: 0,
@@ -117,7 +117,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             }
 
         case "NEXT_QUESTION":
-
             return { ...state, currentQuestion: action.payload.nextQuestion, currentAnswerStatus: "idle" }
 
 
@@ -168,8 +167,8 @@ export function useMentalMathsEngine(topic: string) {
     const submitUserAnswer = (userAnswer: number | "skip") => {
         if (state.status !== "active") return;
         if (state.currentQuestion === null) return;
-        if (state.currentQuestion === null) return
-
+        // Guard: Prevent double-submitting while the border is flashing!
+        if (state.currentAnswerStatus !== "idle") return;
 
         let isSkip = userAnswer === "skip"
         let isCorrect = false;
@@ -179,12 +178,13 @@ export function useMentalMathsEngine(topic: string) {
 
         dispatch({ type: "SUBMIT_ANSWER", payload: { isCorrect: isCorrect, isSkip: isSkip } })
 
-        const newMathProblem = generateQuestion(topic, state.difficulty)
-        dispatch({
-            type: "NEXT_QUESTION",
-            payload: { nextQuestion: newMathProblem }
-        })
-
+        setTimeout(() => {
+            const newMathProblem = generateQuestion(topic, state.difficulty)
+            dispatch({
+                type: "NEXT_QUESTION",
+                payload: { nextQuestion: newMathProblem }
+            })
+        }, 500) // 500ms visual flash delay
     }
 
     return {

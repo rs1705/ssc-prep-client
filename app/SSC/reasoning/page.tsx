@@ -1,5 +1,6 @@
 import { SectionCardProps } from "@/lib/types";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
 
 const ReasoningHomePage = () => {
@@ -34,18 +35,12 @@ const ReasoningHomePage = () => {
     },
   ];
   return (
-    <>
-      <div className="text-center mb-8 max-w-2xl mx-auto">
-        <h1 className="text-4xl text-center font-bold mb-4 tracking-tight">
-          Reasoning
-        </h1>
-        <p className="text-center text-lg text-slate-500 dark:text-slate-400">
-          Crack the code behind complex patterns. Train your brain to see what others miss and solve puzzles with blazing speed.
-        </p>
-      </div>
-
+    <TopicPageLayout
+      title="Reasoning"
+      description="Crack the code behind complex patterns. Train your brain to see what others miss and solve puzzles with blazing speed."
+    >
       <SectionCardGrid sections={sections} />
-    </>
+    </TopicPageLayout>
   );
 };
 
