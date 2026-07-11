@@ -30,6 +30,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
         difficulty: "Medium",
         stats: "1-25 Range",
     },
+    /*
     {
         id: "addition",
         name: "Addition",
@@ -102,6 +103,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
         difficulty: "Hard",
         stats: "Customizable",
     },
+    */
 ];
 
 const MentalMaths = () => {
