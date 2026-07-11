@@ -101,7 +101,7 @@ export default function Dashboard() {
           <h2 className="text-xl font-bold text-foreground tracking-tight mb-4">Your Next Step</h2>
 
           {/* Primary Action Card (Full Width) */}
-          <div className="bg-primary text-primary-foreground rounded-[18px] p-8 shadow-sm relative overflow-hidden group">
+          <div className="bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground rounded-[18px] p-8 shadow-sm relative overflow-hidden group">
             <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 transition-transform duration-700 group-hover:scale-110"></div>
 
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">

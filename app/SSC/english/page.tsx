@@ -42,6 +42,7 @@ const EnglishHomePage = () => {
     <TopicPageLayout
       title="English"
       description="Explore interactive tools and activities to boost your vocabulary, grammar, and comprehension for exam success."
+      contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />
     </TopicPageLayout>

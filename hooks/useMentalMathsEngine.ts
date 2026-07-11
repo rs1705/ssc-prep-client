@@ -20,6 +20,7 @@ export interface GameState {
     currentQuestion: { questionText: string; correctAnswer: number } | null;
     currentAnswerStatus: "correct" | "wrong" | "skipped" | "idle";
     countdownTick: number;
+    questionIndex: number;
 }
 
 export type GameAction =
@@ -46,7 +47,8 @@ export const initialGameState: GameState = {
     attemptedQuestionsCount: 0,
     currentQuestion: null,
     currentAnswerStatus: "idle",
-    countdownTick: 3
+    countdownTick: 3,
+    questionIndex: 0
 }
 
 
@@ -108,6 +110,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             const isGameOver = state.questionLimit !== null && newattemptedQuestionsCount >= state.questionLimit
             return {
                 ...state,
+                score: newCorrect,
                 correctAnswers: newCorrect,
                 wrongAnswers: newWrong,
                 skippedAnswers: newSkipped,
@@ -117,7 +120,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             }
 
         case "NEXT_QUESTION":
-            return { ...state, currentQuestion: action.payload.nextQuestion, currentAnswerStatus: "idle" }
+            return {
+                ...state,
+                currentQuestion: action.payload.nextQuestion,
+                currentAnswerStatus: "idle",
+                questionIndex: state.questionIndex + 1
+            }
 
 
         case "END_GAME":
@@ -130,11 +138,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
 }
 
-export function useMentalMathsEngine(topic: string) {
+export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
     const [state, dispatch] = useReducer(gameReducer, initialGameState)
 
     useEffect(() => {
-        const needsTimer = state.status === "countdown" || (state.status === "active" && state.mode === "timed");
+        const needsTimer = !isPaused && (state.status === "countdown" || (state.status === "active" && state.mode === "timed"));
         if (!needsTimer) {
             return;
         }
@@ -147,7 +155,7 @@ export function useMentalMathsEngine(topic: string) {
         return () => clearInterval(timerId);
 
 
-    }, [state.mode, state.status]);
+    }, [state.mode, state.status, isPaused]);
 
     const setConfig = (mode: GameMode, difficulty: Difficulty, timeLimit: number | null, questionLimit: number | null) => {
         dispatch({ type: "SET_CONFIG", payload: { mode, difficulty, timeLimit, questionLimit } })
@@ -184,7 +192,7 @@ export function useMentalMathsEngine(topic: string) {
                 type: "NEXT_QUESTION",
                 payload: { nextQuestion: newMathProblem }
             })
-        }, 500) // 500ms visual flash delay
+        }, 150) // 150ms visual flash delay
     }
 
     return {

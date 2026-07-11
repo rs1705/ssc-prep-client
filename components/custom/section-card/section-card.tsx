@@ -21,22 +21,18 @@ const SectionCard: React.FC<SectionCardProps> = ({
   buttonText,
   knowMoreText,
   icon,
+  index = 0,
+  cols = 2,
 }: SectionCardProps) => {
   const router = useRouter();
   const isClickable = linkTo !== "#";
 
-  const handleCardClick = () => {
-    if (isClickable) {
-      router.push(linkTo);
-    }
-  };
-
   return (
     <Card 
-      onClick={handleCardClick}
-      className={`group shadow-sm hover:shadow-md transition-all duration-300 w-full h-full flex flex-col border-border rounded-[18px] overflow-hidden select-none ${
-        isClickable ? "hover:border-primary/30 cursor-pointer" : "opacity-80"
+      className={`group shadow-xs hover:shadow-md hover:border-primary/30 hover:ring-1 hover:ring-primary/30 hover:-translate-y-0.5 transition-all duration-300 ease-out w-full h-full flex flex-col border-border rounded-[18px] overflow-hidden select-none animate-in fade-in slide-in-from-bottom-2 zoom-in-95 ${
+        !isClickable ? "opacity-70" : ""
       }`}
+      style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
     >
       <CardHeader>
         {icon && (
@@ -62,7 +58,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
           <Button 
             variant={linkTo === "#" ? "outline" : "default"} 
             disabled={linkTo === "#"} 
-            className="w-full justify-center cursor-pointer gap-2 group rounded-[12px] h-10"
+            className="w-full justify-center cursor-pointer gap-2 h-10"
           >
             {linkTo !== "#" && <Play className="w-4 h-4 transition-transform group-hover:scale-110" />}
             {buttonText}

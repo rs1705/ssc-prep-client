@@ -42,6 +42,7 @@ const MathsHomePage = () => {
     <TopicPageLayout
       title="Mathematics"
       description="Think you're fast? Prove it. Drop the calculator, beat the clock, and leave the competition calculating their losses."
+      contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />
     </TopicPageLayout>

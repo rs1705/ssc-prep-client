@@ -1,7 +1,6 @@
 import { SectionCardProps } from "@/lib/types";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
-import React from "react";
 
 const GKHomePage = () => {
   const sections: SectionCardProps[] = [
@@ -38,6 +37,7 @@ const GKHomePage = () => {
     <TopicPageLayout
       title="General Knowledge"
       description="Knowledge is power. Build a massive factual arsenal to conquer the highest-scoring section of the exam in record time."
+      contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />
     </TopicPageLayout>

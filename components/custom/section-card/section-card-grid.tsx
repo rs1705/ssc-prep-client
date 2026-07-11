@@ -14,6 +14,8 @@ const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections, layout = "g
         {sections.map((item: SectionCardProps, index: number) => (
           <SectionCard
             key={index}
+            index={index}
+            cols={4}
             icon={item.icon}
             title={item.title}
             description={item.description}
@@ -32,6 +34,8 @@ const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections, layout = "g
         <div className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[400px]" key={index}>
           <SectionCard
             key={index}
+            index={index}
+            cols={2}
             icon={item.icon}
             title={item.title}
             description={item.description}

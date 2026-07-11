@@ -9,6 +9,8 @@ export interface TopicCardProps {
   difficulty: "Easy" | "Medium" | "Hard";
   stats: string;
   onStartClick?: () => void;
+  index?: number;
+  cols?: number;
 }
 
 export const TopicCard = ({
@@ -18,6 +20,8 @@ export const TopicCard = ({
   difficulty,
   stats,
   onStartClick,
+  index = 0,
+  cols = 3,
 }: TopicCardProps) => {
   const getDifficultyStyles = (diff: "Easy" | "Medium" | "Hard") => {
     switch (diff) {
@@ -31,7 +35,10 @@ export const TopicCard = ({
   };
 
   return (
-    <div className="group relative flex flex-col justify-between p-5 rounded-3xl bg-card border border-border shadow-xs hover:shadow-md hover:border-primary/30 hover:ring-1 hover:ring-primary/30 transition-all duration-300 ease-out hover:-translate-y-0.5 animate-in fade-in zoom-in-95 select-none">
+    <div
+      className="group relative h-full flex flex-col justify-between p-5 rounded-3xl bg-card border border-border shadow-xs hover:shadow-md hover:border-primary/30 hover:ring-1 hover:ring-primary/30 transition-all duration-300 ease-out hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 zoom-in-95 select-none"
+      style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
+    >
       <div>
         {/* Card Header Info */}
         <div className="flex items-start justify-between mb-3.5">

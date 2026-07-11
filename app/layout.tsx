@@ -39,7 +39,7 @@ export default function RootLayout({
           >
             <AuthProvider>
               <Header />
-              <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
+              <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
                 {children}
               </main>
             </AuthProvider>

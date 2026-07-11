@@ -120,8 +120,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scrollbar-gutter: stable;
+  }
   body {
     @apply bg-background text-foreground;
+  }
+  body[data-scroll-locked] {
+    padding-right: 0px !important;
   }
   a, button, [role="button"] {
     cursor: pointer;

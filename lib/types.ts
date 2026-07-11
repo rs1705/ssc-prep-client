@@ -6,6 +6,8 @@ export interface SectionCardProps {
   knowMoreText?: string;
   className?: string;
   icon?: string;
+  index?: number;
+  cols?: number;
 }
 
 export interface FlashCardInterface {
