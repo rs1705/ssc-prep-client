@@ -26,7 +26,6 @@ export interface GameState {
 export type GameAction =
     | { type: "SET_CONFIG"; payload: { mode: GameMode; difficulty: Difficulty; timeLimit: number | null; questionLimit: number | null } }
     | { type: "START_COUNTDOWN" }
-    | { type: "START_ACTIVE" }
     | { type: "TICK_TIMER" }
     | { type: "SUBMIT_ANSWER"; payload: { isCorrect: boolean; isSkip?: boolean } }
     | { type: "NEXT_QUESTION"; payload: { nextQuestion: { questionText: string; correctAnswer: number } } }
@@ -60,10 +59,15 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             return { ...state, mode: action.payload.mode, difficulty: action.payload.difficulty, timeLimit: action.payload.timeLimit, questionLimit: action.payload.questionLimit }
 
         case "START_COUNTDOWN":
-            return { ...state, status: "countdown", countdownTick: 3, timeRemaining: state.timeLimit }
+            return {
+                ...state,
+                status: "countdown",
+                countdownTick: 3,
+                timeLimit: state.mode === "timed" ? state.timeLimit : null,
+                timeRemaining: state.mode === "timed" ? state.timeLimit : null,
+                questionLimit: state.mode === "freestyle" ? state.questionLimit : null
+            }
 
-        case "START_ACTIVE":
-            return { ...state, status: "active" }
 
         case "TICK_TIMER":
             if (state.status === "countdown") {
@@ -156,6 +160,9 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
 
 
     }, [state.mode, state.status, isPaused]);
+
+
+
 
     const setConfig = (mode: GameMode, difficulty: Difficulty, timeLimit: number | null, questionLimit: number | null) => {
         dispatch({ type: "SET_CONFIG", payload: { mode, difficulty, timeLimit, questionLimit } })
