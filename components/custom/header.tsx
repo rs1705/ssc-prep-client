@@ -23,7 +23,29 @@ import {
   UserPlus,
   Sun,
   Moon,
-  ChevronDown
+  ChevronDown,
+  GraduationCap,
+  Calculator,
+  Globe,
+  BrainCircuit,
+  // English section icons
+  Layers,
+  Skull,
+  Shuffle,
+  Grid3X3,
+  // Maths section icons
+  Zap,
+  Lightbulb,
+  Target,
+  ClipboardList,
+  // Reasoning section icons
+  Puzzle,
+  Brain,
+  Layers3,
+  // GK section icons
+  Newspaper,
+  Landmark,
+  FlaskConical,
 } from "lucide-react";
 import { Logo } from "./logo";
 
@@ -135,7 +157,7 @@ const Header = () => {
                               : "hover:bg-accent/40 text-muted-foreground font-medium"
                               }`}
                           >
-                            <span className="text-base">👩🏼‍🎓</span>
+                            <GraduationCap className="w-4 h-4 shrink-0 text-violet-500 dark:text-violet-400" />
                             <span className="text-sm">English</span>
                           </div>
 
@@ -147,7 +169,7 @@ const Header = () => {
                               : "hover:bg-accent/40 text-muted-foreground font-medium"
                               }`}
                           >
-                            <span className="text-base">🧮</span>
+                            <Calculator className="w-4 h-4 shrink-0 text-emerald-500 dark:text-emerald-400" />
                             <span className="text-sm">Maths</span>
                           </div>
 
@@ -159,7 +181,7 @@ const Header = () => {
                               : "hover:bg-accent/40 text-muted-foreground font-medium"
                               }`}
                           >
-                            <span className="text-base">🧠</span>
+                            <BrainCircuit className="w-4 h-4 shrink-0 text-amber-500 dark:text-amber-400" />
                             <span className="text-sm">Reasoning</span>
                           </div>
 
@@ -171,7 +193,7 @@ const Header = () => {
                               : "hover:bg-accent/40 text-muted-foreground font-medium"
                               }`}
                           >
-                            <span className="text-base">🌍</span>
+                            <Globe className="w-4 h-4 shrink-0 text-rose-500 dark:text-rose-400" />
                             <span className="text-sm flex-1 truncate">Gen Knowledge</span>
                           </div>
                         </div>
@@ -195,23 +217,27 @@ const Header = () => {
                                       href="/SSC/english/flashcards"
                                       className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2"
                                     >
-                                      <span>🎴</span> Flashcards
+                                      <Layers className="w-3.5 h-3.5 shrink-0 text-violet-400" />
+                                      Flashcards
                                     </Link>
                                   </NavigationMenuLink>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>☠️</span> Hangman <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Skull className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                                    Hangman <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🔀</span> Word Shuffle <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Shuffle className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                                    Word Shuffle <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🧠</span> Crossword <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                                    Crossword <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                               </ul>
@@ -235,23 +261,27 @@ const Header = () => {
                                       href="/SSC/maths/mental-maths"
                                       className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2"
                                     >
-                                      <span>📐</span> Speed Math
+                                      <Zap className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
+                                      Speed Math
                                     </Link>
                                   </NavigationMenuLink>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>💡</span> Formulas & Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Lightbulb className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
+                                    Formulas &amp; Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🎯</span> Topic Practice <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Target className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
+                                    Topic Practice <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <ClipboardList className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
+                                    Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                               </ul>
@@ -271,22 +301,26 @@ const Header = () => {
                               <ul className="flex flex-col gap-2">
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🧩</span> Logic Puzzles <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Puzzle className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    Logic Puzzles <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🧠</span> Analytical Reasoning <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Brain className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    Analytical Reasoning <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🎲</span> Spatial & Non-Verbal <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Layers3 className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    Spatial &amp; Non-Verbal <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <ClipboardList className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                               </ul>
@@ -306,22 +340,26 @@ const Header = () => {
                               <ul className="flex flex-col gap-2">
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>📰</span> Current Affairs <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Newspaper className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                                    Current Affairs <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🏛️</span> History & Polity <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <Landmark className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                                    History &amp; Polity <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🔬</span> General Science <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <FlaskConical className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                                    General Science <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                                    <ClipboardList className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                                    Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                                   </span>
                                 </li>
                               </ul>
@@ -479,7 +517,7 @@ const Header = () => {
                           }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-lg">👩🏼‍🎓</span>
+                          <GraduationCap className="w-4 h-4 shrink-0 text-violet-500 dark:text-violet-400" />
                           <span className="text-sm font-semibold">English</span>
                         </div>
                         <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "english" ? "rotate-180" : ""}`} />
@@ -498,16 +536,20 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 flex items-center gap-2"
                           >
-                            <span>🎴</span> Flashcards
+                            <Layers className="w-3.5 h-3.5 shrink-0 text-violet-400" />
+                            Flashcards
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>☠️</span> Hangman <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Skull className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                            Hangman <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🔀</span> Word Shuffle <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Shuffle className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                            Word Shuffle <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🧠</span> Crossword <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                            Crossword <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}
@@ -521,7 +563,7 @@ const Header = () => {
                           }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-lg">🧮</span>
+                          <Calculator className="w-4 h-4 shrink-0 text-emerald-500 dark:text-emerald-400" />
                           <span className="text-sm font-semibold">Maths</span>
                         </div>
                         <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "maths" ? "rotate-180" : ""}`} />
@@ -540,16 +582,20 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 flex items-center gap-2"
                           >
-                            <span>📐</span> Speed Math
+                            <Zap className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
+                            Speed Math
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>💡</span> Formulas & Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Lightbulb className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
+                            Formulas & Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🎯</span> Topic Practice <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Target className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
+                            Topic Practice <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <ClipboardList className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
+                            Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}
@@ -563,7 +609,7 @@ const Header = () => {
                           }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-lg">🧠</span>
+                          <BrainCircuit className="w-4 h-4 shrink-0 text-amber-500 dark:text-amber-400" />
                           <span className="text-sm font-semibold">Reasoning</span>
                         </div>
                         <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "reasoning" ? "rotate-180" : ""}`} />
@@ -578,16 +624,20 @@ const Header = () => {
                             Go to Reasoning Homepage
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🧩</span> Logic Puzzles <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Puzzle className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            Logic Puzzles <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🧠</span> Analytical Reasoning <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Brain className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            Analytical Reasoning <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🎲</span> Spatial & Non-Verbal <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <Layers3 className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            Spatial & Non-Verbal <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            <ClipboardList className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}
@@ -601,7 +651,7 @@ const Header = () => {
                           }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-lg">🌍</span>
+                          <Globe className="w-4 h-4 shrink-0 text-rose-500 dark:text-rose-400" />
                           <span className="text-sm font-semibold">Gen Knowledge</span>
                         </div>
                         <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeMobileSubject === "gk" ? "rotate-180" : ""}`} />
@@ -616,16 +666,20 @@ const Header = () => {
                             Go to GK Homepage
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>📰</span> Current Affairs <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                              <Newspaper className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                              Current Affairs <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                              <Landmark className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                              History &amp; Polity <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                            </span>
+                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
+                              <FlaskConical className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                            General Science <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🏛️</span> History & Polity <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🔬</span> General Science <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
-                          </span>
-                          <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <span>🧾</span> Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
+                              <ClipboardList className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
+                            Mock Tests <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>
                           </span>
                         </div>
                       )}

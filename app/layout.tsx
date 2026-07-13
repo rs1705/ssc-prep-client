@@ -6,7 +6,6 @@ import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
-import FeedbackDialog from "@/components/custom/feedback-dialog";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SSC PREP",
-  description: "Prepare smarter for SSC exams",
+  title: "PrepPilot",
+  description: "Your exam co-pilot",
 };
 
 export default function RootLayout({
@@ -45,7 +44,6 @@ export default function RootLayout({
               <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
                 {children}
               </main>
-              <FeedbackDialog />
             </AuthProvider>
           </ThemeProvider>
           <Analytics />
