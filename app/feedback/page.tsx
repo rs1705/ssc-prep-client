@@ -114,7 +114,7 @@ export default function FeedbackPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full">
               <Button
-                onClick={() => router.push("/SSC")}
+                onClick={() => router.push("/")}
                 className="flex-1 h-11 rounded-xl font-bold bg-gradient-to-r from-primary to-indigo-600 text-white hover:opacity-95 shadow-md active:scale-98 transition-all"
               >
                 Go to Dashboard
@@ -203,11 +203,10 @@ export default function FeedbackPage() {
                         key={cat.id}
                         type="button"
                         onClick={() => form.setValue("category", cat.id)}
-                        className={`h-11 rounded-xl border text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
-                          isSelected
-                            ? "border-primary bg-primary/10 text-primary shadow-sm font-bold"
-                            : "border-border bg-card/40 text-foreground " + cat.color
-                        }`}
+                        className={`h-11 rounded-xl border text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${isSelected
+                          ? "border-primary bg-primary/10 text-primary shadow-sm font-bold"
+                          : "border-border bg-card/40 text-foreground " + cat.color
+                          }`}
                       >
                         {cat.label}
                       </button>
@@ -231,16 +230,14 @@ export default function FeedbackPage() {
                         title={rating.label}
                       >
                         <span
-                          className={`text-2xl select-none transition-all ${
-                            isSelected ? "scale-125 filter drop-shadow" : "opacity-60 saturate-[40%]"
-                          }`}
+                          className={`text-2xl select-none transition-all ${isSelected ? "scale-125 filter drop-shadow" : "opacity-60 saturate-[40%]"
+                            }`}
                         >
                           {rating.emoji}
                         </span>
                         <span
-                          className={`text-[9px] font-bold transition-all ${
-                            isSelected ? "text-primary" : "text-muted-foreground/60"
-                          }`}
+                          className={`text-[9px] font-bold transition-all ${isSelected ? "text-primary" : "text-muted-foreground/60"
+                            }`}
                         >
                           {rating.label}
                         </span>

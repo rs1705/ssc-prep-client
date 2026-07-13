@@ -155,24 +155,16 @@ export default function MentalMathsPractice() {
                             <div className="grid grid-cols-3 gap-2">
                                 {(["easy", "medium", "hard"] as const).map((d) => {
                                     const isSelected = d === engine.state.difficulty;
-                                    const diffStyles = {
-                                        easy: isSelected
-                                            ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-sm font-bold"
-                                            : "border-border bg-card hover:border-emerald-500/30 hover:bg-emerald-500/5 text-foreground",
-                                        medium: isSelected
-                                            ? "border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-sm font-bold"
-                                            : "border-border hover:border-amber-500/30 hover:bg-amber-500/5 text-foreground",
-                                        hard: isSelected
-                                            ? "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-sm font-bold"
-                                            : "border-border hover:border-rose-500/30 hover:bg-rose-500/5 text-foreground"
-                                    };
                                     const label = d === "easy" ? "Easy" : d === "medium" ? "Medium" : "Hard";
                                     return (
                                         <button
                                             key={d}
                                             type="button"
                                             onClick={() => handleDifficultyChange(d)}
-                                            className={`rounded-2xl h-11 border text-xs capitalize transition-all duration-200 ease-out ${diffStyles[d]}`}
+                                            className={`rounded-2xl h-11 border-2 font-bold text-xs transition-all duration-200 ease-out active:scale-[0.98] ${isSelected
+                                                ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                : "border-border hover:bg-muted/30 text-foreground"
+                                                }`}
                                         >
                                             {label}
                                         </button>
@@ -322,8 +314,8 @@ export default function MentalMathsPractice() {
                                     <span>{engine.state.mode === "timed" ? "Timed" : "Freestyle"}</span>
                                     <span className="text-muted-foreground/35 font-normal">•</span>
                                     <span className={`font-semibold ${engine.state.difficulty === "easy" ? "text-emerald-600 dark:text-emerald-400" :
-                                            engine.state.difficulty === "medium" ? "text-amber-500" :
-                                                "text-rose-600 dark:text-rose-400"
+                                        engine.state.difficulty === "medium" ? "text-amber-500" :
+                                            "text-rose-600 dark:text-rose-400"
                                         }`}>
                                         {engine.state.difficulty}
                                     </span>
