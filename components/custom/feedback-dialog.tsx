@@ -27,7 +27,7 @@ const feedbackSchema = z.object({
   message: z.string().min(10, {
     message: "Feedback must be at least 10 characters long",
   }),
-  email: z.string().email("Invalid email address").or(z.literal("")),
+  name: z.string().min(2, "Name must be at least 2 characters").or(z.literal("")),
 });
 
 type FeedbackFormValues = z.infer<typeof feedbackSchema>;
@@ -54,6 +54,7 @@ export default function FeedbackDialog() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [showRoadmap, setShowRoadmap] = useState(false);
 
   const form = useForm<FeedbackFormValues>({
     resolver: zodResolver(feedbackSchema),
@@ -61,14 +62,14 @@ export default function FeedbackDialog() {
       category: "other",
       rating: 0,
       message: "",
-      email: "",
+      name: "",
     },
   });
 
-  // Pre-fill email if user is authenticated
+  // Pre-fill name if user is authenticated
   useEffect(() => {
-    if (user?.email) {
-      form.setValue("email", user.email);
+    if (user?.displayName) {
+      form.setValue("name", user.displayName);
     }
   }, [user, form]);
 
@@ -79,11 +80,12 @@ export default function FeedbackDialog() {
       setTimeout(() => {
         setIsSuccess(false);
         setErrorMsg(null);
+        setShowRoadmap(false);
         form.reset({
           category: "other",
           rating: 0,
           message: "",
-          email: user?.email || "",
+          name: user?.displayName || "",
         });
       }, 300);
     }
@@ -98,7 +100,7 @@ export default function FeedbackDialog() {
         category: values.category,
         rating: values.rating,
         message: values.message,
-        email: values.email || "anonymous",
+        name: values.name || "anonymous",
         userId: user?.uid || null,
         url: window.location.href,
         path: pathname,
@@ -147,10 +149,51 @@ export default function FeedbackDialog() {
           <div className="space-y-4 animate-in fade-in duration-200">
             <DialogHeader>
               <DialogTitle className="text-xl font-extrabold tracking-tight">Share Your Feedback</DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground">
-                Spotted a bug? Have an idea? Help us build the ultimate preparation app.
+              <DialogDescription className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-1">
+                <span>Spotted a bug? Have an idea? Help us build the ultimate preparation app. Or check out our</span>
+                <button
+                  type="button"
+                  onClick={() => setShowRoadmap(!showRoadmap)}
+                  className="text-primary font-bold hover:underline inline-flex items-center gap-0.5 cursor-pointer"
+                >
+                  Upcoming Features 🚀
+                </button>
               </DialogDescription>
             </DialogHeader>
+
+            {showRoadmap && (
+              <div className="bg-muted/50 rounded-2xl p-4 border border-border/80 animate-in slide-in-from-top-2 duration-300 space-y-3">
+                <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                  <span>🚀</span> App Roadmap & Upcoming Features
+                </h4>
+                <ul className="space-y-2 text-left">
+                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                    <span className="text-emerald-500 font-bold mt-0.5">●</span>
+                    <div>
+                      <span className="font-semibold text-foreground">Speed Math Modules:</span> Timed drills for Addition, Subtraction, Multiplication, Division, Percentage, Ratios, Simplification, etc. <span className="inline-block text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">In Active Development</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                    <span className="text-sky-500 font-bold mt-0.5">●</span>
+                    <div>
+                      <span className="font-semibold text-foreground">PYQs & Topic Practice:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-[9px] bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                    <span className="text-violet-500 font-bold mt-0.5">●</span>
+                    <div>
+                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-[9px] bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                    <span className="text-rose-500 font-bold mt-0.5">●</span>
+                    <div>
+                      <span className="font-semibold text-foreground">GK & Static Quiz:</span> Daily static general knowledge cards and topic checks. <span className="inline-block text-[9px] bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            )}
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-1">
               {/* Category selector */}
@@ -235,21 +278,21 @@ export default function FeedbackDialog() {
                 )}
               </div>
 
-              {/* Email field */}
+              {/* Name field */}
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Email Address <span className="text-[10px] text-muted-foreground/50 lowercase font-medium">(optional)</span>
+                <Label htmlFor="name" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Your Name <span className="text-[10px] text-muted-foreground/50 lowercase font-medium">(optional)</span>
                 </Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  {...form.register("email")}
+                  id="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  {...form.register("name")}
                   className="h-11 rounded-xl border border-input bg-card font-medium text-sm"
                 />
-                {form.formState.errors.email && (
+                {form.formState.errors.name && (
                   <p className="text-xs text-red-500 font-medium">
-                    {form.formState.errors.email.message}
+                    {form.formState.errors.name.message}
                   </p>
                 )}
               </div>
