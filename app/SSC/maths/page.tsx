@@ -2,40 +2,45 @@ import { SectionCardProps } from "@/lib/types";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
+import { Zap, Lightbulb, Target, ClipboardList } from "lucide-react";
 
 const MathsHomePage = () => {
   const sections: SectionCardProps[] = [
     {
-      icon: "📐",
-      title: "Mental Maths",
+      icon: <Zap className="w-8 h-8 text-emerald-500 dark:text-emerald-400" fill="currentColor" fillOpacity={0.1} />,
+      title: "Speed Math",
       description:
-        "Improve your calculation speed with timed sprints.",
+        "Ditch the calculator. Train your brain with gamified timed arithmetic drills to solve core calculations with lightning speed.",
       linkTo: "/SSC/maths/mental-maths",
-      buttonText: "Start",
+      buttonText: "Explore Speed Math",
+      colorTheme: "emerald",
     },
     {
-      icon: "💡",
+      icon: <Lightbulb className="w-8 h-8 text-emerald-500 dark:text-emerald-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Formulas & Tricks",
       description:
-        "Learn and practice key formulas and shortcut tricks to solve problems faster.",
+        "Slay complex equations. Master shortcut techniques, digital sum concepts, and Vedic math tricks to cut solving time in half.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "emerald",
     },
     {
-      icon: "🎯",
+      icon: <Target className="w-8 h-8 text-emerald-500 dark:text-emerald-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Topic Practice",
       description:
-        "Practice chapter-wise questions to master each topic.",
+        "Build muscle memory. Drill down into chapter-wise questions sorted by difficulty, covering everything from Algebra to Geometry.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "emerald",
     },
     {
-      icon: "🧾",
+      icon: <ClipboardList className="w-8 h-8 text-emerald-500 dark:text-emerald-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Mock Tests",
       description:
-        "Attempt timed mock tests to simulate exam conditions and track your progress.",
+        "Simulate the pressure. Practice full-length exam simulations with detailed performance diagnostics and section-by-section breakdown.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "emerald",
     },
   ];
   return (

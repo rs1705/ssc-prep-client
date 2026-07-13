@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/context/auth";
-import { Flame, Target, BrainCircuit, ChevronRight, Trophy } from "lucide-react";
+import { Flame, Target, BrainCircuit, ChevronRight, Trophy, GraduationCap, Calculator, Globe } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
@@ -19,33 +19,37 @@ export default function Dashboard() {
 
   const sections: SectionCardProps[] = [
     {
-      icon: "👩🏼‍🎓",
+      icon: <GraduationCap className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
       title: "English",
-      description: "Enhance your grammar, vocabulary, and fluency to score higher in every test.",
+      description: "Master grammar rules, build high-frequency vocabulary, and train your comprehension speed to maximize exam performance.",
       linkTo: "/SSC/english",
-      buttonText: "Start Learning",
+      buttonText: "Explore English",
+      colorTheme: "violet",
     },
 
     {
-      icon: "🧮",
+      icon: <Calculator className="w-8 h-8 text-emerald-500 dark:text-emerald-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Maths",
-      description: "Practice smart maths tricks, sharpen accuracy, and solve questions with confidence.",
+      description: "Sharpen calculation speed, learn time-saving mental math shortcuts, and master problem-solving accuracy under pressure.",
       linkTo: "/SSC/maths",
-      buttonText: "Practice maths",
+      buttonText: "Explore Maths",
+      colorTheme: "emerald",
     },
     {
-      icon: "🌊",
+      icon: <Globe className="w-8 h-8 text-rose-500 dark:text-rose-400" fill="currentColor" fillOpacity={0.1} />,
       title: "General Knowledge",
-      description: "Dive into the vast ocean of General knowledge to stay ahead and ace in exams.",
+      description: "Stay ahead with curated current affairs, historical milestones, and static GK summaries designed for rapid retention.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "rose",
     },
     {
-      icon: "🧩",
+      icon: <BrainCircuit className="w-8 h-8 text-amber-500 dark:text-amber-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Reasoning",
-      description: "Challenge your mind with fun reasoning puzzles and boost problem-solving speed.",
+      description: "Build strong logical deduction skills, master visual patterns, and train your brain to solve puzzle grids in seconds.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "amber",
     },
   ];
 

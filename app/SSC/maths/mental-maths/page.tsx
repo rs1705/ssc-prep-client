@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { TopicCard } from "@/components/custom/TopicCard";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/custom/loader";
 
 interface MathTopic {
     id: string;
     name: string;
-    emoji: string;
+    emoji: React.ReactNode;
     description: string;
     difficulty: "Easy" | "Medium" | "Hard";
     stats: string;
@@ -18,16 +19,16 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
     {
         id: "squares",
         name: "Squares",
-        emoji: "²",
-        description: "Master squares of numbers from 1 to 50 for lightning-fast calculations.",
+        emoji: <span className="font-black text-base">x²</span>,
+        description: "Unlock instant calculation power. Master squares up to 50 to speed run compound interest, area calculations, and algebraic expansions.",
         difficulty: "Easy",
         stats: "1-50 Range",
     },
     {
         id: "cubes",
         name: "Cubes Practice",
-        emoji: "³",
-        description: "Master cubes of numbers from 1 to 30 to solve polynomial expressions instantly.",
+        emoji: <span className="font-black text-base">x³</span>,
+        description: "Recognize cubic roots instantly. Memorize powers up to 25 to conquer complex volume formulas and number series reasoning puzzles.",
         difficulty: "Medium",
         stats: "1-25 Range",
     },
@@ -118,7 +119,7 @@ const MentalMaths = () => {
 
     return (
         <TopicPageLayout
-            title="Mental Maths"
+            title="Speed Math"
             description="Calculators are strictly banned in SSC exams, but they didn't say anything about turning your brain into one. Master rapid arithmetic and claim those precious seconds back."
         >
             <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full px-4 sm:px-0 mt-2">
@@ -133,22 +134,15 @@ const MentalMaths = () => {
                             difficulty={topic.difficulty}
                             stats={topic.stats}
                             onStartClick={() => handleStart(topic.id)}
+                            colorTheme="emerald"
                         />
                     </div>
                 ))}
             </div>
 
             {loadingTopic && (
-                <div className="fixed inset-0 bg-background/80 backdrop-blur-md z-50 flex flex-col items-center justify-center animate-in fade-in duration-200">
-                    <div className="flex flex-col items-center gap-4">
-                        <div className="relative w-12 h-12">
-                            <div className="absolute inset-0 border-4 border-primary/20 rounded-full" />
-                            <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                        </div>
-                        <p className="text-sm font-semibold text-muted-foreground animate-pulse">
-                            Loading practice lobby...
-                        </p>
-                    </div>
+                <div className="fixed inset-0 bg-background/80 backdrop-blur-md z-50 flex items-center justify-center animate-in fade-in duration-200">
+                    <Loader size="lg" text="Loading practice lobby..." />
                 </div>
             )}
         </TopicPageLayout >

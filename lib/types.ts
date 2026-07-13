@@ -5,9 +5,10 @@ export interface SectionCardProps {
   buttonText: string;
   knowMoreText?: string;
   className?: string;
-  icon?: string;
+  icon?: React.ReactNode;
   index?: number;
   cols?: number;
+  colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
 }
 
 export interface FlashCardInterface {

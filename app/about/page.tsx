@@ -15,7 +15,7 @@ const About = () => {
         </div>
         
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4 mt-6">
-          Fuel Your <span className="bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent italic font-black">Future</span>
+          Your Exam <span className="bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent italic font-black">Co-Pilot</span>
         </h1>
 
         <p className="text-base md:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-14 leading-relaxed">

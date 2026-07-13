@@ -15,6 +15,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { useGetFilteredCardsQuery } from "@/redux/FlashcardApiSlice";
 import Loader from "@/components/custom/loader";
+import ErrorState from "@/components/custom/error-state";
 
 //custom imports
 import { resetFilter, TabFilter, updateFilter } from "@/redux/FilterSlice";
@@ -57,7 +58,7 @@ const FreestylePage = () => {
     setOpen(false);
   };
 
-  const { data, isLoading, isFetching, isError } = useGetFilteredCardsQuery(
+  const { data, isLoading, isFetching, isError, refetch } = useGetFilteredCardsQuery(
     filterStore[activeTab],
   );
 
@@ -91,11 +92,12 @@ const FreestylePage = () => {
         </div>
       ) : isError ? (
         // Error State
-        <div className="flex justify-center items-center p-6">
-          <p className="text-red-500 font-semibold">
-            Oops! Something went wrong while loading flashcards.
-            {isError}
-          </p>
+        <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
+          <ErrorState 
+            title="Failed to Load Flashcards"
+            description="We encountered an issue while loading your vocabulary practice cards. Please try again."
+            onRetry={refetch}
+          />
         </div>
       ) : (
         <TopicPageLayout

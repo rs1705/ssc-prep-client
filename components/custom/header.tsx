@@ -235,7 +235,7 @@ const Header = () => {
                                       href="/SSC/maths/mental-maths"
                                       className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2"
                                     >
-                                      <span>📐</span> Mental Maths
+                                      <span>📐</span> Speed Math
                                     </Link>
                                   </NavigationMenuLink>
                                 </li>
@@ -540,7 +540,7 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 flex items-center gap-2"
                           >
-                            <span>📐</span> Mental Maths
+                            <span>📐</span> Speed Math
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <span>💡</span> Formulas & Tricks <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">(Soon)</span>

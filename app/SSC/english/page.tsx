@@ -2,46 +2,52 @@ import SectionCardGrid from "@/components/custom/section-card/section-card-grid"
 import { SectionCardProps } from "@/lib/types";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import React from "react";
+import { Layers, Skull, Shuffle, Grid3X3 } from "lucide-react";
+
 const EnglishHomePage = () => {
   const sections: SectionCardProps[] = [
     {
-      icon: "🎴",
+      icon: <Layers className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Flashcards",
       description:
-        "Revise important words quickly with flip-cards designed for smart memory recall.",
+        "Optimize your vocabulary memory with smart spaced-repetition cards for high-frequency words.",
       linkTo: "/SSC/english/flashcards",
-      buttonText: "Start Flashcards",
+      buttonText: "Explore Flashcards",
+      colorTheme: "violet",
     },
     {
-      "icon": "☠️",
+      icon: <Skull className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Hangman",
       description:
-        "Guess hidden words, practice spelling, and strengthen vocabulary while having fun.",
+        "Uncover hidden exam terms, fix spelling mistakes, and build dynamic vocabulary retention.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "violet",
     },
     {
-      icon: "🔀",
+      icon: <Shuffle className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
       title: " Word Shuffle",
       description:
-        "Unscramble mixed letters, build vocabulary, and improve quick-thinking skills instantly.",
+        "Solve anagram scrambles and speed anagram challenges to trigger active recall memory.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "violet",
     },
     {
-      "icon": "🧠",
+      icon: <Grid3X3 className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
       title: "Crossword",
       description:
-        "Solve word puzzles to sharpen grammar, vocabulary, and problem-solving skills easily.",
+        "Crack word puzzle grids to test your contextual definitions and synonym associations.",
       linkTo: "#",
       buttonText: "Coming Soon",
+      colorTheme: "sky",
     },
   ];
 
   return (
     <TopicPageLayout
       title="English"
-      description="Explore interactive tools and activities to boost your vocabulary, grammar, and comprehension for exam success."
+      description="Master the language of success. Build absolute grammatical clarity, unlock a high-scoring vocabulary bank, and read comprehension passages with scanning speed."
       contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />

@@ -3,6 +3,7 @@ import FlashcardDeck from "@/features/flashcards/FlashcardDeck";
 import { useGetStudyDeckQuery } from "@/redux/FlashcardApiSlice";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import Loader from "@/components/custom/loader";
+import ErrorState from "@/components/custom/error-state";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { LogIn } from "lucide-react";
 
 const FsrsPage = () => {
     const { user, isLoading: isAuthLoading } = useAuth();
-    const { data, isLoading, isError } = useGetStudyDeckQuery(undefined, {
+    const { data, isLoading, isError, refetch } = useGetStudyDeckQuery(undefined, {
         skip: !user
     });
 
@@ -42,7 +43,23 @@ const FsrsPage = () => {
     }
 
     if (isLoading) return <Loader size="lg" text="Syncing study deck..." className="min-h-[300px]" />
-    if (isError) return <p className="text-center text-red-500 font-semibold mt-4">Error loading study deck. Please try again later.</p>
+    
+    if (isError) {
+        return (
+            <TopicPageLayout
+                title="Study Mode"
+                description="Master SSC vocabulary through spaced repetition."
+            >
+                <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
+                    <ErrorState 
+                        title="Failed to Load Study Deck"
+                        description="We encountered an issue syncing your spaced repetition study deck. Please try again."
+                        onRetry={refetch}
+                    />
+                </div>
+            </TopicPageLayout>
+        );
+    }
 
     return (
         <TopicPageLayout

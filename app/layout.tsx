@@ -5,6 +5,9 @@ import Header from "@/components/custom/header";
 import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@vercel/analytics/react";
+import FeedbackDialog from "@/components/custom/feedback-dialog";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -42,8 +45,10 @@ export default function RootLayout({
               <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
                 {children}
               </main>
+              <FeedbackDialog />
             </AuthProvider>
           </ThemeProvider>
+          <Analytics />
         </body>
       </Providers>
     </html>

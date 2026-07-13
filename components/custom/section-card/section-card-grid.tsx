@@ -22,6 +22,7 @@ const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections, layout = "g
             linkTo={item.linkTo}
             buttonText={item.buttonText}
             knowMoreText={item.knowMoreText}
+            colorTheme={item.colorTheme}
           />
         ))}
       </div>
@@ -42,6 +43,7 @@ const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections, layout = "g
             linkTo={item.linkTo}
             buttonText={item.buttonText}
             knowMoreText={item.knowMoreText}
+            colorTheme={item.colorTheme}
           />
         </div>
       ))}

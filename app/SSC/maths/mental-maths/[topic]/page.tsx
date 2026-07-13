@@ -29,8 +29,9 @@ export default function MentalMathsPractice() {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const [userInput, setUserInput] = useState<string>("");
+    const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [animatedAccuracy, setAnimatedAccuracy] = useState<number>(0);
-    const [inputLayout, setInputLayout] = useState<"keys" | "mcq">("keys");
+    const [inputLayout, setInputLayout] = useState<"keys" | "mcq">("mcq");
     const [resultsTab, setResultsTab] = useState<"overview" | "review">("overview");
 
     const handleDifficultyChange = (newDifficulty: "easy" | "medium" | "hard") => {
@@ -81,6 +82,7 @@ export default function MentalMathsPractice() {
 
     useEffect(() => {
         setUserInput("");
+        setSelectedOption(null);
         console.log(engine.state);
     }, [engine.state.currentQuestion]);
 
@@ -286,47 +288,53 @@ export default function MentalMathsPractice() {
                 {gameState === "active" && (
                     <div className="w-full flex flex-col gap-6">
                         {/* Header Stats Bar */}
-                        <div className="flex items-center justify-between w-full pb-3 border-b border-border/60 gap-3">
-                            <div className="flex items-center gap-2 min-w-0">
-                                {engine.state.mode === "timed" ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80 shrink-0"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80 shrink-0"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
-                                )}
-                                <div className="flex flex-col min-w-0">
-                                    <span className="font-extrabold text-sm sm:text-base tracking-tight text-foreground leading-tight truncate capitalize">
+                        <div className="flex flex-col gap-2.5 w-full pb-3 border-b border-border/60">
+                            {/* Row 1: Left is Topic Title, Right is Score + Quit */}
+                            <div className="flex items-center justify-between w-full gap-2 min-w-0">
+                                <div className="flex items-center gap-2 min-w-0">
+                                    {engine.state.mode === "timed" ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80 shrink-0"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80 shrink-0"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                                    )}
+                                    <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-tight truncate capitalize">
                                         {topic}
                                     </span>
-                                    <div className="text-[10px] font-bold text-muted-foreground tracking-wider uppercase truncate mt-0.5 flex items-center gap-1.5">
-                                        <span>{engine.state.mode === "timed" ? "Timed" : "Freestyle"}</span>
-                                        <span className="text-muted-foreground/35 select-none font-normal">•</span>
-                                        <span className={`font-extrabold uppercase ${engine.state.difficulty === "easy" ? "text-emerald-600 dark:text-emerald-400" :
-                                            engine.state.difficulty === "medium" ? "text-amber-500" :
-                                                "text-rose-600 dark:text-rose-400"
-                                            }`}>
-                                            {engine.state.difficulty}
-                                        </span>
-                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                                {/* Compact Layout Switcher */}
-                                <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold">
+                                <div className="flex items-center justify-between sm:justify-start gap-2 flex-shrink-0 w-[130px] sm:w-auto">
+                                    <div className="flex items-center justify-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-xl text-xs font-bold flex-1 sm:flex-initial">
+                                        <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 font-semibold">Score</span>
+                                        <span>{engine.state.score}</span>
+                                    </div>
                                     <button
                                         type="button"
-                                        onClick={() => setInputLayout("keys")}
-                                        className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${inputLayout === "keys"
-                                            ? "bg-background text-primary shadow-sm"
-                                            : "text-muted-foreground hover:text-foreground"
-                                            }`}
-                                        title="Keypad Mode"
+                                        onClick={() => setShowQuitConfirm(true)}
+                                        className="text-xs font-semibold text-destructive/80 hover:text-destructive hover:bg-destructive/10 rounded-full px-3 py-1 border border-transparent hover:border-destructive/30 transition-colors flex-1 sm:flex-initial text-center justify-center"
                                     >
-                                        Num
+                                        Quit
                                     </button>
+                                </div>
+                            </div>
+
+                            {/* Row 2: Left is Freestyle/Timed + Difficulty, Right is Layout Switcher */}
+                            <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
+                                <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+                                    <span>{engine.state.mode === "timed" ? "Timed" : "Freestyle"}</span>
+                                    <span className="text-muted-foreground/35 font-normal">•</span>
+                                    <span className={`font-semibold ${engine.state.difficulty === "easy" ? "text-emerald-600 dark:text-emerald-400" :
+                                            engine.state.difficulty === "medium" ? "text-amber-500" :
+                                                "text-rose-600 dark:text-rose-400"
+                                        }`}>
+                                        {engine.state.difficulty}
+                                    </span>
+                                </div>
+
+                                {/* Compact Layout Switcher */}
+                                <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[130px] sm:w-auto">
                                     <button
                                         type="button"
                                         onClick={() => setInputLayout("mcq")}
-                                        className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${inputLayout === "mcq"
+                                        className={`flex-1 sm:flex-initial sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-center ${inputLayout === "mcq"
                                             ? "bg-background text-primary shadow-sm"
                                             : "text-muted-foreground hover:text-foreground"
                                             }`}
@@ -334,22 +342,18 @@ export default function MentalMathsPractice() {
                                     >
                                         MCQ
                                     </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setInputLayout("keys")}
+                                        className={`flex-1 sm:flex-initial sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-center ${inputLayout === "keys"
+                                            ? "bg-background text-primary shadow-sm"
+                                            : "text-muted-foreground hover:text-foreground"
+                                            }`}
+                                        title="Keypad Mode"
+                                    >
+                                        NUM
+                                    </button>
                                 </div>
-
-                                <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-xl text-xs font-bold">
-                                    <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 font-semibold">Score</span>
-                                    <span>{engine.state.score}</span>
-                                </div>
-
-
-
-                                <button
-                                    type="button"
-                                    onClick={() => setShowQuitConfirm(true)}
-                                    className="text-xs font-semibold text-destructive/80 hover:text-destructive hover:bg-destructive/10 rounded-full px-3 py-1 border border-destructive/30 hover:border-destructive transition-colors"
-                                >
-                                    Quit
-                                </button>
                             </div>
                         </div>
 
@@ -398,7 +402,7 @@ export default function MentalMathsPractice() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -15 }}
                                     transition={{ duration: 0.15, ease: "easeInOut" }}
-                                    className="flex flex-col gap-4 w-full"
+                                    className="flex flex-col gap-4 w-full h-[324px] sm:h-[296px]"
                                 >
                                     {/* Answer Input Bar */}
                                     <form onSubmit={(e) => { e.preventDefault(); handleEnterSubmit(userInput) }} className="flex gap-2 w-full">
@@ -436,9 +440,9 @@ export default function MentalMathsPractice() {
                                                 key={btn}
                                                 type="button"
                                                 onClick={() => handleNumClick(btn)}
-                                                className={`h-11 sm:h-12 font-extrabold rounded-2xl border transition-all duration-150 ease-out outline-none select-none active:scale-95 cursor-pointer shadow-sm ${btn === "Clear" || btn === "⌫"
-                                                    ? "bg-muted text-muted-foreground hover:bg-muted/80 border-border/50 hover:border-primary/20 text-[10px] sm:text-xs"
-                                                    : "bg-card text-foreground hover:bg-muted/40 border-border hover:border-primary/25 text-sm sm:text-base"
+                                                className={`h-14 sm:h-12 font-extrabold rounded-2xl border transition-all duration-150 ease-out outline-none select-none active:scale-95 cursor-pointer shadow-sm ${btn === "Clear" || btn === "⌫"
+                                                    ? "bg-muted text-muted-foreground hover:bg-muted/80 border-border/50 hover:border-primary/20 text-xs sm:text-xs"
+                                                    : "bg-card text-foreground hover:bg-muted/40 border-border hover:border-primary/25 text-base sm:text-base"
                                                     }`}
                                             >
                                                 {btn}
@@ -453,26 +457,44 @@ export default function MentalMathsPractice() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -15 }}
                                     transition={{ duration: 0.15, ease: "easeInOut" }}
-                                    className="flex flex-col gap-4 w-full"
+                                    className="flex flex-col gap-4 w-full h-[324px] sm:h-[296px]"
                                 >
-                                    {/* MCQ Options Grid (Dummy) */}
+                                    {/* MCQ Options Grid */}
                                     <div className="grid grid-cols-2 gap-3 mt-1">
-                                        {engine?.state?.currentQuestion?.options?.map((option, idx) => (
-                                            <button
-                                                key={idx}
-                                                type="button"
-                                                className="relative h-14 font-extrabold rounded-2xl border border-border hover:border-primary bg-card text-foreground hover:bg-muted/30 hover:shadow-sm transition-all duration-150 ease-out flex items-center justify-center px-4 text-xs sm:text-sm active:scale-[0.98] cursor-pointer"
-                                                onClick={() => handleEnterSubmit(option)}
-                                            >
-                                                <span className="absolute left-4 text-muted-foreground text-[10px] bg-muted px-2 py-0.5 rounded-lg select-none">
-                                                    {String.fromCharCode(65 + idx)}
-                                                </span>
-                                                <span className="truncate w-full text-center">{option}</span>
-                                            </button>
-                                        ))}
+                                        {engine?.state?.currentQuestion?.options?.map((option, idx) => {
+                                            const isSelected = selectedOption === option;
+                                            const status = engine.state.currentAnswerStatus;
+                                            let highlightClass = "border-border hover:border-primary bg-card text-foreground hover:bg-muted/30 hover:shadow-sm";
+                                            if (isSelected) {
+                                                if (status === "correct") {
+                                                    highlightClass = "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-sm";
+                                                } else if (status === "wrong") {
+                                                    highlightClass = "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-sm";
+                                                }
+                                            }
+                                            return (
+                                                <button
+                                                    key={idx}
+                                                    type="button"
+                                                    className={`relative h-[122px] sm:h-[106px] font-extrabold rounded-2xl border transition-all duration-150 ease-out flex items-center justify-center px-4 active:scale-[0.98] cursor-pointer ${highlightClass}`}
+                                                    onClick={() => {
+                                                        if (engine.state.currentAnswerStatus !== "idle") return;
+                                                        setSelectedOption(option);
+                                                        handleEnterSubmit(option);
+                                                    }}
+                                                >
+                                                    <span className="absolute top-2.5 left-2.5 sm:top-auto sm:left-4 text-muted-foreground text-[9px] sm:text-[10px] bg-muted px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-md select-none font-bold">
+                                                        {String.fromCharCode(65 + idx)}
+                                                    </span>
+                                                    <span className="truncate w-full text-center text-lg sm:text-sm font-extrabold tracking-tight">
+                                                        {option}
+                                                    </span>
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                     {/* Skip Button for MCQ */}
-                                    <div className="flex justify-center mt-1">
+                                    <div className="flex justify-center items-center h-[52px] sm:h-[56px]">
                                         <button
                                             type="button"
                                             onClick={() => handleEnterSubmit("skip")}
@@ -510,19 +532,19 @@ export default function MentalMathsPractice() {
 
                     const getAchievementIcon = (acc: number) => {
                         let Icon = Trophy;
-                        let colorClass = "text-amber-500 bg-amber-500/10 border-amber-500/20";
+                        let colorClass = "text-green-600 dark:text-green-400 bg-green-500/10 border-green-500/20";
                         if (acc >= 90) {
                             Icon = Trophy;
-                            colorClass = "text-amber-500 bg-amber-500/10 border-amber-500/20 shadow-[0_4px_12px_rgba(245,158,11,0.08)]";
+                            colorClass = "text-green-600 dark:text-green-400 bg-green-500/10 border-green-500/20 shadow-[0_4px_12px_rgba(34,197,94,0.08)]";
                         } else if (acc >= 75) {
                             Icon = Award;
-                            colorClass = "text-emerald-500 bg-emerald-500/10 border-emerald-500/20 shadow-[0_4px_12px_rgba(16,185,129,0.08)]";
+                            colorClass = "text-orange-500 dark:text-orange-400 bg-orange-500/10 border-orange-500/20 shadow-[0_4px_12px_rgba(249,115,22,0.08)]";
                         } else if (acc >= 50) {
                             Icon = Target;
-                            colorClass = "text-indigo-500 bg-indigo-500/10 border-indigo-500/20 shadow-[0_4px_12px_rgba(99,102,241,0.08)]";
+                            colorClass = "text-yellow-500 dark:text-yellow-400 bg-yellow-500/10 border-yellow-500/20 shadow-[0_4px_12px_rgba(234,179,8,0.08)]";
                         } else {
                             Icon = Flame;
-                            colorClass = "text-rose-500 bg-rose-500/10 border-rose-500/20 shadow-[0_4px_12px_rgba(244,63,94,0.08)]";
+                            colorClass = "text-red-500 dark:text-red-400 bg-red-500/10 border-red-500/20 shadow-[0_4px_12px_rgba(239,68,68,0.08)]";
                         }
 
                         return (
@@ -543,10 +565,13 @@ export default function MentalMathsPractice() {
                                 </h2>
                                 <div className="flex items-center justify-center gap-1.5 mt-2 select-none">
                                     <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase tracking-wider">
+                                        🏷️ {topic}
+                                    </span>
+                                    <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase tracking-wider">
                                         {engine.state.mode === "timed" ? "⏱️ Timed" : "⚡ Freestyle"}
                                     </span>
                                     <span className={`px-1.5 py-0.5 rounded-md text-[9px] uppercase font-bold tracking-wider border ${engine.state.difficulty === "easy" ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" :
-                                        engine.state.difficulty === "medium" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20" :
+                                        engine.state.difficulty === "medium" ? "bg-amber-500/10 text-amber-600 dark:text-amber-500 border-amber-500/20" :
                                             "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20"
                                         }`}>
                                         {engine.state.difficulty}
@@ -590,10 +615,10 @@ export default function MentalMathsPractice() {
                                         accuracy >= 50 ? "text-yellow-500 dark:text-yellow-400" :
                                             "text-red-500 dark:text-red-400"
                                     }`}>
-                                    {accuracy >= 90 && "Outstanding! You are a calculation wizard! 🧙‍♂️"}
-                                    {accuracy >= 75 && accuracy < 90 && "Great job! Very impressive speed and accuracy! 🚀"}
-                                    {accuracy >= 50 && accuracy < 75 && "Good effort! Solid practice session. 👍"}
-                                    {accuracy < 50 && "Keep pushing! Consistency builds speed! 💪"}
+                                    {accuracy >= 90 && "Calculated Genius!You completely crushed this session!  🧠 "}
+                                    {accuracy >= 75 && accuracy < 90 && "Superb Performance! You are building massive momentum! 🚀 "}
+                                    {accuracy >= 50 && accuracy < 75 && "Solid Session!Keep grinding, you are leveling up!  👍 "}
+                                    {accuracy < 50 && "Keep Fighting!  Every mistake builds consistency. Let's run it back!  💪 "}
                                 </p>
 
                                 {/* Centered Circular Accuracy Gauge */}

@@ -31,24 +31,33 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent 
-        className="relative rounded-3xl w-[calc(100%-2rem)] sm:max-w-md border border-border p-6 bg-background shadow-md"
+        className="relative rounded-3xl w-[calc(100%-2rem)] sm:max-w-md border border-border/80 p-6 bg-background/95 backdrop-blur-md shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
       >
         <AlertDialogCancel asChild>
           <button className="absolute right-4 top-4 rounded-full w-8 h-8 p-0 flex items-center justify-center border-none bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground hover:cursor-pointer transition-colors outline-none focus-visible:ring-0">
             <X className="w-4 h-4" />
           </button>
         </AlertDialogCancel>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent">
+        <AlertDialogHeader className="flex flex-col items-center text-center space-y-2">
+          <AlertDialogTitle className="text-xl font-black tracking-tight text-slate-900 dark:text-white text-center w-full mt-2">
             {title}
           </AlertDialogTitle>
-          <AlertDialogDescription asChild className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-2.5">
-            <div className="space-y-3">
-              {description.split("\n\n").map((para, i) => (
-                <p key={i}>
-                  {para}
-                </p>
-              ))}
+          <AlertDialogDescription asChild className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-4 text-left w-full">
+            <div className="space-y-3.5 mt-2">
+              {description.split("\n\n").map((para, i) => {
+                const isList = para.match(/^\d+\./) || para.startsWith("▪️") || para.startsWith("Best For:");
+                return (
+                  <p 
+                    key={i} 
+                    className={`text-slate-600 dark:text-slate-300 ${
+                      para.startsWith("Best For:") ? "font-bold text-foreground text-xs uppercase tracking-wider mt-4" : 
+                      isList ? "text-sm font-medium pl-1 animate-in slide-in-from-left-2 duration-300" : "text-sm"
+                    }`}
+                  >
+                    {para}
+                  </p>
+                );
+              })}
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
