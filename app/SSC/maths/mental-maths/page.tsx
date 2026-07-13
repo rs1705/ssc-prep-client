@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { TopicCard } from "@/components/custom/TopicCard";
 import { useRouter } from "next/navigation";
@@ -107,7 +108,14 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
 ];
 
 const MentalMaths = () => {
-    const router = useRouter()
+    const router = useRouter();
+    const [loadingTopic, setLoadingTopic] = useState<string | null>(null);
+
+    const handleStart = (topicId: string) => {
+        setLoadingTopic(topicId);
+        router.push(`/SSC/maths/mental-maths/${topicId}`);
+    };
+
     return (
         <TopicPageLayout
             title="Mental Maths"
@@ -124,11 +132,25 @@ const MentalMaths = () => {
                             description={topic.description}
                             difficulty={topic.difficulty}
                             stats={topic.stats}
-                            onStartClick={() => router.push(`/SSC/maths/mental-maths/${topic.id}`)}
+                            onStartClick={() => handleStart(topic.id)}
                         />
                     </div>
                 ))}
             </div>
+
+            {loadingTopic && (
+                <div className="fixed inset-0 bg-background/80 backdrop-blur-md z-50 flex flex-col items-center justify-center animate-in fade-in duration-200">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="relative w-12 h-12">
+                            <div className="absolute inset-0 border-4 border-primary/20 rounded-full" />
+                            <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                        </div>
+                        <p className="text-sm font-semibold text-muted-foreground animate-pulse">
+                            Loading practice lobby...
+                        </p>
+                    </div>
+                </div>
+            )}
         </TopicPageLayout >
     );
 };

@@ -17,7 +17,7 @@ export interface GameState {
     wrongAnswers: number;
     skippedAnswers: number;
     attemptedQuestionsCount: number;
-    currentQuestion: { questionText: string; correctAnswer: number } | null;
+    currentQuestion: { questionText: string; correctAnswer: number; options: number[] } | null;
     currentAnswerStatus: "correct" | "wrong" | "skipped" | "idle";
     countdownTick: number;
     questionIndex: number;
@@ -28,7 +28,7 @@ export type GameAction =
     | { type: "START_COUNTDOWN" }
     | { type: "TICK_TIMER" }
     | { type: "SUBMIT_ANSWER"; payload: { isCorrect: boolean; isSkip?: boolean } }
-    | { type: "NEXT_QUESTION"; payload: { nextQuestion: { questionText: string; correctAnswer: number } } }
+    | { type: "NEXT_QUESTION"; payload: { nextQuestion: { questionText: string; correctAnswer: number; options: number[] } } }
     | { type: "END_GAME" }
     | { type: "RESET_TO_LOBBY" }
 

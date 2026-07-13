@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/context/auth";
 import { RootState } from "@/redux/store";
 import Loader from "@/components/custom/loader";
+import { ProgressBar } from "@/components/custom/ProgressBar";
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId?: string;
@@ -297,27 +298,30 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
             </div>
 
             <div className="w-full mt-1 mb-2">
-              <div className="relative h-4 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/80 shadow-inner">
+              <ProgressBar
+                value={((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) * 100}
+                className="h-4 bg-slate-100 border border-slate-200/80"
+                barClassName="rounded-none"
+              >
                 {/* Unfilled text (Black/Slate-800) */}
-                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider text-slate-800">
+                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider text-slate-800 select-none pointer-events-none">
                   CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
                 </div>
 
-                {/* Progress Fill */}
+                {/* Progress Fill Text overlay */}
                 <div
-                  className={`absolute top-0 left-0 h-full ${scheme.barBg} transition-all duration-300 overflow-hidden`}
+                  className="absolute top-0 left-0 h-full overflow-hidden transition-all duration-300"
                   style={{
                     width: `${((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) * 100}%`,
                   }}
                 >
-                  {/* Filled text (Pure White) - Locked to full progress bar width to prevent shifting */}
                   <div
-                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white w-[calc(100vw-34px)] min-[375px]:w-[373px] md:w-[498px]"
+                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white w-[calc(100vw-34px)] min-[375px]:w-[373px] md:w-[498px] select-none pointer-events-none"
                   >
                     CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
                   </div>
                 </div>
-              </div>
+              </ProgressBar>
             </div>
           </div>
         </div>
