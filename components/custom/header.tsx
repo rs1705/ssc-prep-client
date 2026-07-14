@@ -21,6 +21,7 @@ import {
   HomeIcon,
   LucideLogOut,
   UserPlus,
+  MessageSquare,
   Sun,
   Moon,
   ChevronDown,
@@ -381,6 +382,16 @@ const Header = () => {
               >
                 About
               </Link>
+
+              <Link
+                href="/feedback"
+                className={`text-base transition-colors ${pathname === "/feedback"
+                  ? "font-bold text-foreground"
+                  : "font-semibold text-muted-foreground hover:text-foreground"
+                  }`}
+              >
+                Feedback
+              </Link>
             </div>
 
             <div className="w-px h-6 bg-border"></div>
@@ -696,6 +707,18 @@ const Header = () => {
                   >
                     <BookOpen className={`w-4 h-4 ${pathname === "/about" ? "text-primary" : ""}`} />
                     About
+                  </Link>
+
+                  <Link
+                    href="/feedback"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-8 py-2.5 transition-all text-sm ${pathname === "/feedback"
+                      ? "bg-accent/80 text-foreground font-bold"
+                      : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
+                      }`}
+                  >
+                    <MessageSquare className={`w-4 h-4 ${pathname === "/feedback" ? "text-primary" : ""}`} />
+                    Feedback
                   </Link>
 
                   <div className="mt-8 border-t border-border/40 pt-6">
