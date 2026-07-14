@@ -67,19 +67,14 @@ const generateOptions = (correctAnswer: number, type: "square" | "cube" | "multi
 
 
 const getRandomIntByDifficulty = (difficulty: string, config: DifficultyRangeConfig): number => {
-    const rand = Math.random();
     const diff = difficulty.toUpperCase();
-
     switch (diff) {
         case DIFFICULTY.EASY:
             return getRandomInt(config.easyMin, config.easyMax);
         case DIFFICULTY.MEDIUM:
-            if (rand < 0.80) return getRandomInt(config.mediumMin, config.mediumMax);
-            else return getRandomInt(config.easyMin, config.easyMax);
+            return getRandomInt(config.mediumMin, config.mediumMax);
         case DIFFICULTY.HARD:
-            if (rand < 0.70) return getRandomInt(config.hardMin, config.hardMax);
-            else if (rand < 0.90) return getRandomInt(config.mediumMin, config.mediumMax);
-            else return getRandomInt(config.easyMin, config.easyMax);
+            return getRandomInt(config.hardMin, config.hardMax);
         default:
             return getRandomInt(config.easyMin, config.easyMax);
     }
@@ -89,12 +84,12 @@ const generateSquareQuestion = (difficulty: string) => {
     const num = getRandomIntByDifficulty(
         difficulty,
         {
-            easyMin: 7,
-            easyMax: 17,
-            mediumMin: 18,
-            mediumMax: 30,
+            easyMin: 5,
+            easyMax: 12,
+            mediumMin: 13,
+            mediumMax: 29,
             hardMin: 31,
-            hardMax: 50,
+            hardMax: 49,
         }
     );
     const correctAnswer = num * num;
@@ -111,12 +106,12 @@ const generateCubeQuestion = (difficulty: string) => {
     const num = getRandomIntByDifficulty(
         difficulty,
         {
-            easyMin: 3,
+            easyMin: 2,
             easyMax: 10,
             mediumMin: 11,
             mediumMax: 20,
             hardMin: 21,
-            hardMax: 25,
+            hardMax: 30,
         }
     );
     const correctAnswer = num * num * num;

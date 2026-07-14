@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
-import { TopicCard } from "@/components/custom/TopicCard";
+import { TopicCard, type RevisionConfig } from "@/components/custom/TopicCard";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/custom/loader";
 
@@ -13,16 +13,25 @@ interface MathTopic {
     description: string;
     difficulty: "Easy" | "Medium" | "Hard";
     stats: string;
+    revisionConfig?: RevisionConfig;
 }
 
 const MENTAL_MATHS_TOPICS: MathTopic[] = [
     {
         id: "squares",
-        name: "Squares",
+        name: "Squares Practice",
         emoji: <span className="font-black text-base">x²</span>,
         description: "Unlock instant calculation power. Master squares up to 50 to speed run compound interest, area calculations, and algebraic expansions.",
         difficulty: "Easy",
         stats: "1-50 Range",
+        revisionConfig: {
+            type: "square",
+            ranges: [
+                { label: "Easy", range: "2 - 12", min: 2, max: 12 },
+                { label: "Medium", range: "13 - 29", min: 13, max: 29 },
+                { label: "Hard", range: "30 - 50", min: 30, max: 50 },
+            ]
+        }
     },
     {
         id: "cubes",
@@ -30,7 +39,15 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
         emoji: <span className="font-black text-base">x³</span>,
         description: "Recognize cubic roots instantly. Memorize powers up to 25 to conquer complex volume formulas and number series reasoning puzzles.",
         difficulty: "Medium",
-        stats: "1-25 Range",
+        stats: "1-30 Range",
+        revisionConfig: {
+            type: "cube",
+            ranges: [
+                { label: "Easy", range: "2 - 10", min: 2, max: 10 },
+                { label: "Medium", range: "11 - 20", min: 11, max: 20 },
+                { label: "Hard", range: "21 - 30", min: 21, max: 30 },
+            ]
+        }
     },
     /*
     {
@@ -135,6 +152,7 @@ const MentalMaths = () => {
                             stats={topic.stats}
                             onStartClick={() => handleStart(topic.id)}
                             colorTheme="emerald"
+                            revisionConfig={topic.revisionConfig}
                         />
                     </div>
                 ))}

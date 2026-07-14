@@ -1,6 +1,19 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight } from "lucide-react";
+import { Play, ArrowRight, BookOpen } from "lucide-react";
+import { RevisionDialog } from "./revision-dialog";
+
+export interface RevisionRange {
+  label: string;
+  range: string;
+  min: number;
+  max: number;
+}
+
+export interface RevisionConfig {
+  type: "square" | "cube" | "table";
+  ranges: RevisionRange[];
+}
 
 export interface TopicCardProps {
   name: string;
@@ -12,6 +25,7 @@ export interface TopicCardProps {
   index?: number;
   cols?: number;
   colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo";
+  revisionConfig?: RevisionConfig;
 }
 
 export const TopicCard = ({
@@ -24,6 +38,7 @@ export const TopicCard = ({
   index = 0,
   cols = 3,
   colorTheme = "indigo",
+  revisionConfig,
 }: TopicCardProps) => {
   const getDifficultyStyles = (diff: "Easy" | "Medium" | "Hard") => {
     switch (diff) {
@@ -45,6 +60,10 @@ export const TopicCard = ({
     indigo: "bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400",
   };
   const themeClass = themeMap[theme];
+
+  const canRevise = !!revisionConfig;
+
+
 
   return (
     <div
@@ -82,15 +101,34 @@ export const TopicCard = ({
           {stats}
         </span>
 
-        <Button
-          size="sm"
-          onClick={onStartClick}
-          className="h-8 px-3 rounded-lg text-xs font-bold gap-1 shadow-xs hover:shadow-sm hover:translate-x-0.5 transition-all hover:cursor-pointer"
-        >
-          <Play className="w-3 h-3 fill-current" />
-          Start
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-        </Button>
+        <div className="flex items-center gap-2">
+          {canRevise && revisionConfig && (
+            <RevisionDialog
+              name={name}
+              revisionConfig={revisionConfig}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 px-3 rounded-lg text-xs font-bold gap-1 hover:cursor-pointer hover:bg-accent/40 border-border/60 transition-colors"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  Revise
+                </Button>
+              }
+            />
+          )}
+
+          <Button
+            size="sm"
+            onClick={onStartClick}
+            className="h-8 px-3 rounded-lg text-xs font-bold gap-1 shadow-xs hover:shadow-sm hover:translate-x-0.5 transition-all hover:cursor-pointer"
+          >
+            <Play className="w-3 h-3 fill-current" />
+            Start
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </Button>
+        </div>
       </div>
     </div>
   );
