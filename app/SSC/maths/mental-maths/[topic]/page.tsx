@@ -6,7 +6,7 @@ import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMentalMathsEngine } from "@/hooks/useMentalMathsEngine";
-import { Keyboard, ListChecks, Trophy, Award, Target, Flame, CheckCircle2, XCircle, HelpCircle } from "lucide-react";
+import { Keyboard, ListChecks, Trophy, Award, Target, Flame, CheckCircle2, XCircle, HelpCircle, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     AlertDialog,
@@ -741,14 +741,15 @@ export default function MentalMathsPractice() {
 
             <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
                 <AlertDialogContent className="rounded-3xl w-[calc(100%-2rem)] sm:w-full max-w-sm border border-border">
-                    <AlertDialogHeader>
-                        <AlertDialogTitle className="text-xl font-bold tracking-tight text-foreground">
+                    <AlertDialogHeader className="pb-3 border-b border-border/40">
+                        <AlertDialogTitle className="text-xl font-black tracking-tight text-foreground flex items-center gap-2">
+                            <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
                             Quit Practice Session?
                         </AlertDialogTitle>
-                        <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed mt-2">
-                            Are you sure you want to quit this sprint? Your current progress and score of <strong className="text-foreground">{engine.state.score}</strong> will be reset.
-                        </AlertDialogDescription>
                     </AlertDialogHeader>
+                    <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed mt-4">
+                        Are you sure you want to quit this sprint? Your current progress and score of <strong className="text-foreground">{engine.state.score}</strong> will be reset.
+                    </AlertDialogDescription>
                     <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
                         <AlertDialogCancel
                             className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-semibold border-border/85 hover:bg-muted"

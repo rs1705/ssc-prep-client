@@ -105,6 +105,7 @@ export const TopicCard = ({
           {canRevise && revisionConfig && (
             <RevisionDialog
               name={name}
+              emoji={emoji}
               revisionConfig={revisionConfig}
               trigger={
                 <Button

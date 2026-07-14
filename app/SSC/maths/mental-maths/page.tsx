@@ -19,7 +19,7 @@ interface MathTopic {
 const MENTAL_MATHS_TOPICS: MathTopic[] = [
     {
         id: "squares",
-        name: "Squares Practice",
+        name: "Squares",
         emoji: <span className="font-black text-base">x²</span>,
         description: "Unlock instant calculation power. Master squares up to 50 to speed run compound interest, area calculations, and algebraic expansions.",
         difficulty: "Easy",
@@ -35,7 +35,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
     },
     {
         id: "cubes",
-        name: "Cubes Practice",
+        name: "Cubes",
         emoji: <span className="font-black text-base">x³</span>,
         description: "Recognize cubic roots instantly. Memorize powers up to 25 to conquer complex volume formulas and number series reasoning puzzles.",
         difficulty: "Medium",
