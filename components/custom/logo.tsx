@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Rocket } from "lucide-react";
 import Link from "next/link";
 
@@ -10,15 +10,12 @@ interface LogoProps {
 }
 
 export const Logo = ({ className = "", onClick }: LogoProps) => {
-  const [isHovered, setIsHovered] = useState(false);
 
 
   return (
     <Link
       href="/"
       className={`flex items-center gap-2 group ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
     >
       <div className="bg-gradient-to-r from-primary to-indigo-600 rounded-lg p-1.5 shadow-md flex items-center justify-center transition-transform group-hover:scale-105 group-hover:-translate-y-0.5 overflow-hidden w-8 h-8">

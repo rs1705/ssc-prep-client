@@ -56,6 +56,28 @@ export default function Dashboard() {
   return (
     <div className="space-y-8 animate-fadeIn">
 
+      {/* Speed Math Release Feature Announcement Banner */}
+      <div className="relative overflow-hidden rounded-[18px] bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-[12px] bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+            <span className="text-xl">⚡</span>
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5">
+              Speed Math Upgraded! <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-primary/10 text-primary uppercase tracking-wider">New</span>
+            </h4>
+            <p className="text-xs text-muted-foreground mt-1 max-w-xl leading-relaxed">
+              Solve <strong className="text-foreground font-semibold">Addition Sprints</strong> (from 2 to 4 digits), review your speed metrics with our new <strong className="text-foreground font-semibold">Time-per-Question Scorecard</strong>, and practice smoothly with <strong className="text-foreground font-semibold">questions that never repeat back-to-back</strong>!
+            </p>
+          </div>
+        </div>
+        <Link href="/SSC/maths/mental-maths" className="shrink-0">
+          <Button variant="outline" size="sm" className="h-9 px-4 rounded-[10px] text-xs font-bold bg-background/50 hover:bg-background border-border/80 transition-all hover:cursor-pointer flex items-center gap-1.5 group">
+            Speed Run Now <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </Button>
+        </Link>
+      </div>
+
       {/* 1. WHERE AM I? (Greeting, Streak, Goal) */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Welcome Card */}

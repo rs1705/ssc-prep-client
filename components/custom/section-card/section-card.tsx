@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { SectionCardProps } from "@/lib/types";
 import InfoDialog from "../info-dialog";
-import { useRouter } from "next/navigation";
 
 const SectionCard: React.FC<SectionCardProps> = ({
   title,
@@ -25,7 +24,6 @@ const SectionCard: React.FC<SectionCardProps> = ({
   cols = 2,
   colorTheme = "indigo",
 }: SectionCardProps) => {
-  const router = useRouter();
   const isClickable = linkTo !== "#";
   const theme = colorTheme || "indigo";
 
@@ -59,15 +57,15 @@ const SectionCard: React.FC<SectionCardProps> = ({
       }`}
       style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
     >
-      <CardHeader className="pb-2 pt-6 px-6">
+      <CardHeader className="pb-1 pt-5 px-5">
         {icon && (
-          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-xs group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 ease-out ${currentTheme.iconWrapper}`}>
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 shadow-xs group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 ease-out ${currentTheme.iconWrapper}`}>
             {icon}
           </div>
         )}
         <CardTitle className="text-lg font-black tracking-tight text-foreground transition-colors duration-300">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow px-6 pb-4">
+      <CardContent className="flex-grow px-5 pb-3">
         <p className="text-muted-foreground/90 text-xs sm:text-sm leading-relaxed">{description}</p>
         {knowMoreText && (
           <div className="mt-3.5">
@@ -75,7 +73,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
           </div>
         )}
       </CardContent>
-      <CardFooter className="p-6 pt-0">
+      <CardFooter className="p-5 pt-0">
         <Link
           href={linkTo}
           className="flex w-full items-center justify-center"

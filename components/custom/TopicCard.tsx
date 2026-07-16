@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, BookOpen } from "lucide-react";
+import { Play, BookOpen } from "lucide-react";
 import { RevisionDialog } from "./revision-dialog";
 
 export interface RevisionRange {
@@ -75,7 +75,7 @@ export const TopicCard = ({
         <div className="flex items-start justify-between mb-3.5">
           <div className="flex items-center gap-3">
             {/* Emoji box */}
-            <div className={`flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none ${themeClass}`}>
+            <div className={`flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 ${themeClass}`}>
               {emoji}
             </div>
             <h3 className="font-bold text-foreground text-base tracking-tight">
@@ -114,7 +114,7 @@ export const TopicCard = ({
                   className="h-8 px-3 rounded-lg text-xs font-bold gap-1 hover:cursor-pointer hover:bg-accent/40 border-border/60 transition-colors"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
-                  Revise
+                  <span>Revise</span>
                 </Button>
               }
             />
@@ -126,8 +126,7 @@ export const TopicCard = ({
             className="h-8 px-3 rounded-lg text-xs font-bold gap-1 shadow-xs hover:shadow-sm hover:translate-x-0.5 transition-all hover:cursor-pointer"
           >
             <Play className="w-3 h-3 fill-current" />
-            Start
-            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+            <span>Start</span>
           </Button>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMentalMathsEngine } from "@/hooks/useMentalMathsEngine";
+import { DIFFICULTY_CONFIGS } from "@/lib/mathGenerator";
 import {Trophy, Award, Target, Flame, CheckCircle2, XCircle, HelpCircle, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -18,6 +19,45 @@ import {
     AlertDialogAction,
     AlertDialogCancel
 } from "@/components/ui/alert-dialog";
+
+const getDifficultyDescription = (topic: string, diff: string) => {
+    const t = topic.toLowerCase();
+    const d = diff.toLowerCase();
+    const config = DIFFICULTY_CONFIGS[t];
+
+    if (!config) return "";
+
+    let min = config.easyMin;
+    let max = config.easyMax;
+
+    if (d === "medium") {
+        min = config.mediumMin;
+        max = config.mediumMax;
+    } else if (d === "hard") {
+        min = config.hardMin;
+        max = config.hardMax;
+    } else if (d === "all") {
+        max = config.hardMax;
+    }
+
+    if (t === "squares") {
+        return d === "all"
+            ? `💡 Squares ranging from ${min} to ${max}`
+            : `💡 Squares from ${min} to ${max} (e.g., ${min}² = ${min * min})`;
+    }
+    if (t === "cubes") {
+        return d === "all"
+            ? `💡 Cubes ranging from ${min} to ${max}`
+            : `💡 Cubes from ${min} to ${max} (e.g., ${min}³ = ${min * min * min})`;
+    }
+    if (t === "addition") {
+        const digits = min.toString().length;
+        return d === "all"
+            ? `💡 Additions ranging from ${min} to ${max}`
+            : `💡 ${digits}-digit additions (range: ${min} to ${max})`;
+    }
+    return "";
+};
 
 export default function MentalMathsPractice() {
     const { topic } = useParams() as { topic: string };
@@ -83,7 +123,6 @@ export default function MentalMathsPractice() {
     useEffect(() => {
         setUserInput("");
         setSelectedOption(null);
-        console.log(engine.state);
     }, [engine.state.currentQuestion]);
 
     // Animate accuracy percentage on game over screen
@@ -170,6 +209,9 @@ export default function MentalMathsPractice() {
                                     );
                                 })}
                             </div>
+                            <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed italic">
+                                {getDifficultyDescription(topic, engine.state.difficulty)}
+                            </p>
                         </div>
 
                         {/* Practice Mode Selection */}
@@ -641,15 +683,15 @@ export default function MentalMathsPractice() {
                                         className="w-full flex flex-col items-center gap-3 h-[270px] justify-center"
                                     >
                                         {/* Performance Encouragement */}
-                                        <p className={`text-base font-extrabold mt-0 ${accuracy >= 90 ? "text-green-600 dark:text-green-400" :
+                                        <p className={`text-base font-bold mt-0 ${accuracy >= 90 ? "text-green-600 dark:text-green-400" :
                                             accuracy >= 75 ? "text-orange-500 dark:text-orange-400" :
                                                 accuracy >= 50 ? "text-yellow-500 dark:text-yellow-400" :
                                                     "text-red-500 dark:text-red-400"
                                             }`}>
-                                            {accuracy >= 90 && "Calculated Genius!You completely crushed this session!  🧠 "}
+                                            {accuracy >= 90 && "Calculated Genius! You completely crushed this session!  🧠 "}
                                             {accuracy >= 75 && accuracy < 90 && "Superb Performance! You are building massive momentum! 🚀 "}
-                                            {accuracy >= 50 && accuracy < 75 && "Solid Session!Keep grinding, you are leveling up!  👍 "}
-                                            {accuracy < 50 && "Keep Fighting!  Every mistake builds consistency. Let's run it back!  💪 "}
+                                            {accuracy >= 50 && accuracy < 75 && "Solid Session! Keep grinding, you are leveling up!  👍 "}
+                                            {accuracy < 50 && "Keep Fighting! Every mistake builds consistency. Let's run it back!  💪 "}
                                         </p>
 
                                         {/* Centered Circular Accuracy Gauge */}
@@ -721,7 +763,9 @@ export default function MentalMathsPractice() {
                                                     return (
                                                         <div key={idx} className="flex items-center justify-between p-3.5 text-xs">
                                                             <div className="flex flex-col gap-0.5">
-                                                                <span className="font-extrabold text-sm text-foreground">{item.questionText}</span>
+                                                                <span className="font-extrabold text-sm text-foreground">
+                                                                    {idx + 1}) {item.questionText}
+                                                                </span>
                                                                 <span className="text-[10px] text-muted-foreground">
                                                                     Correct: <strong className="text-foreground">{item.correctAnswer}</strong>
                                                                 </span>

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { usePathname } from "next/navigation";
-import { MessageSquare, CheckCircle2, Loader2, Star } from "lucide-react";
+import { MessageSquare, CheckCircle2, Loader2 } from "lucide-react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/auth";

@@ -3,16 +3,15 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Flashcard from "./Flashcard";
 import { Button } from "@/components/ui/button";
-import { Check, MoveLeft, MoveRight, Star, X } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
-import { useSaveFlashcardInteractionsMutation, useGetStudyDeckQuery } from "@/redux/FlashcardApiSlice";
+import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
 
 import {
   initializeSession,
   setCurrentCard,
 } from "@/redux/sessionSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useAuth } from "@/context/auth";
 import { RootState } from "@/redux/store";
 import Loader from "@/components/custom/loader";
 import { ProgressBar } from "@/components/custom/ProgressBar";
@@ -60,19 +59,16 @@ export type ActionType = keyof typeof BUTTON_ACTIONS;
   - Text class: "absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
 */
 
-const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => {
+const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
   const [direction, setDirection] = useState(1);
   const [navCount, setNavCount] = useState(0);
-  const { user } = useAuth();
   const [saveInteraction] = useSaveFlashcardInteractionsMutation();
   const dispatch = useDispatch();
 
   const {
-    deck: sessionDeck,
     currentCardId,
-    cardMeta,
   } = useSelector((state: RootState) => state.session);
 
   const currentIndex = deck.findIndex((card) => card._id === currentCardId);
@@ -104,53 +100,6 @@ const FlashcardDeck = ({ deck, deckId, isLinear, mode }: FlashcardDeckProps) => 
       );
     }
   }, [deck, dispatch]);
-
-  const getNextCardId = (history: string[] = cardHistory) => {
-    if (isLinear) {
-      if (!deck || deck.length === 0) return currentCardId;
-      const currentIndex = deck.findIndex((c) => c._id === currentCardId);
-      const newIndex = (currentIndex + 1) % deck.length;
-      return deck[newIndex]._id;
-    }
-
-    const candidates = sessionDeck.filter((id: string) => id !== currentCardId);
-    if (candidates.length === 0) return currentCardId;
-
-    const recentHistory = history.slice(-3);
-    const nonRecentCandidates = candidates.filter(id => !recentHistory.includes(id));
-
-    const eligibleCandidates = nonRecentCandidates.length > 0 ? nonRecentCandidates : candidates;
-
-    const unknown: string[] = [];
-    const important: string[] = [];
-    const newCards: string[] = [];
-    const known: string[] = [];
-
-    eligibleCandidates.forEach((id: string) => {
-      const meta = cardMeta[id];
-
-      if (!meta || meta.status === "new") {
-        newCards.push(id);
-      } else if (meta.status === "unknown") {
-        unknown.push(id);
-      } else if (meta.status === "known") {
-        known.push(id);
-      }
-
-      if (meta && meta.isImportant) {
-        important.push(id);
-      }
-    });
-
-    const pick = (arr: string[]) => arr[0];
-
-    if (unknown.length > 0) return pick(unknown);
-    if (newCards.length > 0) return pick(newCards);
-    if (important.length > 0) return pick(important);
-    if (known.length > 0) return pick(known);
-
-    return currentCardId;
-  };
 
   const onActionClick = (action: keyof typeof BUTTON_ACTIONS) => {
     console.log(action);

@@ -32,12 +32,14 @@ export interface GameState {
     correctAnswer: number;
     options: number[];
     baseNum?: number;
+    questionKey?: string;
   } | null;
   currentAnswerStatus: "correct" | "wrong" | "skipped" | "idle";
   countdownTick: number;
   questionIndex: number;
   history: QuestionAttempt[];
   questionStartTime: number | null;
+  recentQuestions: string[];
 }
 
 export type GameAction =
@@ -63,6 +65,7 @@ export type GameAction =
           questionText: string;
           correctAnswer: number;
           options: number[];
+          questionKey?: string;
           baseNum?: number;
         };
       };
@@ -88,6 +91,7 @@ export const initialGameState: GameState = {
   questionIndex: 0,
   questionStartTime: null,
   history: [],
+  recentQuestions: [],
 };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
@@ -110,6 +114,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         timeRemaining: state.mode === "timed" ? state.timeLimit : null,
         questionLimit: state.mode === "freestyle" ? state.questionLimit : null,
         history: [],
+        recentQuestions: [],
       };
 
     case "TICK_TIMER":
@@ -179,14 +184,25 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       };
 
     case "NEXT_QUESTION":
+      const nextRecent = [...state.recentQuestions];
+      if (action.payload.nextQuestion.questionKey) {
+        nextRecent.push(action.payload.nextQuestion.questionKey);
+      }
+
+      if (nextRecent.length > 5) {
+        nextRecent.shift();
+      }
+
       return {
         ...state,
         currentQuestion: action.payload.nextQuestion,
         currentAnswerStatus: "idle",
         questionIndex: state.questionIndex + 1,
+        recentQuestions: nextRecent,
       };
 
     case "END_GAME":
+      console.log(state.history);
       return { ...state, status: "game_over" };
 
     case "RESET_TO_LOBBY":
@@ -237,11 +253,12 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
 
   const startSession = () => {
     const firstQuestion = generateQuestion(topic, state.difficulty);
+
+    dispatch({ type: "START_COUNTDOWN" });
     dispatch({
       type: "NEXT_QUESTION",
       payload: { nextQuestion: firstQuestion },
     });
-    dispatch({ type: "START_COUNTDOWN" });
   };
 
   const resetSession = () => {
@@ -274,7 +291,11 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
     });
 
     setTimeout(() => {
-      const newMathProblem = generateQuestion(topic, state.difficulty);
+      const newMathProblem = generateQuestion(
+        topic,
+        state.difficulty,
+        state.recentQuestions,
+      );
       dispatch({
         type: "NEXT_QUESTION",
         payload: { nextQuestion: newMathProblem },
