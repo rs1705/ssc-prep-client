@@ -6,7 +6,7 @@ import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useMentalMathsEngine } from "@/hooks/useMentalMathsEngine";
-import { Keyboard, ListChecks, Trophy, Award, Target, Flame, CheckCircle2, XCircle, HelpCircle, AlertTriangle } from "lucide-react";
+import {Trophy, Award, Target, Flame, CheckCircle2, XCircle, HelpCircle, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     AlertDialog,
@@ -34,7 +34,7 @@ export default function MentalMathsPractice() {
     const [inputLayout, setInputLayout] = useState<"keys" | "mcq">("mcq");
     const [resultsTab, setResultsTab] = useState<"overview" | "review">("overview");
 
-    const handleDifficultyChange = (newDifficulty: "easy" | "medium" | "hard") => {
+    const handleDifficultyChange = (newDifficulty: "easy" | "medium" | "hard" | "all") => {
         engine.setConfig(engine.state.mode, newDifficulty, engine.state.timeLimit, engine.state.questionLimit)
     }
 
@@ -138,33 +138,32 @@ export default function MentalMathsPractice() {
 
                 {/* 1. LOBBY CONFIGURATION SCREEN */}
                 {gameState === "idle" && (
-                    <div className="w-full flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-3 duration-300">
+                    <div className="w-full flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-3 duration-300">
                         {/* Title Section */}
-                        <div className="text-center pb-3 border-b border-border/40">
+                        <div className="text-center pb-2.5 border-b border-border/40">
                             <h2 className="text-2xl font-extrabold tracking-tight capitalize bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
                                 {topic} Practice
                             </h2>
-                            <p className="text-xs text-muted-foreground mt-1.5 leading-normal">
+                            <p className="text-xs text-muted-foreground mt-1 leading-normal">
                                 Speed test your calculations for {topic}. Select difficulty and beat the clock!
                             </p>
-                        </div>
-
-                        {/* Difficulty */}
+                        </div>                        {/* Difficulty */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Select Difficulty</h3>
-                            <div className="grid grid-cols-3 gap-2">
-                                {(["easy", "medium", "hard"] as const).map((d) => {
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Select Difficulty</h3>
+                            <div className="grid grid-cols-4 gap-2">
+                                {(["easy", "medium", "hard", "all"] as const).map((d) => {
                                     const isSelected = d === engine.state.difficulty;
-                                    const label = d === "easy" ? "Easy" : d === "medium" ? "Medium" : "Hard";
+                                    const label = d === "easy" ? "Easy" : d === "medium" ? "Medium" : d === "hard" ? "Hard" : "All";
                                     return (
                                         <button
                                             key={d}
                                             type="button"
                                             onClick={() => handleDifficultyChange(d)}
-                                            className={`rounded-2xl h-11 border-2 font-bold text-xs transition-all duration-200 ease-out active:scale-[0.98] ${isSelected
-                                                ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                                : "border-border hover:bg-muted/30 text-foreground"
-                                                }`}
+                                            className={`rounded-2xl h-10 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
+                                                isSelected
+                                                    ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                    : "border-border hover:bg-muted/30 text-foreground bg-card"
+                                            }`}
                                         >
                                             {label}
                                         </button>
@@ -175,77 +174,118 @@ export default function MentalMathsPractice() {
 
                         {/* Practice Mode Selection */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Practice Mode</h3>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Practice Mode</h3>
                             <div className="grid grid-cols-2 gap-3">
                                 {/* Timed Mode Card */}
                                 <button
                                     type="button"
                                     onClick={() => handleModeChange("timed")}
-                                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 text-center h-28 w-full transition-all duration-200 ease-out outline-none cursor-pointer ${engine.state.mode === "timed"
-                                        ? "border-primary bg-primary/[0.03] shadow-sm"
-                                        : "border-border bg-card hover:bg-muted/50"
-                                        }`}
+                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                        engine.state.mode === "timed"
+                                            ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
+                                            : "border-border bg-card hover:bg-muted/50 text-foreground"
+                                    }`}
                                 >
-                                    <div className={`p-2 rounded-2xl mb-1.5 transition-all ${engine.state.mode === "timed" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "timed" ? "animate-pulse" : ""}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                                    <div className={`p-1.5 rounded-xl mb-1 transition-all duration-200 ${engine.state.mode === "timed" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "timed" ? "animate-pulse" : ""}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                                     </div>
-                                    <span className={`font-bold text-xs ${engine.state.mode === "timed" ? "text-primary" : "text-foreground"}`}>Timed Sprint</span>
-                                    <span className="text-[10px] text-muted-foreground mt-0.5 leading-normal">Solve against the clock</span>
+                                    <span className="font-bold text-xs">Timed Sprint</span>
+                                    <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">Solve against the clock</span>
                                 </button>
 
                                 {/* Freestyle Mode Card */}
                                 <button
                                     type="button"
                                     onClick={() => handleModeChange("freestyle")}
-                                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 text-center h-28 w-full transition-all duration-200 ease-out outline-none cursor-pointer ${engine.state.mode === "freestyle"
-                                        ? "border-primary bg-primary/[0.03] shadow-sm"
-                                        : "border-border bg-card hover:bg-muted/50"
-                                        }`}
+                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                        engine.state.mode === "freestyle"
+                                            ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
+                                            : "border-border bg-card hover:bg-muted/50 text-foreground"
+                                    }`}
                                 >
-                                    <div className={`p-2 rounded-2xl mb-1.5 transition-all ${engine.state.mode === "freestyle" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "freestyle" ? "animate-pulse" : ""}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                                    <div className={`p-1.5 rounded-xl mb-1 transition-all duration-200 ${engine.state.mode === "freestyle" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "freestyle" ? "animate-pulse" : ""}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
                                     </div>
-                                    <span className={`font-bold text-xs ${engine.state.mode === "freestyle" ? "text-primary" : "text-foreground"}`}>Freestyle Run</span>
-                                    <span className="text-[10px] text-muted-foreground mt-0.5 leading-normal">Solve at your own pace</span>
+                                    <span className="font-bold text-xs">Freestyle Run</span>
+                                    <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">Solve at your own pace</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Mode Specific Limits */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                                 {engine.state.mode === "timed" ? "Select Time Limit" : "Select Question Limit"}
                             </h3>
                             <div className="grid grid-cols-3 gap-2">
-                                {engine.state.mode === "timed" ? [30, 60, 90].map((t) => (
-                                    <button
-                                        key={t}
-                                        type="button"
-                                        onClick={() => handleTimerLimitChange(t)}
-                                        className={`rounded-2xl h-11 border-2 font-bold text-xs transition-all duration-200 ease-out active:scale-[0.98] ${t === engine.state.timeLimit
-                                            ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                            : "border-border hover:bg-muted/30 text-foreground"
+                                {engine.state.mode === "timed" ? [30, 60, 90].map((t) => {
+                                    const isSelected = t === engine.state.timeLimit;
+                                    return (
+                                        <button
+                                            key={t}
+                                            type="button"
+                                            onClick={() => handleTimerLimitChange(t)}
+                                            className={`rounded-2xl h-10 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
+                                                isSelected
+                                                    ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                    : "border-border hover:bg-muted/30 text-foreground bg-card"
                                             }`}
-                                    >
-                                        {t}s
-                                    </button>
-                                )) : [10, 20, 30].map((q) => (
-                                    <button
-                                        key={q}
-                                        type="button"
-                                        onClick={() => handleQuestionLimitChange(q)}
-                                        className={`rounded-2xl h-11 border-2 font-bold text-xs transition-all duration-200 ease-out active:scale-[0.98] ${q === engine.state.questionLimit
-                                            ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                            : "border-border hover:bg-muted/30 text-foreground"
+                                        >
+                                            {t}s
+                                        </button>
+                                    );
+                                }) : [10, 20, 30].map((q) => {
+                                    const isSelected = q === engine.state.questionLimit;
+                                    return (
+                                        <button
+                                            key={q}
+                                            type="button"
+                                            onClick={() => handleQuestionLimitChange(q)}
+                                            className={`rounded-2xl h-10 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
+                                                isSelected
+                                                    ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                    : "border-border hover:bg-muted/30 text-foreground bg-card"
                                             }`}
-                                    >
-                                        {q} Qs
-                                    </button>
-                                ))}
+                                        >
+                                            {q} Qs
+                                        </button>
+                                    );
+                                })}
                             </div>
                         </div>
 
-                        <div className="flex gap-2.5 w-full mt-4">
+                        {/* Input Layout Selection */}
+                        <div>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Select Input Layout</h3>
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setInputLayout("mcq")}
+                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                        inputLayout === "mcq"
+                                            ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
+                                            : "border-border bg-card hover:bg-muted/50 text-foreground"
+                                    }`}
+                                >
+                                    <span className="font-bold text-xs">Multiple Choice (MCQ)</span>
+                                    <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">Choose from 4 options</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setInputLayout("keys")}
+                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                        inputLayout === "keys"
+                                            ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
+                                            : "border-border bg-card hover:bg-muted/50 text-foreground"
+                                    }`}
+                                >
+                                    <span className="font-bold text-xs">Numpad (Keyboard)</span>
+                                    <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">Type your answer directly</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2.5 w-full mt-3">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -512,15 +552,7 @@ export default function MentalMathsPractice() {
                     const circumference = 2 * Math.PI * radius;
                     const strokeDashoffset = circumference - (circumference * animatedAccuracy) / 100;
 
-                    // Dummy history for you to wire up later with engine.state.answersHistory
-                    const dummyHistory = [
-                        { questionText: "12²", correctAnswer: 144, userAnswer: 144, status: "correct" },
-                        { questionText: "15²", correctAnswer: 225, userAnswer: 220, status: "wrong" },
-                        { questionText: "8³", correctAnswer: 512, userAnswer: "skip", status: "skipped" },
-                        { questionText: "9²", correctAnswer: 81, userAnswer: 81, status: "correct" },
-                        { questionText: "4³", correctAnswer: 64, userAnswer: 64, status: "correct" },
-                        { questionText: "25²", correctAnswer: 625, userAnswer: 650, status: "wrong" },
-                    ];
+
 
                     const getAchievementIcon = (acc: number) => {
                         let Icon = Trophy;
@@ -547,7 +579,7 @@ export default function MentalMathsPractice() {
                     };
 
                     return (
-                        <div className="w-full flex flex-col items-center text-center gap-6 py-4 animate-in fade-in duration-300">
+                        <div className="w-full flex flex-col items-center text-center gap-4 py-2 animate-in fade-in duration-300">
                             {/* Themed Accomplishment SVG Icon */}
                             {getAchievementIcon(accuracy)}
 
@@ -555,7 +587,10 @@ export default function MentalMathsPractice() {
                                 <h2 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
                                     Session Completed!
                                 </h2>
-                                <div className="flex items-center justify-center gap-1.5 mt-2 select-none">
+                                <p className="text-muted-foreground text-xs mt-1.5 font-semibold">
+                                    You answered <strong className="text-foreground">{correct}</strong> out of <strong className="text-foreground">{engine.state.attemptedQuestionsCount}</strong> questions correctly.
+                                </p>
+                                <div className="flex items-center justify-center gap-1.5 mt-2.5 select-none">
                                     <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase tracking-wider">
                                         🏷️ {topic}
                                     </span>
@@ -569,13 +604,9 @@ export default function MentalMathsPractice() {
                                         {engine.state.difficulty}
                                     </span>
                                 </div>
-                                <p className="text-muted-foreground text-xs mt-3 font-semibold">
-                                    You answered <strong className="text-foreground">{correct}</strong> out of <strong className="text-foreground">{engine.state.attemptedQuestionsCount}</strong> questions correctly.
-                                </p>
                             </div>
 
-                            {/* Tabs Switcher (Commented out for commit)
-                            <div className="flex items-center bg-muted/50 p-1 rounded-2xl border border-border/40 select-none text-xs font-bold w-full max-w-[280px]">
+                            <div className="flex items-center bg-muted/50 p-1 rounded-2xl border border-border/40 select-none text-xs font-bold w-full max-w-[280px] mb-3">
                                 <button
                                     type="button"
                                     onClick={() => setResultsTab("overview")}
@@ -597,87 +628,92 @@ export default function MentalMathsPractice() {
                                     Review Answers
                                 </button>
                             </div>
-                            */}
+                           
 
-                            {/* Scorecard Overview Panel */}
-                            <div className="w-full flex flex-col items-center gap-6">
-                                {/* Performance Encouragement */}
-                                <p className={`text-base font-extrabold mt-3 ${accuracy >= 90 ? "text-green-600 dark:text-green-400" :
-                                    accuracy >= 75 ? "text-orange-500 dark:text-orange-400" :
-                                        accuracy >= 50 ? "text-yellow-500 dark:text-yellow-400" :
-                                            "text-red-500 dark:text-red-400"
-                                    }`}>
-                                    {accuracy >= 90 && "Calculated Genius!You completely crushed this session!  🧠 "}
-                                    {accuracy >= 75 && accuracy < 90 && "Superb Performance! You are building massive momentum! 🚀 "}
-                                    {accuracy >= 50 && accuracy < 75 && "Solid Session!Keep grinding, you are leveling up!  👍 "}
-                                    {accuracy < 50 && "Keep Fighting!  Every mistake builds consistency. Let's run it back!  💪 "}
-                                </p>
-
-                                {/* Centered Circular Accuracy Gauge */}
-                                <div className="relative flex items-center justify-center w-36 h-36 my-2 select-none">
-                                    <svg className="w-full h-full transform -rotate-90 relative z-10">
-                                        <circle
-                                            cx="72"
-                                            cy="72"
-                                            r={radius}
-                                            className="stroke-muted/30"
-                                            strokeWidth="6"
-                                            fill="transparent"
-                                        />
-                                        <circle
-                                            cx="72"
-                                            cy="72"
-                                            r={radius}
-                                            className="stroke-green-500"
-                                            strokeWidth="6"
-                                            fill="transparent"
-                                            strokeDasharray={circumference}
-                                            strokeDashoffset={strokeDashoffset}
-                                            strokeLinecap="round"
-                                        />
-                                    </svg>
-                                    <div className="absolute flex flex-col items-center justify-center z-20">
-                                        <span className="text-3xl font-extrabold tracking-tight text-foreground">{animatedAccuracy}%</span>
-                                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mt-0.5">Accuracy</span>
-                                    </div>
-                                </div>
-
-                                {/* Metric Grid (3-column layout) */}
-                                <div className="grid grid-cols-3 gap-3 w-full">
-                                    {/* Correct Answers */}
-                                    <div className="p-4 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
-                                        <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1">Correct</span>
-                                        <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">{correct}</span>
-                                    </div>
-
-                                    {/* Incorrect Answers */}
-                                    <div className="p-4 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
-                                        <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-1">Wrong</span>
-                                        <span className="text-xl font-extrabold text-rose-600 dark:text-rose-400">{wrong}</span>
-                                    </div>
-
-                                    {/* Skipped Answers */}
-                                    <div className="p-4 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
-                                        <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-1">Skipped</span>
-                                        <span className="text-xl font-extrabold text-amber-600 dark:text-amber-400">{skipped}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Commented out Review Answers Tab block for later wiring
                             <AnimatePresence mode="wait">
-                                {resultsTab === "review" && (
+                                {resultsTab === "overview" ? (
+                                    <motion.div
+                                        key="overview"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.15 }}
+                                        className="w-full flex flex-col items-center gap-3 h-[270px] justify-center"
+                                    >
+                                        {/* Performance Encouragement */}
+                                        <p className={`text-base font-extrabold mt-0 ${accuracy >= 90 ? "text-green-600 dark:text-green-400" :
+                                            accuracy >= 75 ? "text-orange-500 dark:text-orange-400" :
+                                                accuracy >= 50 ? "text-yellow-500 dark:text-yellow-400" :
+                                                    "text-red-500 dark:text-red-400"
+                                            }`}>
+                                            {accuracy >= 90 && "Calculated Genius!You completely crushed this session!  🧠 "}
+                                            {accuracy >= 75 && accuracy < 90 && "Superb Performance! You are building massive momentum! 🚀 "}
+                                            {accuracy >= 50 && accuracy < 75 && "Solid Session!Keep grinding, you are leveling up!  👍 "}
+                                            {accuracy < 50 && "Keep Fighting!  Every mistake builds consistency. Let's run it back!  💪 "}
+                                        </p>
+
+                                        {/* Centered Circular Accuracy Gauge */}
+                                        <div className="relative flex items-center justify-center w-36 h-36 my-0 select-none">
+                                            <svg className="w-full h-full transform -rotate-90 relative z-10">
+                                                <circle
+                                                    cx="72"
+                                                    cy="72"
+                                                    r={radius}
+                                                    className="stroke-muted/30"
+                                                    strokeWidth="6"
+                                                    fill="transparent"
+                                                />
+                                                <circle
+                                                    cx="72"
+                                                    cy="72"
+                                                    r={radius}
+                                                    className="stroke-green-500"
+                                                    strokeWidth="6"
+                                                    fill="transparent"
+                                                    strokeDasharray={circumference}
+                                                    strokeDashoffset={strokeDashoffset}
+                                                    strokeLinecap="round"
+                                                />
+                                            </svg>
+                                            <div className="absolute flex flex-col items-center justify-center z-20">
+                                                <span className="text-3xl font-extrabold tracking-tight text-foreground">{animatedAccuracy}%</span>
+                                                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mt-0.5">Accuracy</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Metric Grid (3-column layout) */}
+                                        <div className="grid grid-cols-3 gap-3 w-full">
+                                            {/* Correct Answers */}
+                                            <div className="p-4 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
+                                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1">Correct</span>
+                                                <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">{correct}</span>
+                                            </div>
+
+                                            {/* Incorrect Answers */}
+                                            <div className="p-4 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
+                                                <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-1">Wrong</span>
+                                                <span className="text-xl font-extrabold text-rose-600 dark:text-rose-400">{wrong}</span>
+                                            </div>
+
+                                            {/* Skipped Answers */}
+                                            <div className="p-4 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
+                                                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-1">Skipped</span>
+                                                <span className="text-xl font-extrabold text-amber-600 dark:text-amber-400">{skipped}</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ) : (
                                     <motion.div
                                         key="review"
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
                                         transition={{ duration: 0.15 }}
-                                        className="w-full flex flex-col gap-4 text-left font-sans"
+                                        className="w-full flex flex-col h-[270px] text-left font-sans"
                                     >
-                                        <div className="w-full border border-border rounded-2xl overflow-hidden bg-card shadow-sm">
-                                            <div className="max-h-64 overflow-y-auto divide-y divide-border/60">
-                                                {dummyHistory.map((item, idx) => {
+                                        <div className="w-full border border-border rounded-2xl overflow-hidden bg-card shadow-sm h-full">
+                                            <div className="h-full overflow-y-auto divide-y divide-border/60">
+                                                {engine.state.history.map((item, idx) => {
                                                     const isCorrect = item.status === "correct";
                                                     const isWrong = item.status === "wrong";
                                                     const isSkipped = item.status === "skipped";
@@ -698,6 +734,13 @@ export default function MentalMathsPractice() {
                                                                         }`}>
                                                                         {isSkipped ? "Skipped" : `Your Answer: ${item.userAnswer}`}
                                                                     </span>
+                                                                    <span className={`text-[10px] font-semibold ${
+                                                                        (item.timeTaken ?? 0) >= 3000
+                                                                            ? "text-rose-500 dark:text-rose-400"
+                                                                            : "text-emerald-500 dark:text-emerald-400"
+                                                                    }`}>
+                                                                        ⏱️ {((item.timeTaken ?? 0) / 1000).toFixed(1)}s
+                                                                    </span>
                                                                 </div>
 
                                                                 {isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />}
@@ -712,7 +755,7 @@ export default function MentalMathsPractice() {
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-                            */}
+                           
 
                             {/* Action buttons */}
                             <div className="flex gap-2.5 w-full mt-4">
@@ -748,7 +791,7 @@ export default function MentalMathsPractice() {
                         </AlertDialogTitle>
                     </AlertDialogHeader>
                     <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed mt-4">
-                        Are you sure you want to quit this sprint? Your current progress and score of <strong className="text-foreground">{engine.state.score}</strong> will be reset.
+                        Your current progress and score of <strong className="text-foreground">{engine.state.score}</strong> will be reset.
                     </AlertDialogDescription>
                     <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
                         <AlertDialogCancel
@@ -758,7 +801,7 @@ export default function MentalMathsPractice() {
                             Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
-                            className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold bg-destructive hover:bg-destructive/90 text-white"
+                            className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-red-200 dark:border-red-900/40 bg-transparent text-red-600 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all shadow-sm"
                             onClick={() => {
                                 setShowQuitConfirm(false);
                                 engine.resetSession();
