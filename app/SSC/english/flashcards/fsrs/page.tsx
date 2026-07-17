@@ -21,6 +21,7 @@ const FsrsPage = () => {
         return (
             <TopicPageLayout
                 hideBreadcrumbs={true}
+                centerContent={true}
             >
                 <div className="w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
                     <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl bg-card border border-border shadow-sm">
@@ -47,6 +48,7 @@ const FsrsPage = () => {
         return (
             <TopicPageLayout
                 hideBreadcrumbs={true}
+                centerContent={true}
             >
                 <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
                     <ErrorState 
@@ -62,6 +64,7 @@ const FsrsPage = () => {
     return (
         <TopicPageLayout
             hideBreadcrumbs={true}
+            centerContent={true}
         >
             <div className="flex justify-center flex-col w-full mx-auto">
                 {/* Compact Gameplay Stats Header Bar */}
@@ -70,8 +73,8 @@ const FsrsPage = () => {
                     <div className="flex items-center justify-between w-full gap-2 min-w-0">
                         <div className="flex items-center gap-2.5 min-w-0">
                             <BookOpen className="w-[18px] h-[18px] text-primary/80 shrink-0" fill="currentColor" fillOpacity={0.1} />
-                            <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal">
-                                Study Mode (FSRS)
+                            <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal uppercase">
+                                Flashcards
                             </span>
                         </div>
                         <Link href="/SSC/english/flashcards">
@@ -87,7 +90,7 @@ const FsrsPage = () => {
                     {/* Row 2: Left is active mode details */}
                     <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
                         <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
-                            <span>Spaced Repetition</span>
+                            <span>Study Mode</span>
                             <span className="text-muted-foreground/35 font-normal">•</span>
                             <span className="font-semibold text-primary">Daily Review</span>
                         </div>

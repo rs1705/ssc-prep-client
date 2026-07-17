@@ -11,6 +11,7 @@ interface TopicPageLayoutProps {
   children: React.ReactNode;
   contentMaxWidthClass?: string;
   hideBreadcrumbs?: boolean;
+  centerContent?: boolean;
 }
 
 const ROUTE_NAMES: Record<string, string> = {
@@ -45,6 +46,7 @@ export const TopicPageLayout = ({
   children,
   contentMaxWidthClass = "w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl",
   hideBreadcrumbs = false,
+  centerContent = false,
 }: TopicPageLayoutProps) => {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
@@ -58,7 +60,7 @@ export const TopicPageLayout = ({
   };
 
   return (
-    <div className="flex flex-col items-center w-full mx-auto pt-0 pb-3">
+    <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 ${centerContent ? 'min-h-[calc(100dvh-6rem)] sm:min-h-[calc(100dvh-6.5rem)] lg:min-h-0 justify-center lg:justify-start' : ''}`}>
       {/* Sub-section Header */}
       {title && (
         <div className="mb-1 text-center px-4 max-w-2xl mx-auto flex flex-col items-center">

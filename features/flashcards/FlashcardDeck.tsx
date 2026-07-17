@@ -151,7 +151,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
     <>
       {deck.length > 0 ? (
         <div className="flex flex-col items-center w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto">
-          <div className="relative w-full min-h-[300px] min-[375px]:min-h-[340px] sm:min-h-[400px]">
+          <div className="relative w-full min-h-[440px] sm:min-h-[500px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
@@ -162,7 +162,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[300px] min-[375px]:min-h-[340px] sm:min-h-[400px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full min-h-[440px] sm:min-h-[500px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div
@@ -173,10 +173,11 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.7}
                     onDragEnd={(event, info) => {
-                      const swipeThreshold = 80;
-                      if (info.offset.x < -swipeThreshold) {
+                      const swipeThreshold = 40;
+                      const velocityThreshold = 400;
+                      if (info.offset.x < -swipeThreshold || info.velocity.x < -velocityThreshold) {
                         onNextClick();
-                      } else if (info.offset.x > swipeThreshold) {
+                      } else if (info.offset.x > swipeThreshold || info.velocity.x > velocityThreshold) {
                         onPrevClick();
                       }
                     }}
@@ -276,7 +277,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
         </div>
       ) : (
         <div className="w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[300px] rounded-3xl bg-card border border-border shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[440px] rounded-3xl bg-card border border-border shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">No Cards Found</h3>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">

@@ -103,6 +103,7 @@ const FreestylePage = () => {
       ) : (
         <TopicPageLayout
           hideBreadcrumbs={true}
+          centerContent={true}
         >
           <div className="flex justify-center flex-col w-full mx-auto">
             {/* Compact Gameplay Stats Header Bar */}
@@ -111,8 +112,8 @@ const FreestylePage = () => {
                 <div className="flex items-center justify-between w-full gap-2 min-w-0">
                     <div className="flex items-center gap-2.5 min-w-0">
                         <Dices className="w-[18px] h-[18px] text-primary/80 shrink-0" fill="currentColor" fillOpacity={0.1} />
-                        <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal">
-                            Freestyle Flashcards
+                        <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal uppercase">
+                            Flashcards
                         </span>
                     </div>
                     <Link href="/SSC/english/flashcards">
@@ -128,7 +129,7 @@ const FreestylePage = () => {
                 {/* Row 2: Left is active mode & category filter details */}
                 <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
                     <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
-                        <span>Freestyle</span>
+                        <span>Freestyle Mode</span>
                         <span className="text-muted-foreground/35 font-normal">•</span>
                         <span className="font-semibold text-primary">{activeTab.toUpperCase()}</span>
                     </div>

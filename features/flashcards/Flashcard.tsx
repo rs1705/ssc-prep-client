@@ -69,11 +69,10 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
       </div>
       <div className="pb-4">
         <div
-          className={`px-4 py-1.5 rounded-full bg-white/40 border border-white/50 text-slate-800 text-sm font-medium tracking-wide opacity-0 ${animate ? "animate-dropIn" : ""} shadow-sm`}
+          className={`px-3 py-1 rounded-full bg-white/40 border border-white/50 text-slate-800 text-xs italic font-semibold tracking-wide opacity-0 ${animate ? "animate-dropIn" : ""} shadow-sm select-none`}
           style={{ animationDelay: "300ms" }}
         >
-          <span className="hidden md:inline">Tap the card to reveal the meaning</span>
-          <span className="md:hidden">Tap to flip • Swipe to navigate</span>
+          <span>Tap to reveal • Swipe to navigate</span>
         </div>
       </div>
     </div>
@@ -174,7 +173,7 @@ const Flashcard = ({ card, onFlipChange, colorScheme }: FlashCardProps) => {
 
   return (
     <div
-      className="w-full h-[320px] min-[375px]:h-[360px] sm:h-[420px] [perspective:1000px] cursor-pointer select-none"
+      className="w-full h-[440px] sm:h-[500px] [perspective:1000px] cursor-pointer select-none"
       onClick={handleClick}
     >
       <div
