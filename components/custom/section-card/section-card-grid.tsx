@@ -10,7 +10,7 @@ type SectionCardGridProps = {
 const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections, layout = "grid-2" }) => {
   if (layout === "grid-4") {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {sections.map((item: SectionCardProps, index: number) => (
           <SectionCard
             key={index}
@@ -30,9 +30,9 @@ const SectionCardGrid: React.FC<SectionCardGridProps> = ({ sections, layout = "g
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-6">
+    <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
       {sections.map((item: SectionCardProps, index: number) => (
-        <div className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[400px]" key={index}>
+        <div className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[400px]" key={index}>
           <SectionCard
             key={index}
             index={index}

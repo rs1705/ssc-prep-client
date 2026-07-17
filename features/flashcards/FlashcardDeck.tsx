@@ -151,7 +151,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
     <>
       {deck.length > 0 ? (
         <div className="flex flex-col items-center w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto">
-          <div className="relative w-full min-h-[400px]">
+          <div className="relative w-full min-h-[300px] min-[375px]:min-h-[340px] sm:min-h-[400px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
@@ -162,7 +162,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[400px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full min-h-[300px] min-[375px]:min-h-[340px] sm:min-h-[400px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div

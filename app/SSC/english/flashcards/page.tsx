@@ -33,7 +33,7 @@ const FlashcardPage = () => {
   return (
     <TopicPageLayout
       title="Flashcards"
-      description="Harness the cognitive science of active recall. Memorize synonyms, antonyms, and idioms effortlessly. Select your training mode to get started."
+      description="Harness active recall to memorize synonyms, antonyms, and idioms effortlessly."
     >
       <SectionCardGrid sections={sections} />
     </TopicPageLayout>

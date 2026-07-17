@@ -161,34 +161,56 @@ export default function MentalMathsPractice() {
     const attemptedQuestionsCount = engine.state.attemptedQuestionsCount;
     const questionLimit = engine.state.questionLimit ?? 1;
 
-    const progressPercentage = engine.state.mode === "timed"
+    const isTimedMode = engine.state.mode === "timed";
+    const sec = isTimedMode && engine.state.timeRemaining !== null ? engine.state.timeRemaining : null;
+
+    let barColorClass = "";
+    let timerTextColorClass = "text-muted-foreground";
+
+    if (isTimedMode && sec !== null) {
+        if (sec <= 3) {
+            barColorClass = "from-red-500 to-rose-600 animate-pulse";
+            timerTextColorClass = "text-rose-500 dark:text-rose-400 font-extrabold";
+        } else if (sec <= 5) {
+            barColorClass = "from-red-500 to-rose-600 transition-colors duration-500";
+            timerTextColorClass = "text-rose-500 dark:text-rose-400 font-extrabold";
+        } else if (sec <= 10) {
+            barColorClass = "from-orange-500 to-amber-500 transition-colors duration-500";
+            timerTextColorClass = "text-orange-500 dark:text-orange-400 font-extrabold";
+        }
+    }
+
+    const progressPercentage = isTimedMode
         ? Math.min(100, Math.max(0, (timeRemaining / timeLimit) * 100))
         : Math.min(100, Math.max(0, (attemptedQuestionsCount / questionLimit) * 100));
 
-    const progressText = engine.state.mode === "timed"
+    const progressText = isTimedMode
         ? `${timeRemaining}s remaining`
         : `${attemptedQuestionsCount} / ${questionLimit} Qs`;
 
     return (
         <TopicPageLayout
             contentMaxWidthClass="w-full max-w-md"
+            hideBreadcrumbs={true}
         >
-            <div className="w-full mt-2 flex flex-col items-center justify-center p-6 bg-card border border-border rounded-3xl shadow-sm select-none">
+            <div className="w-full mt-1 sm:mt-2 flex flex-col items-center justify-center p-5 sm:p-6 bg-card border border-primary/30 rounded-3xl shadow-sm select-none">
 
                 {/* 1. LOBBY CONFIGURATION SCREEN */}
                 {gameState === "idle" && (
                     <div className="w-full flex flex-col gap-5 animate-in fade-in slide-in-from-bottom-3 duration-300">
                         {/* Title Section */}
-                        <div className="text-center pb-2.5 border-b border-border/40">
+                        <div className="text-center pb-3 border-b border-border/40">
                             <h2 className="text-2xl font-extrabold tracking-tight capitalize bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
                                 {topic} Practice
                             </h2>
-                            <p className="text-xs text-muted-foreground mt-1 leading-normal">
-                                Speed test your calculations for {topic}. Select difficulty and beat the clock!
+                            <p className="text-xs text-muted-foreground mt-0.5 leading-normal">
+                                Speed test your calculations for {topic} and beat the clock!
                             </p>
-                        </div>                        {/* Difficulty */}
+                        </div>
+
+                        {/* Difficulty */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Select Difficulty</h3>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Difficulty</h3>
                             <div className="grid grid-cols-4 gap-2">
                                 {(["easy", "medium", "hard", "all"] as const).map((d) => {
                                     const isSelected = d === engine.state.difficulty;
@@ -198,7 +220,7 @@ export default function MentalMathsPractice() {
                                             key={d}
                                             type="button"
                                             onClick={() => handleDifficultyChange(d)}
-                                            className={`rounded-2xl h-10 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
+                                            className={`rounded-2xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
                                                 isSelected
                                                     ? "border-primary bg-primary/5 text-primary shadow-sm"
                                                     : "border-border hover:bg-muted/30 text-foreground bg-card"
@@ -209,27 +231,27 @@ export default function MentalMathsPractice() {
                                     );
                                 })}
                             </div>
-                            <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed italic">
+                            <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed italic">
                                 {getDifficultyDescription(topic, engine.state.difficulty)}
                             </p>
                         </div>
 
                         {/* Practice Mode Selection */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Practice Mode</h3>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Practice Mode</h3>
                             <div className="grid grid-cols-2 gap-3">
                                 {/* Timed Mode Card */}
                                 <button
                                     type="button"
                                     onClick={() => handleModeChange("timed")}
-                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                    className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
                                         engine.state.mode === "timed"
                                             ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
                                             : "border-border bg-card hover:bg-muted/50 text-foreground"
                                     }`}
                                 >
                                     <div className={`p-1.5 rounded-xl mb-1 transition-all duration-200 ${engine.state.mode === "timed" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "timed" ? "animate-pulse" : ""}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "timed" ? "animate-pulse" : ""}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                                     </div>
                                     <span className="font-bold text-xs">Timed Sprint</span>
                                     <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">Solve against the clock</span>
@@ -239,14 +261,14 @@ export default function MentalMathsPractice() {
                                 <button
                                     type="button"
                                     onClick={() => handleModeChange("freestyle")}
-                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                    className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
                                         engine.state.mode === "freestyle"
                                             ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
                                             : "border-border bg-card hover:bg-muted/50 text-foreground"
                                     }`}
                                 >
                                     <div className={`p-1.5 rounded-xl mb-1 transition-all duration-200 ${engine.state.mode === "freestyle" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "freestyle" ? "animate-pulse" : ""}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={engine.state.mode === "freestyle" ? "animate-pulse" : ""}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
                                     </div>
                                     <span className="font-bold text-xs">Freestyle Run</span>
                                     <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">Solve at your own pace</span>
@@ -256,8 +278,8 @@ export default function MentalMathsPractice() {
 
                         {/* Mode Specific Limits */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                                {engine.state.mode === "timed" ? "Select Time Limit" : "Select Question Limit"}
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+                                {engine.state.mode === "timed" ? "Time Limit" : "Question Limit"}
                             </h3>
                             <div className="grid grid-cols-3 gap-2">
                                 {engine.state.mode === "timed" ? [30, 60, 90].map((t) => {
@@ -267,7 +289,7 @@ export default function MentalMathsPractice() {
                                             key={t}
                                             type="button"
                                             onClick={() => handleTimerLimitChange(t)}
-                                            className={`rounded-2xl h-10 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
+                                            className={`rounded-2xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
                                                 isSelected
                                                     ? "border-primary bg-primary/5 text-primary shadow-sm"
                                                     : "border-border hover:bg-muted/30 text-foreground bg-card"
@@ -283,7 +305,7 @@ export default function MentalMathsPractice() {
                                             key={q}
                                             type="button"
                                             onClick={() => handleQuestionLimitChange(q)}
-                                            className={`rounded-2xl h-10 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
+                                            className={`rounded-2xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
                                                 isSelected
                                                     ? "border-primary bg-primary/5 text-primary shadow-sm"
                                                     : "border-border hover:bg-muted/30 text-foreground bg-card"
@@ -298,12 +320,12 @@ export default function MentalMathsPractice() {
 
                         {/* Input Layout Selection */}
                         <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Select Input Layout</h3>
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Input Layout</h3>
                             <div className="grid grid-cols-2 gap-3">
                                 <button
                                     type="button"
                                     onClick={() => setInputLayout("mcq")}
-                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                    className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
                                         inputLayout === "mcq"
                                             ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
                                             : "border-border bg-card hover:bg-muted/50 text-foreground"
@@ -315,7 +337,7 @@ export default function MentalMathsPractice() {
                                 <button
                                     type="button"
                                     onClick={() => setInputLayout("keys")}
-                                    className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
+                                    className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
                                         inputLayout === "keys"
                                             ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
                                             : "border-border bg-card hover:bg-muted/50 text-foreground"
@@ -327,7 +349,7 @@ export default function MentalMathsPractice() {
                             </div>
                         </div>
 
-                        <div className="flex gap-2.5 w-full mt-3">
+                        <div className="flex gap-2.5 w-full mt-3.5">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -360,37 +382,58 @@ export default function MentalMathsPractice() {
 
                 {/* 3. ACTIVE PRACTICE BOARD */}
                 {gameState === "active" && (
-                    <div className="w-full flex flex-col gap-6">
+                    <div className="w-full flex flex-col gap-4 sm:gap-5">
                         {/* Header Stats Bar */}
-                        <div className="flex flex-col gap-2.5 w-full pb-3 border-b border-border/60">
-                            {/* Row 1: Left is Topic Title, Right is Score + Quit */}
+                        <div className="flex flex-col gap-2 w-full pb-2 border-b border-border/60">
+                            {/* Row 1: Left is Topic Title, Right is Switcher + Quit */}
                             <div className="flex items-center justify-between w-full gap-2 min-w-0">
-                                <div className="flex items-center gap-2 min-w-0">
+                                <div className="flex items-center gap-2.5 min-w-0">
                                     {engine.state.mode === "timed" ? (
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80 shrink-0"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
                                     ) : (
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80 shrink-0"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
                                     )}
-                                    <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-tight truncate capitalize">
+                                    <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal capitalize">
                                         {topic}
                                     </span>
                                 </div>
-                                <div className="flex items-center justify-between sm:justify-start gap-2 flex-shrink-0 w-[130px] sm:w-auto">
-                                    <div className="flex items-center justify-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-xl text-xs font-bold flex-1 sm:flex-initial">
-                                        <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 font-semibold">Score</span>
-                                        <span>{engine.state.score}</span>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    {/* Compact Layout Switcher */}
+                                    <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[92px] sm:w-[104px]">
+                                        <button
+                                            type="button"
+                                            onClick={() => setInputLayout("mcq")}
+                                            className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${inputLayout === "mcq"
+                                                ? "bg-background text-primary shadow-xs"
+                                                : "text-muted-foreground hover:text-foreground"
+                                                }`}
+                                            title="MCQ Mode"
+                                        >
+                                            MCQ
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setInputLayout("keys")}
+                                            className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${inputLayout === "keys"
+                                                ? "bg-background text-primary shadow-xs"
+                                                : "text-muted-foreground hover:text-foreground"
+                                                }`}
+                                            title="Keypad Mode"
+                                        >
+                                            NUM
+                                        </button>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={() => setShowQuitConfirm(true)}
-                                        className="text-xs font-semibold text-destructive/80 hover:text-destructive hover:bg-destructive/10 rounded-full px-3 py-1 border border-transparent hover:border-destructive/30 transition-colors flex-1 sm:flex-initial text-center justify-center"
+                                        className="text-xs font-bold text-destructive hover:bg-destructive/10 rounded-full px-2.5 py-1 transition-all active:scale-95 cursor-pointer flex-shrink-0"
                                     >
                                         Quit
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Row 2: Left is Freestyle/Timed + Difficulty, Right is Layout Switcher */}
+                            {/* Row 2: Left is Freestyle/Timed + Difficulty, Right is Score Badge */}
                             <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
                                 <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
                                     <span>{engine.state.mode === "timed" ? "Timed" : "Freestyle"}</span>
@@ -403,30 +446,24 @@ export default function MentalMathsPractice() {
                                     </span>
                                 </div>
 
-                                {/* Compact Layout Switcher */}
-                                <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[130px] sm:w-auto">
-                                    <button
-                                        type="button"
-                                        onClick={() => setInputLayout("mcq")}
-                                        className={`flex-1 sm:flex-initial sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-center ${inputLayout === "mcq"
-                                            ? "bg-background text-primary shadow-sm"
-                                            : "text-muted-foreground hover:text-foreground"
-                                            }`}
-                                        title="MCQ Mode"
-                                    >
-                                        MCQ
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setInputLayout("keys")}
-                                        className={`flex-1 sm:flex-initial sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-center ${inputLayout === "keys"
-                                            ? "bg-background text-primary shadow-sm"
-                                            : "text-muted-foreground hover:text-foreground"
-                                            }`}
-                                        title="Keypad Mode"
-                                    >
-                                        NUM
-                                    </button>
+                                {/* Text Score with Slot Animation under Quit button */}
+                                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none shrink-0 h-5 overflow-hidden">
+                                    <span>Score</span>
+                                    <span className="text-muted-foreground/35 font-normal">•</span>
+                                    <div className="h-5 overflow-hidden flex items-center relative min-w-[12px] justify-center">
+                                        <AnimatePresence mode="popLayout" initial={false}>
+                                            <motion.span
+                                                key={engine.state.score}
+                                                initial={{ y: 14, opacity: 0 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                exit={{ y: -14, opacity: 0 }}
+                                                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                                                className="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400"
+                                            >
+                                                {engine.state.score}
+                                            </motion.span>
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -436,16 +473,21 @@ export default function MentalMathsPractice() {
                             <ProgressBar
                                 value={progressPercentage}
                                 className="h-1.5 bg-muted/65"
+                                barClassName={barColorClass}
                             />
-                            <div className="flex justify-between text-[11px] text-muted-foreground">
-                                <span className="font-bold uppercase tracking-wider">Progress</span>
-                                <span className="font-bold tracking-wider">{progressText}</span>
+                            <div className="flex justify-between text-[11px] items-center">
+                                <span className="font-bold text-muted-foreground uppercase tracking-wider">
+                                    {engine.state.mode === "timed" ? "Timer" : "Progress"}
+                                </span>
+                                <span className={`tracking-wider flex items-center gap-1 transition-colors ${timerTextColorClass}`}>
+                                    {progressText}
+                                </span>
                             </div>
                         </div>
 
                         {/* Central Question Panel */}
                         <div className={`
-                            flex flex-col items-center justify-center rounded-2xl py-7 px-4 min-h-[100px] overflow-hidden border transition-all duration-150 ease-in-out select-none
+                            flex flex-col items-center justify-center rounded-2xl py-5 px-4 min-h-[84px] overflow-hidden border transition-all duration-150 ease-in-out select-none
                             ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)] text-emerald-600 dark:text-emerald-400" : ""}
                             ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500 bg-rose-500/10 dark:bg-rose-500/5 shadow-[0_0_15px_rgba(244,63,94,0.1)] text-rose-600 dark:text-rose-400" : ""}
                             ${engine.state.currentAnswerStatus === "skipped" ? "border-amber-500 bg-amber-500/10 dark:bg-amber-500/5 shadow-[0_0_15px_rgba(245,158,11,0.1)] text-amber-600 dark:text-amber-400" : ""}
@@ -484,23 +526,23 @@ export default function MentalMathsPractice() {
                                             ref={inputRef}
                                             type="text"
                                             inputMode="none"
-                                            placeholder="Type answer..."
+                                            placeholder="Answer..."
                                             value={userInput}
                                             onChange={(e) => setUserInput(e.target.value.replace(/\D/g, ""))}
-                                            className="h-11 sm:h-12 flex-1 rounded-2xl text-center text-base sm:text-lg font-bold border border-input focus-visible:ring-primary/20 bg-background shadow-sm"
+                                            className="h-11 sm:h-12 flex-1 rounded-xl text-left px-4 text-base sm:text-lg font-medium border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/40 focus-visible:bg-background focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 caret-primary shadow-inner transition-all"
                                             autoFocus
                                         />
                                         <Button
                                             type="submit"
-                                            className="h-11 sm:h-12 rounded-2xl px-5 sm:px-7 text-xs sm:text-sm font-bold bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground hover:opacity-95 shadow-sm active:scale-[0.98] transition-transform cursor-pointer"
+                                            className="h-11 sm:h-12 w-24 sm:w-32 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground hover:opacity-95 shadow-sm active:scale-[0.98] transition-transform cursor-pointer"
                                             onClick={() => handleEnterSubmit(userInput)}
                                         >
                                             Enter
                                         </Button>
                                         <Button
                                             type="button"
-                                            variant="outline"
-                                            className="h-11 sm:h-12 rounded-2xl px-5 sm:px-7 text-xs sm:text-sm font-semibold border border-border/80 hover:bg-muted hover:border-border text-muted-foreground hover:text-foreground active:scale-[0.98] transition-all cursor-pointer"
+                                            variant="ghost"
+                                            className="h-11 sm:h-12 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted active:scale-[0.98] transition-all cursor-pointer"
                                             onClick={() => handleEnterSubmit("skip")}
                                         >
                                             Skip
@@ -514,7 +556,7 @@ export default function MentalMathsPractice() {
                                                 key={btn}
                                                 type="button"
                                                 onClick={() => handleNumClick(btn)}
-                                                className={`h-14 sm:h-12 font-extrabold rounded-2xl border transition-all duration-150 ease-out outline-none select-none active:scale-95 cursor-pointer shadow-sm ${btn === "Clear" || btn === "⌫"
+                                                className={`h-[54px] sm:h-[46px] font-extrabold rounded-2xl border-2 transition-all duration-150 ease-out outline-none select-none active:scale-[0.93] active:border-primary/80 cursor-pointer shadow-sm ${btn === "Clear" || btn === "⌫"
                                                     ? "bg-muted text-muted-foreground hover:bg-muted/80 border-border/50 hover:border-primary/20 text-xs sm:text-xs"
                                                     : "bg-card text-foreground hover:bg-muted/40 border-border hover:border-primary/25 text-base sm:text-base"
                                                     }`}
@@ -531,7 +573,7 @@ export default function MentalMathsPractice() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -15 }}
                                     transition={{ duration: 0.15, ease: "easeInOut" }}
-                                    className="flex flex-col gap-4 w-full h-[324px] sm:h-[296px]"
+                                    className="flex flex-col gap-4 w-full h-[230px] sm:h-[250px]"
                                 >
                                     {/* MCQ Options Grid */}
                                     <div className="grid grid-cols-2 gap-3 mt-1">
@@ -550,17 +592,17 @@ export default function MentalMathsPractice() {
                                                 <button
                                                     key={idx}
                                                     type="button"
-                                                    className={`relative h-[122px] sm:h-[106px] font-extrabold rounded-2xl border transition-all duration-150 ease-out flex items-center justify-center px-4 active:scale-[0.98] cursor-pointer ${highlightClass}`}
+                                                    className={`relative h-[76px] sm:h-[90px] font-black rounded-2xl border-2 transition-all duration-100 ease-out flex items-center justify-center px-2 sm:px-4 active:scale-[0.94] active:bg-slate-100 dark:active:bg-slate-900/60 active:border-primary/85 cursor-pointer ${highlightClass}`}
                                                     onClick={() => {
                                                         if (engine.state.currentAnswerStatus !== "idle") return;
                                                         setSelectedOption(option);
                                                         handleEnterSubmit(option);
                                                     }}
                                                 >
-                                                    <span className="absolute top-2.5 left-2.5 sm:top-auto sm:left-4 text-muted-foreground text-[9px] sm:text-[10px] bg-muted px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-md select-none font-bold">
+                                                    <span className="absolute top-2.5 left-2.5 text-muted-foreground text-[9px] sm:text-[10px] bg-muted px-1.5 py-0.5 rounded-md select-none font-bold">
                                                         {String.fromCharCode(65 + idx)}
                                                     </span>
-                                                    <span className="truncate w-full text-center text-lg sm:text-sm font-extrabold tracking-tight">
+                                                    <span className="truncate w-full text-center text-base sm:text-lg font-black tracking-tight mt-2.5 sm:mt-1">
                                                         {option}
                                                     </span>
                                                 </button>
@@ -568,7 +610,7 @@ export default function MentalMathsPractice() {
                                         })}
                                     </div>
                                     {/* Skip Button for MCQ */}
-                                    <div className="flex justify-center items-center h-[52px] sm:h-[56px]">
+                                    <div className="flex justify-center items-center h-10 sm:h-12 mt-1">
                                         <button
                                             type="button"
                                             onClick={() => handleEnterSubmit("skip")}
@@ -648,157 +690,184 @@ export default function MentalMathsPractice() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center bg-muted/50 p-1 rounded-2xl border border-border/40 select-none text-xs font-bold w-full max-w-[280px] mb-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setResultsTab("overview")}
-                                    className={`flex-1 py-2 rounded-xl transition-all cursor-pointer ${resultsTab === "overview"
-                                        ? "bg-background text-primary shadow-sm"
-                                        : "text-muted-foreground hover:text-foreground"
-                                        }`}
-                                >
-                                    Overview
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setResultsTab("review")}
-                                    className={`flex-1 py-2 rounded-xl transition-all cursor-pointer ${resultsTab === "review"
-                                        ? "bg-background text-primary shadow-sm"
-                                        : "text-muted-foreground hover:text-foreground"
-                                        }`}
-                                >
-                                    Review Answers
-                                </button>
-                            </div>
-                           
-
-                            <AnimatePresence mode="wait">
-                                {resultsTab === "overview" ? (
-                                    <motion.div
-                                        key="overview"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.15 }}
-                                        className="w-full flex flex-col items-center gap-3 h-[270px] justify-center"
+                            <div className="w-full flex flex-col items-center gap-1">
+                                <div className="flex items-center justify-center gap-6 select-none text-xs font-bold w-full max-w-[280px] pb-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setResultsTab("overview")}
+                                        className={`py-1.5 px-1 transition-all cursor-pointer border-b-2 font-black ${resultsTab === "overview"
+                                            ? "border-primary text-primary"
+                                            : "border-transparent text-muted-foreground hover:text-foreground"
+                                            }`}
                                     >
-                                        {/* Performance Encouragement */}
-                                        <p className={`text-base font-bold mt-0 ${accuracy >= 90 ? "text-green-600 dark:text-green-400" :
-                                            accuracy >= 75 ? "text-orange-500 dark:text-orange-400" :
-                                                accuracy >= 50 ? "text-yellow-500 dark:text-yellow-400" :
-                                                    "text-red-500 dark:text-red-400"
-                                            }`}>
-                                            {accuracy >= 90 && "Calculated Genius! You completely crushed this session!  🧠 "}
-                                            {accuracy >= 75 && accuracy < 90 && "Superb Performance! You are building massive momentum! 🚀 "}
-                                            {accuracy >= 50 && accuracy < 75 && "Solid Session! Keep grinding, you are leveling up!  👍 "}
-                                            {accuracy < 50 && "Keep Fighting! Every mistake builds consistency. Let's run it back!  💪 "}
-                                        </p>
-
-                                        {/* Centered Circular Accuracy Gauge */}
-                                        <div className="relative flex items-center justify-center w-36 h-36 my-0 select-none">
-                                            <svg className="w-full h-full transform -rotate-90 relative z-10">
-                                                <circle
-                                                    cx="72"
-                                                    cy="72"
-                                                    r={radius}
-                                                    className="stroke-muted/30"
-                                                    strokeWidth="6"
-                                                    fill="transparent"
-                                                />
-                                                <circle
-                                                    cx="72"
-                                                    cy="72"
-                                                    r={radius}
-                                                    className="stroke-green-500"
-                                                    strokeWidth="6"
-                                                    fill="transparent"
-                                                    strokeDasharray={circumference}
-                                                    strokeDashoffset={strokeDashoffset}
-                                                    strokeLinecap="round"
-                                                />
-                                            </svg>
-                                            <div className="absolute flex flex-col items-center justify-center z-20">
-                                                <span className="text-3xl font-extrabold tracking-tight text-foreground">{animatedAccuracy}%</span>
-                                                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mt-0.5">Accuracy</span>
-                                            </div>
-                                        </div>
-
-                                        {/* Metric Grid (3-column layout) */}
-                                        <div className="grid grid-cols-3 gap-3 w-full">
-                                            {/* Correct Answers */}
-                                            <div className="p-4 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
-                                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1">Correct</span>
-                                                <span className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">{correct}</span>
-                                            </div>
-
-                                            {/* Incorrect Answers */}
-                                            <div className="p-4 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
-                                                <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-1">Wrong</span>
-                                                <span className="text-xl font-extrabold text-rose-600 dark:text-rose-400">{wrong}</span>
-                                            </div>
-
-                                            {/* Skipped Answers */}
-                                            <div className="p-4 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-2xl flex flex-col items-center justify-center min-h-[90px] shadow-sm transition-all">
-                                                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-1">Skipped</span>
-                                                <span className="text-xl font-extrabold text-amber-600 dark:text-amber-400">{skipped}</span>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                ) : (
-                                    <motion.div
-                                        key="review"
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.15 }}
-                                        className="w-full flex flex-col h-[270px] text-left font-sans"
+                                        Overview
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setResultsTab("review")}
+                                        className={`py-1.5 px-1 transition-all cursor-pointer border-b-2 font-black ${resultsTab === "review"
+                                            ? "border-primary text-primary"
+                                            : "border-transparent text-muted-foreground hover:text-foreground"
+                                            }`}
                                     >
-                                        <div className="w-full border border-border rounded-2xl overflow-hidden bg-card shadow-sm h-full">
-                                            <div className="h-full overflow-y-auto divide-y divide-border/60">
-                                                {engine.state.history.map((item, idx) => {
-                                                    const isCorrect = item.status === "correct";
-                                                    const isWrong = item.status === "wrong";
-                                                    const isSkipped = item.status === "skipped";
+                                        Review Answers
+                                    </button>
+                                </div>
+                               
 
-                                                    return (
-                                                        <div key={idx} className="flex items-center justify-between p-3.5 text-xs">
-                                                            <div className="flex flex-col gap-0.5">
-                                                                <span className="font-extrabold text-sm text-foreground">
-                                                                    {idx + 1}) {item.questionText}
-                                                                </span>
-                                                                <span className="text-[10px] text-muted-foreground">
-                                                                    Correct: <strong className="text-foreground">{item.correctAnswer}</strong>
-                                                                </span>
-                                                            </div>
+                                <AnimatePresence mode="wait">
+                                    {resultsTab === "overview" ? (
+                                        <motion.div
+                                            key="overview"
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.15 }}
+                                            className="w-full flex flex-col h-[270px] text-left"
+                                        >
+                                            <div className="w-full border border-border rounded-2xl overflow-hidden bg-card h-full p-3 flex flex-col items-center justify-between">
+                                                {/* Performance Encouragement */}
+                                                <p className={`text-xs font-bold text-center px-2 ${accuracy >= 90 ? "text-green-600 dark:text-green-400" :
+                                                    accuracy >= 75 ? "text-orange-500 dark:text-orange-400" :
+                                                        accuracy >= 50 ? "text-yellow-500 dark:text-yellow-400" :
+                                                            "text-red-500 dark:text-red-400"
+                                                    }`}>
+                                                    {accuracy >= 90 && "Calculated Genius! You completely crushed this session! 🧠"}
+                                                    {accuracy >= 75 && accuracy < 90 && "Superb Performance! You are building massive momentum! 🚀"}
+                                                    {accuracy >= 50 && accuracy < 75 && "Solid Session! Keep grinding, you are leveling up! 👍"}
+                                                    {accuracy < 50 && "Keep Fighting! Every mistake builds consistency. Let's run it back! 💪"}
+                                                </p>
 
-                                                            <div className="flex items-center gap-3">
-                                                                <div className="flex flex-col items-end gap-0.5">
-                                                                    <span className={`font-bold ${isCorrect ? "text-emerald-500" :
-                                                                        isWrong ? "text-rose-500" : "text-amber-500"
-                                                                        }`}>
-                                                                        {isSkipped ? "Skipped" : `Your Answer: ${item.userAnswer}`}
-                                                                    </span>
-                                                                    <span className={`text-[10px] font-semibold ${
-                                                                        (item.timeTaken ?? 0) >= 3000
-                                                                            ? "text-rose-500 dark:text-rose-400"
-                                                                            : "text-emerald-500 dark:text-emerald-400"
-                                                                    }`}>
-                                                                        ⏱️ {((item.timeTaken ?? 0) / 1000).toFixed(1)}s
-                                                                    </span>
+                                                {/* Centered Circular Accuracy Gauge */}
+                                                <div className="relative flex items-center justify-center w-[120px] h-[120px] select-none">
+                                                    <svg className="w-full h-full transform -rotate-90 relative z-10">
+                                                        <circle
+                                                            cx="60"
+                                                            cy="60"
+                                                            r={radius}
+                                                            className="stroke-muted/30"
+                                                            strokeWidth="5"
+                                                            fill="transparent"
+                                                        />
+                                                        <circle
+                                                            cx="60"
+                                                            cy="60"
+                                                            r={radius}
+                                                            className="stroke-green-500"
+                                                            strokeWidth="5"
+                                                            fill="transparent"
+                                                            strokeDasharray={circumference}
+                                                            strokeDashoffset={strokeDashoffset}
+                                                            strokeLinecap="round"
+                                                        />
+                                                    </svg>
+                                                    <div className="absolute flex flex-col items-center justify-center z-20">
+                                                        <span className="text-2xl font-extrabold tracking-tight text-foreground">{animatedAccuracy}%</span>
+                                                        <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider">Accuracy</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Metric Grid (3-column layout) */}
+                                                <div className="grid grid-cols-3 gap-2.5 w-full">
+                                                    {/* Correct Answers */}
+                                                    <div className="py-2 px-1 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-md flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all">
+                                                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-0.5">Correct</span>
+                                                        <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">{correct}</span>
+                                                    </div>
+
+                                                    {/* Incorrect Answers */}
+                                                    <div className="py-2 px-1 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-md flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all">
+                                                        <span className="text-[9px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-0.5">Wrong</span>
+                                                        <span className="text-base font-extrabold text-rose-600 dark:text-rose-400">{wrong}</span>
+                                                    </div>
+
+                                                    {/* Skipped Answers */}
+                                                    <div className="py-2 px-1 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-md flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all">
+                                                        <span className="text-[9px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-0.5">Skipped</span>
+                                                        <span className="text-base font-extrabold text-amber-600 dark:text-amber-400">{skipped}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div
+                                            key="review"
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.15 }}
+                                            className="w-full flex flex-col h-[270px] text-left"
+                                        >
+                                            <div className="w-full border border-border rounded-2xl overflow-hidden bg-card h-full">
+                                                {engine.state.history.length === 0 ? (
+                                                    <div className="flex flex-col items-center justify-center text-center h-full p-6 text-muted-foreground select-none">
+                                                        <span className="text-3xl mb-2">📋</span>
+                                                        <p className="text-xs font-semibold">No questions attempted</p>
+                                                        <p className="text-[10px] text-muted-foreground/80 mt-0.5 leading-relaxed max-w-[200px]">
+                                                            Answers will be shown here when you complete at least one question.
+                                                        </p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="h-full overflow-y-auto divide-y divide-border/60">
+                                                        {engine.state.history.map((item, idx) => {
+                                                            const isCorrect = item.status === "correct";
+                                                            const isWrong = item.status === "wrong";
+                                                            const isSkipped = item.status === "skipped";
+
+                                                            // Background tints based on status
+                                                            const rowBgClass = isCorrect
+                                                                ? "bg-emerald-500/[0.015] hover:bg-emerald-500/[0.03] dark:bg-emerald-500/[0.01] dark:hover:bg-emerald-500/[0.02]"
+                                                                : isWrong
+                                                                ? "bg-rose-500/[0.015] hover:bg-rose-500/[0.03] dark:bg-rose-500/[0.01] dark:hover:bg-rose-500/[0.02]"
+                                                                : "bg-amber-500/[0.015] hover:bg-amber-500/[0.03] dark:bg-amber-500/[0.01] dark:hover:bg-amber-500/[0.02]";
+
+                                                            return (
+                                                                <div key={idx} className={`flex items-center justify-between p-3.5 text-xs transition-colors ${rowBgClass}`}>
+                                                                    <div className="flex flex-col gap-0.5">
+                                                                        <span className="font-extrabold text-sm text-foreground">
+                                                                            {idx + 1}) {item.questionText}
+                                                                        </span>
+                                                                        <span className="text-[10px] text-muted-foreground font-medium">
+                                                                            {isCorrect ? (
+                                                                                <span>Correct: <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{item.correctAnswer}</strong></span>
+                                                                            ) : isSkipped ? (
+                                                                                <span>Correct: <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{item.correctAnswer}</strong> • You: <strong className="text-amber-600 dark:text-amber-500 font-bold font-sans">Skipped</strong></span>
+                                                                            ) : (
+                                                                                <span>Correct: <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{item.correctAnswer}</strong> • You: <strong className="text-rose-600 dark:text-rose-400 font-bold line-through">{item.userAnswer}</strong></span>
+                                                                            )}
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className="flex flex-col items-end gap-0.5">
+                                                                            <span className={`font-bold ${isCorrect ? "text-emerald-500" :
+                                                                                isWrong ? "text-rose-500" : "text-amber-500"
+                                                                                }`}>
+                                                                                {isCorrect ? "Correct" : isWrong ? "Incorrect" : "Skipped"}
+                                                                            </span>
+                                                                            <span className={`text-[10px] font-semibold flex items-center gap-0.5 ${
+                                                                                (item.timeTaken ?? 0) >= 3000
+                                                                                    ? "text-rose-500 dark:text-rose-400"
+                                                                                    : "text-emerald-500 dark:text-emerald-400"
+                                                                            }`}>
+                                                                                ⏱️ {((item.timeTaken ?? 0) / 1000).toFixed(1)}s
+                                                                            </span>
+                                                                        </div>
+
+                                                                        {isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />}
+                                                                        {isWrong && <XCircle className="w-4 h-4 text-rose-500 shrink-0" />}
+                                                                        {isSkipped && <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />}
+                                                                    </div>
                                                                 </div>
-
-                                                                {isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />}
-                                                                {isWrong && <XCircle className="w-4 h-4 text-rose-500 shrink-0" />}
-                                                                {isSkipped && <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />}
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                })}
+                                                            );
+                                                        })}
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                            
 
                             {/* Action buttons */}
@@ -827,7 +896,7 @@ export default function MentalMathsPractice() {
             </div>
 
             <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-                <AlertDialogContent className="rounded-3xl w-[calc(100%-2rem)] sm:w-full max-w-sm border border-border">
+                <AlertDialogContent className="sm:w-full max-w-sm border border-border">
                     <AlertDialogHeader className="pb-3 border-b border-border/40">
                         <AlertDialogTitle className="text-xl font-black tracking-tight text-foreground flex items-center gap-2">
                             <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />

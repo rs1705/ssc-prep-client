@@ -174,7 +174,7 @@ const Flashcard = ({ card, onFlipChange, colorScheme }: FlashCardProps) => {
 
   return (
     <div
-      className="w-full h-[420px] [perspective:1000px] cursor-pointer select-none"
+      className="w-full h-[320px] min-[375px]:h-[360px] sm:h-[420px] [perspective:1000px] cursor-pointer select-none"
       onClick={handleClick}
     >
       <div

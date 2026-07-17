@@ -42,7 +42,7 @@ const ReasoningHomePage = () => {
   return (
     <TopicPageLayout
       title="Reasoning"
-      description="Crack the code behind complex patterns. Train your brain to see what others miss and solve puzzles with blazing speed."
+      description="Improve deducing speed and shape recognition with chapter practice and analytical tests."
       contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 //ui imports
@@ -32,7 +33,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SlidersVertical } from "lucide-react";
+import { SlidersVertical, Dices } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -101,15 +102,44 @@ const FreestylePage = () => {
         </div>
       ) : (
         <TopicPageLayout
-          title="Freestyle Practice"
-          description="Pick a category, apply filters, and start practising."
+          hideBreadcrumbs={true}
         >
-          <div className="flex justify-center flex-col">
-            <div className="flex w-full max-w-md sm:max-w-xl md:max-w-2xl flex-row items-center gap-2.5 px-4">
+          <div className="flex justify-center flex-col w-full mx-auto">
+            {/* Compact Gameplay Stats Header Bar */}
+            <div className="flex flex-col gap-2 w-full pb-2 border-b border-border/60 mb-3 px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto">
+                {/* Row 1: Left is Section Title, Right is Quit Button */}
+                <div className="flex items-center justify-between w-full gap-2 min-w-0">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                        <Dices className="w-[18px] h-[18px] text-primary/80 shrink-0" fill="currentColor" fillOpacity={0.1} />
+                        <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal">
+                            Freestyle Flashcards
+                        </span>
+                    </div>
+                    <Link href="/SSC/english/flashcards">
+                        <button
+                            type="button"
+                            className="text-xs font-bold text-destructive hover:bg-destructive/10 rounded-full px-2.5 py-1 transition-all active:scale-95 cursor-pointer flex-shrink-0"
+                        >
+                            Quit
+                        </button>
+                    </Link>
+                </div>
+
+                {/* Row 2: Left is active mode & category filter details */}
+                <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+                        <span>Freestyle</span>
+                        <span className="text-muted-foreground/35 font-normal">•</span>
+                        <span className="font-semibold text-primary">{activeTab.toUpperCase()}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex w-full flex-row items-center justify-center">
               <Tabs
                 defaultValue={activeTab}
                 onValueChange={(val) => setActiveTab(val)}
-                className="w-full"
+                className="w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto"
               >
                 <div className="flex flex-row items-center gap-2.5 w-full">
                   <TabsList className="flex-1 dark:bg-slate-900/60 dark:border-slate-800/60 ">
@@ -139,7 +169,7 @@ const FreestylePage = () => {
                         </SheetDescription>
                       </SheetHeader>
 
-                      <div className="flex-1 overflow-y-auto pr-1">
+                      <div className="flex-1 overflow-y-auto px-1">
                         {Object.entries(MAIN_FILTERS)
                           .filter(([k]) => k !== "highFrequency")
                           .map(([key, values]) => (
@@ -158,15 +188,15 @@ const FreestylePage = () => {
                               >
                                 <SelectTrigger
                                   id={key}
-                                  className="w-full h-11 bg-background border-border rounded-xl shadow-xs font-semibold hover:cursor-pointer focus:ring-1 focus:ring-primary focus:ring-offset-0"
+                                  className="w-full h-11 bg-background border-border rounded-md shadow-xs font-semibold hover:cursor-pointer focus:ring-1 focus:ring-inset focus:ring-primary"
                                 >
                                   <SelectValue placeholder="Select..." />
                                 </SelectTrigger>
 
-                                <SelectContent className="font-semibold rounded-xl">
-                                  <SelectItem value="all" className="rounded-lg">All</SelectItem>
+                                <SelectContent className="font-semibold rounded-md">
+                                  <SelectItem value="all">All</SelectItem>
                                   {values.map((val) => (
-                                    <SelectItem key={val} value={val} className="rounded-lg">
+                                    <SelectItem key={val} value={val}>
                                       {val.toUpperCase()}
                                     </SelectItem>
                                   ))}
@@ -175,7 +205,7 @@ const FreestylePage = () => {
                             </div>
                           ))}
 
-                        <div className="flex items-center justify-between p-4 rounded-2xl bg-accent/20 border border-border/30 my-6 shadow-xs">
+                        <div className="flex items-center justify-between p-4 rounded-lg bg-accent/20 border border-border/30 my-6 shadow-xs">
                           <div className="flex flex-col gap-0.5 pr-2">
                             <Label htmlFor="highFrequency" className="font-semibold text-sm text-foreground cursor-pointer select-none">
                               High Frequency Cards

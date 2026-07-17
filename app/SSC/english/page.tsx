@@ -47,7 +47,7 @@ const EnglishHomePage = () => {
   return (
     <TopicPageLayout
       title="English"
-      description="Master the language of success. Build absolute grammatical clarity, unlock a high-scoring vocabulary bank, and read comprehension passages with scanning speed."
+      description="Train spelling and reading retention with flashcards, anagram shuffles, and word puzzles."
       contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />

@@ -42,7 +42,7 @@ const GKHomePage = () => {
   return (
     <TopicPageLayout
       title="General Knowledge"
-      description="Knowledge is power. Build a massive factual arsenal to conquer the highest-scoring section of the exam in record time."
+      description="Conquer current affairs and static facts across history, polity, and science with active quizzes."
       contentMaxWidthClass="w-full max-w-[824px]"
     >
       <SectionCardGrid sections={sections} />

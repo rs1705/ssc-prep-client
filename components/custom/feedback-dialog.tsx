@@ -128,7 +128,7 @@ export default function FeedbackDialog() {
           <MessageSquare className="w-6 h-6 transition-transform duration-300 group-hover:rotate-12" />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[450px] p-6 rounded-3xl border bg-background/95 backdrop-blur-md shadow-2xl overflow-hidden">
+      <DialogContent className="sm:max-w-[450px] overflow-hidden">
         {isSuccess ? (
           <div className="flex flex-col items-center text-center py-6 animate-in fade-in zoom-in-95 duration-300">
             <div className="p-3 bg-emerald-500/10 rounded-full border border-emerald-500/20 text-emerald-500 mb-4">

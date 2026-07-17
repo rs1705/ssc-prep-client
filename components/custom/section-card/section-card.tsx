@@ -52,12 +52,12 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
   return (
     <Card 
-      className={`group relative w-full max-w-[380px] mx-auto h-full flex flex-col bg-card/65 dark:bg-card/45 border border-border/80 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-xs hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden select-none animate-in fade-in slide-in-from-bottom-3 zoom-in-[0.98] hover:border-primary/30 hover:ring-1 hover:ring-primary/30 hover:shadow-[0_8px_30px_rgba(99,102,241,0.08)] dark:hover:shadow-[0_8px_40px_rgba(99,102,241,0.12)] ${
+      className={`group relative w-full max-w-[380px] mx-auto h-full flex flex-col bg-card/65 dark:bg-card/45 border border-border/80 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-xs hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden select-none animate-in fade-in slide-in-from-bottom-3 zoom-in-[0.98] hover:border-primary/30 hover:shadow-[0_8px_30px_rgba(99,102,241,0.08)] dark:hover:shadow-[0_8px_40px_rgba(99,102,241,0.12)] ${
         !isClickable ? "opacity-60 cursor-not-allowed" : ""
       }`}
       style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
     >
-      <CardHeader className="pb-1 pt-5 px-5">
+      <CardHeader className="pb-1 pt-4 px-5">
         {icon && (
           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 shadow-xs group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 ease-out ${currentTheme.iconWrapper}`}>
             {icon}
@@ -73,7 +73,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
           </div>
         )}
       </CardContent>
-      <CardFooter className="p-5 pt-0">
+      <CardFooter className="px-5 pb-4 pt-0">
         <Link
           href={linkTo}
           className="flex w-full items-center justify-center"

@@ -26,7 +26,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
         <path d="M3 12h18M12 3v18" />
       </svg>
     ),
-    description: "Unlock instant calculation power. Master squares up to 50 to speed run compound interest, area calculations, and algebraic expansions.",
+    description: "Master squares up to 50 to accelerate compound interest, geometry area, and algebraic calculations.",
     difficulty: "Easy",
     stats: "1-50 Range",
     revisionConfig: {
@@ -48,7 +48,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
         <line x1="12" y1="22.08" x2="12" y2="12" />
       </svg>
     ),
-    description: "Recognize cubic roots instantly. Memorize powers up to 25 to conquer complex volume formulas and number series reasoning puzzles.",
+    description: "Memorize cube values up to 30 to conquer volume formulas and number series reasoning puzzles.",
     difficulty: "Medium",
     stats: "1-30 Range",
     revisionConfig: {
@@ -92,7 +92,7 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
     ),
-    description: "Train lightning-fast summation. Master double and triple-digit additions to breeze through data interpretation (DI) tables.",
+    description: "Master double and triple-digit additions to speed run through data interpretation table queries.",
     difficulty: "Easy",
     stats: "2-3 Digits",
   },
@@ -209,13 +209,13 @@ const MentalMaths = () => {
   return (
     <TopicPageLayout
       title="Speed Math"
-      description="Calculators are strictly banned in SSC exams, but they didn't say anything about turning your brain into one. Master rapid arithmetic and claim those precious seconds back."
+      description="Calculators are strictly banned in SSC. Master rapid arithmetic and claim precious seconds back."
     >
       <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full px-4 sm:px-0 mt-2">
         {MENTAL_MATHS_TOPICS.map((topic, idx) => (
           <div
             key={topic.id}
-            className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)] max-w-sm"
+            className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)]"
           >
             <TopicCard
               index={idx}

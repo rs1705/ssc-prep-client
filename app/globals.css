@@ -43,6 +43,10 @@
   --radius-xl: 24px;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 :root {
   --radius: 12px;
   --background: #F8FAFC;

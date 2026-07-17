@@ -54,12 +54,12 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-5 sm:space-y-8 animate-fadeIn">
 
       {/* Speed Math Release Feature Announcement Banner */}
-      <div className="relative overflow-hidden rounded-[18px] bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-[12px] bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
             <span className="text-xl">⚡</span>
           </div>
           <div>
@@ -72,17 +72,17 @@ export default function Dashboard() {
           </div>
         </div>
         <Link href="/SSC/maths/mental-maths" className="shrink-0">
-          <Button variant="outline" size="sm" className="h-9 px-4 rounded-[10px] text-xs font-bold bg-background/50 hover:bg-background border-border/80 transition-all hover:cursor-pointer flex items-center gap-1.5 group">
+          <Button variant="outline" size="sm" className="h-9 px-4 rounded-2xl text-xs font-bold bg-background/50 hover:bg-background border-border/80 transition-all active:scale-[0.97] hover:cursor-pointer flex items-center gap-1.5 group">
             Speed Run Now <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Button>
         </Link>
       </div>
 
       {/* 1. WHERE AM I? (Greeting, Streak, Goal) */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Welcome Card */}
-        <div className="md:col-span-2 bg-card rounded-[18px] p-8 border border-border shadow-sm flex flex-col justify-center">
-          <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
+        <div className="md:col-span-2 bg-card rounded-3xl p-6 sm:p-8 border border-border shadow-sm flex flex-col justify-center">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 tracking-tight">
             Welcome back, <span className="text-orange-500">{user?.displayName?.toUpperCase() || "Champ"}</span>!
           </h1>
           <p className="text-muted-foreground text-lg">
@@ -91,11 +91,11 @@ export default function Dashboard() {
         </div>
 
         {/* Streak & Goal */}
-        <div className="bg-card rounded-[18px] p-6 border border-border shadow-sm flex flex-col justify-center gap-6">
+        <div className="bg-card rounded-3xl p-5 sm:p-6 border border-border shadow-sm flex flex-col justify-center gap-4 sm:gap-6">
           {/* Streak (Orange Rocket Accent) */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[14px] bg-orange-100 dark:bg-orange-950/50 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-950/50 flex items-center justify-center">
                 <Flame className="w-6 h-6 text-orange-500" />
               </div>
               <div>
@@ -122,12 +122,12 @@ export default function Dashboard() {
       </section>
 
       {/* 2. WHAT SHOULD I DO? (Primary Action & Modules) */}
-      <section className="space-y-6">
+      <section className="space-y-4 sm:space-y-6">
         <div>
           <h2 className="text-xl font-bold text-foreground tracking-tight mb-4">Your Next Step</h2>
 
           {/* Primary Action Card (Full Width) */}
-          <div className="bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground rounded-[18px] p-8 shadow-sm relative overflow-hidden group">
+          <div className="bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group">
             <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 transition-transform duration-700 group-hover:scale-110"></div>
 
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -142,9 +142,9 @@ export default function Dashboard() {
                 </p>
               </div>
               <Link href="/SSC/english/flashcards/fsrs" className="shrink-0">
-                <Button className="w-full sm:w-auto bg-white text-primary hover:bg-slate-50 rounded-[12px] h-12 px-6 font-bold text-base shadow-sm hover:cursor-pointer">
+                <Button className="w-full sm:w-auto bg-white text-primary hover:bg-slate-50 rounded-2xl h-12 px-6 font-bold text-base shadow-sm hover:cursor-pointer active:scale-[0.97] transition-all duration-200 group/btn">
                   Continue Learning
-                  <ChevronRight className="w-5 h-5 ml-2" />
+                  <ChevronRight className="w-5 h-5 ml-2 transition-transform duration-200 group-hover/btn:translate-x-1" />
                 </Button>
               </Link>
             </div>
@@ -153,18 +153,18 @@ export default function Dashboard() {
 
         {/* All Modules Grid */}
         <div>
-          <h3 className="text-lg font-bold text-foreground tracking-tight mb-4 mt-8">Explore subjects</h3>
+          <h3 className="text-lg font-bold text-foreground tracking-tight mb-3 mt-5 sm:mt-8">Explore subjects</h3>
           <SectionCardGrid sections={sections} layout="grid-4" />
         </div>
       </section>
 
       {/* 3. HOW AM I DOING? (Performance Stats) */}
-      <section className="space-y-4">
+      <section className="space-y-3 sm:space-y-4">
         <h2 className="text-xl font-bold text-foreground tracking-tight">Performance Overview</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-card border border-border rounded-[18px] p-6 shadow-sm flex items-center gap-5 hover:border-green-200 dark:hover:border-green-900/50 transition-colors">
-            <div className="w-12 h-12 rounded-[14px] bg-green-50 dark:bg-green-950/40 flex items-center justify-center text-green-600 dark:text-green-500">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm flex items-center gap-4 sm:gap-5 hover:border-green-200 dark:hover:border-green-900/50 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-green-50 dark:bg-green-950/40 flex items-center justify-center text-green-600 dark:text-green-500">
               <Target className="w-6 h-6" />
             </div>
             <div>
@@ -173,8 +173,8 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-[18px] p-6 shadow-sm flex items-center gap-5 hover:border-blue-200 dark:hover:border-blue-900/50 transition-colors">
-            <div className="w-12 h-12 rounded-[14px] bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-500">
+          <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm flex items-center gap-4 sm:gap-5 hover:border-blue-200 dark:hover:border-blue-900/50 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-500">
               <BrainCircuit className="w-6 h-6" />
             </div>
             <div>
@@ -183,8 +183,8 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-[18px] p-6 shadow-sm flex items-center gap-5 hover:border-purple-200 dark:hover:border-purple-900/50 transition-colors">
-            <div className="w-12 h-12 rounded-[14px] bg-purple-50 dark:bg-purple-950/40 flex items-center justify-center text-purple-600 dark:text-purple-500">
+          <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm flex items-center gap-4 sm:gap-5 hover:border-purple-200 dark:hover:border-purple-900/50 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/40 flex items-center justify-center text-purple-600 dark:text-purple-500">
               <Trophy className="w-6 h-6" />
             </div>
             <div>

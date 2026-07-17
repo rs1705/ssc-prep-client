@@ -67,12 +67,12 @@ export const TopicCard = ({
 
   return (
     <div
-      className="group relative h-full flex flex-col justify-between p-5 rounded-3xl bg-card border border-border shadow-xs hover:shadow-md hover:border-primary/30 hover:ring-1 hover:ring-primary/30 transition-all duration-300 ease-out hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 zoom-in-95 select-none"
+      className="group relative h-full flex flex-col justify-between p-5 rounded-3xl bg-card border border-border shadow-xs hover:shadow-md hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 zoom-in-95 select-none"
       style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
     >
       <div>
         {/* Card Header Info */}
-        <div className="flex items-start justify-between mb-3.5">
+        <div className="flex items-center mb-2">
           <div className="flex items-center gap-3">
             {/* Emoji box */}
             <div className={`flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 ${themeClass}`}>
@@ -82,21 +82,16 @@ export const TopicCard = ({
               {name}
             </h3>
           </div>
-
-          {/* Difficulty Badge */}
-          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${getDifficultyStyles(difficulty)}`}>
-            {difficulty}
-          </span>
         </div>
 
         {/* Description */}
-        <p className="text-xs text-muted-foreground leading-relaxed mb-4">
+        <p className="text-xs text-muted-foreground leading-relaxed mb-3">
           {description}
         </p>
       </div>
 
       {/* Bottom Row Controls */}
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/40">
+      <div className="flex items-center justify-between mt-auto py-3 -mb-2 border-t border-border/40">
         <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 bg-accent/20 px-2.5 py-1 rounded-lg">
           {stats}
         </span>
@@ -109,9 +104,9 @@ export const TopicCard = ({
               revisionConfig={revisionConfig}
               trigger={
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="h-8 px-3 rounded-lg text-xs font-bold gap-1 hover:cursor-pointer hover:bg-accent/40 border-border/60 transition-colors"
+                  className="rounded-xl text-xs font-bold gap-1 text-muted-foreground hover:text-foreground hover:bg-accent/40 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>Revise</span>
@@ -121,12 +116,12 @@ export const TopicCard = ({
           )}
 
           <Button
-            size="sm"
+            size="default"
             onClick={onStartClick}
-            className="h-8 px-3 rounded-lg text-xs font-bold gap-1 shadow-xs hover:shadow-sm hover:translate-x-0.5 transition-all hover:cursor-pointer"
+            className="h-9 px-5 bg-gradient-to-r from-primary to-indigo-600 text-white shadow-sm hover:from-primary/95 hover:to-indigo-600/95 rounded-xl text-xs font-bold gap-1.5 hover:translate-x-0.5 transition-all duration-200 active:scale-[0.97] hover:cursor-pointer"
           >
-            <Play className="w-3 h-3 fill-current" />
-            <span>Start</span>
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Practice</span>
           </Button>
         </div>
       </div>
