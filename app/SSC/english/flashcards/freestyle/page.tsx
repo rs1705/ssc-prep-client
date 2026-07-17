@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
@@ -34,7 +33,6 @@ import { resetFilter, TabFilter, updateFilter } from "@/redux/FilterSlice";
 import { RootState } from "@/redux/store";
 import FlashcardDeck from "@/features/flashcards/FlashcardDeck";
 import { MAIN_FILTERS, TABS } from "@/lib/english_filters";
-import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -76,9 +74,6 @@ const FreestylePage = () => {
   const { data, isLoading, isFetching, isError, refetch } = useGetFilteredCardsQuery(
     filterStore[activeTab],
   );
-
-  const { currentCardId } = useSelector((state: RootState) => state.session);
-  const currentIndex = data ? data.findIndex((card) => card._id === currentCardId) : 0;
 
   useEffect(() => {
     setDraftFilters(filterStore[activeTab]);
@@ -128,7 +123,7 @@ const FreestylePage = () => {
             className="flex justify-center flex-col w-full mx-auto"
           >
             {/* Control Panel Container */}
-            <div className="flex flex-col gap-1.5 w-full max-w-[500px] mx-auto bg-card border border-border rounded-3xl pt-2 sm:pt-3 px-3 sm:px-5 pb-3 sm:pb-5 mb-1 shadow-sm">
+            <div className="flex flex-col gap-1.5 w-full max-w-[500px] mx-auto bg-card border border-primary/20 rounded-3xl pt-2 sm:pt-3 px-3 sm:px-5 pb-3 sm:pb-5 mb-1 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
                 
                 {/* Header Row: Title & Quit */}
                 <div className="flex items-center justify-between w-full gap-2 min-w-0">

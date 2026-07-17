@@ -32,7 +32,6 @@ export const TopicCard = ({
   name,
   emoji,
   description,
-  difficulty,
   stats,
   onStartClick,
   index = 0,
@@ -40,17 +39,6 @@ export const TopicCard = ({
   colorTheme = "indigo",
   revisionConfig,
 }: TopicCardProps) => {
-  const getDifficultyStyles = (diff: "Easy" | "Medium" | "Hard") => {
-    switch (diff) {
-      case "Easy":
-        return "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400";
-      case "Medium":
-        return "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400";
-      case "Hard":
-        return "bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400";
-    }
-  };
-
   const theme = colorTheme || "indigo";
   const themeMap = {
     sky: "bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400",

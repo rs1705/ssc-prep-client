@@ -96,7 +96,7 @@ const FsrsPage = () => {
       <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
       <div className="flex justify-center flex-col w-full mx-auto">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-2 w-full max-w-[500px] mx-auto bg-card border border-border rounded-2xl p-3 sm:p-4 mb-4 shadow-sm">
+        <div className="flex flex-col gap-2 w-full max-w-[500px] mx-auto bg-card border border-primary/20 rounded-2xl p-3 sm:p-4 mb-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           {/* Row 1: Left is Section Title, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2.5 min-w-0">

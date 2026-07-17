@@ -83,7 +83,7 @@ export default function FeedbackPage() {
       });
 
       setIsSuccess(true);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to submit feedback:", error);
       setErrorMsg("Failed to submit feedback. Please try again.");
     } finally {

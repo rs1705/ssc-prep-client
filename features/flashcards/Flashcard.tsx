@@ -149,7 +149,7 @@ const CardBack = ({
         </p>
         <div>
           <p className={`text-sm min-[375px]:text-base font-semibold italic ${scheme.textMain} leading-normal`}>
-            "{example_eng?.[0]}"
+            &quot;{example_eng?.[0]}&quot;
           </p>
           <p className={`text-xs min-[375px]:text-sm font-semibold ${scheme.textSecondary} mt-0.5 leading-normal`}>
             {hindiexample?.[0]}
