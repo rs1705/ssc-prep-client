@@ -5,15 +5,23 @@ import Link from "next/link";
 import SignInWithGoogle from "@/components/custom/sign-in-google/sign-in-google";
 import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const SignupPage = () => {
   const router = useRouter();
   const { user, isLoading, signInWithGoogle } = useAuth();
 
+  const [queryStr, setQueryStr] = useState("");
+
+  useEffect(() => {
+    setQueryStr(window.location.search);
+  }, []);
+
   useEffect(() => {
     if (!isLoading && user) {
-      router.replace("/");
+      const params = new URLSearchParams(window.location.search);
+      const redirectUrl = params.get("redirectUrl") || "/";
+      router.replace(redirectUrl);
     }
   }, [user, isLoading, router]);
 
@@ -33,7 +41,7 @@ const SignupPage = () => {
         <div className="text-center mt-2">
           <p className="text-sm text-muted-foreground">
             Already have an account?&nbsp;
-            <Link href="/signin" className="font-semibold text-primary hover:underline transition-all">
+            <Link href={`/signin${queryStr}`} className="font-semibold text-primary hover:underline transition-all">
               Sign in
             </Link>
           </p>

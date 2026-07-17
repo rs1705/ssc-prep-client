@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@/firebase/config";
 import LoadingOverlay from "@/components/custom/loading-overlay";
+import toast from "react-hot-toast";
 import {
   User,
   onAuthStateChanged,
@@ -40,8 +41,10 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setIsLoading(true);
     try {
       await signInWithPopup(auth, provider);
+      toast.success("Signed in successfully!");
     } catch (error) {
       console.log(error);
+      toast.error("Sign in failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -51,8 +54,10 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setIsLoading(true);
     try {
       await signOut(auth);
+      toast.success("Signed out successfully!");
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.error("Logout failed. Please try again.");
     } finally {
       setIsLoading(false);
     }

@@ -52,14 +52,14 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
       <div className="flex-1 flex flex-col items-center justify-center w-full">
         <p
           key={text}
-          className={`text-4xl font-extrabold tracking-tight ${scheme.textMain} opacity-0 pb-2 ${animate ? "animate-fadeIn" : ""}`}
+          className={`text-3xl min-[375px]:text-4xl font-extrabold tracking-tight ${scheme.textMain} opacity-0 pb-2 ${animate ? "animate-fadeIn" : ""}`}
         >
           {text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()}
         </p>
         {pronunciation && (
           <div className="mt-3">
             <span
-              className={`${scheme.accent} text-lg font-bold opacity-0 ${animate ? "animate-fadeIn" : ""}`}
+              className={`${scheme.accent} text-base min-[375px]:text-lg font-bold opacity-0 ${animate ? "animate-fadeIn" : ""}`}
               style={{ animationDelay: "150ms" }}
             >
               {pronunciation.hindi}
@@ -95,8 +95,8 @@ const CardBack = ({
         <p className={`text-xs font-bold ${scheme.accent} tracking-widest uppercase`}>
           Definition
         </p>
-        <p className="text-lg font-medium leading-snug">{content_eng}</p>
-        <p className={`text-sm font-semibold ${scheme.accent}`}>
+        <p className="text-base min-[375px]:text-lg font-medium leading-snug">{content_eng}</p>
+        <p className={`text-xs min-[375px]:text-sm font-semibold ${scheme.accent}`}>
           ({content_hindi?.join(", ")})
         </p>
       </div>
@@ -148,10 +148,10 @@ const CardBack = ({
           Example
         </p>
         <div>
-          <p className={`text-base font-semibold italic ${scheme.textMain} leading-normal`}>
+          <p className={`text-sm min-[375px]:text-base font-semibold italic ${scheme.textMain} leading-normal`}>
             "{example_eng?.[0]}"
           </p>
-          <p className={`text-sm font-semibold ${scheme.textSecondary} mt-0.5 leading-normal`}>
+          <p className={`text-xs min-[375px]:text-sm font-semibold ${scheme.textSecondary} mt-0.5 leading-normal`}>
             {hindiexample?.[0]}
             {hindiexample?.[0] ? "।" : ""}
           </p>
@@ -173,7 +173,7 @@ const Flashcard = ({ card, onFlipChange, colorScheme }: FlashCardProps) => {
 
   return (
     <div
-      className="w-full h-[440px] sm:h-[500px] [perspective:1000px] cursor-pointer select-none"
+      className="w-full h-[380px] min-[375px]:h-[440px] sm:h-[500px] [perspective:1000px] cursor-pointer select-none"
       onClick={handleClick}
     >
       <div

@@ -6,6 +6,7 @@ import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <Toaster position="top-center" />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

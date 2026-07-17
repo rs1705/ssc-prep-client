@@ -2,7 +2,7 @@
 import SignInWithGoogle from "@/components/custom/sign-in-google/sign-in-google";
 import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import SignInForm from "@/components/custom/sign-in-form";
 
@@ -12,9 +12,17 @@ const SigninPage = () => {
   const router = useRouter();
   const { user, isLoading, signInWithGoogle } = useAuth();
 
+  const [queryStr, setQueryStr] = useState("");
+
+  useEffect(() => {
+    setQueryStr(window.location.search);
+  }, []);
+
   useEffect(() => {
     if (!isLoading && user) {
-      router.replace("/");
+      const params = new URLSearchParams(window.location.search);
+      const redirectUrl = params.get("redirectUrl") || "/";
+      router.replace(redirectUrl);
     }
   }, [user, isLoading, router]);
 
@@ -34,7 +42,7 @@ const SigninPage = () => {
         <div className="text-center mt-2">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?&nbsp;
-            <Link href="/signup" className="font-semibold text-primary hover:underline transition-all">
+            <Link href={`/signup${queryStr}`} className="font-semibold text-primary hover:underline transition-all">
               Sign up
             </Link>
           </p>

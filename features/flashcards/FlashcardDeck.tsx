@@ -7,10 +7,7 @@ import { MoveLeft, MoveRight } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
 import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
 
-import {
-  initializeSession,
-  setCurrentCard,
-} from "@/redux/sessionSlice";
+import { initializeSession, setCurrentCard } from "@/redux/sessionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Loader from "@/components/custom/loader";
@@ -19,24 +16,96 @@ interface FlashcardDeckProps {
   deck: FlashCardInterface[];
   deckId?: string;
   isLinear?: boolean;
-  mode?: "freestyle" | "study"
+  mode?: "freestyle" | "study";
 }
 
 export const COLOR_SCHEMES = [
-  { bg: "from-rose-50 to-rose-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-rose-700", accentBg: "bg-white/50 border-rose-200/80", barBg: "bg-gradient-to-r from-rose-400 to-rose-500", border: "border border-rose-300/80" },
-  { bg: "from-sky-50 to-sky-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-sky-600", accentBg: "bg-white/50 border-sky-200/80", barBg: "bg-gradient-to-r from-sky-400 to-sky-500", border: "border border-sky-300/80" },
-  { bg: "from-violet-50 to-violet-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-violet-700", accentBg: "bg-white/50 border-violet-200/80", barBg: "bg-gradient-to-r from-violet-400 to-violet-500", border: "border border-violet-300/80" },
-  { bg: "from-stone-50 to-stone-200", textMain: "text-stone-800", textSecondary: "text-stone-500", accent: "text-stone-700", accentBg: "bg-white/50 border-stone-200/80", barBg: "bg-gradient-to-r from-stone-400 to-stone-500", border: "border border-stone-300/80" },
-  { bg: "from-emerald-50 to-emerald-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-emerald-700", accentBg: "bg-white/50 border-emerald-200/80", barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500", border: "border border-emerald-300/80" },
-  { bg: "from-slate-50 to-slate-200", textMain: "text-slate-800", textSecondary: "text-slate-500", accent: "text-slate-600", accentBg: "bg-white/50 border-slate-200/80", barBg: "bg-gradient-to-r from-slate-400 to-slate-500", border: "border border-slate-300/80" },
-  { bg: "from-amber-50 to-amber-200", textMain: "text-stone-800", textSecondary: "text-stone-500", accent: "text-amber-900", accentBg: "bg-white/50 border-amber-200/80", barBg: "bg-gradient-to-r from-amber-500 to-amber-600", border: "border border-amber-300/80" },
+  {
+    bg: "from-rose-50 to-rose-200",
+    textMain: "text-slate-800",
+    textSecondary: "text-slate-500",
+    accent: "text-rose-700",
+    accentBg: "bg-white/50 border-rose-200/80",
+    barBg: "bg-gradient-to-r from-rose-400 to-rose-500",
+    border: "border border-rose-300/80",
+  },
+  {
+    bg: "from-sky-50 to-sky-200",
+    textMain: "text-slate-800",
+    textSecondary: "text-slate-500",
+    accent: "text-sky-600",
+    accentBg: "bg-white/50 border-sky-200/80",
+    barBg: "bg-gradient-to-r from-sky-400 to-sky-500",
+    border: "border border-sky-300/80",
+  },
+  {
+    bg: "from-violet-50 to-violet-200",
+    textMain: "text-slate-800",
+    textSecondary: "text-slate-500",
+    accent: "text-violet-700",
+    accentBg: "bg-white/50 border-violet-200/80",
+    barBg: "bg-gradient-to-r from-violet-400 to-violet-500",
+    border: "border border-violet-300/80",
+  },
+  {
+    bg: "from-stone-50 to-stone-200",
+    textMain: "text-stone-800",
+    textSecondary: "text-stone-500",
+    accent: "text-stone-700",
+    accentBg: "bg-white/50 border-stone-200/80",
+    barBg: "bg-gradient-to-r from-stone-400 to-stone-500",
+    border: "border border-stone-300/80",
+  },
+  {
+    bg: "from-emerald-50 to-emerald-200",
+    textMain: "text-slate-800",
+    textSecondary: "text-slate-500",
+    accent: "text-emerald-700",
+    accentBg: "bg-white/50 border-emerald-200/80",
+    barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500",
+    border: "border border-emerald-300/80",
+  },
+  {
+    bg: "from-slate-50 to-slate-200",
+    textMain: "text-slate-800",
+    textSecondary: "text-slate-500",
+    accent: "text-slate-600",
+    accentBg: "bg-white/50 border-slate-200/80",
+    barBg: "bg-gradient-to-r from-slate-400 to-slate-500",
+    border: "border border-slate-300/80",
+  },
+  {
+    bg: "from-amber-50 to-amber-200",
+    textMain: "text-stone-800",
+    textSecondary: "text-stone-500",
+    accent: "text-amber-900",
+    accentBg: "bg-white/50 border-amber-200/80",
+    barBg: "bg-gradient-to-r from-amber-500 to-amber-600",
+    border: "border border-amber-300/80",
+  },
 ];
 
 export const BUTTON_ACTIONS = {
-  AGAIN: { label: "AGAIN", rating: 1, color: "hover:bg-red-50  border-red-300 bg-red-200" },
-  HARD: { label: "HARD", rating: 2, color: "hover:bg-orange-50  border-orange-300 bg-orange-200" },
-  GOOD: { label: "GOOD", rating: 3, color: "hover:bg-blue-50  border-blue-300 bg-blue-200" },
-  EASY: { label: "EASY", rating: 4, color: "hover:bg-emerald-50 border-emerald-300 bg-emerald-200" },
+  AGAIN: {
+    label: "AGAIN",
+    rating: 1,
+    color: "hover:bg-red-50  border-red-300 bg-red-200",
+  },
+  HARD: {
+    label: "HARD",
+    rating: 2,
+    color: "hover:bg-orange-50  border-orange-300 bg-orange-200",
+  },
+  GOOD: {
+    label: "GOOD",
+    rating: 3,
+    color: "hover:bg-blue-50  border-blue-300 bg-blue-200",
+  },
+  EASY: {
+    label: "EASY",
+    rating: 4,
+    color: "hover:bg-emerald-50 border-emerald-300 bg-emerald-200",
+  },
 } as const;
 export type ActionType = keyof typeof BUTTON_ACTIONS;
 
@@ -67,12 +136,13 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
   const [saveInteraction] = useSaveFlashcardInteractionsMutation();
   const dispatch = useDispatch();
 
-  const {
-    currentCardId,
-  } = useSelector((state: RootState) => state.session);
+  const { currentCardId } = useSelector((state: RootState) => state.session);
 
   const currentIndex = deck.findIndex((card) => card._id === currentCardId);
-  const scheme = COLOR_SCHEMES[(currentIndex >= 0 ? currentIndex : 0) % COLOR_SCHEMES.length];
+  const scheme =
+    COLOR_SCHEMES[
+      (currentIndex >= 0 ? currentIndex : 0) % COLOR_SCHEMES.length
+    ];
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -129,8 +199,8 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
 
   const onNextClick = () => {
     if (!deck || deck.length === 0) return;
-    const currentIndex = deck.findIndex(c => c._id === currentCardId)
-    const nextIndex = (currentIndex + 1) % deck.length
+    const currentIndex = deck.findIndex((c) => c._id === currentCardId);
+    const nextIndex = (currentIndex + 1) % deck.length;
     setDirection(1);
     dispatch(setCurrentCard({ cardId: deck[nextIndex]._id }));
     setIsFlipped(false);
@@ -143,15 +213,15 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
     setDirection(-1);
     dispatch(setCurrentCard({ cardId: deck[prevIndex]._id }));
     setIsFlipped(false);
-  }
+  };
 
   const currentCard = deck.find((card) => card._id === currentCardId);
 
   return (
     <>
       {deck.length > 0 ? (
-        <div className="flex flex-col items-center w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto">
-          <div className="relative w-full min-h-[440px] sm:min-h-[500px]">
+        <div className="flex flex-col items-center w-full max-w-[500px] mx-auto">
+          <div className="relative w-full min-h-[380px] min-[375px]:min-h-[440px] sm:min-h-[500px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
@@ -162,7 +232,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[440px] sm:min-h-[500px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full min-h-[380px] min-[375px]:min-h-[440px] sm:min-h-[500px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div
@@ -175,9 +245,15 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                     onDragEnd={(event, info) => {
                       const swipeThreshold = 40;
                       const velocityThreshold = 400;
-                      if (info.offset.x < -swipeThreshold || info.velocity.x < -velocityThreshold) {
+                      if (
+                        info.offset.x < -swipeThreshold ||
+                        info.velocity.x < -velocityThreshold
+                      ) {
                         onNextClick();
-                      } else if (info.offset.x > swipeThreshold || info.velocity.x > velocityThreshold) {
+                      } else if (
+                        info.offset.x > swipeThreshold ||
+                        info.velocity.x > velocityThreshold
+                      ) {
                         onPrevClick();
                       }
                     }}
@@ -186,23 +262,28 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                       opacity: 0,
                       rotateY: direction > 0 ? -50 : 50,
                       scale: 0.6,
-                      zIndex: 0
+                      zIndex: 0,
                     }}
                     animate={{
                       x: 0,
                       opacity: 1,
                       rotateY: 0,
                       scale: 1,
-                      zIndex: 10
+                      zIndex: 10,
                     }}
                     exit={{
                       x: direction > 0 ? -250 : 250,
                       opacity: 0,
                       rotateY: direction > 0 ? 50 : -50,
                       scale: 0.6,
-                      zIndex: 0
+                      zIndex: 0,
                     }}
-                    transition={{ type: "spring", stiffness: 350, damping: 30, mass: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 350,
+                      damping: 30,
+                      mass: 1,
+                    }}
                   >
                     <Flashcard
                       card={currentCard}
@@ -229,59 +310,50 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
             <div className="w-full h-12 mt-2 flex items-center">
               {isFlipped && (
                 <div className="flex primary-buttons gap-1 w-full">
-                  {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map((actionKey) => {
-                    const actionConfig = BUTTON_ACTIONS[actionKey];
-                    return (
-                      <Button
-                        key={actionKey}
-                        variant="outline"
-                        className={`fade-up active:scale-95 transition-all duration-200 flex-1 hover:font-bold hover:cursor-pointer rounded-xl py-3 text-xs font-semibold ${actionConfig.color}`}
-                        onClick={() => onActionClick(actionKey)}
-                      >
-                        {actionConfig.label}
-                      </Button>
-                    );
-                  })}
+                  {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
+                    (actionKey) => {
+                      const actionConfig = BUTTON_ACTIONS[actionKey];
+                      return (
+                        <Button
+                          key={actionKey}
+                          variant="outline"
+                          className={`fade-up active:scale-95 transition-all duration-200 flex-1 hover:font-bold hover:cursor-pointer rounded-xl py-3 text-xs font-semibold ${actionConfig.color}`}
+                          onClick={() => onActionClick(actionKey)}
+                        >
+                          {actionConfig.label}
+                        </Button>
+                      );
+                    },
+                  )}
                 </div>
-
               )}
             </div>
 
-            <div className="w-full mt-1 mb-2">
+            <div className="w-full mt-2 mb-2 flex flex-col gap-1.5">
               <ProgressBar
-                value={((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) * 100}
-                className="h-4 bg-slate-100 border border-slate-200/80"
+                value={
+                  ((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) *
+                  100
+                }
+                className="h-2.5 bg-slate-100 border border-slate-200/80"
                 barClassName="rounded-none"
-              >
-                {/* Unfilled text (Black/Slate-800) */}
-                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider text-slate-800 select-none pointer-events-none">
-                  CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
-                </div>
-
-                {/* Progress Fill Text overlay */}
-                <div
-                  className="absolute top-0 left-0 h-full overflow-hidden transition-all duration-300"
-                  style={{
-                    width: `${((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) * 100}%`,
-                  }}
-                >
-                  <div
-                    className="absolute top-0 left-0 h-full flex items-center justify-center text-[10px] font-bold tracking-wider text-white w-[calc(100vw-34px)] min-[375px]:w-[373px] md:w-[498px] select-none pointer-events-none"
-                  >
-                    CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
-                  </div>
-                </div>
-              </ProgressBar>
+              />
+              <div className="w-full text-center text-[10px] font-bold tracking-wider text-muted-foreground select-none">
+                CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
+              </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="w-full px-4 min-[375px]:w-[375px] min-[375px]:px-0 md:w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[440px] rounded-3xl bg-card border border-border shadow-sm">
+        <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
+          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[380px] min-[375px]:min-h-[440px] rounded-3xl bg-card border border-border shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
-            <h3 className="text-lg font-bold text-foreground mb-1.5">No Cards Found</h3>
+            <h3 className="text-lg font-bold text-foreground mb-1.5">
+              No Cards Found
+            </h3>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              Oops! No flashcards match your current filters. Try changing the category or removing some filters above.
+              Oops! No flashcards match your current filters. Try changing the
+              category or removing some filters above.
             </p>
           </div>
         </div>
