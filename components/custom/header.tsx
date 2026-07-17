@@ -121,7 +121,7 @@ const Header = () => {
   return (
     <nav className="w-full bg-background/80 backdrop-blur-md border-b border-border/40 sticky top-0 z-50">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-12 sm:h-14 items-center">
+        <div className="flex justify-between h-14 items-center">
           {/* Logo */}
           <Logo onClick={() => setIsMobileMenuOpen(false)} />
 
@@ -585,7 +585,7 @@ const Header = () => {
             </Button>
 
             {isMobileMenuOpen && (
-              <div className="fixed top-12 sm:top-14 left-0 right-0 bottom-0 w-full h-[calc(100vh-48px)] sm:h-[calc(100vh-56px)] bg-background z-40 border-t border-border flex flex-col animate-fadeIn overflow-y-auto">
+              <div className="fixed top-14 left-0 right-0 bottom-0 w-full h-[calc(100vh-56px)] bg-background z-40 border-t border-border flex flex-col animate-fadeIn overflow-y-auto">
                 <div className="flex flex-col gap-2 mt-6">
                   <Link
                     href="/"

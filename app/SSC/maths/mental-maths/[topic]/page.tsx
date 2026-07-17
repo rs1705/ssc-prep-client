@@ -51,19 +51,36 @@ const getDifficultyDescription = (topic: string, diff: string) => {
   if (t === "squares") {
     return d === "all"
       ? `💡 Squares ranging from ${min} to ${max}`
-      : `💡 Squares from ${min} to ${max} (e.g., ${min}² = ${min * min})`;
+      : `💡 Squares from ${min} to ${max} [e.g., ${min}² = ${min * min}]`;
   }
   if (t === "cubes") {
     return d === "all"
       ? `💡 Cubes ranging from ${min} to ${max}`
-      : `💡 Cubes from ${min} to ${max} (e.g., ${min}³ = ${min * min * min})`;
+      : `💡 Cubes from ${min} to ${max} [e.g., ${min}³ = ${min * min * min}]`;
   }
   if (t === "addition") {
     const digits = min.toString().length;
     return d === "all"
       ? `💡 Additions ranging from ${min} to ${max}`
-      : `💡 ${digits}-digit additions (range: ${min} to ${max})`;
+      : `💡 ${digits}-digit additions ( Range: ${min} to ${max}) [e.g.,${max} + ${min}=${max + min}]`;
   }
+  if (t === "subtraction") {
+    const digits = min.toString().length;
+    return d === "all"
+      ? `💡 Subtractions ranging from ${min} to ${max}`
+      : `💡 ${digits}-digit subtractions ( Range: ${min} to ${max}) [e.g,${max}-${min}=${max - min}]`;
+  }
+  if (t === "multiplication") {
+    return d === "all"
+      ? `💡Multiplication ranging from ${min} to ${max}`
+      : `💡 ${min} to ${max} [e.g ${min}x${min}=${min * min}]`;
+  }
+  if (t === "division") {
+    return d === "all"
+      ? `💡 Division ranging up to divisors of ${max}`
+      : `💡 Division with divisors from ${min} to ${max} [e.g ${max * min} ÷ ${min} = ${max}]`;
+  }
+
   return "";
 };
 
@@ -543,8 +560,9 @@ export default function MentalMathsPractice() {
 
         {/* 3. ACTIVE PRACTICE BOARD */}
         {gameState === "active" && (
-          <div className="w-full flex-1 flex flex-col gap-4 sm:gap-5">
-            {/* Header Stats Bar */}
+          /* Active Game Container */
+          <div className="flex-1 w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-2 sm:pt-4 pb-6 sm:pb-8">
+            {/* Top Bar: Quit & Progress */}
             <div className="flex flex-col gap-2 w-full pb-2 border-b border-border/60">
               {/* Row 1: Left is Topic Title, Right is Switcher + Quit */}
               <div className="flex items-center justify-between w-full gap-2 min-w-0">
@@ -712,7 +730,7 @@ export default function MentalMathsPractice() {
                     x: { type: "spring", stiffness: 600, damping: 36 },
                     opacity: { duration: 0.06, ease: "easeInOut" },
                   }}
-                  className="text-4xl sm:text-5xl font-black tracking-tight text-center w-full"
+                  className="text-4xl sm:text-4xl font-black tracking-tight text-center w-full"
                 >
                   {engine.state.currentQuestion?.questionText}
                 </motion.div>
@@ -720,7 +738,7 @@ export default function MentalMathsPractice() {
             </div>
 
             {/* Fixed-Height Wrapper for Inputs to prevent Question Panel jumping */}
-            <div className="h-[286px] sm:h-[322px] w-full mt-0 mb-5 sm:mb-7 relative">
+            <div className="h-[286px] sm:h-[322px] w-full mt-4 sm:mt-6 mb-5 sm:mb-7 relative">
               <AnimatePresence mode="wait">
                 {inputLayout === "keys" ? (
                   <motion.div
@@ -1110,9 +1128,9 @@ export default function MentalMathsPractice() {
                                     key={idx}
                                     className={`flex items-center justify-between p-4 text-xs transition-colors ${rowBgClass}`}
                                   >
-                                    <div className="flex flex-col gap-">
+                                    <div className="flex flex-col gap-1">
                                       <span className="font-extrabold text-sm text-foreground">
-                                        {idx + 1}) {item.questionText}
+                                        Q{idx + 1}. {item.questionText}
                                       </span>
                                       <span className="text-[10px] text-muted-foreground font-medium">
                                         {isCorrect ? (
@@ -1127,10 +1145,6 @@ export default function MentalMathsPractice() {
                                             Correct:{" "}
                                             <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
                                               {item.correctAnswer}
-                                            </strong>{" "}
-                                            • You:{" "}
-                                            <strong className="text-amber-600 dark:text-amber-500 font-bold font-sans">
-                                              Skipped
                                             </strong>
                                           </span>
                                         ) : (
@@ -1149,46 +1163,57 @@ export default function MentalMathsPractice() {
                                     </div>
 
                                     <div className="flex items-center gap-3">
-                                      <div className="flex flex-col items-end gap-0.5">
-                                        <span
-                                          className={`font-bold ${
-                                            isCorrect
-                                              ? "text-emerald-500"
+                                      <div className="flex flex-col items-end gap-1.5">
+                                        <div className="flex items-center gap-2">
+                                          <span
+                                            className={`font-bold px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider transition-colors ${
+                                              isCorrect
+                                                ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20"
+                                                : isWrong
+                                                  ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
+                                                  : "text-amber-600 dark:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20"
+                                            }`}
+                                          >
+                                            {isCorrect
+                                              ? "Correct"
                                               : isWrong
-                                                ? "text-rose-500"
-                                                : "text-amber-500"
-                                          }`}
-                                        >
-                                          {isCorrect
-                                            ? "Correct"
-                                            : isWrong
-                                              ? "Incorrect"
-                                              : "Skipped"}
-                                        </span>
-                                        <span
-                                          className={`text-[10px] font-semibold flex items-center gap-0.5 ${
-                                            (item.timeTaken ?? 0) >= 3000
-                                              ? "text-rose-500 dark:text-rose-400"
-                                              : "text-emerald-500 dark:text-emerald-400"
-                                          }`}
-                                        >
-                                          ⏱️{" "}
-                                          {(
-                                            (item.timeTaken ?? 0) / 1000
-                                          ).toFixed(1)}
-                                          s
-                                        </span>
+                                                ? "Incorrect"
+                                                : "Skipped"}
+                                          </span>
+                                          {isCorrect && (
+                                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                                          )}
+                                          {isWrong && (
+                                            <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                                          )}
+                                          {isSkipped && (
+                                            <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />
+                                          )}
+                                        </div>
+                                        {!isSkipped && (
+                                          <span
+                                            className={`text-[10px] font-semibold flex items-center gap-1 ${
+                                              (item.timeTaken ?? 0) >= 3000
+                                                ? "text-rose-500 dark:text-rose-400"
+                                                : "text-emerald-500 dark:text-emerald-400"
+                                            }`}
+                                          >
+                                            <span className="text-[11px] leading-none">
+                                              {(item.timeTaken ?? 0) < 2000
+                                                ? "⚡"
+                                                : "🐢"}
+                                            </span>
+                                            <span>
+                                              {item.timeTaken
+                                                ? (
+                                                    item.timeTaken / 1000
+                                                  ).toFixed(1)
+                                                : "0.0"}
+                                              s
+                                            </span>
+                                          </span>
+                                        )}
                                       </div>
-
-                                      {isCorrect && (
-                                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                                      )}
-                                      {isWrong && (
-                                        <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                                      )}
-                                      {isSkipped && (
-                                        <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />
-                                      )}
                                     </div>
                                   </div>
                                 );

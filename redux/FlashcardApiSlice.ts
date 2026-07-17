@@ -58,6 +58,7 @@ export const flashcardApi = createApi({
       }),
     }),
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getFlashcardInteractions: builder.query<any, void>({
       query: () => ({
         url: `/interactions/getInteractions`,
@@ -66,6 +67,7 @@ export const flashcardApi = createApi({
       providesTags: ["Interactions"],
     }),
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStudyDeck: builder.query<any, void>({
       query: () => ({
         url: `/flashcards/getStudyDeck`,

@@ -12,16 +12,20 @@ export interface DifficultyRangeConfig {
   mediumMax: number;
   hardMin: number;
   hardMax: number;
+  anyMin: number;
+  anyMax: number;
 }
 
 export const DIFFICULTY_CONFIGS: Record<string, DifficultyRangeConfig> = {
   squares: {
     easyMin: 5,
-    easyMax: 12,
-    mediumMin: 13,
-    mediumMax: 29,
+    easyMax: 14,
+    mediumMin: 15,
+    mediumMax: 30,
     hardMin: 31,
-    hardMax: 49,
+    hardMax: 40,
+    anyMin: 5,
+    anyMax: 40,
   },
   cubes: {
     easyMin: 2,
@@ -30,6 +34,8 @@ export const DIFFICULTY_CONFIGS: Record<string, DifficultyRangeConfig> = {
     mediumMax: 20,
     hardMin: 21,
     hardMax: 30,
+    anyMin: 2,
+    anyMax: 30,
   },
   addition: {
     easyMin: 10,
@@ -38,10 +44,43 @@ export const DIFFICULTY_CONFIGS: Record<string, DifficultyRangeConfig> = {
     mediumMax: 999,
     hardMin: 1000,
     hardMax: 9999,
+    anyMin: 1,
+    anyMax: 9999,
+  },
+  subtraction: {
+    easyMin: 10,
+    easyMax: 99,
+    mediumMin: 100,
+    mediumMax: 999,
+    hardMin: 1000,
+    hardMax: 9999,
+    anyMin: 5,
+    anyMax: 9999,
+  },
+  multiplication: {
+    easyMin: 11,
+    easyMax: 25,
+    mediumMin: 25,
+    mediumMax: 99,
+    hardMin: 100,
+    hardMax: 999,
+    anyMin: 11,
+    anyMax: 999,
+  },
+  division: {
+    easyMin: 5,
+    easyMax: 50,
+    mediumMin: 50,
+    mediumMax: 200,
+    hardMin: 200,
+    hardMax: 500,
+    anyMin: 5,
+    anyMax: 500,
   },
 };
 
 const uniqueQuestionGenerator = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   generatorFn: () => any,
   exclusions: string[],
   maxRetries = 30,
@@ -66,7 +105,14 @@ const getRandomInt = (min: number, max: number): number => {
 
 const generateOptions = (
   correctAnswer: number,
-  type: "square" | "cube" | "multiply" | "addition",
+  type:
+    | "square"
+    | "cube"
+    | "multiply"
+    | "addition"
+    | "subtraction"
+    | "multiplication"
+    | "division",
   baseNum?: number,
 ): number[] => {
   let generatedOptions: number[] = [];
@@ -101,12 +147,34 @@ const generateOptions = (
       correctAnswer + 10,
       correctAnswer + 30,
     ];
-  } else {
+  } else if (type === "subtraction") {
+    // 1. Off-by-10 error (very common in borrowing)
+    const option2 =
+      correctAnswer > 10 ? correctAnswer - 10 : correctAnswer + 20;
+    const option3 = correctAnswer + 10;
+
+    // 2. Off-by-1 or 2 error (common arithmetic slip)
+    // We can use a small random offset to keep it unpredictable
+    const smallOffset = Math.random() > 0.5 ? 1 : 2;
+    const option4 =
+      correctAnswer > smallOffset
+        ? correctAnswer - smallOffset
+        : correctAnswer + smallOffset;
+
+    generatedOptions = [correctAnswer, option2, option3, option4];
+  } else if (type === "multiplication") {
     generatedOptions = [
       correctAnswer,
-      correctAnswer + 1,
-      correctAnswer + 2,
-      correctAnswer + 3,
+      correctAnswer - 10,
+      correctAnswer + 10,
+      correctAnswer + 20,
+    ];
+  }else if(type==="division"){
+    generatedOptions=[
+      correctAnswer,
+      correctAnswer - 10,
+      correctAnswer + 10,
+      correctAnswer + 20,
     ];
   }
 
@@ -126,7 +194,7 @@ const getRandomIntByDifficulty = (
     case DIFFICULTY.HARD:
       return getRandomInt(config.hardMin, config.hardMax);
   }
-  return getRandomInt(config.easyMin, config.hardMax);
+  return getRandomInt(config.anyMin, config.anyMax);
 };
 
 const generateSquareQuestion = (difficulty: string) => {
@@ -157,8 +225,14 @@ const generateCubeQuestion = (difficulty: string) => {
 };
 
 const generateAdditionQuestion = (difficulty: string) => {
-  const num1 = getRandomIntByDifficulty(difficulty, DIFFICULTY_CONFIGS.addition);
-  const num2 = getRandomIntByDifficulty(difficulty, DIFFICULTY_CONFIGS.addition);
+  const num1 = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.addition,
+  );
+  const num2 = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.addition,
+  );
 
   const correctAnswer = num1 + num2;
   const options = generateOptions(correctAnswer, "addition");
@@ -167,6 +241,75 @@ const generateAdditionQuestion = (difficulty: string) => {
     correctAnswer,
     options,
     questionKey: `add_${num1}_${num2}`,
+  };
+};
+
+const generateSubtractionQuestion = (difficulty: string) => {
+  let num1 = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.subtraction,
+  );
+  let num2 = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.subtraction,
+  );
+
+  let temp;
+  if (num1 < num2) {
+    temp = num1;
+    num1 = num2;
+    num2 = temp;
+  }
+  const correctAnswer = num1 - num2;
+
+  const options = generateOptions(correctAnswer, "subtraction");
+  return {
+    questionText: `${num1} - ${num2}`,
+    correctAnswer,
+    options,
+    questionKey: `sub_${num1}_${num2}`,
+  };
+};
+
+const generateMultiplicationQuestion = (difficulty: string) => {
+  const num1 = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.multiplication,
+  );
+  const num2 = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.multiplication,
+  );
+
+  const correctAnswer = num1 * num2;
+
+  const options = generateOptions(correctAnswer, "multiplication", num1);
+
+  return {
+    questionText: `${num1} × ${num2}`,
+    correctAnswer,
+    options,
+    questionKey: `mul_${num1}_${num2}`,
+  };
+};
+
+const generateDivisionQuestion = (difficulty: string) => {
+  const divisor = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.division,
+  );
+  const answer = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.division,
+  );
+
+  const numerator = divisor * answer;
+  const options = generateOptions(answer, "division", divisor);
+  return {
+    questionText: `${numerator} ÷ ${divisor}`,
+    correctAnswer: answer,
+    options,
+    questionKey: `div_${numerator}_${divisor}`,
   };
 };
 
@@ -190,6 +333,21 @@ export const generateQuestion = (
     case "addition":
       return uniqueQuestionGenerator(
         () => generateAdditionQuestion(diff),
+        exclusions,
+      );
+    case "subtraction":
+      return uniqueQuestionGenerator(
+        () => generateSubtractionQuestion(diff),
+        exclusions,
+      );
+    case "multiplication":
+      return uniqueQuestionGenerator(
+        () => generateMultiplicationQuestion(diff),
+        exclusions,
+      );
+    case "division":
+      return uniqueQuestionGenerator(
+        () => generateDivisionQuestion(diff),
         exclusions,
       );
     default:

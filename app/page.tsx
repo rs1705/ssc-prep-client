@@ -66,9 +66,14 @@ export default function Dashboard() {
             <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5">
               Speed Math Upgraded! <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-primary/10 text-primary uppercase tracking-wider">New</span>
             </h4>
-            <p className="text-xs text-muted-foreground mt-1 max-w-xl leading-relaxed">
-              Solve <strong className="text-foreground font-semibold">Addition Sprints</strong> (from 2 to 4 digits), review your speed metrics with our new <strong className="text-foreground font-semibold">Time-per-Question Scorecard</strong>, and practice smoothly with <strong className="text-foreground font-semibold">questions that never repeat back-to-back</strong>!
-            </p>
+            <div className="text-xs text-muted-foreground mt-1.5 max-w-2xl leading-relaxed">
+              Master the ultimate mental agility challenge with our newly expanded math engine:
+              <ul className="list-disc list-inside mt-1.5 space-y-0.5 ml-1">
+                <li><strong className="text-foreground font-semibold">Addition, Subtraction, Multiplication & Division</strong> sprints</li>
+                <li>Unpredictable <strong className="text-foreground font-semibold">ANY Difficulty Mode</strong> for combined-digit tests</li>
+                <li>Tricky <strong className="text-foreground font-semibold">Smart Distractors</strong> that mimic human calculation errors</li>
+              </ul>
+            </div>
           </div>
         </div>
         <Link href="/SSC/maths/mental-maths" className="shrink-0">

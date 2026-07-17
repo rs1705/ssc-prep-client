@@ -11,7 +11,13 @@ export interface RevisionRange {
 }
 
 export interface RevisionConfig {
-  type: "square" | "cube" | "table";
+  type:
+    | "square"
+    | "cube"
+    | "table"
+    | "subtraction"
+    | "multiplication"
+    | "division";
   ranges: RevisionRange[];
 }
 
@@ -42,28 +48,34 @@ export const TopicCard = ({
   const theme = colorTheme || "indigo";
   const themeMap = {
     sky: "bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400",
-    emerald: "bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400",
+    emerald:
+      "bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400",
     rose: "bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400",
-    amber: "bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400",
-    indigo: "bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400",
+    amber:
+      "bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400",
+    indigo:
+      "bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400",
   };
   const themeClass = themeMap[theme];
 
   const canRevise = !!revisionConfig;
 
-
-
   return (
     <div
       className="group relative h-full flex flex-col justify-between p-5 rounded-3xl bg-card border border-border shadow-xs hover:shadow-md hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-0.5 animate-in fade-in slide-in-from-bottom-2 zoom-in-95 select-none"
-      style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
+      style={{
+        animationDelay: `${Math.floor(index / cols) * 120}ms`,
+        animationFillMode: "both",
+      }}
     >
       <div>
         {/* Card Header Info */}
         <div className="flex items-center mb-2">
           <div className="flex items-center gap-3">
             {/* Emoji box */}
-            <div className={`flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 ${themeClass}`}>
+            <div
+              className={`flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 ${themeClass}`}
+            >
               {emoji}
             </div>
             <h3 className="font-bold text-foreground text-base tracking-tight">

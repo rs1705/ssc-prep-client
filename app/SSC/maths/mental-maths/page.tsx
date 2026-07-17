@@ -21,14 +21,23 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
     id: "squares",
     name: "Squares",
     emoji: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <path d="M3 12h18M12 3v18" />
       </svg>
     ),
-    description: "Master squares up to 50 to accelerate compound interest, geometry area, and algebraic calculations.",
+    description:
+      "Master squares up to 50 to accelerate compound interest, geometry area, and algebraic calculations.",
     difficulty: "Easy",
-    stats: "1-50 Range",
+    stats: "1-50",
     revisionConfig: {
       type: "square",
       ranges: [
@@ -42,15 +51,24 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
     id: "cubes",
     name: "Cubes",
     emoji: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
         <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
         <line x1="12" y1="22.08" x2="12" y2="12" />
       </svg>
     ),
-    description: "Memorize cube values up to 30 to conquer volume formulas and number series reasoning puzzles.",
+    description:
+      "Memorize cube values up to 30 to conquer volume formulas and number series reasoning puzzles.",
     difficulty: "Medium",
-    stats: "1-30 Range",
+    stats: "1-30",
     revisionConfig: {
       type: "cube",
       ranges: [
@@ -87,25 +105,43 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
     id: "addition",
     name: "Addition",
     emoji: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <line x1="12" y1="5" x2="12" y2="19" />
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
     ),
-    description: "Master double and triple-digit additions to speed run through data interpretation table queries.",
+    description:
+      "Master double and triple-digit additions to speed run through data interpretation table queries.",
     difficulty: "Easy",
     stats: "2-3 Digits",
   },
-  /*
+
   {
     id: "subtraction",
     name: "Subtraction",
     emoji: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
     ),
-    description: "Develop rapid deduction instincts. Solve complex differences instantly to handle multi-step arithmetic questions with ease.",
+    description:
+      "Develop rapid deduction instincts. Solve complex differences instantly to handle multi-step arithmetic questions with ease.",
     difficulty: "Easy",
     stats: "2-3 Digits",
   },
@@ -113,30 +149,48 @@ const MENTAL_MATHS_TOPICS: MathTopic[] = [
     id: "division",
     name: "Division",
     emoji: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <line x1="5" y1="12" x2="19" y2="12" />
         <circle cx="12" cy="6" r="1.5" fill="currentColor" />
         <circle cx="12" cy="18" r="1.5" fill="currentColor" />
       </svg>
     ),
-    description: "Master division quotients and remainders estimation. Estimate complex ratios and simplify fractions under intense time pressure.",
+    description:
+      "Master division quotients and remainders estimation. Estimate complex ratios and simplify fractions under intense time pressure.",
     difficulty: "Hard",
-    stats: "Quotients",
+    stats: "2-3 Digits",
   },
   {
     id: "multiplication",
     name: "Multiplication",
     emoji: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
       </svg>
     ),
-    description: "Multiply multi-digit numbers in seconds. Dominate multiplication sprints to ace compound interest and mensuration questions.",
+    description:
+      "Multiply multi-digit numbers in seconds. Dominate multiplication sprints to ace compound interest and mensuration questions.",
     difficulty: "Hard",
-    stats: "Speed Matrix",
+    stats: "2-3 Digits",
   },
-  {
+  /*{
     id: "fractions",
     name: "Fractions & Decimals",
     emoji: (
