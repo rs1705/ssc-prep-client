@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { generateQuestion } from "@/lib/mathGenerator";
 import { useRef } from "react";
+import posthog from "posthog-js";
 
 export type GameStatus = "idle" | "countdown" | "active" | "game_over";
 export type GameMode = "timed" | "freestyle";
@@ -254,6 +255,14 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
   const startSession = () => {
     const firstQuestion = generateQuestion(topic, state.difficulty);
 
+    posthog.capture("mental_maths_session_started", {
+      topic,
+      difficulty: state.difficulty,
+      mode: state.mode,
+      timeLimit: state.timeLimit,
+      questionLimit: state.questionLimit,
+    });
+
     dispatch({ type: "START_COUNTDOWN" });
     dispatch({
       type: "NEXT_QUESTION",
@@ -288,6 +297,16 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
         userAnswer: userAnswer,
         timestamp: timeTaken,
       },
+    });
+
+    posthog.capture("mental_maths_answer_submitted", {
+      topic,
+      difficulty: state.difficulty,
+      isCorrect:
+        userAnswer !== "skip" &&
+        userAnswer === state.currentQuestion?.correctAnswer,
+      isSkipped: userAnswer === "skip",
+      timeTakenMs: timeTaken,
     });
 
     setTimeout(() => {

@@ -5,7 +5,7 @@ import Header from "@/components/custom/header";
 import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Analytics } from "@vercel/analytics/react";
+import PostHogProvider from "@/components/posthog-provider";
 import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
@@ -31,25 +31,26 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Providers>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Toaster position="top-center" />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+        <PostHogProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            <AuthProvider>
-              <Header />
-              <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
-                {children}
-              </main>
-            </AuthProvider>
-          </ThemeProvider>
-          <Analytics />
-        </body>
+            <Toaster position="top-center" />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <AuthProvider>
+                <Header />
+                <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
+                  {children}
+                </main>
+              </AuthProvider>
+            </ThemeProvider>
+          </body>
+        </PostHogProvider>
       </Providers>
     </html>
   );

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { TopicCard, type RevisionConfig } from "@/components/custom/TopicCard";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import Loader from "@/components/custom/loader";
 
 interface MathTopic {
@@ -256,6 +257,7 @@ const MentalMaths = () => {
   const [loadingTopic, setLoadingTopic] = useState<string | null>(null);
 
   const handleStart = (topicId: string) => {
+    posthog.capture("mental_maths_topic_selected", { topic: topicId });
     setLoadingTopic(topicId);
     router.push(`/SSC/maths/mental-maths/${topicId}`);
   };

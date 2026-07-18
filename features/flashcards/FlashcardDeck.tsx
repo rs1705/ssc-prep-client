@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { MoveLeft, MoveRight } from "lucide-react";
 import { FlashCardInterface } from "@/lib/types";
 import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
+import posthog from "posthog-js";
 
 import { initializeSession, setCurrentCard } from "@/redux/sessionSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -168,6 +169,10 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
           deck: deck.map((card) => card._id),
         }),
       );
+      posthog.capture("flashcard_session_started", {
+        mode: mode || "freestyle",
+        deckSize: deck.length,
+      });
     }
   }, [deck, dispatch]);
 
@@ -187,6 +192,13 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
         rating: BUTTON_ACTIONS[action].rating,
       });
     }
+
+    posthog.capture("flashcard_rated", {
+      rating: BUTTON_ACTIONS[action].label,
+      ratingValue: BUTTON_ACTIONS[action].rating,
+      mode: mode || "freestyle",
+      cardId: card._id,
+    });
     const currentIndex = deck.findIndex((c) => c._id === currentCardId);
     const nextIndex = (currentIndex + 1) % deck.length;
     const nextId = deck[nextIndex]._id;

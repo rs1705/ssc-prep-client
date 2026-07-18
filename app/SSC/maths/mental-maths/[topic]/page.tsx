@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
+import posthog from "posthog-js";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
@@ -255,6 +256,26 @@ export default function MentalMathsPractice() {
     engine.state.wrongAnswers,
     engine.state.skippedAnswers,
   ]);
+
+  // PostHog: Capture session completion with full performance stats
+  useEffect(() => {
+    if (gameState === "game_over") {
+      const total = correctVal + wrongVal + skippedVal;
+      posthog.capture("mental_maths_session_completed", {
+        topic,
+        difficulty: engine.state.difficulty,
+        mode: engine.state.mode,
+        score: engine.state.score,
+        correctAnswers: correctVal,
+        wrongAnswers: wrongVal,
+        skippedAnswers: skippedVal,
+        totalQuestions: total,
+        accuracy: total > 0 ? Math.floor((correctVal / total) * 100) : 0,
+        timeLimit: engine.state.timeLimit,
+        questionLimit: engine.state.questionLimit,
+      });
+    }
+  }, [gameState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Progress bar calculations
   const timeRemaining = engine.state.timeRemaining ?? 0;
