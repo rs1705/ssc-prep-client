@@ -16,6 +16,8 @@ import {
   XCircle,
   HelpCircle,
   AlertTriangle,
+  MinusCircle,
+  X
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -28,6 +30,26 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+
+const renderTopicIcon = (topic: string, className?: string) => {
+  const iconClass = className || "text-primary/80 shrink-0 w-[18px] h-[18px]";
+  switch (topic.toLowerCase()) {
+    case "addition":
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>;
+    case "subtraction":
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>;
+    case "division":
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><circle cx="12" cy="6" r="1.5" fill="currentColor" /><circle cx="12" cy="18" r="1.5" fill="currentColor" /></svg>;
+    case "multiplication":
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
+    case "squares":
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 12h18M12 3v18" /></svg>;
+    case "cubes":
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>;
+    default:
+      return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+  }
+};
 
 const getDifficultyDescription = (topic: string, diff: string) => {
   const t = topic.toLowerCase();
@@ -318,10 +340,7 @@ export default function MentalMathsPractice() {
     ? `${timeRemaining}s remaining`
     : `${attemptedQuestionsCount} / ${questionLimit} Qs`;
 
-  let containerHeightClass = "h-[610px] sm:h-[620px]";
-  if (gameState === "game_over") {
-    containerHeightClass = "h-auto min-h-[610px] sm:min-h-[620px]";
-  }
+  const containerHeightClass = "h-[680px] sm:h-[690px]";
 
   return (
     <TopicPageLayout
@@ -330,13 +349,13 @@ export default function MentalMathsPractice() {
       centerContent={true}
     >
       <div
-        className={`w-full mt-1 sm:mt-2 flex flex-col p-5 sm:p-6 bg-card border border-primary/30 rounded-3xl shadow-sm select-none ${containerHeightClass} transition-all duration-300 ease-in-out overflow-hidden`}
+        className={`relative w-full mt-1 sm:mt-2 flex flex-col p-5 sm:p-6 bg-card border border-primary/30 rounded-3xl shadow-sm select-none ${containerHeightClass} transition-all duration-300 ease-in-out overflow-hidden`}
       >
         {/* 1. LOBBY CONFIGURATION SCREEN */}
         {gameState === "idle" && (
           <div className="w-full h-full flex flex-col gap-3.5 animate-in fade-in slide-in-from-bottom-3 duration-300">
             {/* Title Section */}
-            <div className="text-center pb-3 border-b border-border/40">
+            <div className="text-center pb-2">
               <h2 className="text-2xl font-extrabold tracking-tight capitalize bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-slate-200 dark:to-white">
                 {topic} Practice
               </h2>
@@ -345,206 +364,199 @@ export default function MentalMathsPractice() {
               </p>
             </div>
 
-            {/* Difficulty */}
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                Difficulty
-              </h3>
-              <div className="grid grid-cols-4 gap-2">
-                {(["easy", "medium", "hard", "all"] as const).map((d) => {
-                  const isSelected = d === engine.state.difficulty;
-                  const label =
-                    d === "easy"
-                      ? "Easy"
-                      : d === "medium"
-                        ? "Medium"
-                        : d === "hard"
-                          ? "Hard"
-                          : "All";
-                  return (
-                    <button
-                      key={d}
-                      type="button"
-                      onClick={() => handleDifficultyChange(d)}
-                      className={`rounded-2xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
-                        isSelected
-                          ? "border-primary bg-primary/5 text-primary shadow-sm"
-                          : "border-border hover:bg-muted/30 text-foreground bg-card"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  );
-                })}
+            <div className="flex flex-col gap-3.5 overflow-y-auto pb-2 pr-1 -mr-1">
+              {/* Difficulty Card */}
+              <div className="bg-muted/10 border border-border/50 rounded-2xl p-4 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary">
+                    1
+                  </span>
+                  Select Difficulty
+                </h3>
+                <div className="grid grid-cols-4 gap-2">
+                  {(["easy", "medium", "hard", "all"] as const).map((d) => {
+                    const isSelected = d === engine.state.difficulty;
+                    const label =
+                      d === "easy"
+                        ? "Easy"
+                        : d === "medium"
+                          ? "Medium"
+                          : d === "hard"
+                            ? "Hard"
+                            : "All";
+                    return (
+                      <button
+                        key={d}
+                        type="button"
+                        onClick={() => handleDifficultyChange(d)}
+                        className={`rounded-xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.96] cursor-pointer ${
+                          isSelected
+                            ? "border-primary bg-primary/10 text-primary shadow-sm"
+                            : "border-border/50 hover:bg-muted/50 hover:border-border text-foreground bg-card"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-2.5 leading-relaxed italic border-l-2 border-primary/20 pl-2">
+                  {getDifficultyDescription(topic, engine.state.difficulty)}
+                </p>
               </div>
-              <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed italic">
-                {getDifficultyDescription(topic, engine.state.difficulty)}
-              </p>
-            </div>
 
-            {/* Practice Mode Selection */}
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                Practice Mode
-              </h3>
-              <div className="grid grid-cols-2 gap-3">
-                {/* Timed Mode Card */}
-                <button
-                  type="button"
-                  onClick={() => handleModeChange("timed")}
-                  className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
-                    engine.state.mode === "timed"
-                      ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
-                      : "border-border bg-card hover:bg-muted/50 text-foreground"
-                  }`}
-                >
-                  <div
-                    className={`p-1.5 rounded-xl mb-1 transition-all duration-200 ${engine.state.mode === "timed" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+              {/* Practice Mode & Limits Card */}
+              <div className="bg-muted/10 border border-border/50 rounded-2xl p-4 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary">
+                    2
+                  </span>
+                  Practice Mode
+                </h3>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {/* Timed Mode Card */}
+                  <button
+                    type="button"
+                    onClick={() => handleModeChange("timed")}
+                    className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 text-center h-20 w-full transition-all duration-200 ease-in-out active:scale-[0.96] outline-none cursor-pointer ${
+                      engine.state.mode === "timed"
+                        ? "border-primary bg-primary/[0.04] text-primary shadow-sm"
+                        : "border-border/50 bg-card hover:bg-muted/60 hover:border-border text-foreground"
+                    }`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className={
-                        engine.state.mode === "timed" ? "animate-pulse" : ""
-                      }
+                    <div
+                      className={`p-1 rounded-lg mb-1 transition-all duration-200 ${engine.state.mode === "timed" ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}
                     >
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                  </div>
-                  <span className="font-bold text-xs">Timed Sprint</span>
-                  <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">
-                    Solve against the clock
-                  </span>
-                </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={
+                          engine.state.mode === "timed" ? "animate-pulse" : ""
+                        }
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                    </div>
+                    <span className="font-bold text-[11px]">Timed Sprint</span>
+                  </button>
 
-                {/* Freestyle Mode Card */}
-                <button
-                  type="button"
-                  onClick={() => handleModeChange("freestyle")}
-                  className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-24 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
-                    engine.state.mode === "freestyle"
-                      ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
-                      : "border-border bg-card hover:bg-muted/50 text-foreground"
-                  }`}
-                >
-                  <div
-                    className={`p-1.5 rounded-xl mb-1 transition-all duration-200 ${engine.state.mode === "freestyle" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+                  {/* Freestyle Mode Card */}
+                  <button
+                    type="button"
+                    onClick={() => handleModeChange("freestyle")}
+                    className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 text-center h-20 w-full transition-all duration-200 ease-in-out active:scale-[0.96] outline-none cursor-pointer ${
+                      engine.state.mode === "freestyle"
+                        ? "border-primary bg-primary/[0.04] text-primary shadow-sm"
+                        : "border-border/50 bg-card hover:bg-muted/60 hover:border-border text-foreground"
+                    }`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className={
-                        engine.state.mode === "freestyle" ? "animate-pulse" : ""
-                      }
+                    <div
+                      className={`p-1 rounded-lg mb-1 transition-all duration-200 ${engine.state.mode === "freestyle" ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"}`}
                     >
-                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                    </svg>
-                  </div>
-                  <span className="font-bold text-xs">Freestyle Run</span>
-                  <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">
-                    Solve at your own pace
-                  </span>
-                </button>
-              </div>
-            </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={
+                          engine.state.mode === "freestyle"
+                            ? "animate-pulse"
+                            : ""
+                        }
+                      >
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                      </svg>
+                    </div>
+                    <span className="font-bold text-[11px]">Freestyle Run</span>
+                  </button>
+                </div>
 
-            {/* Mode Specific Limits */}
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                {engine.state.mode === "timed"
-                  ? "Time Limit"
-                  : "Question Limit"}
-              </h3>
-              <div className="grid grid-cols-3 gap-2">
-                {engine.state.mode === "timed"
-                  ? [30, 60, 90].map((t) => {
-                      const isSelected = t === engine.state.timeLimit;
-                      return (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={() => handleTimerLimitChange(t)}
-                          className={`rounded-2xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
-                            isSelected
-                              ? "border-primary bg-primary/5 text-primary shadow-sm"
-                              : "border-border hover:bg-muted/30 text-foreground bg-card"
-                          }`}
-                        >
-                          {t}s
-                        </button>
-                      );
-                    })
-                  : [10, 20, 30].map((q) => {
-                      const isSelected = q === engine.state.questionLimit;
-                      return (
-                        <button
-                          key={q}
-                          type="button"
-                          onClick={() => handleQuestionLimitChange(q)}
-                          className={`rounded-2xl h-9 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.98] cursor-pointer ${
-                            isSelected
-                              ? "border-primary bg-primary/5 text-primary shadow-sm"
-                              : "border-border hover:bg-muted/30 text-foreground bg-card"
-                          }`}
-                        >
-                          {q} Qs
-                        </button>
-                      );
-                    })}
+                <div className="grid grid-cols-3 gap-2">
+                  {engine.state.mode === "timed"
+                    ? [30, 60, 90].map((t) => {
+                        const isSelected = t === engine.state.timeLimit;
+                        return (
+                          <button
+                            key={t}
+                            type="button"
+                            onClick={() => handleTimerLimitChange(t)}
+                            className={`rounded-xl h-8 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.96] cursor-pointer ${
+                              isSelected
+                                ? "border-primary bg-primary/10 text-primary shadow-sm"
+                                : "border-border/50 hover:bg-muted/50 hover:border-border text-foreground bg-card"
+                            }`}
+                          >
+                            {t}s
+                          </button>
+                        );
+                      })
+                    : [10, 20, 30].map((q) => {
+                        const isSelected = q === engine.state.questionLimit;
+                        return (
+                          <button
+                            key={q}
+                            type="button"
+                            onClick={() => handleQuestionLimitChange(q)}
+                            className={`rounded-xl h-8 border-2 font-bold text-xs transition-all duration-200 ease-in-out active:scale-[0.96] cursor-pointer ${
+                              isSelected
+                                ? "border-primary bg-primary/10 text-primary shadow-sm"
+                                : "border-border/50 hover:bg-muted/50 hover:border-border text-foreground bg-card"
+                            }`}
+                          >
+                            {q} Qs
+                          </button>
+                        );
+                      })}
+                </div>
               </div>
-            </div>
 
-            {/* Input Layout Selection */}
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                Input Layout
-              </h3>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setInputLayout("mcq")}
-                  className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
-                    inputLayout === "mcq"
-                      ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
-                      : "border-border bg-card hover:bg-muted/50 text-foreground"
-                  }`}
-                >
-                  <span className="font-bold text-xs">
-                    Multiple Choice (MCQ)
+              {/* Input Layout Card */}
+              <div className="bg-muted/10 border border-border/50 rounded-2xl p-4 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary">
+                    3
                   </span>
-                  <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">
-                    Choose from 4 options
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setInputLayout("keys")}
-                  className={`flex flex-col items-center justify-center p-2 rounded-2xl border-2 text-center h-16 w-full transition-all duration-200 ease-in-out active:scale-[0.98] outline-none cursor-pointer ${
-                    inputLayout === "keys"
-                      ? "border-primary bg-primary/[0.03] text-primary shadow-sm"
-                      : "border-border bg-card hover:bg-muted/50 text-foreground"
-                  }`}
-                >
-                  <span className="font-bold text-xs">Numpad (Keyboard)</span>
-                  <span className="text-[9px] text-muted-foreground mt-0.5 leading-normal">
-                    Type your answer directly
-                  </span>
-                </button>
+                  Input Layout
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setInputLayout("mcq")}
+                    className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 text-center h-14 w-full transition-all duration-200 ease-in-out active:scale-[0.96] outline-none cursor-pointer ${
+                      inputLayout === "mcq"
+                        ? "border-primary bg-primary/[0.04] text-primary shadow-sm"
+                        : "border-border/50 bg-card hover:bg-muted/60 hover:border-border text-foreground"
+                    }`}
+                  >
+                    <span className="font-bold text-[11px]">
+                      Multiple Choice
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInputLayout("keys")}
+                    className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 text-center h-14 w-full transition-all duration-200 ease-in-out active:scale-[0.96] outline-none cursor-pointer ${
+                      inputLayout === "keys"
+                        ? "border-primary bg-primary/[0.04] text-primary shadow-sm"
+                        : "border-border/50 bg-card hover:bg-muted/60 hover:border-border text-foreground"
+                    }`}
+                  >
+                    <span className="font-bold text-[11px]">Numpad</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -582,49 +594,53 @@ export default function MentalMathsPractice() {
         {/* 3. ACTIVE PRACTICE BOARD */}
         {gameState === "active" && (
           /* Active Game Container */
-          <div className="flex-1 w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-2 sm:pt-4 pb-6 sm:pb-8">
-            {/* Top Bar: Quit & Progress */}
-            <div className="flex flex-col gap-2 w-full pb-2 border-b border-border/60">
-              {/* Row 1: Left is Topic Title, Right is Switcher + Quit */}
-              <div className="flex items-center justify-between w-full gap-2 min-w-0">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {engine.state.mode === "timed" ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-primary/80 shrink-0"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-primary/80 shrink-0"
-                    >
-                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                    </svg>
-                  )}
-                  <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal capitalize">
+          <div className="flex-1 w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-8 pb-6 sm:pb-8">
+            {/* Absolute Quit Button in top right of the whole card */}
+            <button
+              type="button"
+              onClick={() => setShowQuitConfirm(true)}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-all cursor-pointer z-10"
+              title="End Session"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Top Bar: Title, Details, Score & Switcher */}
+            <div className="flex items-center justify-between w-full pb-2 gap-2">
+              {/* Left Side: Big Icon + Topic & Difficulty */}
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex-shrink-0 bg-primary/10 p-2 sm:p-2.5 rounded-xl text-primary flex items-center justify-center">
+                  {renderTopicIcon(topic, "w-6 h-6 sm:w-7 sm:h-7 shrink-0")}
+                </div>
+                <div className="flex flex-col min-w-0 justify-center">
+                  <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-none capitalize truncate pb-0.5">
                     {topic}
                   </span>
+                  <div className="flex items-center gap-1.5 mt-1 min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+                    <span>
+                      {engine.state.mode === "timed" ? "Timed" : "Freestyle"}
+                    </span>
+                    <span className="text-muted-foreground/35 font-normal">
+                      •
+                    </span>
+                    <span
+                      className={`font-semibold ${
+                        engine.state.difficulty === "easy"
+                          ? "text-emerald-600 dark:text-emerald-400"
+                          : engine.state.difficulty === "medium"
+                            ? "text-amber-500"
+                            : "text-rose-600 dark:text-rose-400"
+                      }`}
+                    >
+                      {engine.state.difficulty}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
+              </div>
+
+              {/* Right Side: Controls & Score */}
+              <div className="flex flex-col items-end justify-center gap-2 shrink-0">
+                <div className="flex items-center gap-2">
                   {/* Compact Layout Switcher */}
                   <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[92px] sm:w-[104px]">
                     <button
@@ -652,40 +668,10 @@ export default function MentalMathsPractice() {
                       NUM
                     </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setShowQuitConfirm(true)}
-                    className="text-xs font-bold text-destructive hover:bg-destructive/10 rounded-full px-2.5 py-1 transition-all active:scale-95 cursor-pointer flex-shrink-0"
-                  >
-                    Quit
-                  </button>
-                </div>
-              </div>
-
-              {/* Row 2: Left is Freestyle/Timed + Difficulty, Right is Score Badge */}
-              <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
-                <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
-                  <span>
-                    {engine.state.mode === "timed" ? "Timed" : "Freestyle"}
-                  </span>
-                  <span className="text-muted-foreground/35 font-normal">
-                    •
-                  </span>
-                  <span
-                    className={`font-semibold ${
-                      engine.state.difficulty === "easy"
-                        ? "text-emerald-600 dark:text-emerald-400"
-                        : engine.state.difficulty === "medium"
-                          ? "text-amber-500"
-                          : "text-rose-600 dark:text-rose-400"
-                    }`}
-                  >
-                    {engine.state.difficulty}
-                  </span>
                 </div>
 
-                {/* Text Score with Slot Animation under Quit button */}
-                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none shrink-0 h-5 overflow-hidden">
+                {/* Score */}
+                <div className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-muted-foreground select-none shrink-0 h-5 overflow-hidden">
                   <span>Score</span>
                   <span className="text-muted-foreground/35 font-normal">
                     •
@@ -713,14 +699,14 @@ export default function MentalMathsPractice() {
             </div>
 
             {/* Dynamic Progress Bar */}
-            <div className="w-full flex flex-col gap-1.5">
+            <div className="w-full flex flex-col gap-1.5 mt-1">
               <ProgressBar
                 value={progressPercentage}
-                className="h-1.5 bg-muted/65"
+                className="h-2 bg-muted/65"
                 barClassName={barColorClass}
               />
-              <div className="flex justify-between text-[11px] items-center">
-                <span className="font-bold text-muted-foreground uppercase tracking-wider">
+              <div className="flex justify-between text-xs sm:text-sm items-center mt-0.5">
+                <span className="font-bold text-muted-foreground tracking-wider">
                   {engine.state.mode === "timed" ? "Timer" : "Progress"}
                 </span>
                 <span
@@ -734,7 +720,7 @@ export default function MentalMathsPractice() {
             {/* Central Question Panel */}
             <div
               className={`
-                            mt-2 flex-1 flex flex-col items-center justify-center rounded-2xl py-5 px-4 min-h-[100px] overflow-hidden border transition-all duration-150 ease-in-out select-none
+                            mt-2 flex-1 flex flex-col items-center justify-center rounded-2xl py-5 px-4 min-h-[120px] overflow-hidden border transition-all duration-150 ease-in-out select-none
                             ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)] text-emerald-600 dark:text-emerald-400" : ""}
                             ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500 bg-rose-500/10 dark:bg-rose-500/5 shadow-[0_0_15px_rgba(244,63,94,0.1)] text-rose-600 dark:text-rose-400" : ""}
                             ${engine.state.currentAnswerStatus === "skipped" ? "border-amber-500 bg-amber-500/10 dark:bg-amber-500/5 shadow-[0_0_15px_rgba(245,158,11,0.1)] text-amber-600 dark:text-amber-400" : ""}
@@ -751,7 +737,7 @@ export default function MentalMathsPractice() {
                     x: { type: "spring", stiffness: 600, damping: 36 },
                     opacity: { duration: 0.06, ease: "easeInOut" },
                   }}
-                  className="text-4xl sm:text-4xl font-black tracking-tight text-center w-full"
+                  className="text-4xl sm:text-5xl font-black tracking-tight text-center w-full"
                 >
                   {engine.state.currentQuestion?.questionText}
                 </motion.div>
@@ -787,7 +773,7 @@ export default function MentalMathsPractice() {
                         onChange={(e) =>
                           setUserInput(e.target.value.replace(/\D/g, ""))
                         }
-                        className="h-11 sm:h-12 flex-1 rounded-xl text-left px-4 text-base sm:text-lg font-medium border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/40 focus-visible:bg-background focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 caret-primary shadow-inner transition-all"
+                        className="h-11 sm:h-12 flex-1 rounded-xl text-center px-4 text-base sm:text-lg font-medium border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/40 focus-visible:bg-background focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 caret-primary shadow-inner transition-all"
                         autoFocus
                       />
                       <Button
@@ -827,10 +813,12 @@ export default function MentalMathsPractice() {
                           key={btn}
                           type="button"
                           onClick={() => handleNumClick(btn)}
-                          className={`h-[54px] sm:h-[58px] font-extrabold rounded-2xl border-2 transition-all duration-150 ease-out outline-none select-none active:scale-[0.93] active:border-primary/80 cursor-pointer shadow-sm ${
-                            btn === "Clear" || btn === "⌫"
-                              ? "bg-muted text-muted-foreground hover:bg-muted/80 border-border/50 hover:border-primary/20 text-xs sm:text-xs"
-                              : "bg-card text-foreground hover:bg-muted/40 border-border hover:border-primary/25 text-base sm:text-base"
+                          className={`h-[54px] sm:h-[58px] font-extrabold rounded-2xl border-2 transition-all duration-150 ease-out outline-none select-none active:scale-[0.90] cursor-pointer shadow-sm ${
+                            btn === "Clear"
+                              ? "bg-card text-muted-foreground hover:bg-muted/40 hover:text-foreground border-border hover:border-primary/30 text-xs active:bg-primary/5 active:border-primary/50"
+                              : btn === "⌫"
+                                ? "bg-card text-muted-foreground hover:bg-muted/40 hover:text-foreground border-border hover:border-primary/30 text-base active:bg-primary/5 active:border-primary/50"
+                                : "bg-card text-foreground hover:bg-muted/40 border-border hover:border-primary/30 text-lg active:bg-primary/5 active:border-primary/50"
                           }`}
                         >
                           {btn}
@@ -854,21 +842,21 @@ export default function MentalMathsPractice() {
                           const isSelected = selectedOption === option;
                           const status = engine.state.currentAnswerStatus;
                           let highlightClass =
-                            "border-border hover:border-primary bg-card text-foreground hover:bg-muted/30 hover:shadow-sm";
+                            "border-border hover:border-primary/30 bg-card text-foreground hover:bg-muted/40 active:bg-primary/5 active:border-primary/50";
                           if (isSelected) {
                             if (status === "correct") {
                               highlightClass =
-                                "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-sm";
+                                "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
                             } else if (status === "wrong") {
                               highlightClass =
-                                "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-sm";
+                                "border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400";
                             }
                           }
                           return (
                             <button
                               key={idx}
                               type="button"
-                              className={`relative h-full font-black rounded-2xl border-2 transition-all duration-100 ease-out flex items-center justify-center px-2 sm:px-4 active:scale-[0.94] active:bg-slate-100 dark:active:bg-slate-900/60 active:border-primary/85 cursor-pointer ${highlightClass}`}
+                              className={`relative h-full font-black rounded-2xl border-2 transition-all duration-150 ease-out flex items-center justify-center px-2 sm:px-4 active:scale-[0.90] cursor-pointer shadow-sm ${highlightClass}`}
                               onClick={() => {
                                 if (engine.state.currentAnswerStatus !== "idle")
                                   return;
@@ -876,7 +864,7 @@ export default function MentalMathsPractice() {
                                 handleEnterSubmit(option);
                               }}
                             >
-                              <span className="absolute top-2.5 left-2.5 text-muted-foreground text-[9px] sm:text-[10px] bg-muted px-1.5 py-0.5 rounded-md select-none font-bold">
+                              <span className="absolute top-2.5 left-2.5 text-primary text-[9px] sm:text-[10px] bg-primary/20 px-1.5 py-0.5 rounded-md select-none font-bold">
                                 {String.fromCharCode(65 + idx)}
                               </span>
                               <span className="truncate w-full text-center text-base sm:text-lg font-black tracking-tight mt-2.5 sm:mt-1">
@@ -894,7 +882,7 @@ export default function MentalMathsPractice() {
                         onClick={() => handleEnterSubmit("skip")}
                         className="text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl px-4 py-2 active:scale-95 transition-all cursor-pointer"
                       >
-                        Skip Question
+                        Skip
                       </button>
                     </div>
                   </motion.div>
@@ -1078,7 +1066,8 @@ export default function MentalMathsPractice() {
                           {/* Metric Grid (3-column layout) */}
                           <div className="grid grid-cols-3 gap-2.5 w-full">
                             {/* Correct Answers */}
-                            <div className="py-6 px-1 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-md flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all">
+                            <div className="py-4 px-1 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-emerald-500/10">
+                              <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400 mb-1.5 opacity-80" />
                               <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-0.5">
                                 Correct
                               </span>
@@ -1088,7 +1077,8 @@ export default function MentalMathsPractice() {
                             </div>
 
                             {/* Incorrect Answers */}
-                            <div className="py-6 px-1 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-md flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all">
+                            <div className="py-4 px-1 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-rose-500/10">
+                              <XCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 mb-1.5 opacity-80" />
                               <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-0.5">
                                 Wrong
                               </span>
@@ -1098,7 +1088,8 @@ export default function MentalMathsPractice() {
                             </div>
 
                             {/* Skipped Answers */}
-                            <div className="py-6 px-1 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-md flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all">
+                            <div className="py-4 px-1 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-amber-500/10">
+                              <MinusCircle className="w-5 h-5 text-amber-500 dark:text-amber-400 mb-1.5 opacity-80" />
                               <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-0.5">
                                 Skipped
                               </span>
@@ -1147,10 +1138,10 @@ export default function MentalMathsPractice() {
                                 return (
                                   <div
                                     key={idx}
-                                    className={`flex items-center justify-between p-4 text-xs transition-colors ${rowBgClass}`}
+                                    className={`flex items-center justify-between p-3 sm:p-4 text-xs transition-colors ${rowBgClass}`}
                                   >
                                     <div className="flex flex-col gap-1">
-                                      <span className="font-extrabold text-sm text-foreground">
+                                      <span className="font-extrabold text-[13px] sm:text-sm text-foreground">
                                         Q{idx + 1}. {item.questionText}
                                       </span>
                                       <span className="text-[10px] text-muted-foreground font-medium">
@@ -1184,57 +1175,53 @@ export default function MentalMathsPractice() {
                                     </div>
 
                                     <div className="flex items-center gap-3">
-                                      <div className="flex flex-col items-end gap-1.5">
-                                        <div className="flex items-center gap-2">
-                                          <span
-                                            className={`font-bold px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider transition-colors ${
-                                              isCorrect
-                                                ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20"
-                                                : isWrong
-                                                  ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
-                                                  : "text-amber-600 dark:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20"
-                                            }`}
-                                          >
-                                            {isCorrect
-                                              ? "Correct"
+                                      <div className="flex items-center gap-1.5">
+                                        <span
+                                          className={`font-bold px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider transition-colors ${
+                                            isCorrect
+                                              ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20"
                                               : isWrong
-                                                ? "Incorrect"
-                                                : "Skipped"}
-                                          </span>
-                                          {isCorrect && (
-                                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                                          )}
-                                          {isWrong && (
-                                            <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                                          )}
-                                          {isSkipped && (
-                                            <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />
-                                          )}
-                                        </div>
-                                        {!isSkipped && (
-                                          <span
-                                            className={`text-[10px] font-semibold flex items-center gap-1 ${
-                                              (item.timeTaken ?? 0) >= 3000
-                                                ? "text-rose-500 dark:text-rose-400"
-                                                : "text-emerald-500 dark:text-emerald-400"
-                                            }`}
-                                          >
-                                            <span className="text-[11px] leading-none">
-                                              {(item.timeTaken ?? 0) < 2000
-                                                ? "⚡"
-                                                : "🐢"}
-                                            </span>
-                                            <span>
-                                              {item.timeTaken
-                                                ? (
-                                                    item.timeTaken / 1000
-                                                  ).toFixed(1)
-                                                : "0.0"}
-                                              s
-                                            </span>
-                                          </span>
+                                                ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
+                                                : "text-amber-600 dark:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20"
+                                          }`}
+                                        >
+                                          {isCorrect
+                                            ? "Correct"
+                                            : isWrong
+                                              ? "Incorrect"
+                                              : "Skipped"}
+                                        </span>
+                                        {isCorrect && (
+                                          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                                        )}
+                                        {isWrong && (
+                                          <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                                        )}
+                                        {isSkipped && (
+                                          <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />
                                         )}
                                       </div>
+                                      {!isSkipped && (
+                                        <div
+                                          className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/50 ${
+                                            (item.timeTaken ?? 0) >= 3000
+                                              ? "text-rose-500 dark:text-rose-400"
+                                              : "text-emerald-600 dark:text-emerald-400"
+                                          }`}
+                                        >
+                                          <span className="text-[11px] leading-none">
+                                            {(item.timeTaken ?? 0) < 2000
+                                              ? "⚡"
+                                              : "🐢"}
+                                          </span>
+                                          <span className="font-bold text-[10px]">
+                                            {(
+                                              (item.timeTaken ?? 0) / 1000
+                                            ).toFixed(1)}
+                                            s
+                                          </span>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 );

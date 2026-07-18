@@ -1,6 +1,7 @@
 "use client";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/auth";
-import { Flame, Target, BrainCircuit, ChevronRight, Trophy, GraduationCap, Calculator, Globe } from "lucide-react";
+import { Flame, Target, BrainCircuit, ChevronRight, Trophy, GraduationCap, Calculator, Globe, X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
@@ -8,6 +9,19 @@ import { SectionCardProps } from "@/lib/types";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const [showSpeedMathBanner, setShowSpeedMathBanner] = useState(false);
+
+  useEffect(() => {
+    const hasSeenBanner = localStorage.getItem("hasSeenSpeedMathUpdate");
+    if (!hasSeenBanner) {
+      setShowSpeedMathBanner(true);
+    }
+  }, []);
+
+  const dismissBanner = () => {
+    setShowSpeedMathBanner(false);
+    localStorage.setItem("hasSeenSpeedMathUpdate", "true");
+  };
 
   // Hardcoded realistic mock data
   const mockStats = {
@@ -57,31 +71,40 @@ export default function Dashboard() {
     <div className="space-y-5 sm:space-y-8 animate-fadeIn">
 
       {/* Speed Math Release Feature Announcement Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-            <span className="text-xl">⚡</span>
-          </div>
-          <div>
-            <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5">
-              Speed Math Upgraded! <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-primary/10 text-primary uppercase tracking-wider">New</span>
-            </h4>
-            <div className="text-xs text-muted-foreground mt-1.5 max-w-2xl leading-relaxed">
-              Master the ultimate mental agility challenge with our newly expanded math engine:
-              <ul className="list-disc list-inside mt-1.5 space-y-0.5 ml-1">
-                <li><strong className="text-foreground font-semibold">Addition, Subtraction, Multiplication & Division</strong> sprints</li>
-                <li>Unpredictable <strong className="text-foreground font-semibold">ANY Difficulty Mode</strong> for combined-digit tests</li>
-                <li>Tricky <strong className="text-foreground font-semibold">Smart Distractors</strong> that mimic human calculation errors</li>
-              </ul>
+      {showSpeedMathBanner && (
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+          <button 
+            onClick={dismissBanner}
+            className="absolute top-3 right-3 text-muted-foreground hover:text-foreground bg-background/50 hover:bg-background rounded-full p-1.5 transition-colors border border-border/50"
+            aria-label="Dismiss banner"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+              <span className="text-xl">⚡</span>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5 pr-8">
+                Speed Math Upgraded! <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-primary/10 text-primary uppercase tracking-wider">New</span>
+              </h4>
+              <div className="text-xs text-muted-foreground mt-1.5 max-w-2xl leading-relaxed">
+                Master the ultimate mental agility challenge with our newly expanded math engine:
+                <ul className="list-disc list-inside mt-1.5 space-y-0.5 ml-1">
+                  <li><strong className="text-foreground font-semibold">Addition, Subtraction, Multiplication & Division</strong> sprints</li>
+                  <li>Unpredictable <strong className="text-foreground font-semibold">ANY Difficulty Mode</strong> for combined-digit tests</li>
+                  <li>Tricky <strong className="text-foreground font-semibold">Smart Distractors</strong> that mimic human calculation errors</li>
+                </ul>
+              </div>
             </div>
           </div>
+          <Link href="/SSC/maths/mental-maths" className="shrink-0 mt-2 sm:mt-0 sm:mr-8">
+            <Button variant="outline" size="sm" className="h-9 px-4 rounded-2xl text-xs font-bold bg-background/50 hover:bg-background border-border/80 transition-all active:scale-[0.97] hover:cursor-pointer flex items-center gap-1.5 group">
+              Speed Run Now <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </Button>
+          </Link>
         </div>
-        <Link href="/SSC/maths/mental-maths" className="shrink-0">
-          <Button variant="outline" size="sm" className="h-9 px-4 rounded-2xl text-xs font-bold bg-background/50 hover:bg-background border-border/80 transition-all active:scale-[0.97] hover:cursor-pointer flex items-center gap-1.5 group">
-            Speed Run Now <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-          </Button>
-        </Link>
-      </div>
+      )}
 
       {/* 1. WHERE AM I? (Greeting, Streak, Goal) */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">

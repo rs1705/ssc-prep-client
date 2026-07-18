@@ -52,8 +52,8 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
   return (
     <Card 
-      className={`group relative w-full max-w-[380px] mx-auto h-full flex flex-col bg-card/65 dark:bg-card/45 border border-border/80 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-xs hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden select-none animate-in fade-in slide-in-from-bottom-3 zoom-in-[0.98] hover:border-primary/30 hover:shadow-[0_8px_30px_rgba(99,102,241,0.08)] dark:hover:shadow-[0_8px_40px_rgba(99,102,241,0.12)] ${
-        !isClickable ? "opacity-60 cursor-not-allowed" : ""
+      className={`group relative w-full max-w-[380px] mx-auto h-full flex flex-col bg-card/65 dark:bg-card/45 border border-border/80 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-xs transition-all duration-300 ease-out overflow-hidden select-none animate-in fade-in slide-in-from-bottom-3 zoom-in-[0.98] ${
+        !isClickable ? "opacity-50 grayscale-[50%] pointer-events-none" : "hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_8px_30px_rgba(99,102,241,0.08)] dark:hover:shadow-[0_8px_40px_rgba(99,102,241,0.12)] cursor-pointer"
       }`}
       style={{ animationDelay: `${Math.floor(index / cols) * 120}ms`, animationFillMode: "both" }}
     >
