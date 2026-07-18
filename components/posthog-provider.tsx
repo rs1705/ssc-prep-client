@@ -60,8 +60,6 @@ export default function PostHogProvider({
       capture_pageview: false,
       // Capture page-leave events (time on page, scroll depth, etc.)
       capture_pageleave: true,
-      // Respect Do-Not-Track browser setting
-      respect_dnt: true,
     });
   }, []);
 
