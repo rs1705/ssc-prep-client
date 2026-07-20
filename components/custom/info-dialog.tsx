@@ -24,7 +24,7 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
       <AlertDialogTrigger asChild>
         <Button
           variant="link"
-          className="p-0 h-auto text-xs font-bold text-primary hover:text-indigo-600 transition-colors flex items-center gap-0.5 hover:cursor-pointer"
+          className="p-0 h-auto text-xs font-bold text-primary hover:text-accent transition-colors flex items-center gap-0.5 hover:cursor-pointer"
         >
           <span>Know more</span>
           <ChevronRight className="w-3.5 h-3.5" />
@@ -44,14 +44,14 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
             {title}
           </AlertDialogTitle>
         </AlertDialogHeader>
-        <AlertDialogDescription asChild className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-4 text-left w-full">
+        <AlertDialogDescription asChild className="text-sm text-muted-foreground leading-relaxed mt-4 text-left w-full">
           <div className="space-y-3.5 mt-2">
             {description.split("\n\n").map((para, i) => {
               const isList = para.match(/^\d+\./) || para.startsWith("▪️") || para.startsWith("Best For:");
               return (
                 <p 
                   key={i} 
-                  className={`text-slate-600 dark:text-slate-300 ${
+                  className={`text-muted-foreground ${
                     para.startsWith("Best For:") ? "font-bold text-foreground text-xs uppercase tracking-wider mt-4" : 
                     isList ? "text-sm font-medium pl-1 animate-in slide-in-from-left-2 duration-300" : "text-sm"
                   }`}
@@ -63,7 +63,7 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
           </div>
         </AlertDialogDescription>
         <AlertDialogFooter className="mt-6 sm:justify-end">
-          <AlertDialogAction className="h-11 rounded-2xl px-6 font-bold bg-gradient-to-r from-primary to-indigo-600 text-white active:scale-[0.98] transition-transform shadow-sm hover:opacity-95 hover:cursor-pointer w-full sm:w-auto">
+          <AlertDialogAction className="h-11 rounded-2xl px-6 font-bold bg-primary text-primary-foreground active:scale-[0.98] transition-transform shadow-sm hover:opacity-95 w-full sm:w-auto">
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

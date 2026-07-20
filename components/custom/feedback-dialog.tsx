@@ -122,7 +122,7 @@ export default function FeedbackDialog() {
       <DialogTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 text-white rounded-full shadow-[0_4px_20px_rgba(99,102,241,0.3)] hover:shadow-[0_6px_24px_rgba(99,102,241,0.4)] active:scale-95 transition-all duration-200 cursor-pointer group"
+          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-full shadow-[0_4px_20px_rgba(245,158,11,0.3)] hover:shadow-[0_6px_24px_rgba(245,158,11,0.5)] active:scale-95 transition-all duration-200 cursor-pointer group"
           title="Provide Feedback"
         >
           <MessageSquare className="w-6 h-6 transition-transform duration-300 group-hover:rotate-12" />
@@ -140,7 +140,7 @@ export default function FeedbackDialog() {
             </DialogDescription>
             <Button
               onClick={() => onOpenChange(false)}
-              className="mt-6 w-full h-11 rounded-xl font-semibold bg-gradient-to-r from-primary to-indigo-600 text-white hover:opacity-95 shadow-md active:scale-98 transition-transform"
+              className="mt-6 w-full h-11 rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-md active:scale-98 transition-transform"
             >
               Close
             </Button>
@@ -316,7 +316,7 @@ export default function FeedbackDialog() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 h-11 rounded-xl font-bold bg-gradient-to-r from-primary to-indigo-600 text-white hover:opacity-95 shadow-md active:scale-98 transition-all flex items-center justify-center gap-1.5"
+                  className="flex-1 h-11 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-md active:scale-98 transition-all flex items-center justify-center gap-1.5"
                 >
                   {isSubmitting ? (
                     <>

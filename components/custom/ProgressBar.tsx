@@ -21,7 +21,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
             {/* Progress Fill */}
             <div
                 className={cn(
-                    "absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-indigo-600 transition-all duration-300 ease-out rounded-full",
+                    "absolute top-0 left-0 h-full bg-primary transition-all duration-300 ease-out rounded-full",
                     barClassName
                 )}
                 style={{ width: `${clampedValue}%` }}

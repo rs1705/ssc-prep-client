@@ -60,14 +60,14 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
       <div className="flex-1 flex flex-col items-center justify-center w-full">
         <p
           key={text}
-          className={`text-3xl min-[375px]:text-4xl font-extrabold tracking-tight ${scheme.textMain} opacity-0 pb-2 ${animate ? "animate-fadeIn" : ""}`}
+          className={`text-3xl min-[375px]:text-4xl font-extrabold tracking-tight ${scheme.textMain} pb-2 ${animate ? "animate-fadeIn" : ""}`}
         >
           {text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()}
         </p>
         {pronunciation && (
           <div className="mt-3">
             <span
-              className={`${scheme.accent} text-base min-[375px]:text-lg font-bold opacity-0 ${animate ? "animate-fadeIn" : ""}`}
+              className={`${scheme.accent} text-base min-[375px]:text-lg font-bold ${animate ? "animate-fadeIn" : ""}`}
               style={{ animationDelay: "150ms" }}
             >
               {pronunciation.hindi}
@@ -78,7 +78,7 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
       <div className="pb-4 h-8 flex items-center justify-center">
         {showHint && (
           <div
-            className={`px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[11px] font-semibold tracking-wide opacity-0 ${animate ? "animate-dropIn animate-pulse" : ""} shadow-sm select-none flex items-center gap-2`}
+            className={`px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[11px] font-semibold tracking-wide ${animate ? "animate-dropIn animate-pulse" : ""} shadow-sm select-none flex items-center gap-2`}
             style={{ animationDelay: "300ms", animationDuration: "2s" }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M18 9v6a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-4a2 2 0 0 1 2-2h1.5"/><path d="M22 13a4 4 0 0 0-4-4h-2"/></svg>

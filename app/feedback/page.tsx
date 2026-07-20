@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter, usePathname } from "next/navigation";
-import { MessageSquare, CheckCircle2, Loader2, ArrowLeft } from "lucide-react";
+import { MessageSquare, CheckCircle2, Loader2, ArrowLeft, Send } from "lucide-react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/auth";
@@ -115,7 +115,7 @@ export default function FeedbackPage() {
             <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full">
               <Button
                 onClick={() => router.push("/")}
-                className="flex-1 h-11 rounded-xl font-bold bg-gradient-to-r from-primary to-indigo-600 text-white hover:opacity-95 shadow-md active:scale-98 transition-all"
+                className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0"
               >
                 Go to Dashboard
               </Button>
@@ -130,7 +130,7 @@ export default function FeedbackPage() {
                     name: user?.displayName || "",
                   });
                 }}
-                className="flex-1 h-11 rounded-xl font-semibold border-border hover:bg-muted text-muted-foreground"
+                className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] tracking-wider font-bold uppercase border-border/80 text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:shadow-sm hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 cursor-pointer flex items-center justify-center"
               >
                 Submit More Feedback
               </Button>
@@ -300,7 +300,7 @@ export default function FeedbackPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-11 rounded-xl font-bold bg-gradient-to-r from-primary to-indigo-600 text-white hover:opacity-95 shadow-md active:scale-98 transition-all flex items-center justify-center gap-1.5 mt-2"
+                className="w-full h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group mt-2"
               >
                 {isSubmitting ? (
                   <>
@@ -308,7 +308,10 @@ export default function FeedbackPage() {
                     Submitting Feedback...
                   </>
                 ) : (
-                  "Submit Feedback"
+                  <>
+                    <Send className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300" />
+                    Submit Feedback
+                  </>
                 )}
               </Button>
             </form>

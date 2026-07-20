@@ -7,7 +7,7 @@ import ErrorState from "@/components/custom/error-state";
 import { useAuth } from "@/context/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { LogIn, BookOpen, AlertTriangle } from "lucide-react";
+import { LogIn, BookOpen, AlertTriangle, X } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -112,9 +112,9 @@ const FsrsPage = () => {
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="text-xs font-bold text-destructive hover:bg-destructive/10 rounded-full px-2.5 py-1 transition-all active:scale-95 cursor-pointer flex-shrink-0"
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-all active:scale-95 cursor-pointer flex-shrink-0"
             >
-              Quit
+              <X className="w-5 h-5" />
             </button>
           </div>
 
@@ -132,7 +132,7 @@ const FsrsPage = () => {
           {data?.length > 0 ? (
             <FlashcardDeck deck={data} isLinear={false} mode="study" />
           ) : (
-            <p className="text-center font-medium text-slate-500 dark:text-slate-400 mt-4">
+            <p className="text-center font-medium text-muted-foreground mt-4">
               No study cards available today! 🎉
             </p>
           )}
@@ -159,7 +159,7 @@ const FsrsPage = () => {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-red-200 dark:border-red-900/40 bg-transparent text-red-600 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all shadow-sm"
+              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
               onClick={() => {
                 setShowQuitConfirm(false);
                 router.push("/SSC/english/flashcards");

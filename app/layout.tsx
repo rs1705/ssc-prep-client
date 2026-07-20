@@ -1,20 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/custom/header";
 import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import PostHogProvider from "@/components/posthog-provider";
 import { Toaster } from "react-hot-toast";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { Sidebar } from "@/components/custom/sidebar";
+import { TopBar } from "@/components/custom/topbar";
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
 });
 
@@ -33,7 +40,7 @@ export default function RootLayout({
       <Providers>
         <PostHogProvider>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${inter.variable} ${jetbrainsMono.variable} ${plusJakartaSans.variable} font-sans antialiased`}
           >
             <Toaster position="top-center" />
             <ThemeProvider
@@ -43,10 +50,18 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <AuthProvider>
-                <Header />
-                <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
-                  {children}
-                </main>
+                <div className="min-h-screen w-full lg:w-[95%] xl:w-[90%] mx-auto flex bg-background text-foreground">
+                  {/* Left Sidebar Layout */}
+                  <Sidebar />
+                  
+                  {/* Main Content Area */}
+                  <div className="flex-1 flex flex-col min-w-0">
+                    <TopBar />
+                    <main className="flex-1 px-6 md:px-10 pb-16">
+                      {children}
+                    </main>
+                  </div>
+                </div>
               </AuthProvider>
             </ThemeProvider>
           </body>

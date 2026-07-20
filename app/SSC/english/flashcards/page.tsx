@@ -1,12 +1,17 @@
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { SectionCardProps } from "@/lib/types";
+import { SectionCardProps } from "@/components/custom/section-card/section-card";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
-import React from "react";
 import { Dices, BookOpen } from "lucide-react";
 
 const sections: SectionCardProps[] = [
   {
-    icon: <Dices className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
+    icon: (
+      <Dices
+        className="w-8 h-8 text-violet-500 dark:text-violet-400"
+        fill="currentColor"
+        fillOpacity={0.1}
+      />
+    ),
     title: "Freestyle Mode",
     description:
       "Flip and practice vocabulary words freely at your own speed with zero pressure and complete flexibility.",
@@ -17,7 +22,13 @@ const sections: SectionCardProps[] = [
     colorTheme: "violet",
   },
   {
-    icon: <BookOpen className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
+    icon: (
+      <BookOpen
+        className="w-8 h-8 text-violet-500 dark:text-violet-400"
+        fill="currentColor"
+        fillOpacity={0.1}
+      />
+    ),
     title: "Study Mode",
     description:
       "Utilize intelligent Spaced Repetition algorithms (FSRS) to automatically review weak items and lock in memories.",

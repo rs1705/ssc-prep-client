@@ -266,13 +266,11 @@ const MentalMaths = () => {
     <TopicPageLayout
       title="Speed Math"
       description="Calculators are strictly banned in SSC. Master rapid arithmetic and claim precious seconds back."
+      contentMaxWidthClass="w-full"
     >
-      <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full px-4 sm:px-0 mt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
         {MENTAL_MATHS_TOPICS.map((topic, idx) => (
-          <div
-            key={topic.id}
-            className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.75rem)]"
-          >
+          <div key={topic.id}>
             <TopicCard
               index={idx}
               cols={3}
@@ -280,10 +278,10 @@ const MentalMaths = () => {
               emoji={topic.emoji}
               description={topic.description}
               difficulty={topic.difficulty}
-              stats={topic.stats}
               onStartClick={() => handleStart(topic.id)}
               colorTheme="emerald"
               revisionConfig={topic.revisionConfig}
+              stats={topic.stats}
             />
           </div>
         ))}

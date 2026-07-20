@@ -1,16 +1,3 @@
-export interface SectionCardProps {
-  title: string;
-  description: string;
-  linkTo: string;
-  buttonText: string;
-  knowMoreText?: string;
-  className?: string;
-  icon?: React.ReactNode;
-  index?: number;
-  cols?: number;
-  colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
-}
-
 export interface FlashCardInterface {
   _id: string;
   type: string;

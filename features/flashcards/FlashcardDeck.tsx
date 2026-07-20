@@ -347,8 +347,8 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                   ((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) *
                   100
                 }
-                className="h-2.5 bg-slate-100 border border-slate-200/80"
-                barClassName="rounded-none"
+                className="h-2.5 bg-muted border border-border"
+                barClassName="rounded-none bg-primary"
               />
               <div className="w-full text-center text-[10px] font-bold tracking-wider text-muted-foreground select-none">
                 CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}

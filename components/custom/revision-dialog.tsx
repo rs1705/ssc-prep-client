@@ -117,7 +117,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
             <DialogClose asChild>
               <button
                 aria-label="Close dialog"
-                className="rounded-full h-8 w-8 flex items-center justify-center bg-accent/40 text-muted-foreground hover:text-foreground hover:bg-accent/85 active:scale-95 transition-all focus:outline-hidden focus:ring-2 focus:ring-ring disabled:pointer-events-none shadow-sm cursor-pointer border-none outline-none shrink-0"
+                className="rounded-full h-8 w-8 flex items-center justify-center bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all focus:outline-hidden focus:ring-2 focus:ring-ring disabled:pointer-events-none shadow-sm cursor-pointer border-none outline-none shrink-0"
               >
                 <X className="h-4 w-4" strokeWidth={2.5} />
               </button>
@@ -137,7 +137,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                 {/* Section Header Accordion Trigger */}
                 <button
                   onClick={() => toggleSection(group.label)}
-                  className="w-full text-left py-2.5 px-3.5 flex items-center justify-between hover:bg-accent/25 transition-colors cursor-pointer group/header"
+                  className="w-full text-left py-2.5 px-3.5 flex items-center justify-between hover:bg-muted/50 transition-colors cursor-pointer group/header"
                 >
                   <div className="flex items-center gap-2.5">
                     <span
@@ -150,7 +150,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                     >
                       {group.label}
                     </span>
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider">
+                    <span className="text-[10px] font-bold text-muted-foreground/80 tracking-wider">
                       Range: {group.range}
                     </span>
                   </div>
@@ -177,7 +177,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                           <div
                             key={item.num}
                             onClick={() => handleRowClick(item.num, equation)}
-                            className={`flex items-center justify-start gap-6 h-9 px-3 border-b border-border/10 dark:border-border/5 hover:bg-accent/40 rounded-xl transition-all duration-150 cursor-pointer select-none group/row ${selfTest && !isRevealed ? "hover:border-primary/20" : ""
+                            className={`flex items-center justify-start gap-6 h-9 px-3 border-b border-border/10 dark:border-border/5 hover:bg-muted/50 rounded-xl transition-all duration-150 cursor-pointer select-none group/row ${selfTest && !isRevealed ? "hover:border-primary/20" : ""
                               }`}
                           >
                             <span className="text-xs font-semibold text-muted-foreground min-w-[28px]">{item.text}</span>

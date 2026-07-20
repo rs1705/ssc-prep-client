@@ -43,7 +43,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SlidersVertical, Dices, AlertTriangle } from "lucide-react";
+import { SlidersVertical, Dices, AlertTriangle, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -136,9 +136,9 @@ const FreestylePage = () => {
                     <button
                         type="button"
                         onClick={() => setShowQuitConfirm(true)}
-                        className="text-xs font-bold text-destructive hover:bg-destructive/10 rounded-full px-2.5 py-1 transition-all active:scale-95 cursor-pointer flex-shrink-0"
+                        className="w-8 h-8 rounded-full flex items-center justify-center bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-all active:scale-95 cursor-pointer flex-shrink-0"
                     >
-                        Quit
+                        <X className="w-5 h-5" />
                     </button>
                 </div>
 
@@ -153,12 +153,12 @@ const FreestylePage = () => {
 
                 {/* Tabs & Filters Dialog */}
                 <div className="flex flex-row items-center gap-2.5 w-full">
-                  <TabsList className="flex-1 dark:bg-slate-900/60 dark:border-slate-800/60 ">
+                  <TabsList className="flex-1 bg-muted/60 border-border/60">
                     {TABS.map((tab) => (
                       <TabsTrigger
                         key={tab}
                         value={tab}
-                        className="flex-1 hover:cursor-pointer hover:text-slate-900 dark:hover:text-white data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950 data-[state=active]:shadow-sm rounded-lg py-1.5 transition-all duration-200 font-bold uppercase text-xs text-slate-600 dark:text-slate-400 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white"
+                        className="flex-1 hover:cursor-pointer hover:text-foreground data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-lg py-1.5 transition-all duration-200 font-bold uppercase text-xs text-muted-foreground data-[state=active]:text-foreground"
                       >
                         {tab}
                       </TabsTrigger>
@@ -167,9 +167,9 @@ const FreestylePage = () => {
 
                   <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
-                      <Button variant="outline" className="h-10 hover:cursor-pointer border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:bg-slate-50/50 dark:hover:bg-slate-900/50 transition-all duration-200 rounded-xl px-3 flex items-center gap-1.5">
-                        <SlidersVertical className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-                        <span className="font-semibold text-xs text-slate-700 dark:text-slate-300">Filters</span>
+                      <Button variant="outline" className="h-10 hover:cursor-pointer border-border shadow-sm hover:shadow-md hover:bg-muted/50 transition-all duration-200 rounded-xl px-3 flex items-center gap-1.5">
+                        <SlidersVertical className="w-4 h-4 text-muted-foreground" />
+                        <span className="font-semibold text-xs text-foreground">Filters</span>
                       </Button>
                     </SheetTrigger>
                     <SheetContent className="flex flex-col h-full p-6">
@@ -341,7 +341,7 @@ const FreestylePage = () => {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-red-200 dark:border-red-900/40 bg-transparent text-red-600 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all shadow-sm"
+              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
               onClick={() => {
                 setShowQuitConfirm(false);
                 router.push("/SSC/english/flashcards");

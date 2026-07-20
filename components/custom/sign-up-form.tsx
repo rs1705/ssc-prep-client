@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { UserPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -113,7 +114,8 @@ const SignUpForm = () => {
             )}
           />
           <div className="pt-2">
-            <Button type="submit" className="w-full h-12 rounded-xl font-bold text-md">
+            <Button type="submit" className="w-full h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
+              <UserPlus className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
               Create Account
             </Button>
           </div>

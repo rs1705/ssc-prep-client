@@ -1,228 +1,386 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useAuth } from "@/context/auth";
-import { Flame, Target, BrainCircuit, ChevronRight, Trophy, GraduationCap, Calculator, Globe, X } from "lucide-react";
+
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { SectionCardProps } from "@/lib/types";
+import { useAuth } from "@/context/auth";
+import {
+  Flame,
+  ArrowUpRight,
+  Calculator,
+  Sigma,
+  Languages,
+  Newspaper,
+  Zap,
+  Target,
+  Bookmark,
+  ScrollText,
+  ChevronRight,
+  History,
+} from "lucide-react";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [showSpeedMathBanner, setShowSpeedMathBanner] = useState(false);
 
-  useEffect(() => {
-    const hasSeenBanner = localStorage.getItem("hasSeenSpeedMathUpdate");
-    if (!hasSeenBanner) {
-      setShowSpeedMathBanner(true);
-    }
-  }, []);
-
-  const dismissBanner = () => {
-    setShowSpeedMathBanner(false);
-    localStorage.setItem("hasSeenSpeedMathUpdate", "true");
-  };
-
-  // Hardcoded realistic mock data
+  // Dummy data mirroring the screenshot
   const mockStats = {
     streak: 12,
-    todayGoal: 65, // percentage
-    accuracy: 82, // percentage
-    questionsSolved: 1450,
+    xp: "2,480",
+    todayGoal: 30,
+    solved: 12,
+    percent: "40%",
   };
 
-  const sections: SectionCardProps[] = [
+  const subjects = [
     {
-      icon: <GraduationCap className="w-8 h-8 text-violet-500 dark:text-violet-400" fill="currentColor" fillOpacity={0.1} />,
-      title: "English",
-      description: "Master grammar rules, build high-frequency vocabulary, and train your comprehension speed to maximize exam performance.",
-      linkTo: "/SSC/english",
-      buttonText: "Explore English",
-      colorTheme: "violet",
-    },
-
-    {
-      icon: <Calculator className="w-8 h-8 text-emerald-500 dark:text-emerald-400" fill="currentColor" fillOpacity={0.1} />,
-      title: "Maths",
-      description: "Sharpen calculation speed, learn time-saving mental math shortcuts, and master problem-solving accuracy under pressure.",
-      linkTo: "/SSC/maths",
-      buttonText: "Explore Maths",
-      colorTheme: "emerald",
+      icon: Calculator,
+      name: "Quant",
+      qs: "1,240 QS",
+      to: "/SSC/maths",
+      active: true,
+      theme: "emerald",
     },
     {
-      icon: <Globe className="w-8 h-8 text-rose-500 dark:text-rose-400" fill="currentColor" fillOpacity={0.1} />,
-      title: "General Knowledge",
-      description: "Stay ahead with curated current affairs, historical milestones, and static GK summaries designed for rapid retention.",
-      linkTo: "#",
-      buttonText: "Coming Soon",
-      colorTheme: "rose",
+      icon: Sigma,
+      name: "Reasoning",
+      qs: "890 QS",
+      to: "/SSC/reasoning",
+      theme: "amber",
     },
     {
-      icon: <BrainCircuit className="w-8 h-8 text-amber-500 dark:text-amber-400" fill="currentColor" fillOpacity={0.1} />,
-      title: "Reasoning",
-      description: "Build strong logical deduction skills, master visual patterns, and train your brain to solve puzzle grids in seconds.",
-      linkTo: "#",
-      buttonText: "Coming Soon",
-      colorTheme: "amber",
+      icon: Languages,
+      name: "English",
+      qs: "720 QS",
+      to: "/SSC/english",
+      theme: "violet",
+    },
+    {
+      icon: Newspaper,
+      name: "GK / GS",
+      qs: "1,580 QS",
+      to: "/SSC/gk",
+      theme: "rose",
     },
   ];
 
+  const quickActions = [
+    { icon: Zap, label: "Speed Math", to: "/SSC/maths/mental-maths" },
+    {
+      icon: Target,
+      label: "Daily Flashcards",
+      to: "/SSC/english/flashcards/fsrs",
+    },
+    { icon: Bookmark, label: "Bookmarks", to: "/bookmarks" },
+  ];
+
+  const recentSessions = [
+    {
+      name: "Ratio & Proportion",
+      date: "22/25 · 12:40",
+      score: "88%",
+      xp: "+45 XP",
+      icon: Calculator,
+    },
+    {
+      name: "Reading Comp.",
+      date: "18/20 · 09:12",
+      score: "90%",
+      xp: "+30 XP",
+      icon: Languages,
+    },
+    {
+      name: "Static GK — History",
+      date: "14/20 · 14:20",
+      score: "70%",
+      xp: "+18 XP",
+      icon: Newspaper,
+    },
+  ];
+
+  const themeClasses: Record<string, { bg: string; text: string }> = {
+    emerald: { bg: "bg-emerald-500/10", text: "text-emerald-500 dark:text-emerald-400" },
+    amber: { bg: "bg-amber-500/10", text: "text-amber-500 dark:text-amber-400" },
+    violet: { bg: "bg-violet-500/10", text: "text-violet-500 dark:text-violet-400" },
+    rose: { bg: "bg-rose-500/10", text: "text-rose-500 dark:text-rose-400" },
+  };
+
   return (
-    <div className="space-y-5 sm:space-y-8 animate-fadeIn">
+    <div className="max-w-6xl mx-auto">
+      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-10 text-foreground animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
+        Good morning, {user?.displayName?.split(" ")[0] || "Champ"}
+      </h1>
 
-      {/* Speed Math Release Feature Announcement Banner */}
-      {showSpeedMathBanner && (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-indigo-500/10 border border-amber-500/20 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
-          <button 
-            onClick={dismissBanner}
-            className="absolute top-3 right-3 text-muted-foreground hover:text-foreground bg-background/50 hover:bg-background rounded-full p-1.5 transition-colors border border-border/50"
-            aria-label="Dismiss banner"
-          >
-            <X className="w-4 h-4" />
-          </button>
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-              <span className="text-xl">⚡</span>
+      {/* Top Row: Target & Resume */}
+      <div className="grid lg:grid-cols-2 gap-5 mb-10">
+        {/* Streak / Target Card */}
+        <div className="rounded-3xl bg-card ring-1 ring-border p-7 shadow-sm animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground">
+              <Flame className="w-3.5 h-3.5 text-amber-500" strokeWidth={2.5} />
+              Streak · {mockStats.streak} days
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5 pr-8">
-                Speed Math Upgraded! <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-primary/10 text-primary uppercase tracking-wider">New</span>
-              </h4>
-              <div className="text-xs text-muted-foreground mt-1.5 max-w-2xl leading-relaxed">
-                Master the ultimate mental agility challenge with our newly expanded math engine:
-                <ul className="list-disc list-inside mt-1.5 space-y-0.5 ml-1">
-                  <li><strong className="text-foreground font-semibold">Addition, Subtraction, Multiplication & Division</strong> sprints</li>
-                  <li>Unpredictable <strong className="text-foreground font-semibold">ANY Difficulty Mode</strong> for combined-digit tests</li>
-                  <li>Tricky <strong className="text-foreground font-semibold">Smart Distractors</strong> that mimic human calculation errors</li>
-                </ul>
+            <div className="text-right">
+              <div className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">
+                XP
               </div>
-            </div>
-          </div>
-          <Link href="/SSC/maths/mental-maths" className="shrink-0 mt-2 sm:mt-0 sm:mr-8">
-            <Button variant="outline" size="sm" className="h-9 px-4 rounded-2xl text-xs font-bold bg-background/50 hover:bg-background border-border/80 transition-all active:scale-[0.97] hover:cursor-pointer flex items-center gap-1.5 group">
-              Speed Run Now <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </Button>
-          </Link>
-        </div>
-      )}
-
-      {/* 1. WHERE AM I? (Greeting, Streak, Goal) */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-        {/* Welcome Card */}
-        <div className="md:col-span-2 bg-card rounded-3xl p-6 sm:p-8 border border-border shadow-sm flex flex-col justify-center">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 tracking-tight">
-            Welcome back, <span className="text-orange-500">{user?.displayName?.toUpperCase() || "Champ"}</span>!
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            You&apos;re on a great path. Ready to tackle your daily targets?
-          </p>
-        </div>
-
-        {/* Streak & Goal */}
-        <div className="bg-card rounded-3xl p-5 sm:p-6 border border-border shadow-sm flex flex-col justify-center gap-4 sm:gap-6">
-          {/* Streak (Orange Rocket Accent) */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-950/50 flex items-center justify-center">
-                <Flame className="w-6 h-6 text-orange-500" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Current Streak</p>
-                <p className="text-2xl font-bold text-foreground tracking-tight">{mockStats.streak} Days</p>
+              <div className="text-lg font-bold text-amber-500">
+                {mockStats.xp}
               </div>
             </div>
           </div>
 
-          {/* Daily Goal */}
-          <div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium text-muted-foreground">Today&apos;s Goal</span>
-              <span className="font-bold text-primary">{mockStats.todayGoal}%</span>
-            </div>
-            <div className="w-full h-2.5 bg-secondary rounded-full overflow-hidden">
+          <div className="text-xl font-bold tracking-tight mb-4 text-foreground">
+            Today's target · {mockStats.todayGoal} Qs
+          </div>
+
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-3">
+            <div
+              className="h-full bg-primary"
+              style={{ width: mockStats.percent }}
+            />
+          </div>
+
+          <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:opacity-95 transition-colors">
+            <span>
+              {mockStats.solved} / {mockStats.todayGoal} solved
+            </span>
+            <span>{mockStats.percent}</span>
+          </div>
+
+          {/* Week tracker pills */}
+          <div className="mt-5 grid grid-cols-7 gap-1.5">
+            {Array.from({ length: 7 }).map((_, i) => (
               <div
-                className="h-full bg-gradient-to-r from-[#FFD54A] via-[#FF9F1C] to-[#F97316] rounded-full transition-all duration-1000 ease-out"
-                style={{ width: `${mockStats.todayGoal}%` }}
+                key={i}
+                className={`h-3 rounded-full ${i < 5 ? "bg-primary" : i === 5 ? "bg-primary/40" : "bg-muted"}`}
               />
-            </div>
+            ))}
           </div>
         </div>
-      </section>
 
-      {/* 2. WHAT SHOULD I DO? (Primary Action & Modules) */}
-      <section className="space-y-4 sm:space-y-6">
-        <div>
-          <h2 className="text-xl font-bold text-foreground tracking-tight mb-4">Your Next Step</h2>
-
-          {/* Primary Action Card (Full Width) */}
-          <div className="bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group">
-            <div className="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 transition-transform duration-700 group-hover:scale-110"></div>
-
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-md">
-                  <Target className="w-4 h-4" />
-                  <span>Resume Practice</span>
-                </div>
-                <h3 className="text-2xl font-bold mb-2">English Flashcards</h3>
-                <p className="text-primary-foreground/90 max-w-xl">
-                  You have cards due for review today. Keep the momentum going and master your vocabulary.
-                </p>
+        {/* Resume Card (Primary Background) */}
+        <Link
+          href="/SSC/maths/mental-maths"
+          className="group rounded-3xl bg-gradient-to-br from-amber-500 to-orange-500 text-white p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all shadow-[0_20px_60px_-20px_rgba(245,158,11,0.3)] hover:shadow-[0_28px_80px_-20px_rgba(245,158,11,0.5)] cursor-pointer animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+          style={{ animationDelay: "150ms", animationFillMode: "both" }}
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-[10px] font-bold tracking-widest uppercase text-primary-foreground/70">
+                Resume
               </div>
-              <Link href="/SSC/english/flashcards/fsrs" className="shrink-0">
-                <Button className="w-full sm:w-auto bg-white text-primary hover:bg-slate-50 rounded-2xl h-12 px-6 font-bold text-base shadow-sm hover:cursor-pointer active:scale-[0.97] transition-all duration-200 group/btn">
-                  Continue Learning
-                  <ChevronRight className="w-5 h-5 ml-2 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                </Button>
+              <div className="text-3xl font-extrabold tracking-tight mt-1 text-primary-foreground">
+                Speed Math — Percentages
+              </div>
+              <div className="opacity-80 text-sm mt-1 text-primary-foreground">
+                Mathematics
+              </div>
+            </div>
+            <div className="w-11 h-11 rounded-full bg-primary-foreground/10 flex items-center justify-center group-hover:bg-primary-foreground/20 transition-colors">
+              <ArrowUpRight className="w-5 h-5 text-primary-foreground" />
+            </div>
+          </div>
+
+          <div>
+            <div className="h-1.5 rounded-full bg-primary-foreground/15 overflow-hidden mb-2">
+              <div className="h-full bg-primary-foreground w-[32%]" />
+            </div>
+            <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-widest text-primary-foreground">
+              <span>Q 8 / 25</span>
+              <span>~ 8 min left</span>
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      {/* Main Bottom Section: Responsive Layout */}
+      <div className="flex flex-col xl:flex-row gap-8 xl:gap-10 mb-10 items-stretch">
+        
+        {/* Left Column (Main Content) */}
+        <div className="flex-1 flex flex-col gap-10 min-w-0">
+          
+          {/* Subjects Row */}
+          <div className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "200ms", animationFillMode: "both" }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
+                Subjects
+              </div>
+              <Link
+                href="/SSC"
+                className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1"
+              >
+                All 4 <ArrowUpRight className="w-3 h-3" />
               </Link>
             </div>
+
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
+              {subjects.map((s, idx) => {
+                const colors = themeClasses[s.theme];
+                return (
+                  <Link
+                    key={s.name}
+                    href={s.to}
+                    className="group rounded-2xl bg-card ring-1 ring-border p-5 hover:ring-primary/50 hover:-translate-y-1 hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full"
+                  >
+                    <div className="flex items-start justify-between mb-8">
+                      <div className={`w-12 h-12 rounded-full ${colors.bg} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3`}>
+                        <s.icon className={`w-5 h-5 ${colors.text}`} strokeWidth={2} />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-bold text-lg tracking-tight text-foreground">
+                        {s.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {s.qs}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Actions (Wide Screen Only - Individual Horizontal Cards) */}
+          <div className="hidden xl:block animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
+            <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground mb-4">
+              Quick actions
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {quickActions.map((q, idx) => (
+                <Link
+                  key={q.label}
+                  href={q.to}
+                  className="rounded-2xl bg-card ring-1 ring-border p-5 flex items-center gap-4 hover:ring-primary/50 transition-all shadow-sm cursor-pointer"
+                >
+                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <q.icon className="w-4 h-4 text-primary-foreground" strokeWidth={2} />
+                  </div>
+                  <div className="font-semibold text-foreground">{q.label}</div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Second Row for Medium Screens (lg and below): Recent Sessions & Stacked Quick Actions */}
+          <div className="xl:hidden grid grid-cols-[3fr_2fr] gap-8 items-stretch">
+            
+            <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
+                  Recent Sessions
+                </div>
+                <Link
+                  href="/history"
+                  className="text-[10px] font-bold tracking-widest uppercase text-primary hover:text-primary/80 flex items-center gap-1"
+                >
+                  History <ChevronRight className="w-3 h-3" />
+                </Link>
+              </div>
+
+              <div className="bg-card ring-1 ring-border rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between">
+                {recentSessions.map((session, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between p-4 hover:bg-muted/50 rounded-2xl transition-colors cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-background transition-colors">
+                        <session.icon className="w-4 h-4 text-primary" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-sm text-foreground">
+                          {session.name}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-0.5">
+                          {session.date}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right flex flex-col items-end gap-0.5">
+                      <div className="font-bold text-primary text-sm flex items-center gap-1">
+                        {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+                      </div>
+                      <div className="text-[10px] font-mono tracking-widest text-muted-foreground">
+                        {session.xp}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "500ms", animationFillMode: "both" }}>
+              <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground mb-4">
+                Quick actions
+              </div>
+              <div className="flex flex-col gap-4 h-full">
+                {quickActions.map((q, idx) => (
+                  <Link
+                    key={q.label}
+                    href={q.to}
+                    className="flex-1 rounded-2xl bg-card ring-1 ring-border p-4 flex items-center gap-4 hover:ring-primary/50 transition-all shadow-sm cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+                      <q.icon className="w-4 h-4 text-primary-foreground" strokeWidth={2} />
+                    </div>
+                    <div className="font-semibold text-foreground">{q.label}</div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* All Modules Grid */}
-        <div>
-          <h3 className="text-lg font-bold text-foreground tracking-tight mb-3 mt-5 sm:mt-8">Explore subjects</h3>
-          <SectionCardGrid sections={sections} layout="grid-4" />
+        {/* Right Column: Recent Sessions (Wide Screen Only) */}
+        <div className="hidden xl:flex w-[350px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
+              Recent Sessions
+            </div>
+            <Link
+              href="/history"
+              className="text-[10px] font-bold tracking-widest uppercase text-primary hover:text-primary/80 flex items-center gap-1"
+            >
+              History <ChevronRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          <div className="bg-card ring-1 ring-border rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between">
+            {recentSessions.map((session, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between p-4 hover:bg-muted/50 rounded-2xl transition-colors cursor-pointer group"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-background transition-colors">
+                    <session.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm text-foreground">
+                      {session.name}
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {session.date}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right flex flex-col items-end gap-0.5">
+                  <div className="font-bold text-primary text-sm flex items-center gap-1">
+                    {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+                  </div>
+                  <div className="text-[10px] font-mono tracking-widest text-muted-foreground">
+                    {session.xp}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* 3. HOW AM I DOING? (Performance Stats) */}
-      <section className="space-y-3 sm:space-y-4">
-        <h2 className="text-xl font-bold text-foreground tracking-tight">Performance Overview</h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm flex items-center gap-4 sm:gap-5 hover:border-green-200 dark:hover:border-green-900/50 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-green-50 dark:bg-green-950/40 flex items-center justify-center text-green-600 dark:text-green-500">
-              <Target className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Accuracy</p>
-              <p className="text-2xl font-bold text-foreground tracking-tight">{mockStats.accuracy}%</p>
-            </div>
-          </div>
-
-          <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm flex items-center gap-4 sm:gap-5 hover:border-blue-200 dark:hover:border-blue-900/50 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center text-blue-600 dark:text-blue-500">
-              <BrainCircuit className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Questions Solved</p>
-              <p className="text-2xl font-bold text-foreground tracking-tight">{mockStats.questionsSolved.toLocaleString()}</p>
-            </div>
-          </div>
-
-          <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm flex items-center gap-4 sm:gap-5 hover:border-purple-200 dark:hover:border-purple-900/50 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/40 flex items-center justify-center text-purple-600 dark:text-purple-500">
-              <Trophy className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Weekly Rank</p>
-              <p className="text-2xl font-bold text-foreground tracking-tight">Top 15%</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* Footer */}
+      <div className="text-center text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60 py-8 flex items-center justify-center gap-2">
+        <ScrollText className="w-3 h-3" /> Quiet focus · 5AM library mode
+      </div>
     </div>
   );
 }

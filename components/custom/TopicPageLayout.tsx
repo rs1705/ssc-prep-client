@@ -44,7 +44,7 @@ export const TopicPageLayout = ({
   title,
   description,
   children,
-  contentMaxWidthClass = "w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-6xl",
+  contentMaxWidthClass = "w-full",
   hideBreadcrumbs = false,
   centerContent = false,
 }: TopicPageLayoutProps) => {
@@ -61,24 +61,10 @@ export const TopicPageLayout = ({
 
   return (
     <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 ${centerContent ? 'min-h-[calc(100dvh-6rem)] sm:min-h-[calc(100dvh-6.5rem)] lg:min-h-0 justify-center lg:justify-start' : ''}`}>
-      {/* Sub-section Header */}
-      {title && (
-        <div className="mb-1 text-center px-4 max-w-2xl mx-auto flex flex-col items-center">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-2">
-            {title}
-          </h1>
-          {description && (
-            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1.5">
-              {description}
-            </p>
-          )}
-        </div>
-      )}
-
       {/* Dynamic Breadcrumbs */}
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
         <div
-          className={`${contentMaxWidthClass} flex items-center justify-center gap-1.5 text-xs font-semibold text-muted-foreground/80 select-none mb-2 px-4 sm:px-0`}
+          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground/80 select-none mb-2 px-4 sm:px-0`}
         >
           <Link
             href="/"
@@ -109,6 +95,20 @@ export const TopicPageLayout = ({
               </React.Fragment>
             );
           })}
+        </div>
+      )}
+
+      {/* Sub-section Header */}
+      {title && (
+        <div className="mb-4 w-full flex flex-col items-start text-left px-4 sm:px-0">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground mb-1">
+            {title}
+          </h1>
+          {description && (
+            <p className="text-muted-foreground text-sm mb-1 max-w-2xl">
+              {description}
+            </p>
+          )}
         </div>
       )}
 
