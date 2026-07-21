@@ -7,8 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import PostHogProvider from "@/components/posthog-provider";
 import { Toaster } from "react-hot-toast";
 
-import { Sidebar } from "@/components/custom/sidebar";
-import { TopBar } from "@/components/custom/topbar";
+import { AppLayout } from "@/components/custom/app-layout";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,18 +49,9 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <AuthProvider>
-                <div className="min-h-screen w-full lg:w-[95%] xl:w-[90%] mx-auto flex bg-background text-foreground">
-                  {/* Left Sidebar Layout */}
-                  <Sidebar />
-                  
-                  {/* Main Content Area */}
-                  <div className="flex-1 flex flex-col min-w-0">
-                    <TopBar />
-                    <main className="flex-1 px-6 md:px-10 pb-16">
-                      {children}
-                    </main>
-                  </div>
-                </div>
+                <AppLayout>
+                  {children}
+                </AppLayout>
               </AuthProvider>
             </ThemeProvider>
           </body>

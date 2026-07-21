@@ -18,6 +18,7 @@ interface FlashcardDeckProps {
   deckId?: string;
   isLinear?: boolean;
   mode?: "freestyle" | "study";
+  activeFilters?: string[];
 }
 
 export const COLOR_SCHEMES = [
@@ -129,8 +130,9 @@ export type ActionType = keyof typeof BUTTON_ACTIONS;
   - Text class: "absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
 */
 
-const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
+const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: FlashcardDeckProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [cardHistory, setCardHistory] = useState<string[]>([]);
   const [direction, setDirection] = useState(1);
   const [navCount, setNavCount] = useState(0);
@@ -232,8 +234,10 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
   return (
     <>
       {deck.length > 0 ? (
-        <div className="flex flex-col items-center w-full max-w-[500px] mx-auto">
-          <div className="relative w-full min-h-[380px] min-[375px]:min-h-[440px] sm:min-h-[500px]">
+        <div className="flex flex-col items-center w-full">
+
+
+          <div className="relative w-full min-h-[420px] sm:min-h-[460px] md:min-h-[480px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
@@ -244,7 +248,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[380px] min-[375px]:min-h-[440px] sm:min-h-[500px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full min-h-[420px] sm:min-h-[460px] md:min-h-[480px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div
@@ -254,7 +258,9 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.7}
+                    onDragStart={() => setIsDragging(true)}
                     onDragEnd={(event, info) => {
+                      setTimeout(() => setIsDragging(false), 100);
                       const swipeThreshold = 40;
                       const velocityThreshold = 400;
                       if (
@@ -301,6 +307,8 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                       card={currentCard}
                       onFlipChange={setIsFlipped}
                       colorScheme={scheme}
+                      activeFilters={activeFilters}
+                      isDragging={isDragging}
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -321,7 +329,7 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
           <div className="w-full">
             <div className="w-full h-12 mt-2 flex items-center">
               {isFlipped && (
-                <div className="flex primary-buttons gap-1 w-full">
+                <div className="flex primary-buttons gap-1 w-full animate-in fade-in duration-300 ease-out">
                   {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
                     (actionKey) => {
                       const actionConfig = BUTTON_ACTIONS[actionKey];
@@ -339,20 +347,6 @@ const FlashcardDeck = ({ deck, deckId, mode }: FlashcardDeckProps) => {
                   )}
                 </div>
               )}
-            </div>
-
-            <div className="w-full mt-2 mb-2 flex flex-col gap-1.5">
-              <ProgressBar
-                value={
-                  ((currentIndex >= 0 ? currentIndex + 1 : 1) / deck.length) *
-                  100
-                }
-                className="h-2.5 bg-muted border border-border"
-                barClassName="rounded-none bg-primary"
-              />
-              <div className="w-full text-center text-[10px] font-bold tracking-wider text-muted-foreground select-none">
-                CARD {currentIndex >= 0 ? currentIndex + 1 : 1} OF {deck.length}
-              </div>
             </div>
           </div>
         </div>

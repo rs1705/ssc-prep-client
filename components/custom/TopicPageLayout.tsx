@@ -60,11 +60,11 @@ export const TopicPageLayout = ({
   };
 
   return (
-    <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 ${centerContent ? 'min-h-[calc(100dvh-6rem)] sm:min-h-[calc(100dvh-6.5rem)] lg:min-h-0 justify-center lg:justify-start' : ''}`}>
+    <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 h-full flex-1 ${centerContent ? 'justify-start' : ''}`}>
       {/* Dynamic Breadcrumbs */}
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
         <div
-          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground/80 select-none mb-2 px-4 sm:px-0`}
+          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground/80 select-none mb-2 px-4 sm:px-0 shrink-0`}
         >
           <Link
             href="/"
@@ -100,7 +100,7 @@ export const TopicPageLayout = ({
 
       {/* Sub-section Header */}
       {title && (
-        <div className="mb-4 w-full flex flex-col items-start text-left px-4 sm:px-0">
+        <div className="mb-4 w-full flex flex-col items-start text-left px-4 sm:px-0 shrink-0">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground mb-1">
             {title}
           </h1>
@@ -113,7 +113,7 @@ export const TopicPageLayout = ({
       )}
 
       {/* Actual Content Wrapper */}
-      <div className={`flex flex-col items-center ${contentMaxWidthClass}`}>
+      <div className={`flex flex-col items-center flex-1 w-full ${contentMaxWidthClass} ${centerContent ? 'justify-start pt-2 sm:pt-4 md:pt-8' : ''}`}>
         {children}
       </div>
     </div>

@@ -14,7 +14,7 @@ export default function ComingSoon({
   pageTitle?: string 
 }) {
   return (
-    <TopicPageLayout title={pageTitle || title} description={description} centerContent hideBreadcrumbs>
+    <TopicPageLayout centerContent hideBreadcrumbs>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

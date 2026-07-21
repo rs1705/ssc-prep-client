@@ -18,10 +18,15 @@ interface FlashCardProps {
   card: FlashCardInterface;
   onFlipChange?: (flipped: boolean) => void;
   colorScheme?: ColorScheme;
+  activeFilters?: string[];
+  isDragging?: boolean;
 }
 
 interface CardFrontPropsWithStyle extends FlashCardFrontProps {
   scheme?: ColorScheme;
+  tags?: string[];
+  type?: string;
+  activeFilters?: string[];
 }
 
 interface CardBackPropsWithStyle extends FlashCardBackProps {
@@ -38,7 +43,7 @@ const DEFAULT_SCHEME: ColorScheme = {
   border: "border border-slate-600/50"
 };
 
-const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPropsWithStyle) => {
+const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME, tags = [], type, activeFilters = [] }: CardFrontPropsWithStyle) => {
   const [animate, setAnimate] = useState(false);
   const [showHint, setShowHint] = useState(false);
 
@@ -46,18 +51,34 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
     setAnimate(false);
     const timeout = setTimeout(() => setAnimate(true), 10);
     
-    // Only show hint if they haven't flipped a card yet
-    const hasFlipped = localStorage.getItem("hasFlippedFlashcard");
-    if (!hasFlipped) {
-      setShowHint(true);
-    }
+    // Always show hint
+    setShowHint(true);
     
     return () => clearTimeout(timeout);
   }, [text]);
 
+  const activeFiltersLower = activeFilters.map(f => f.toLowerCase());
+  const validTags = tags.filter(tag => tag && tag.trim().length > 0 && activeFiltersLower.includes(tag.toLowerCase()));
+  const showType = type && type.toLowerCase() !== "vocabulary" && activeFiltersLower.includes(type.toLowerCase());
+
   return (
     <div className={`absolute w-full h-full bg-gradient-to-br ${scheme.bg} flex flex-col items-center justify-center gap-2 rounded-2xl shadow-xl ${scheme.border} [backface-visibility:hidden] text-center px-6 py-4`}>
-      <div className="flex-1 flex flex-col items-center justify-center w-full">
+      
+      {/* Badges Container */}
+      <div className="absolute top-4 w-full px-5 flex flex-wrap gap-1.5 justify-center items-center opacity-90">
+        {showType && (
+          <span className={`px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-widest ${scheme.accent} bg-white/60 border border-white/80 shadow-sm backdrop-blur-sm ${animate ? "animate-fadeIn" : ""}`}>
+            {type}
+          </span>
+        )}
+        {validTags.map((tag, idx) => (
+          <span key={idx} className={`px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-widest ${scheme.textSecondary} bg-white/60 border border-white/80 shadow-sm backdrop-blur-sm ${animate ? "animate-fadeIn" : ""}`} style={{ animationDelay: `${50 * (idx + 1)}ms` }}>
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center w-full mt-2">
         <p
           key={text}
           className={`text-3xl min-[375px]:text-4xl font-extrabold tracking-tight ${scheme.textMain} pb-2 ${animate ? "animate-fadeIn" : ""}`}
@@ -78,10 +99,8 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
       <div className="pb-4 h-8 flex items-center justify-center">
         {showHint && (
           <div
-            className={`px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-[11px] font-semibold tracking-wide ${animate ? "animate-dropIn animate-pulse" : ""} shadow-sm select-none flex items-center gap-2`}
-            style={{ animationDelay: "300ms", animationDuration: "2s" }}
+            className={`${scheme.textSecondary} text-[11px] font-semibold italic tracking-wide select-none flex items-center justify-center opacity-80`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M18 9v6a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-4a2 2 0 0 1 2-2h1.5"/><path d="M22 13a4 4 0 0 0-4-4h-2"/></svg>
             <span>Tap to reveal • Swipe to navigate</span>
           </div>
         )}
@@ -173,16 +192,33 @@ const CardBack = ({
   );
 };
 
-const Flashcard = ({ card, onFlipChange, colorScheme }: FlashCardProps) => {
+const Flashcard = ({ card, onFlipChange, colorScheme, activeFilters = [], isDragging = false }: FlashCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const flipTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
   const handleClick = () => {
+    if (isDragging) return;
+    
     const newState = !isFlipped;
     setIsFlipped(newState);
     if (newState && typeof window !== "undefined") {
       localStorage.setItem("hasFlippedFlashcard", "true");
     }
-    if (onFlipChange) onFlipChange(newState);
+    
+    if (flipTimeoutRef.current) {
+      clearTimeout(flipTimeoutRef.current);
+    }
+
+    if (onFlipChange) {
+      if (newState) {
+        // Wait for the CSS flip transition (500ms) to almost finish
+        flipTimeoutRef.current = setTimeout(() => onFlipChange(true), 150);
+      } else {
+        // Hide immediately when flipping closed
+        onFlipChange(false);
+      }
+    }
   };
 
   return (
@@ -200,6 +236,9 @@ const Flashcard = ({ card, onFlipChange, colorScheme }: FlashCardProps) => {
           text={card.front.text}
           pronunciation={card.front.pronunciation}
           scheme={colorScheme}
+          tags={card.tags}
+          type={card.type}
+          activeFilters={activeFilters}
         />
         <CardBack
           content_eng={card.back.content_eng}

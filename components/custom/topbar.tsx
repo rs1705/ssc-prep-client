@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Moon, Sun, SlidersHorizontal, LogOut, User as UserIcon, Menu, Home, Zap, ClipboardList, BarChart3, Bookmark, Trophy, Info, MessageSquare, Rocket } from "lucide-react";
+import { Moon, Sun, SlidersHorizontal, LogOut, User as UserIcon, Menu, Home, Zap, ClipboardList, BarChart3, Bookmark, Trophy, Info, MessageSquare, Rocket, PanelLeftOpen, PanelLeftClose } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/context/auth";
+import { useSidebar } from "@/components/custom/sidebar-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -20,6 +21,7 @@ import { usePathname } from "next/navigation";
 export function TopBar() {
   const { theme, setTheme } = useTheme();
   const { user, logout } = useAuth();
+  const { isCollapsed, toggleSidebar } = useSidebar();
   const pathname = usePathname();
   const [clock, setClock] = useState<{ time: string; day: string } | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -100,14 +102,14 @@ export function TopBar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-10 py-6 bg-background/80 backdrop-blur-md border-b border-border/40">
+    <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-4 sm:py-6">
       <div className="flex items-center gap-3">
         {/* Hamburger for mobile */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <button
               aria-label="Open menu"
-              className="md:hidden w-10 h-10 rounded-full ring-1 ring-border bg-card flex items-center justify-center hover:bg-muted transition"
+              className="md:hidden w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
             >
               <Menu className="w-4 h-4" strokeWidth={1.75} />
             </button>
@@ -174,11 +176,19 @@ export function TopBar() {
           </div>
         )}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3">
+        <Link href="/" className="md:hidden">
+          <button
+            aria-label="Home"
+            className="w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+          >
+            <Home className="w-4 h-4" strokeWidth={1.75} />
+          </button>
+        </Link>
         <button
           aria-label="Toggle theme"
           onClick={toggleTheme}
-          className="w-10 h-10 rounded-full ring-1 ring-border bg-card flex items-center justify-center hover:bg-muted transition"
+          className="w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
         >
           {mounted && theme === "dark" ? (
             <Sun className="w-4 h-4" strokeWidth={1.75} />
@@ -186,17 +196,11 @@ export function TopBar() {
             <Moon className="w-4 h-4" strokeWidth={1.75} />
           )}
         </button>
-        {/* <button
-          aria-label="Filters"
-          className="w-10 h-10 rounded-full ring-1 ring-border bg-card flex items-center justify-center hover:bg-muted transition"
-        >
-          <SlidersHorizontal className="w-4 h-4" strokeWidth={1.75} />
-        </button> */}
 
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-center rounded-full ring-1 ring-border shadow-sm hover:opacity-85 transition-opacity focus:outline-none ml-2">
+              <button className="flex items-center justify-center rounded-full ring-1 ring-border shadow-sm hover:opacity-85 hover:shadow-md transition-all focus:outline-none ml-1 sm:ml-2 cursor-pointer">
                 <Avatar className="w-10 h-10">
                   <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
                   <AvatarFallback>U</AvatarFallback>
@@ -213,14 +217,14 @@ export function TopBar() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : mounted ? (
-          <div className="flex items-center gap-2 ml-2">
+          <div className="flex items-center gap-2 ml-1 sm:ml-2">
             <Link href="/signin">
-              <button className="text-[10px] tracking-widest font-bold uppercase text-muted-foreground hover:text-foreground transition-colors px-3 py-2 hidden sm:block cursor-pointer">
+              <button className="h-10 px-4 text-[10px] tracking-widest font-bold uppercase text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full transition-all hidden sm:flex items-center justify-center cursor-pointer">
                 Sign In
               </button>
             </Link>
             <Link href="/signup">
-              <button className="text-[10px] font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 px-4 py-2 rounded-full cursor-pointer">
+              <button className="h-10 px-5 text-[10px] font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center">
                 Sign Up
               </button>
             </Link>

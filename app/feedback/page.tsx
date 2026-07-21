@@ -92,8 +92,8 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="w-full min-h-[80vh] flex items-center justify-center py-8 px-4">
-      <div className="w-full max-w-[550px] bg-card/60 border border-border/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl">
+    <div className="w-full flex flex-col items-center min-h-[calc(100vh-100px)] sm:min-h-[calc(100vh-200px)] py-4 sm:py-8 justify-start sm:justify-center px-4 sm:px-0">
+      <div className="w-full max-w-[550px] bg-card border border-border rounded-[24px] p-5 sm:p-10 shadow-sm">
         {/* Back Button */}
         <button
           onClick={() => router.back()}

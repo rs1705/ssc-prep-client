@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/auth";
 import {
   Flame,
@@ -19,6 +20,15 @@ import {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  
+  const [greeting, setGreeting] = useState("Good morning");
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good morning");
+    else if (hour < 17) setGreeting("Good afternoon");
+    else setGreeting("Good evening");
+  }, []);
 
   // Dummy data mirroring the screenshot
   const mockStats = {
@@ -103,9 +113,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-10 text-foreground animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
-        Good morning, {user?.displayName?.split(" ")[0] || "Champ"}
+    <div className="w-full">
+      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 md:mb-6 text-foreground animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
+        {greeting}, {user?.displayName?.split(" ")[0] || "Champ"}
       </h1>
 
       {/* Top Row: Target & Resume */}
@@ -260,10 +270,32 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Second Row for Medium Screens (lg and below): Recent Sessions & Stacked Quick Actions */}
-          <div className="xl:hidden grid grid-cols-[3fr_2fr] gap-8 items-stretch">
+          {/* Second Row for Medium Screens (lg and below): Quick Actions & Recent Sessions */}
+          <div className="xl:hidden flex flex-col gap-8">
             
+            {/* Quick Actions */}
             <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
+              <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground mb-4">
+                Quick actions
+              </div>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 h-full">
+                {quickActions.map((q, idx) => (
+                  <Link
+                    key={q.label}
+                    href={q.to}
+                    className="flex-1 rounded-2xl bg-card ring-1 ring-border p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 hover:ring-primary/50 transition-all shadow-sm cursor-pointer justify-center text-center sm:text-left"
+                  >
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+                      <q.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary-foreground" strokeWidth={2} />
+                    </div>
+                    <div className="font-semibold text-foreground text-[10px] sm:text-sm leading-tight">{q.label}</div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent Sessions */}
+            <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "500ms", animationFillMode: "both" }}>
               <div className="flex items-center justify-between mb-4">
                 <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
                   Recent Sessions
@@ -280,9 +312,9 @@ export default function Dashboard() {
                 {recentSessions.map((session, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between p-4 hover:bg-muted/50 rounded-2xl transition-colors cursor-pointer group"
+                    className="flex items-center justify-between p-3 sm:p-4 hover:bg-muted/50 rounded-2xl transition-colors cursor-pointer group"
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 sm:gap-4">
                       <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-background transition-colors">
                         <session.icon className="w-4 h-4 text-primary" />
                       </div>
@@ -304,26 +336,6 @@ export default function Dashboard() {
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "500ms", animationFillMode: "both" }}>
-              <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground mb-4">
-                Quick actions
-              </div>
-              <div className="flex flex-col gap-4 h-full">
-                {quickActions.map((q, idx) => (
-                  <Link
-                    key={q.label}
-                    href={q.to}
-                    className="flex-1 rounded-2xl bg-card ring-1 ring-border p-4 flex items-center gap-4 hover:ring-primary/50 transition-all shadow-sm cursor-pointer"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
-                      <q.icon className="w-4 h-4 text-primary-foreground" strokeWidth={2} />
-                    </div>
-                    <div className="font-semibold text-foreground">{q.label}</div>
-                  </Link>
                 ))}
               </div>
             </div>

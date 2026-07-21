@@ -1,5 +1,7 @@
 "use client";
 import FlashcardDeck from "@/features/flashcards/FlashcardDeck";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { useGetStudyDeckQuery } from "@/redux/FlashcardApiSlice";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import Loader from "@/components/custom/loader";
@@ -20,6 +22,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { ProgressBar } from "@/components/custom/ProgressBar";
 
 const FsrsPage = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
@@ -31,6 +34,11 @@ const FsrsPage = () => {
   );
 
   const [showQuitConfirm, setShowQuitConfirm] = useState(false);
+  
+  const { currentCardId } = useSelector((state: RootState) => state.session);
+  const currentIndex = data ? data.findIndex((card: any) => card._id === currentCardId) : -1;
+  const currentCardNumber = currentIndex >= 0 ? currentIndex + 1 : 1;
+  const totalCards = data ? data.length : 0;
   const router = useRouter();
 
   if (isAuthLoading)
@@ -68,35 +76,12 @@ const FsrsPage = () => {
     );
   }
 
-  if (isLoading)
-    return (
-      <Loader
-        size="lg"
-        text="Syncing study deck..."
-        className="min-h-[300px]"
-      />
-    );
-
-  if (isError) {
-    return (
-      <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
-        <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
-          <ErrorState
-            title="Failed to Load Study Deck"
-            description="We encountered an issue syncing your spaced repetition study deck. Please try again."
-            onRetry={refetch}
-          />
-        </div>
-      </TopicPageLayout>
-    );
-  }
-
   return (
     <>
-      <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
-      <div className="flex justify-center flex-col w-full mx-auto">
+      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={true}>
+      <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-2 w-full max-w-[500px] mx-auto bg-card border border-primary/20 rounded-2xl p-3 sm:p-4 mb-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+        <div className="flex flex-col gap-1.5 w-full bg-card border border-primary/20 rounded-3xl pt-2 sm:pt-3 px-3.5 sm:px-5 pb-3 sm:pb-4 mb-2 sm:mb-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           {/* Row 1: Left is Section Title, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2.5 min-w-0">
@@ -112,9 +97,9 @@ const FsrsPage = () => {
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="w-8 h-8 rounded-full flex items-center justify-center bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-all active:scale-95 cursor-pointer flex-shrink-0"
+              className="h-8 w-8 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" strokeWidth={2.5} />
             </button>
           </div>
 
@@ -127,9 +112,42 @@ const FsrsPage = () => {
             </div>
           </div>
         </div>
+        
+        {/* Progress Bar Container */}
+        {totalCards > 0 && !isLoading && !isError && (
+          <div className="w-full mb-3 flex flex-col gap-1 px-1 mt-1">
+            <div className="w-full flex justify-between items-end mb-0.5">
+              <span className="text-[10px] font-bold tracking-wider text-muted-foreground select-none">
+                PROGRESS
+              </span>
+              <span className="text-[10px] font-bold tracking-wider text-muted-foreground select-none font-mono">
+                {currentCardNumber} / {totalCards}
+              </span>
+            </div>
+            <ProgressBar
+              value={(currentCardNumber / totalCards) * 100}
+              className="h-1.5 bg-muted border border-border/50"
+              barClassName="bg-primary rounded-full"
+            />
+          </div>
+        )}
 
         <div className="w-full">
-          {data?.length > 0 ? (
+          {isLoading ? (
+            <Loader
+              size="lg"
+              text="Syncing study deck..."
+              className="min-h-[300px]"
+            />
+          ) : isError ? (
+            <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
+              <ErrorState
+                title="Failed to Load Study Deck"
+                description="We encountered an issue syncing your spaced repetition study deck. Please try again."
+                onRetry={refetch}
+              />
+            </div>
+          ) : data?.length > 0 ? (
             <FlashcardDeck deck={data} isLinear={false} mode="study" />
           ) : (
             <p className="text-center font-medium text-muted-foreground mt-4">

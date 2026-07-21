@@ -452,7 +452,7 @@ export default function MentalMathsPractice() {
     ? `${timeRemaining}s remaining`
     : `${attemptedQuestionsCount} / ${questionLimit} Qs`;
 
-  const containerHeightClass = "h-[680px] sm:h-[690px]";
+  const containerHeightClass = "w-full h-auto mb-2 md:mb-4";
 
   return (
     <TopicPageLayout
@@ -461,11 +461,38 @@ export default function MentalMathsPractice() {
       centerContent={true}
     >
       <div
-        className={`relative w-full mt-1 sm:mt-2 flex flex-col p-5 sm:p-6 bg-card border border-primary/30 rounded-3xl shadow-sm select-none ${containerHeightClass} transition-all duration-300 ease-in-out overflow-hidden`}
+        className={`relative w-full sm:mt-2 flex flex-col p-4 sm:p-6 bg-card border border-primary/30 rounded-3xl shadow-sm select-none ${containerHeightClass} transition-all duration-300 ease-in-out overflow-hidden`}
       >
-        {/* 1. LOBBY CONFIGURATION SCREEN */}
-        {gameState === "idle" && (
-          <div className="w-full h-full flex flex-col justify-center gap-3.5 animate-in fade-in slide-in-from-bottom-3 duration-300">
+        {/* Universal Close/Quit Button Row */}
+        {gameState !== "countdown" && (
+          <div className="flex justify-end w-full shrink-0 -mt-2 -mr-2 sm:-mt-3 sm:-mr-3 z-50">
+            <button
+              type="button"
+              onClick={() => setShowQuitConfirm(true)}
+              className="h-8 w-8 mb-2 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              title="Quit"
+            >
+              <X className="w-4 h-4" strokeWidth={2.5} />
+            </button>
+          </div>
+        )}
+
+        {/* 
+          Master Layout Wrapper: 
+          The idle screen is always in the DOM (but hidden visually when not idle) 
+          so it perfectly dictates the exact physical height of the entire card.
+          Other screens render absolutely on top of it.
+        */}
+        <div className="relative w-full flex flex-col flex-1">
+          {/* 1. LOBBY CONFIGURATION SCREEN (Always rendered) */}
+          <div
+            className={`w-full flex flex-col gap-1 transition-all duration-300 ${
+              gameState === "idle"
+                ? "opacity-100 z-10 animate-in fade-in slide-in-from-bottom-3"
+                : "opacity-0 invisible pointer-events-none"
+            }`}
+            aria-hidden={gameState !== "idle"}
+          >
             {/* Title Section */}
             <div className="text-center pb-1">
               <h2 className="text-2xl font-extrabold tracking-tight capitalize text-foreground">
@@ -476,7 +503,7 @@ export default function MentalMathsPractice() {
               </p>
             </div>
 
-            <div className="flex flex-col gap-2.5 overflow-y-auto pb-2 pr-1 -mr-1">
+            <div className="flex flex-col gap-4 overflow-y-auto scrollbar-none pb-2">
               {/* Difficulty Card */}
               <div className="bg-muted/10 border border-border/50 rounded-2xl p-3 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
                 <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-2">
@@ -670,712 +697,705 @@ export default function MentalMathsPractice() {
               </div>
             </div>
 
-            <div className="flex gap-2 w-full mt-3">
+            <div className="flex gap-2 w-full mt-auto">
               <Button
-                type="button"
-                variant="secondary"
-                className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] tracking-wider font-bold uppercase border-border/80 text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:shadow-sm hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 cursor-pointer flex items-center justify-center"
-                onClick={() => router.push("/SSC/maths/mental-maths")}
-              >
-                Back
-              </Button>
-              <Button
-                className="flex-[2] h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
+                className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
                 onClick={handleStartPractice}
               >
-                <Swords className="w-3 h-3 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+                <Swords className="w-4 h-4 group-hover:rotate-12 group-hover:scale-120 transition-transform duration-300" />
                 Practice
               </Button>
             </div>
           </div>
-        )}
 
-        {/* 2. THREE-SECOND START COUNTDOWN */}
-        {gameState === "countdown" && (
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <AnimatePresence mode="popLayout">
-              <motion.div
-                key={engine.state.countdownTick}
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1.2, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "backOut" }}
-                className="text-8xl font-black text-accent drop-shadow-md font-mono"
-              >
-                {engine.state.countdownTick}
-              </motion.div>
-            </AnimatePresence>
-            <motion.p
-              key={countdownMsg}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 0.7, y: 0 }}
-              className="text-muted-foreground mt-8 text-sm font-semibold"
-            >
-              {countdownMsg}
-            </motion.p>
-          </div>
-        )}
-
-        {/* 3. ACTIVE PRACTICE BOARD */}
-        {gameState === "active" && (
-          /* Active Game Container */
-          <div className="flex-1 w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-8 pb-6 sm:pb-8">
-            {/* Absolute Quit Button in top right of the whole card */}
-            <button
-              type="button"
-              onClick={() => setShowQuitConfirm(true)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-all cursor-pointer z-10"
-              title="End Session"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            {/* Top Bar: Title, Details, Score & Switcher */}
-            <div className="flex items-center justify-between w-full pb-2 gap-2">
-              {/* Left Side: Big Icon + Topic & Difficulty */}
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="flex-shrink-0 bg-primary/10 p-2 sm:p-2.5 rounded-xl text-primary flex items-center justify-center">
-                  {renderTopicIcon(topic, "w-6 h-6 sm:w-7 sm:h-7 shrink-0")}
-                </div>
-                <div className="flex flex-col min-w-0 justify-center">
-                  <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-none capitalize truncate pb-0.5">
-                    {topic}
-                  </span>
-                  <div className="flex items-center gap-1.5 mt-1 min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
-                    <span>
-                      {engine.state.mode === "timed" ? "Timed" : "Freestyle"}
-                    </span>
-                    <span className="text-muted-foreground/35 font-normal">
-                      •
-                    </span>
-                    <span
-                      className={`font-semibold ${
-                        engine.state.difficulty === "easy"
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : engine.state.difficulty === "medium"
-                            ? "text-amber-500"
-                            : "text-rose-600 dark:text-rose-400"
-                      }`}
+          {/* ABSOLUTE OVERLAYS FOR OTHER GAME STATES (Perfectly matches idle height) */}
+          {gameState !== "idle" && (
+            <div className="absolute inset-0 z-20 w-full h-full flex flex-col">
+              {/* 2. THREE-SECOND START COUNTDOWN */}
+              {gameState === "countdown" && (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <AnimatePresence mode="popLayout">
+                    <motion.div
+                      key={engine.state.countdownTick}
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1.2, opacity: 1 }}
+                      exit={{ scale: 0.8, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "backOut" }}
+                      className="text-8xl font-black text-accent drop-shadow-md font-mono"
                     >
-                      {engine.state.difficulty}
-                    </span>
+                      {engine.state.countdownTick}
+                    </motion.div>
+                  </AnimatePresence>
+                  <motion.p
+                    key={countdownMsg}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 0.7, y: 0 }}
+                    className="text-muted-foreground mt-8 text-sm font-semibold"
+                  >
+                    {countdownMsg}
+                  </motion.p>
+                </div>
+              )}
+
+              {/* 3. ACTIVE PRACTICE BOARD */}
+              {gameState === "active" && (
+                /* Active Game Container */
+                <div className="h-full w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-1 pb-1">
+                  {/* Top Bar: Title, Details, Score & Switcher */}
+                  <div className="flex items-center justify-between w-full pb-2 gap-2">
+                    {/* Left Side: Big Icon + Topic & Difficulty */}
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex-shrink-0 bg-primary/10 p-2 sm:p-2.5 rounded-xl text-primary flex items-center justify-center">
+                        {renderTopicIcon(
+                          topic,
+                          "w-6 h-6 sm:w-7 sm:h-7 shrink-0",
+                        )}
+                      </div>
+                      <div className="flex flex-col min-w-0 justify-center">
+                        <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-none capitalize truncate pb-0.5">
+                          {topic}
+                        </span>
+                        <div className="flex items-center gap-1.5 mt-1 min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+                          <span>
+                            {engine.state.mode === "timed"
+                              ? "Timed"
+                              : "Freestyle"}
+                          </span>
+                          <span className="text-muted-foreground/35 font-normal">
+                            •
+                          </span>
+                          <span
+                            className={`font-semibold ${
+                              engine.state.difficulty === "easy"
+                                ? "text-emerald-600 dark:text-emerald-400"
+                                : engine.state.difficulty === "medium"
+                                  ? "text-amber-500"
+                                  : "text-rose-600 dark:text-rose-400"
+                            }`}
+                          >
+                            {engine.state.difficulty}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Side: Controls & Score */}
+                    <div className="flex flex-col items-end justify-center gap-2 shrink-0">
+                      <div className="flex items-center gap-2">
+                        {/* Compact Layout Switcher */}
+                        <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[92px] sm:w-[104px]">
+                          <button
+                            type="button"
+                            onClick={() => setInputLayout("mcq")}
+                            className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
+                              inputLayout === "mcq"
+                                ? "bg-background text-primary shadow-xs"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                            title="MCQ Mode"
+                          >
+                            MCQ
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setInputLayout("keys")}
+                            className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
+                              inputLayout === "keys"
+                                ? "bg-background text-primary shadow-xs"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                            title="Keypad Mode"
+                          >
+                            NUM
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Score */}
+                      <div className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-muted-foreground select-none shrink-0 h-5 overflow-hidden">
+                        <span>Score</span>
+                        <span className="text-muted-foreground/35 font-normal">
+                          •
+                        </span>
+                        <div className="h-5 overflow-hidden flex items-center relative min-w-[12px] justify-center">
+                          <AnimatePresence mode="popLayout" initial={false}>
+                            <motion.span
+                              key={engine.state.score}
+                              initial={{ y: 14, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              exit={{ y: -14, opacity: 0 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 350,
+                                damping: 25,
+                              }}
+                              className="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono"
+                            >
+                              {engine.state.score}
+                            </motion.span>
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              {/* Right Side: Controls & Score */}
-              <div className="flex flex-col items-end justify-center gap-2 shrink-0">
-                <div className="flex items-center gap-2">
-                  {/* Compact Layout Switcher */}
-                  <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[92px] sm:w-[104px]">
-                    <button
-                      type="button"
-                      onClick={() => setInputLayout("mcq")}
-                      className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
-                        inputLayout === "mcq"
-                          ? "bg-background text-primary shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                      title="MCQ Mode"
-                    >
-                      MCQ
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setInputLayout("keys")}
-                      className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
-                        inputLayout === "keys"
-                          ? "bg-background text-primary shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                      title="Keypad Mode"
-                    >
-                      NUM
-                    </button>
-                  </div>
-                </div>
-
-                {/* Score */}
-                <div className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-muted-foreground select-none shrink-0 h-5 overflow-hidden">
-                  <span>Score</span>
-                  <span className="text-muted-foreground/35 font-normal">
-                    •
-                  </span>
-                  <div className="h-5 overflow-hidden flex items-center relative min-w-[12px] justify-center">
-                    <AnimatePresence mode="popLayout" initial={false}>
-                      <motion.span
-                        key={engine.state.score}
-                        initial={{ y: 14, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -14, opacity: 0 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 350,
-                          damping: 25,
-                        }}
-                        className="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono"
+                  {/* Dynamic Progress Bar */}
+                  <div className="w-full flex flex-col gap-1.5 mt-1">
+                    <ProgressBar
+                      value={progressPercentage}
+                      className="h-2 bg-muted/65"
+                      barClassName={barColorClass}
+                    />
+                    <div className="flex justify-between text-xs sm:text-sm items-center mt-0.5">
+                      <span className="font-bold text-muted-foreground tracking-wider">
+                        {engine.state.mode === "timed" ? "Timer" : "Progress"}
+                      </span>
+                      <span
+                        className={`tracking-wider flex items-center gap-1 transition-colors font-mono ${timerTextColorClass}`}
                       >
-                        {engine.state.score}
-                      </motion.span>
-                    </AnimatePresence>
+                        {progressText}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Dynamic Progress Bar */}
-            <div className="w-full flex flex-col gap-1.5 mt-1">
-              <ProgressBar
-                value={progressPercentage}
-                className="h-2 bg-muted/65"
-                barClassName={barColorClass}
-              />
-              <div className="flex justify-between text-xs sm:text-sm items-center mt-0.5">
-                <span className="font-bold text-muted-foreground tracking-wider">
-                  {engine.state.mode === "timed" ? "Timer" : "Progress"}
-                </span>
-                <span
-                  className={`tracking-wider flex items-center gap-1 transition-colors font-mono ${timerTextColorClass}`}
-                >
-                  {progressText}
-                </span>
-              </div>
-            </div>
-
-            <div
-              className={`
+                  <div
+                    className={`
                             mt-2 flex-1 flex flex-col items-center justify-center rounded-2xl py-5 px-4 min-h-[120px] overflow-hidden border transition-all duration-300 ease-in-out select-none
                             ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/5 shadow-[0_0_15px_rgba(16,185,129,0.1)] text-emerald-600 dark:text-emerald-400 scale-[1.02]" : ""}
                             ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500 bg-rose-500/10 dark:bg-rose-500/5 shadow-[0_0_15px_rgba(244,63,94,0.1)] text-rose-600 dark:text-rose-400 scale-[0.98]" : ""}
                             ${engine.state.currentAnswerStatus === "skipped" ? "border-amber-500 bg-amber-500/10 dark:bg-amber-500/5 shadow-[0_0_15px_rgba(245,158,11,0.1)] text-amber-600 dark:text-amber-400" : ""}
                             ${engine.state.currentAnswerStatus === "idle" ? "border-border/80 bg-background/50" : ""}
                         `}
-            >
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.div
-                  key={engine.state.questionIndex}
-                  initial={{ y: 15, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -15, opacity: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 350,
-                    damping: 25,
-                  }}
-                  className="text-4xl sm:text-5xl font-black tracking-tight text-center w-full font-mono"
-                >
-                  {engine.state.currentQuestion?.questionText}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Fixed-Height Wrapper for Inputs to prevent Question Panel jumping */}
-            <div className="h-[286px] sm:h-[322px] w-full mt-4 sm:mt-6 mb-5 sm:mb-7 relative">
-              <AnimatePresence mode="wait">
-                {inputLayout === "keys" ? (
-                  <motion.div
-                    key="numpad"
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -15 }}
-                    transition={{ duration: 0.15, ease: "easeInOut" }}
-                    className="flex flex-col gap-2.5 w-full"
                   >
-                    {/* Answer Input Bar */}
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleEnterSubmit(userInput);
-                      }}
-                      className="flex gap-2 w-full"
-                    >
-                      <Input
-                        ref={inputRef}
-                        type="text"
-                        inputMode="none"
-                        placeholder="Answer..."
-                        value={userInput}
-                        onChange={(e) =>
-                          setUserInput(e.target.value.replace(/\D/g, ""))
-                        }
-                        className="h-11 sm:h-12 flex-1 rounded-xl text-center px-4 text-base sm:text-lg font-medium border border-border bg-muted/40 focus-visible:bg-background focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 caret-primary shadow-inner transition-all"
-                        autoFocus
-                      />
-                      <Button
-                        type="submit"
-                        className="h-11 sm:h-12 w-24 sm:w-32 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-transform cursor-pointer"
-                        onClick={() => handleEnterSubmit(userInput)}
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.div
+                        key={engine.state.questionIndex}
+                        initial={{ y: 15, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -15, opacity: 0 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 350,
+                          damping: 25,
+                        }}
+                        className="text-4xl sm:text-5xl font-black tracking-tight text-center w-full font-mono"
                       >
-                        Enter
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="h-11 sm:h-12 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted active:scale-[0.98] transition-all cursor-pointer"
-                        onClick={() => handleEnterSubmit("skip")}
-                      >
-                        Skip
-                      </Button>
-                    </form>
+                        {engine.state.currentQuestion?.questionText}
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
 
-                    {/* Interactive Thumb Keypad (For smooth mobile typing) */}
-                    <div className="grid grid-cols-3 gap-2 p-2 bg-muted/30 border border-border/40 rounded-3xl shadow-inner">
-                      {[
-                        "1",
-                        "2",
-                        "3",
-                        "4",
-                        "5",
-                        "6",
-                        "7",
-                        "8",
-                        "9",
-                        "Clear",
-                        "0",
-                        "⌫",
-                      ].map((btn) => (
-                        <button
-                          key={btn}
-                          type="button"
-                          onClick={() => handleNumClick(btn)}
-                          className={`h-[54px] sm:h-[58px] font-extrabold rounded-2xl border transition-all duration-150 ease-out outline-none select-none active:scale-[0.90] cursor-pointer shadow-sm hover:shadow-md font-mono ${
-                            btn === "Clear"
-                              ? "bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground border-border/60 text-xs active:bg-accent/10 active:border-accent font-sans"
-                              : btn === "⌫"
-                                ? "bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground border-border/60 text-base active:bg-accent/10 active:border-accent font-sans"
-                                : "bg-card text-foreground hover:bg-muted/40 border-border/60 text-lg active:bg-accent/10 active:border-accent"
-                          }`}
+                  {/* Fixed-Height Wrapper for Inputs to prevent Question Panel jumping */}
+                  <div className="h-[286px] sm:h-[322px] w-full mt-4 sm:mt-6 mb-5 sm:mb-7 relative">
+                    <AnimatePresence mode="wait">
+                      {inputLayout === "keys" ? (
+                        <motion.div
+                          key="numpad"
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -15 }}
+                          transition={{ duration: 0.15, ease: "easeInOut" }}
+                          className="flex flex-col gap-2.5 w-full"
                         >
-                          {btn}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="mcq"
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -15 }}
-                    transition={{ duration: 0.15, ease: "easeInOut" }}
-                    className="flex flex-col gap-3 w-full h-full"
-                  >
-                    {/* MCQ Options Grid */}
-                    <div className="grid grid-cols-2 gap-3 flex-1">
-                      {engine?.state?.currentQuestion?.options?.map(
-                        (option, idx) => {
-                          const isSelected = selectedOption === option;
-                          const status = engine.state.currentAnswerStatus;
-                          let highlightClass =
-                            "border border-border/60 hover:shadow-md bg-card text-foreground hover:bg-muted/40 active:bg-accent/10 active:border-accent";
-                          if (isSelected) {
-                            if (status === "correct") {
-                              highlightClass =
-                                "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
-                            } else if (status === "wrong") {
-                              highlightClass =
-                                "border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400";
-                            }
-                          }
-                          return (
-                            <button
-                              key={idx}
-                              type="button"
-                              className={`relative h-full font-black rounded-2xl border-2 transition-all duration-150 ease-out flex items-center justify-center px-2 sm:px-4 active:scale-[0.90] cursor-pointer shadow-sm ${highlightClass}`}
-                              onClick={() => {
-                                if (engine.state.currentAnswerStatus !== "idle")
-                                  return;
-                                setSelectedOption(option);
-                                handleEnterSubmit(option);
-                              }}
+                          {/* Answer Input Bar */}
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              handleEnterSubmit(userInput);
+                            }}
+                            className="flex gap-2 w-full"
+                          >
+                            <Input
+                              ref={inputRef}
+                              type="text"
+                              inputMode="none"
+                              placeholder="Answer..."
+                              value={userInput}
+                              onChange={(e) =>
+                                setUserInput(e.target.value.replace(/\D/g, ""))
+                              }
+                              className="h-11 sm:h-12 flex-1 rounded-xl text-center px-4 text-base sm:text-lg font-medium border border-border bg-muted/40 focus-visible:bg-background focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 caret-primary shadow-inner transition-all"
+                              autoFocus
+                            />
+                            <Button
+                              type="submit"
+                              className="h-11 sm:h-12 w-24 sm:w-32 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-transform cursor-pointer"
+                              onClick={() => handleEnterSubmit(userInput)}
                             >
-                              <span className="absolute top-2.5 left-2.5 text-primary text-[9px] sm:text-[10px] bg-primary/20 px-1.5 py-0.5 rounded-md select-none font-bold">
-                                {String.fromCharCode(65 + idx)}
-                              </span>
-                              <span className="truncate w-full text-center text-base sm:text-lg font-black tracking-tight mt-2.5 sm:mt-1 font-mono">
-                                {option}
-                              </span>
-                            </button>
-                          );
-                        },
-                      )}
-                    </div>
-                    {/* Skip Button for MCQ */}
-                    <div className="flex justify-center items-center h-10 sm:h-12 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => handleEnterSubmit("skip")}
-                        className="text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl px-4 py-2 active:scale-95 transition-all cursor-pointer"
-                      >
-                        Skip
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        )}
+                              Enter
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              className="h-11 sm:h-12 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted active:scale-[0.98] transition-all cursor-pointer"
+                              onClick={() => handleEnterSubmit("skip")}
+                            >
+                              Skip
+                            </Button>
+                          </form>
 
-        {/* 4. PERFORMANCE RESULTS SCORECARD */}
-        {gameState === "game_over" &&
-          (() => {
-            const correct = engine.state.correctAnswers;
-            const wrong = engine.state.wrongAnswers;
-            const skipped = engine.state.skippedAnswers;
-            const total = correct + wrong + skipped;
-            const accuracy =
-              total > 0 ? Math.floor((correct / total) * 100) : 0;
-            const radius = 48;
-            const circumference = 2 * Math.PI * radius;
-            const strokeDashoffset =
-              circumference - (circumference * animatedAccuracy) / 100;
-
-            const getAccuracyColorClasses = (acc: number) => {
-              if (acc >= 90)
-                return {
-                  text: "text-green-600 dark:text-green-400",
-                  stroke: "stroke-green-500",
-                };
-              if (acc >= 75)
-                return {
-                  text: "text-orange-500 dark:text-orange-400",
-                  stroke: "stroke-orange-500",
-                };
-              if (acc >= 50)
-                return {
-                  text: "text-yellow-500 dark:text-yellow-400",
-                  stroke: "stroke-yellow-500",
-                };
-              return {
-                text: "text-red-500 dark:text-red-400",
-                stroke: "stroke-red-500",
-              };
-            };
-            const accuracyColors = getAccuracyColorClasses(accuracy);
-
-            return (
-              <div className="w-full flex-1 flex flex-col items-center justify-between text-center py-2 animate-in fade-in duration-300 relative">
-                {/* Localized Confetti Canvas */}
-                <canvas
-                  ref={confettiCanvasRef}
-                  className="absolute inset-0 pointer-events-none w-full h-full z-[100] rounded-3xl"
-                />
-
-                {/* Themed Accomplishment SVG Icon */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 2.5,
-                    ease: "easeInOut",
-                  }}
-                  className="p-3.5 rounded-full border flex items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20 shadow-[0_4px_12px_rgba(16,185,129,0.15)] select-none"
-                >
-                  <Trophy className="w-9 h-9" strokeWidth={2.2} />
-                </motion.div>
-
-                <div>
-                  <h2 className="text-2xl font-extrabold tracking-tight text-foreground">
-                    Session completed!
-                  </h2>
-                  <p className="text-muted-foreground text-xs mt-1.5 font-semibold">
-                    You answered{" "}
-                    <strong className="text-foreground">{correct}</strong> out
-                    of{" "}
-                    <strong className="text-foreground">
-                      {engine.state.attemptedQuestionsCount}
-                    </strong>{" "}
-                    questions correctly.
-                  </p>
-                  <div className="flex items-center justify-center gap-1.5 mt-2.5 select-none">
-                    <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase tracking-wider">
-                      🏷️ {topic}
-                    </span>
-                    <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase tracking-wider">
-                      {engine.state.mode === "timed"
-                        ? "⏱️ Timed"
-                        : "⚡ Freestyle"}
-                    </span>
-                    <span
-                      className={`px-1.5 py-0.5 rounded-md text-[9px] uppercase font-bold tracking-wider border ${
-                        engine.state.difficulty === "easy"
-                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                          : engine.state.difficulty === "medium"
-                            ? "bg-amber-500/10 text-amber-600 dark:text-amber-500 border-amber-500/20"
-                            : "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20"
-                      }`}
-                    >
-                      {engine.state.difficulty}
-                    </span>
-                  </div>
-
-                  {/* Performance Encouragement */}
-                  <p
-                    className={`text-sm sm:text-base font-extrabold text-center px-2 mt-4 ${accuracyColors.text}`}
-                  >
-                    {encouragementMessage}
-                  </p>
-                </div>
-
-                <div className="w-full flex flex-col items-center border border-border/40 rounded-3xl overflow-hidden bg-transparent mt-1">
-                  <div className="flex items-center bg-muted/50 p-1 rounded-xl border border-border/40 select-none text-xs font-bold w-[240px] mt-3 mb-1">
-                    <button
-                      type="button"
-                      onClick={() => setResultsTab("overview")}
-                      className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer text-center tracking-tight ${
-                        resultsTab === "overview"
-                          ? "bg-background text-foreground shadow-sm"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      Overview
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setResultsTab("review")}
-                      className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer text-center tracking-tight ${
-                        resultsTab === "review"
-                          ? "bg-background text-foreground shadow-sm"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      Review Answers
-                    </button>
-                  </div>
-
-                  <AnimatePresence mode="wait">
-                    {resultsTab === "overview" ? (
-                      <motion.div
-                        key="overview"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.15 }}
-                        className="w-full flex flex-col h-[270px] text-left"
-                      >
-                        <div className="w-full overflow-hidden bg-transparent h-full p-3 flex flex-col items-center justify-between">
-                          {/* Centered Circular Accuracy Gauge */}
-                          <div className="relative flex items-center justify-center w-[120px] h-[120px] select-none">
-                            <svg className="w-full h-full transform -rotate-90 relative z-10">
-                              <circle
-                                cx="60"
-                                cy="60"
-                                r={radius}
-                                className="stroke-muted/30"
-                                strokeWidth="5"
-                                fill="transparent"
-                              />
-                              <circle
-                                cx="60"
-                                cy="60"
-                                r={radius}
-                                className={accuracyColors.stroke}
-                                strokeWidth="5"
-                                fill="transparent"
-                                strokeDasharray={circumference}
-                                strokeDashoffset={strokeDashoffset}
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                            <div className="absolute flex flex-col items-center justify-center z-20">
-                              <span className="text-2xl font-extrabold tracking-tight text-foreground font-mono">
-                                {animatedAccuracy}%
-                              </span>
-                              <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
-                                Accuracy
-                              </span>
-                            </div>
+                          {/* Interactive Thumb Keypad (For smooth mobile typing) */}
+                          <div className="grid grid-cols-3 gap-2 p-2 bg-muted/30 border border-border/40 rounded-3xl shadow-inner">
+                            {[
+                              "1",
+                              "2",
+                              "3",
+                              "4",
+                              "5",
+                              "6",
+                              "7",
+                              "8",
+                              "9",
+                              "Clear",
+                              "0",
+                              "⌫",
+                            ].map((btn) => (
+                              <button
+                                key={btn}
+                                type="button"
+                                onClick={() => handleNumClick(btn)}
+                                className={`h-[54px] sm:h-[58px] font-extrabold rounded-2xl border transition-all duration-150 ease-out outline-none select-none active:scale-[0.90] cursor-pointer shadow-sm hover:shadow-md font-mono ${
+                                  btn === "Clear"
+                                    ? "bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground border-border/60 text-xs active:bg-accent/10 active:border-accent font-sans"
+                                    : btn === "⌫"
+                                      ? "bg-card text-muted-foreground hover:bg-muted/50 hover:text-foreground border-border/60 text-base active:bg-accent/10 active:border-accent font-sans"
+                                      : "bg-card text-foreground hover:bg-muted/40 border-border/60 text-lg active:bg-accent/10 active:border-accent"
+                                }`}
+                              >
+                                {btn}
+                              </button>
+                            ))}
                           </div>
-
-                          {/* Metric Grid (3-column layout) */}
-                          <div className="grid grid-cols-3 gap-2.5 w-full">
-                            {/* Correct Answers */}
-                            <div className="py-4 px-1 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-emerald-500/10">
-                              <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400 mb-1.5 opacity-80" />
-                              <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-0.5">
-                                Correct
-                              </span>
-                              <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
-                                {correct}
-                              </span>
-                            </div>
-
-                            {/* Incorrect Answers */}
-                            <div className="py-4 px-1 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-rose-500/10">
-                              <XCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 mb-1.5 opacity-80" />
-                              <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-0.5">
-                                Wrong
-                              </span>
-                              <span className="text-base font-extrabold text-rose-600 dark:text-rose-400 font-mono">
-                                {wrong}
-                              </span>
-                            </div>
-
-                            {/* Skipped Answers */}
-                            <div className="py-4 px-1 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-amber-500/10">
-                              <MinusCircle className="w-5 h-5 text-amber-500 dark:text-amber-400 mb-1.5 opacity-80" />
-                              <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-0.5">
-                                Skipped
-                              </span>
-                              <span className="text-base font-extrabold text-amber-600 dark:text-amber-400 font-mono">
-                                {skipped}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="review"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.15 }}
-                        className="w-full flex flex-col h-[270px] text-left"
-                      >
-                        <div className="w-full overflow-hidden bg-transparent h-full">
-                          {engine.state.history.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center text-center h-full p-6 text-muted-foreground select-none">
-                              <span className="text-3xl mb-2">📋</span>
-                              <p className="text-xs font-semibold">
-                                No questions attempted
-                              </p>
-                              <p className="text-[10px] text-muted-foreground/80 mt-0.5 leading-relaxed max-w-[200px]">
-                                Answers will be shown here when you complete at
-                                least one question.
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="h-full overflow-y-auto divide-y divide-border/60">
-                              {engine.state.history.map((item, idx) => {
-                                const isCorrect = item.status === "correct";
-                                const isWrong = item.status === "wrong";
-                                const isSkipped = item.status === "skipped";
-
-                                // Background tints based on status
-                                const rowBgClass = isCorrect
-                                  ? "bg-emerald-500/[0.015] hover:bg-emerald-500/[0.03] dark:bg-emerald-500/[0.01] dark:hover:bg-emerald-500/[0.02]"
-                                  : isWrong
-                                    ? "bg-rose-500/[0.015] hover:bg-rose-500/[0.03] dark:bg-rose-500/[0.01] dark:hover:bg-rose-500/[0.02]"
-                                    : "bg-amber-500/[0.015] hover:bg-amber-500/[0.03] dark:bg-amber-500/[0.01] dark:hover:bg-amber-500/[0.02]";
-
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="mcq"
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -15 }}
+                          transition={{ duration: 0.15, ease: "easeInOut" }}
+                          className="flex flex-col gap-3 w-full h-full"
+                        >
+                          {/* MCQ Options Grid */}
+                          <div className="grid grid-cols-2 gap-3 flex-1">
+                            {engine?.state?.currentQuestion?.options?.map(
+                              (option, idx) => {
+                                const isSelected = selectedOption === option;
+                                const status = engine.state.currentAnswerStatus;
+                                let highlightClass =
+                                  "border border-border/60 hover:shadow-md bg-card text-foreground hover:bg-muted/40 active:bg-accent/10 active:border-accent";
+                                if (isSelected) {
+                                  if (status === "correct") {
+                                    highlightClass =
+                                      "border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
+                                  } else if (status === "wrong") {
+                                    highlightClass =
+                                      "border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400";
+                                  }
+                                }
                                 return (
-                                  <div
+                                  <button
                                     key={idx}
-                                    className={`flex items-center justify-between p-3 sm:p-4 text-xs transition-colors ${rowBgClass}`}
+                                    type="button"
+                                    className={`relative h-full font-black rounded-2xl border-2 transition-all duration-150 ease-out flex items-center justify-center px-2 sm:px-4 active:scale-[0.90] cursor-pointer shadow-sm ${highlightClass}`}
+                                    onClick={() => {
+                                      if (
+                                        engine.state.currentAnswerStatus !==
+                                        "idle"
+                                      )
+                                        return;
+                                      setSelectedOption(option);
+                                      handleEnterSubmit(option);
+                                    }}
                                   >
-                                    <div className="flex flex-col gap-1">
-                                      <span className="font-extrabold text-[13px] sm:text-sm text-foreground font-mono flex items-center gap-1.5">
-                                        {isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />}
-                                        {isWrong && <XCircle className="w-4 h-4 text-rose-500 shrink-0" />}
-                                        {isSkipped && <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />}
-                                        {item.questionText}
-                                      </span>
-                                      <span className="text-[10px] text-muted-foreground font-medium">
-                                        {isCorrect ? (
-                                          <span>
-                                            Correct:{" "}
-                                            <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
-                                              {item.correctAnswer}
-                                            </strong>
-                                          </span>
-                                        ) : isSkipped ? (
-                                          <span>
-                                            Correct:{" "}
-                                            <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
-                                              {item.correctAnswer}
-                                            </strong>
-                                          </span>
-                                        ) : (
-                                          <span>
-                                            Correct:{" "}
-                                            <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
-                                              {item.correctAnswer}
-                                            </strong>{" "}
-                                            • You:{" "}
-                                            <strong className="text-rose-600 dark:text-rose-400 font-bold line-through">
-                                              {item.userAnswer}
-                                            </strong>
-                                          </span>
-                                        )}
-                                      </span>
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-                                      <div className="flex items-center gap-1.5">
-                                        <span
-                                          className={`font-bold px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wider transition-colors ${
-                                            isCorrect
-                                              ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20"
-                                              : isWrong
-                                                ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
-                                                : "text-amber-600 dark:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20"
-                                          }`}
-                                        >
-                                          {isCorrect
-                                            ? "Correct"
-                                            : isWrong
-                                              ? "Incorrect"
-                                              : "Skipped"}
-                                        </span>
-                                      </div>
-                                      {!isSkipped && (
-                                        <div
-                                          className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/50 ${
-                                            (item.timeTaken ?? 0) >= 3000
-                                              ? "text-rose-500 dark:text-rose-400"
-                                              : "text-emerald-600 dark:text-emerald-400"
-                                          }`}
-                                        >
-                                          <span className="text-[11px] leading-none">
-                                            {(item.timeTaken ?? 0) < 2000
-                                              ? "⚡"
-                                              : "🐢"}
-                                          </span>
-                                          <span className="font-bold text-[10px] font-mono">
-                                            {(
-                                              (item.timeTaken ?? 0) / 1000
-                                            ).toFixed(1)}
-                                            s
-                                          </span>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
+                                    <span className="absolute top-2.5 left-2.5 text-primary text-[9px] sm:text-[10px] bg-primary/20 px-1.5 py-0.5 rounded-md select-none font-bold">
+                                      {String.fromCharCode(65 + idx)}
+                                    </span>
+                                    <span className="truncate w-full text-center text-base sm:text-lg font-black tracking-tight mt-2.5 sm:mt-1 font-mono">
+                                      {option}
+                                    </span>
+                                  </button>
                                 );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                              },
+                            )}
+                          </div>
+                          {/* Skip Button for MCQ */}
+                          <div className="flex justify-center items-center h-10 sm:h-12 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleEnterSubmit("skip")}
+                              className="text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl px-4 py-2 active:scale-95 transition-all cursor-pointer"
+                            >
+                              Skip
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
+              )}
 
-                {/* Action buttons */}
-                <div className="flex gap-2 w-full pt-1">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setResultsTab("overview");
-                      router.push("/SSC/maths/mental-maths");
-                    }}
-                    className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] tracking-wider font-bold uppercase border-border/80 text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:shadow-sm hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 cursor-pointer flex items-center justify-center"
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    onClick={engine.resetSession}
-                    className="flex-[2] h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
-                  >
-                    <Swords className="w-3 h-3 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
-                    Practice Again
-                  </Button>
-                </div>
-              </div>
-            );
-          })()}
+              {/* 4. PERFORMANCE RESULTS SCORECARD */}
+              {gameState === "game_over" &&
+                (() => {
+                  const correct = engine.state.correctAnswers;
+                  const wrong = engine.state.wrongAnswers;
+                  const skipped = engine.state.skippedAnswers;
+                  const total = correct + wrong + skipped;
+                  const accuracy =
+                    total > 0 ? Math.floor((correct / total) * 100) : 0;
+                  const radius = 48;
+                  const circumference = 2 * Math.PI * radius;
+                  const strokeDashoffset =
+                    circumference - (circumference * animatedAccuracy) / 100;
+
+                  const getAccuracyColorClasses = (acc: number) => {
+                    if (acc >= 90)
+                      return {
+                        text: "text-green-600 dark:text-green-400",
+                        stroke: "stroke-green-500",
+                      };
+                    if (acc >= 75)
+                      return {
+                        text: "text-orange-500 dark:text-orange-400",
+                        stroke: "stroke-orange-500",
+                      };
+                    if (acc >= 50)
+                      return {
+                        text: "text-yellow-500 dark:text-yellow-400",
+                        stroke: "stroke-yellow-500",
+                      };
+                    return {
+                      text: "text-red-500 dark:text-red-400",
+                      stroke: "stroke-red-500",
+                    };
+                  };
+                  const accuracyColors = getAccuracyColorClasses(accuracy);
+
+                  return (
+                    <div className="w-full flex-1 flex flex-col items-center justify-between text-center py-2 animate-in fade-in duration-300 relative">
+                      {/* Localized Confetti Canvas */}
+                      <canvas
+                        ref={confettiCanvasRef}
+                        className="absolute inset-0 pointer-events-none w-full h-full z-[100] rounded-3xl"
+                      />
+
+                      {/* Themed Accomplishment SVG Icon */}
+                      <motion.div
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 2.5,
+                          ease: "easeInOut",
+                        }}
+                        className="p-3.5 rounded-full border flex items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20 shadow-[0_4px_12px_rgba(16,185,129,0.15)] select-none"
+                      >
+                        <Trophy className="w-9 h-9" strokeWidth={2.2} />
+                      </motion.div>
+
+                      <div>
+                        <h2 className="text-2xl font-extrabold text-foreground">
+                          Session completed!
+                        </h2>
+                        <p className="text-muted-foreground text-xs mt-1.5 font-semibold">
+                          You answered{" "}
+                          <strong className="text-foreground">{correct}</strong>{" "}
+                          out of{" "}
+                          <strong className="text-foreground">
+                            {engine.state.attemptedQuestionsCount}
+                          </strong>{" "}
+                          questions correctly.
+                        </p>
+                        <div className="flex items-center justify-center gap-1.5 mt-2.5 select-none">
+                          <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase">
+                            🏷️ {topic}
+                          </span>
+                          <span className="px-1.5 py-0.5 bg-muted text-muted-foreground rounded-md text-[9px] font-bold uppercase">
+                            {engine.state.mode === "timed"
+                              ? "⏱️ Timed"
+                              : "⚡ Freestyle"}
+                          </span>
+                          <span
+                            className={`px-1.5 py-0.5 rounded-md text-[9px] uppercase font-bold tracking-wider border ${
+                              engine.state.difficulty === "easy"
+                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                                : engine.state.difficulty === "medium"
+                                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-500 border-amber-500/20"
+                                  : "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20"
+                            }`}
+                          >
+                            {engine.state.difficulty}
+                          </span>
+                        </div>
+
+                        {/* Performance Encouragement */}
+                        <p
+                          className={`text-xs sm:text-base font-extrabold text-center mt-2 tracking-tight ${accuracyColors.text}`}
+                        >
+                          {encouragementMessage}
+                        </p>
+                      </div>
+
+                      <div className="w-full flex flex-col items-center border border-border/40 rounded-3xl overflow-hidden bg-transparent mt-1">
+                        <div className="flex items-center bg-muted/50 p-1 rounded-xl border border-border/40 select-none text-xs font-bold w-[240px] mt-3 mb-1">
+                          <button
+                            type="button"
+                            onClick={() => setResultsTab("overview")}
+                            className={`flex-1 py-1 rounded-lg transition-all cursor-pointer text-center${
+                              resultsTab === "overview"
+                                ? "bg-background text-foreground shadow-sm"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                          >
+                            Overview
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setResultsTab("review")}
+                            className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer text-center ${
+                              resultsTab === "review"
+                                ? "bg-background text-foreground shadow-sm"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                          >
+                            Review Answers
+                          </button>
+                        </div>
+
+                        <AnimatePresence mode="wait">
+                          {resultsTab === "overview" ? (
+                            <motion.div
+                              key="overview"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.15 }}
+                              className="w-full flex flex-col h-[260px] text-left"
+                            >
+                              <div className="w-full overflow-hidden bg-transparent h-full px-3 pb-2 flex flex-col items-center justify-start gap-4">
+                                {/* Centered Circular Accuracy Gauge */}
+                                <div className="relative flex items-center justify-center w-[120px] h-[120px] select-none">
+                                  <svg className="w-full h-full transform -rotate-90 relative z-10">
+                                    <circle
+                                      cx="60"
+                                      cy="60"
+                                      r={radius}
+                                      className="stroke-muted/30"
+                                      strokeWidth="5"
+                                      fill="transparent"
+                                    />
+                                    <circle
+                                      cx="60"
+                                      cy="60"
+                                      r={radius}
+                                      className={accuracyColors.stroke}
+                                      strokeWidth="5"
+                                      fill="transparent"
+                                      strokeDasharray={circumference}
+                                      strokeDashoffset={strokeDashoffset}
+                                      strokeLinecap="round"
+                                    />
+                                  </svg>
+                                  <div className="absolute flex flex-col items-center justify-center z-20">
+                                    <span className="text-2xl font-extrabold tracking-tight text-foreground font-mono">
+                                      {animatedAccuracy}%
+                                    </span>
+                                    <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
+                                      Accuracy
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Metric Grid (3-column layout) */}
+                                <div className="grid grid-cols-3 gap-2.5 w-full">
+                                  {/* Correct Answers */}
+                                  <div className="py-3 px-1 bg-emerald-500/5 dark:bg-emerald-500/[0.03] border border-emerald-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-emerald-500/10">
+                                    <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400 mb-1.5 opacity-80" />
+                                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-0.5">
+                                      Correct
+                                    </span>
+                                    <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                                      {correct}
+                                    </span>
+                                  </div>
+
+                                  {/* Incorrect Answers */}
+                                  <div className="py-3 px-1 bg-rose-500/5 dark:bg-rose-500/[0.03] border border-rose-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-rose-500/10">
+                                    <XCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 mb-1.5 opacity-80" />
+                                    <span className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase tracking-wider mb-0.5">
+                                      Wrong
+                                    </span>
+                                    <span className="text-base font-extrabold text-rose-600 dark:text-rose-400 font-mono">
+                                      {wrong}
+                                    </span>
+                                  </div>
+
+                                  {/* Skipped Answers */}
+                                  <div className="py-3 px-1 bg-amber-500/5 dark:bg-amber-500/[0.03] border border-amber-500/20 rounded-xl flex flex-col items-center justify-center min-h-[58px] shadow-xs transition-all hover:bg-amber-500/10">
+                                    <MinusCircle className="w-5 h-5 text-amber-500 dark:text-amber-400 mb-1.5 opacity-80" />
+                                    <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider mb-0.5">
+                                      Skipped
+                                    </span>
+                                    <span className="text-base font-extrabold text-amber-600 dark:text-amber-400 font-mono">
+                                      {skipped}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="review"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              transition={{ duration: 0.15 }}
+                              className="w-full flex flex-col h-[260px] text-left"
+                            >
+                              <div className="w-full overflow-hidden bg-transparent h-full">
+                                {engine.state.history.length === 0 ? (
+                                  <div className="flex flex-col items-center justify-center text-center h-1 p-2 text-muted-foreground select-none">
+                                    <span className="text-3xl mb-2">📋</span>
+                                    <p className="text-xs font-semibold">
+                                      No questions attempted
+                                    </p>
+                                    <p className="text-[10px] text-muted-foreground/80 mt-0.5 leading-relaxed max-w-[200px]">
+                                      Answers will be shown here when you
+                                      complete at least one question.
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <div className="h-full overflow-y-auto scrollbar-none divide-y divide-border/60">
+                                    {engine.state.history.map((item, idx) => {
+                                      const isCorrect =
+                                        item.status === "correct";
+                                      const isWrong = item.status === "wrong";
+                                      const isSkipped =
+                                        item.status === "skipped";
+
+                                      // Background tints based on status
+                                      const rowBgClass = isCorrect
+                                        ? "bg-emerald-500/[0.015] hover:bg-emerald-500/[0.03] dark:bg-emerald-500/[0.01] dark:hover:bg-emerald-500/[0.02]"
+                                        : isWrong
+                                          ? "bg-rose-500/[0.015] hover:bg-rose-500/[0.03] dark:bg-rose-500/[0.01] dark:hover:bg-rose-500/[0.02]"
+                                          : "bg-amber-500/[0.015] hover:bg-amber-500/[0.03] dark:bg-amber-500/[0.01] dark:hover:bg-amber-500/[0.02]";
+
+                                      return (
+                                        <div
+                                          key={idx}
+                                          className={`flex items-center justify-between p-3 sm:p-4 text-xs transition-colors ${rowBgClass}`}
+                                        >
+                                          <div className="flex flex-col gap-1">
+                                            <span className="font-extrabold text-[13px] sm:text-sm text-foreground font-mono flex items-center gap-1.5">
+                                              {isCorrect && (
+                                                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                                              )}
+                                              {isWrong && (
+                                                <XCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                                              )}
+                                              {isSkipped && (
+                                                <HelpCircle className="w-4 h-4 text-amber-500 shrink-0" />
+                                              )}
+                                              {item.questionText}
+                                            </span>
+                                            <span className="text-[10px] text-muted-foreground font-medium">
+                                              {isCorrect ? (
+                                                <span>
+                                                  Correct:{" "}
+                                                  <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
+                                                    {item.correctAnswer}
+                                                  </strong>
+                                                </span>
+                                              ) : isSkipped ? (
+                                                <span>
+                                                  Correct:{" "}
+                                                  <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
+                                                    {item.correctAnswer}
+                                                  </strong>
+                                                </span>
+                                              ) : (
+                                                <span>
+                                                  Correct:{" "}
+                                                  <strong className="text-emerald-600 dark:text-emerald-400 font-bold">
+                                                    {item.correctAnswer}
+                                                  </strong>{" "}
+                                                  • You:{" "}
+                                                  <strong className="text-rose-600 dark:text-rose-400 font-bold line-through">
+                                                    {item.userAnswer}
+                                                  </strong>
+                                                </span>
+                                              )}
+                                            </span>
+                                          </div>
+
+                                          <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-1.5">
+                                              <span
+                                                className={`font-bold px-2 py-0.5 rounded-md text-[10px] uppercase tracking-wide transition-colors ${
+                                                  isCorrect
+                                                    ? "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20"
+                                                    : isWrong
+                                                      ? "text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20"
+                                                      : "text-amber-600 dark:text-amber-500 bg-amber-500/10 hover:bg-amber-500/20"
+                                                }`}
+                                              >
+                                                {isCorrect
+                                                  ? "Correct"
+                                                  : isWrong
+                                                    ? "Incorrect"
+                                                    : "Skipped"}
+                                              </span>
+                                            </div>
+                                            {!isSkipped && (
+                                              <div
+                                                className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/50 ${
+                                                  (item.timeTaken ?? 0) >= 3000
+                                                    ? "text-rose-500 dark:text-rose-400"
+                                                    : "text-emerald-600 dark:text-emerald-400"
+                                                }`}
+                                              >
+                                                <span className="text-[11px] leading-none">
+                                                  {(item.timeTaken ?? 0) < 2000
+                                                    ? "⚡"
+                                                    : "🐢"}
+                                                </span>
+                                                <span className="font-bold text-[10px] font-mono">
+                                                  {(
+                                                    (item.timeTaken ?? 0) / 1000
+                                                  ).toFixed(1)}
+                                                  s
+                                                </span>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex gap-2 w-full mt-4 mb-5">
+                        <Button
+                          onClick={engine.resetSession}
+                          className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
+                        >
+                          <Swords className="w-3 h-3 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+                          Practice Again
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })()}
+            </div>
+          )}
+        </div>
       </div>
 
       <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>

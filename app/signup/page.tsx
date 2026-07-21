@@ -26,8 +26,8 @@ const SignupPage = () => {
   }, [user, isLoading, router]);
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100vh-200px)] py-4 sm:py-8 justify-center">
-      <div className="w-full max-w-[540px] bg-card p-6 sm:p-12 rounded-[24px] border border-border shadow-sm flex flex-col gap-6">
+    <div className="flex flex-col items-center justify-start pt-3 sm:pt-6 md:pt-8 pb-10 px-3 sm:px-6 w-full">
+      <div className="w-full max-w-[460px] bg-card p-4 sm:p-6 md:p-8 rounded-3xl border border-border shadow-sm flex flex-col gap-3.5 sm:gap-4.5">
         <SignUpForm />
         
         <div className="flex items-center gap-4">
