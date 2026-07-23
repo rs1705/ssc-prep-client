@@ -1,6 +1,5 @@
 "use client";
 
-import { Zap, Lightbulb, Target, ClipboardList } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
 

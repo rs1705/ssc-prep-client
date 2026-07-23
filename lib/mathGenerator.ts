@@ -77,7 +77,45 @@ export const DIFFICULTY_CONFIGS: Record<string, DifficultyRangeConfig> = {
     anyMin: 5,
     anyMax: 500,
   },
+
+  simplification: {
+    easyMin: 2,
+    easyMax: 20,
+    mediumMin: 10,
+    mediumMax: 50,
+    hardMin: 15,
+    hardMax: 150,
+    anyMin: 1,
+    anyMax: 150,
+  },
+
+  percentage: {
+    easyMin: 10,
+    easyMax: 99,
+    mediumMin: 100,
+    mediumMax: 999,
+    hardMin: 1000,
+    hardMax: 9999,
+    anyMin: 1,
+    anyMax: 9999,
+  },
+
+  ratio: {
+    easyMin: 10,
+    easyMax: 99,
+    mediumMin: 100,
+    mediumMax: 999,
+    hardMin: 1000,
+    hardMax: 9999,
+    anyMin: 1,
+    anyMax: 9999,
+  },
 };
+
+export interface Term {
+  text: string;
+  value: number;
+}
 
 const uniqueQuestionGenerator = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -169,8 +207,8 @@ const generateOptions = (
       correctAnswer + 10,
       correctAnswer + 20,
     ];
-  }else if(type==="division"){
-    generatedOptions=[
+  } else if (type === "division") {
+    generatedOptions = [
       correctAnswer,
       correctAnswer - 10,
       correctAnswer + 10,
@@ -313,6 +351,54 @@ const generateDivisionQuestion = (difficulty: string) => {
   };
 };
 
+const generateSimplificationQuestion = (difficulty: string) => {
+  let numOfOperands = 3;
+  if (difficulty === DIFFICULTY.MEDIUM) numOfOperands = 4;
+  if (difficulty === DIFFICULTY.HARD) numOfOperands = 5;
+
+  const min = DIFFICULTY_CONFIGS.simplification.easyMin;
+  const max = DIFFICULTY_CONFIGS.simplification.easyMax;
+
+  const validOperations = ["+", "-", "*", "/"];
+  const operators: string[] = [];
+  const terms: Term[] = [];
+
+  for (let i = 0; i < numOfOperands - 1; i++) {
+    const op = validOperations[getRandomInt(0, validOperations.length - 1)];
+    operators.push(op);
+  }
+
+  for (let i = 0; i < numOfOperands; i++) {
+    const number = getRandomIntByDifficulty(
+      difficulty,
+      DIFFICULTY_CONFIGS.simplification,
+    );
+    terms.push({
+      text: number.toString(),
+      value: number,
+    });
+  }
+
+  let equation = "";
+  for (let i = 0; i < terms.length; i++) {
+    equation += terms[i].text;
+    if (i < operators.length) {
+      equation += ` ${operators[i]} `;
+    }
+  }
+
+  return {
+    questionText: equation,
+    correctAnswer: "",
+    options: [],
+    questionKey: `simp_${equation.replace(/ /g, "")}`,
+  };
+};
+
+const generatePercentageQuestion = (difficulty: string) => {};
+
+const generateRatioQuestion = (difficulty: string) => {};
+
 export const generateQuestion = (
   topicId: string,
   difficulty: string,
@@ -350,7 +436,22 @@ export const generateQuestion = (
         () => generateDivisionQuestion(diff),
         exclusions,
       );
+    case "simplification":
+      return uniqueQuestionGenerator(
+        () => generateSimplificationQuestion(diff),
+        exclusions,
+      );
+    case "percentage":
+      return uniqueQuestionGenerator(
+        () => generatePercentageQuestion(diff),
+        exclusions,
+      );
+    case "ratio":
+      return uniqueQuestionGenerator(
+        () => generateRatioQuestion(diff),
+        exclusions,
+      );
     default:
-      return generateSquareQuestion(diff);
+      throw new Error(`Invalid topicId: ${topicId}`);
   }
 };
