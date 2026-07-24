@@ -878,7 +878,11 @@ export default function MentalMathsPractice() {
                           stiffness: 350,
                           damping: 25,
                         }}
-                        className="text-4xl sm:text-5xl font-black tracking-tight text-center w-full font-mono"
+                        className={`font-black tracking-tight text-center w-full font-mono ${
+                          topic === "simplification"
+                            ? "text-2xl sm:text-3xl"
+                            : "text-4xl sm:text-5xl"
+                        }`}
                       >
                         {engine.state.currentQuestion?.questionText}
                       </motion.div>

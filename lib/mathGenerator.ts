@@ -1,3 +1,5 @@
+import { buildAST, evaluate, tokenize } from "./mathParser";
+
 const DIFFICULTY = {
   EASY: "EASY",
   MEDIUM: "MEDIUM",
@@ -79,14 +81,14 @@ export const DIFFICULTY_CONFIGS: Record<string, DifficultyRangeConfig> = {
   },
 
   simplification: {
-    easyMin: 2,
-    easyMax: 20,
-    mediumMin: 10,
-    mediumMax: 50,
-    hardMin: 15,
-    hardMax: 150,
+    easyMin: 5,
+    easyMax: 30,
+    mediumMin: 30,
+    mediumMax: 200,
+    hardMin: 200,
+    hardMax: 500,
     anyMin: 1,
-    anyMax: 150,
+    anyMax: 500,
   },
 
   percentage: {
@@ -150,7 +152,8 @@ const generateOptions = (
     | "addition"
     | "subtraction"
     | "multiplication"
-    | "division",
+    | "division"
+    | "simplification",
   baseNum?: number,
 ): number[] => {
   let generatedOptions: number[] = [];
@@ -213,6 +216,13 @@ const generateOptions = (
       correctAnswer - 10,
       correctAnswer + 10,
       correctAnswer + 20,
+    ];
+  } else if (type === "simplification") {
+    generatedOptions = [
+      Math.floor(correctAnswer),
+      Math.floor(correctAnswer - 10),
+      Math.floor(correctAnswer + 10),
+      Math.floor(correctAnswer + 20),
     ];
   }
 
@@ -352,46 +362,48 @@ const generateDivisionQuestion = (difficulty: string) => {
 };
 
 const generateSimplificationQuestion = (difficulty: string) => {
-  let numOfOperands = 3;
-  if (difficulty === DIFFICULTY.MEDIUM) numOfOperands = 4;
-  if (difficulty === DIFFICULTY.HARD) numOfOperands = 5;
-
-  const min = DIFFICULTY_CONFIGS.simplification.easyMin;
-  const max = DIFFICULTY_CONFIGS.simplification.easyMax;
-
-  const validOperations = ["+", "-", "*", "/"];
-  const operators: string[] = [];
-  const terms: Term[] = [];
-
-  for (let i = 0; i < numOfOperands - 1; i++) {
-    const op = validOperations[getRandomInt(0, validOperations.length - 1)];
-    operators.push(op);
-  }
-
-  for (let i = 0; i < numOfOperands; i++) {
-    const number = getRandomIntByDifficulty(
-      difficulty,
-      DIFFICULTY_CONFIGS.simplification,
-    );
-    terms.push({
-      text: number.toString(),
-      value: number,
-    });
-  }
-
+  let opsAllowed: string[] = ["+", "-", "*", "/"];
   let equation = "";
-  for (let i = 0; i < terms.length; i++) {
-    equation += terms[i].text;
-    if (i < operators.length) {
-      equation += ` ${operators[i]} `;
+  if (difficulty === DIFFICULTY.EASY) {
+    let operands = 3;
+    let terms: Term[] = [];
+    let ops: string[] = [];
+    for (let i = 0; i < operands; i++) {
+      const num = getRandomIntByDifficulty(
+        DIFFICULTY.EASY,
+        DIFFICULTY_CONFIGS.simplification,
+      );
+      terms.push({ text: "number", value: num });
+    }
+
+    for (let i = 0; i < operands - 1; i++) {
+      let op = opsAllowed[getRandomInt(0, opsAllowed.length - 1)];
+      ops.push(op);
+    }
+
+    for (let i = 0; i < ops.length; i++) {
+      if (ops[i] === "/") {
+        const multiplier = getRandomInt(3, 10);
+        terms[i].value = terms[i + 1].value * multiplier;
+        terms[i + 1].text = terms[i].value.toString();
+      }
+    }
+
+    for (let i = 0; i < terms.length; i++) {
+      equation += terms[i].value;
+      if (i < ops.length) {
+        equation += ` ${ops[i]} `;
+      }
     }
   }
 
+  const ast = buildAST(tokenize(equation));
+  const answer = evaluate(ast);
   return {
     questionText: equation,
-    correctAnswer: "",
-    options: [],
-    questionKey: `simp_${equation.replace(/ /g, "")}`,
+    correctAnswer: answer,
+    options: generateOptions(answer, "simplification"),
+    questionKey: `simp_${equation}`,
   };
 };
 
