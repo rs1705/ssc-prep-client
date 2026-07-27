@@ -286,3 +286,23 @@ This file tracks the in-depth, step-by-step feature implementations and bug fixe
 - **Lobby Refinement**: Updated `MentalMathsPractice` component to dynamically hide the "Select Difficulty" and "Practice Mode" (Freestyle/Timed) cards exclusively when `topic === 'mixed'`.
 - **Forced State Management**: Added a strict `useEffect` to `app/SSC/maths/mental-maths/[topic]/page.tsx` that forces the core engine into `timed` mode specifically for the Mixed topic, bypassing local storage artifacts.
 - **Enhanced Visual Cues**: Updated `getDifficultyDescription` and `renderTopicIcon` to fully support the new Simplification, Percentages, Ratios, and Mixed modules with dedicated SVGs and difficulty tier breakdowns.
+
+---
+
+## [2026-07-25] Math Engine Architectural Blueprint: Templates, Normalization & SSC Percentages
+
+### 📐 Architectural Alignment & Mentorship Session
+- **Problem Statement**: Generating arbitrary nested brackets (`()`, `[]`, `{}`) and advanced suffix/prefix/multi-word operators (`²`, `³`, `√`, `∛`, `% of`) in a while-loop creates unpredictable division-by-zero or fractional decimal leftovers, while modifying the Shunting Yard parser in `mathParser.ts` introduces arity and associativity bugs.
+- **Solution 1 — Separation of Concerns (Display vs. Engine)**: Decoupled presentation from evaluation by introducing `MathTerm = { display: string, value: number }`. When generating equations, `displayEquation` formats rich symbols for the UI, while `engineEquation` substitutes precomputed integer `.value`s and standard round brackets for `buildAST(tokenize(engineEquation))`.
+- **Solution 2 — The Template Pattern (Archetypes)**: Adopted pre-defined structural skeletons for Simplification:
+  - **Medium Templates**: `(A op1 B) op2 C²`, `A op1 (B² op2 C)`, `(A op1 B) * (C op2 D)`. Clean division inside brackets is guaranteed by generating the divisor first and computing the dividend as a clean multiple.
+  - **Hard Templates**: `[ A op1 { B op2 (C op3 D) } ] op4 E`, `P% of [ (A op1 B) op2 C² ]`.
+- **Solution 3 — Normalization Pipeline**: Implemented a regex pre-processing step before AST tokenization: `engineEquation = displayEquation.replace(/\[|\{/g, '(').replace(/\]|\}/g, ')')`, allowing the existing Shunting Yard algorithm to process complex nested SSC bracket styles seamlessly.
+- **Solution 4 — SSC Government Exam Percentage Lookup Table**: Built an `SSC_PERCENTAGES` array mapping standard govt exam fractions ($10\% = 1/10$, $12.5\% = 1/8$, $16.66\% = 1/6$, $20\% = 1/5$, $25\% = 1/4$, $33.33\% = 1/3$, $37.5\% = 3/8$, $50\% = 1/2$, $66.66\% = 2/3$, $75\% = 3/4$) with an integer multiplier property (`mult`). To generate `P% of N` without decimals, $N$ is generated as a clean multiple of `mult`.
+
+### ⏸️ Environment Migration & Next Steps on Resumption
+- **Dual-Boot Migration**: Session paused as the user is installing Ubuntu in dual boot to resolve Windows OS stability and RAM consumption bottlenecks.
+- **Resumption Checklist**:
+  1. Verify workspace initialization on Ubuntu.
+  2. Implement `MathTerm`, `SSC_PERCENTAGES`, `generateComplexTerm()`, and `generateSSCPercentageTerm()` in `lib/mathGenerator.ts`.
+  3. Wire up the Medium and Hard templates in `generateSimplificationQuestion()` and implement `generatePercentageQuestion()`.

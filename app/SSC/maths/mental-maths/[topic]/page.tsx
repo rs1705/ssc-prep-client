@@ -21,6 +21,7 @@ import {
   Zap,
   Swords,
   RotateCcw,
+  ArrowLeft,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -43,6 +44,15 @@ const COUNTDOWN_MESSAGES = [
   "Stay sharp...",
   "Trust your instincts...",
 ];
+
+const getQuestionFontSize = (text: string | undefined) => {
+  if (!text) return "text-4xl sm:text-5xl";
+  const len = text.length;
+  if (len <= 10) return "text-4xl sm:text-5xl md:text-6xl";
+  if (len <= 18) return "text-3xl sm:text-4xl md:text-5xl";
+  if (len <= 28) return "text-2xl sm:text-3xl md:text-4xl";
+  return "text-xl sm:text-2xl md:text-3xl";
+};
 
 const renderTopicIcon = (topic: string, className?: string) => {
   const iconClass = className || "text-primary/80 shrink-0 w-[18px] h-[18px]";
@@ -463,14 +473,39 @@ export default function MentalMathsPractice() {
       <div
         className={`relative w-full sm:mt-2 flex flex-col p-4 sm:p-6 bg-card border border-primary/30 rounded-3xl shadow-sm select-none ${containerHeightClass} transition-all duration-300 ease-in-out overflow-hidden`}
       >
-        {/* Universal Close/Quit Button Row */}
-        {gameState !== "countdown" && (
+        {/* Back / Quit Button */}
+        {gameState === "idle" && (
+          <div className="flex justify-start w-full shrink-0 -mt-1 -ml-1 sm:-mt-2 sm:-ml-2 z-50 mb-1">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="flex items-center gap-1 h-8 px-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none text-xs font-semibold"
+              title="Back"
+            >
+              <ArrowLeft className="w-4 h-4" strokeWidth={2.5} />
+              <span className="hidden sm:inline">Back</span>
+            </button>
+          </div>
+        )}
+        {gameState === "active" && (
           <div className="flex justify-end w-full shrink-0 -mt-2 -mr-2 sm:-mt-3 sm:-mr-3 z-50">
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
               className="h-8 w-8 mb-2 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
               title="Quit"
+            >
+              <X className="w-4 h-4" strokeWidth={2.5} />
+            </button>
+          </div>
+        )}
+        {gameState === "game_over" && (
+          <div className="flex justify-end w-full shrink-0 -mt-2 -mr-2 sm:-mt-3 sm:-mr-3 z-50">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="h-8 w-8 mb-2 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              title="Close"
             >
               <X className="w-4 h-4" strokeWidth={2.5} />
             </button>
@@ -741,36 +776,36 @@ export default function MentalMathsPractice() {
               {gameState === "active" && (
                 /* Active Game Container */
                 <div className="h-full w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-1 pb-1">
-                  {/* Top Bar: Title, Details, Score & Switcher */}
-                  <div className="flex items-center justify-between w-full pb-2 gap-2">
-                    {/* Left Side: Big Icon + Topic & Difficulty */}
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="flex-shrink-0 bg-primary/10 p-2 sm:p-2.5 rounded-xl text-primary flex items-center justify-center">
+                  {/* Top Bar: Topic Badge + Score Pill + Switcher */}
+                  <div className="flex items-center justify-between w-full pb-3 gap-2">
+                    {/* Left: Topic Icon + Name & Tags */}
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="flex-shrink-0 bg-primary/10 p-2 rounded-xl text-primary flex items-center justify-center">
                         {renderTopicIcon(
                           topic,
-                          "w-6 h-6 sm:w-7 sm:h-7 shrink-0",
+                          "w-5 h-5 sm:w-6 sm:h-6 shrink-0",
                         )}
                       </div>
                       <div className="flex flex-col min-w-0 justify-center">
-                        <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-none capitalize truncate pb-0.5">
+                        <span className="font-black text-base sm:text-lg tracking-tight text-foreground leading-none capitalize truncate">
                           {topic}
                         </span>
-                        <div className="flex items-center gap-1.5 mt-1 min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+                        <div className="flex items-center gap-1.5 mt-0.5 min-w-0 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70 select-none">
                           <span>
                             {engine.state.mode === "timed"
                               ? "Timed"
                               : "Freestyle"}
                           </span>
-                          <span className="text-muted-foreground/35 font-normal">
-                            •
-                          </span>
+                          <span className="text-muted-foreground/25">•</span>
                           <span
-                            className={`font-semibold ${
+                            className={`${
                               engine.state.difficulty === "easy"
                                 ? "text-emerald-600 dark:text-emerald-400"
                                 : engine.state.difficulty === "medium"
                                   ? "text-amber-500"
-                                  : "text-rose-600 dark:text-rose-400"
+                                  : engine.state.difficulty === "all"
+                                    ? "text-primary"
+                                    : "text-rose-600 dark:text-rose-400"
                             }`}
                           >
                             {engine.state.difficulty}
@@ -779,45 +814,12 @@ export default function MentalMathsPractice() {
                       </div>
                     </div>
 
-                    {/* Right Side: Controls & Score */}
-                    <div className="flex flex-col items-end justify-center gap-2 shrink-0">
-                      <div className="flex items-center gap-2">
-                        {/* Compact Layout Switcher */}
-                        <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[92px] sm:w-[104px]">
-                          <button
-                            type="button"
-                            onClick={() => setInputLayout("mcq")}
-                            className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
-                              inputLayout === "mcq"
-                                ? "bg-background text-primary shadow-xs"
-                                : "text-muted-foreground hover:text-foreground"
-                            }`}
-                            title="MCQ Mode"
-                          >
-                            MCQ
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setInputLayout("keys")}
-                            className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
-                              inputLayout === "keys"
-                                ? "bg-background text-primary shadow-xs"
-                                : "text-muted-foreground hover:text-foreground"
-                            }`}
-                            title="Keypad Mode"
-                          >
-                            NUM
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Score */}
-                      <div className="flex items-center gap-1.5 text-sm font-bold tracking-wider text-muted-foreground select-none shrink-0 h-5 overflow-hidden">
-                        <span>Score</span>
-                        <span className="text-muted-foreground/35 font-normal">
-                          •
-                        </span>
-                        <div className="h-5 overflow-hidden flex items-center relative min-w-[12px] justify-center">
+                    {/* Right: Score Pill + Layout Switcher */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      {/* Score Pill */}
+                      <div className="flex items-center gap-1.5 bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 rounded-full px-2.5 py-1 select-none">
+                        <Zap className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 fill-emerald-500 dark:fill-emerald-400" />
+                        <div className="h-5 overflow-hidden flex items-center relative min-w-[16px] justify-center">
                           <AnimatePresence mode="popLayout" initial={false}>
                             <motion.span
                               key={engine.state.score}
@@ -829,33 +831,63 @@ export default function MentalMathsPractice() {
                                 stiffness: 350,
                                 damping: 25,
                               }}
-                              className="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono"
+                              className="text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono tabular-nums"
                             >
                               {engine.state.score}
                             </motion.span>
                           </AnimatePresence>
                         </div>
                       </div>
+
+                      {/* Compact Layout Switcher */}
+                      <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border border-border/40 select-none text-[10px] font-bold w-[80px] sm:w-[92px]">
+                        <button
+                          type="button"
+                          onClick={() => setInputLayout("mcq")}
+                          className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
+                            inputLayout === "mcq"
+                              ? "bg-background text-primary shadow-xs"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                          title="MCQ Mode"
+                        >
+                          MCQ
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setInputLayout("keys")}
+                          className={`flex-1 py-0.5 rounded-lg transition-all cursor-pointer text-center ${
+                            inputLayout === "keys"
+                              ? "bg-background text-primary shadow-xs"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                          title="Keypad Mode"
+                        >
+                          NUM
+                        </button>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Dynamic Progress Bar */}
-                  <div className="w-full flex flex-col gap-1.5 mt-1">
-                    <ProgressBar
-                      value={progressPercentage}
-                      className="h-2 bg-muted/65"
-                      barClassName={barColorClass}
-                    />
-                    <div className="flex justify-between text-xs sm:text-sm items-center mt-0.5">
-                      <span className="font-bold text-muted-foreground tracking-wider">
-                        {engine.state.mode === "timed" ? "Timer" : "Progress"}
+                  {/* Progress / Timer Row */}
+                  <div className="w-full flex flex-col gap-1 mb-1">
+                    {/* Labels Row */}
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 select-none">
+                        {engine.state.mode === "timed" ? "Time Left" : "Progress"}
                       </span>
                       <span
-                        className={`tracking-wider flex items-center gap-1 transition-colors font-mono ${timerTextColorClass}`}
+                        className={`text-xs sm:text-sm font-black font-mono tabular-nums tracking-wide transition-colors ${timerTextColorClass}`}
                       >
                         {progressText}
                       </span>
                     </div>
+                    {/* Bar */}
+                    <ProgressBar
+                      value={progressPercentage}
+                      className="h-1.5 bg-muted/50 rounded-full"
+                      barClassName={barColorClass}
+                    />
                   </div>
 
                   <div
@@ -878,11 +910,9 @@ export default function MentalMathsPractice() {
                           stiffness: 350,
                           damping: 25,
                         }}
-                        className={`font-black tracking-tight text-center w-full font-mono ${
-                          topic === "simplification"
-                            ? "text-2xl sm:text-3xl"
-                            : "text-4xl sm:text-5xl"
-                        }`}
+                        className={`font-black tracking-tight text-center w-full font-mono ${getQuestionFontSize(
+                          engine.state.currentQuestion?.questionText,
+                        )}`}
                       >
                         {engine.state.currentQuestion?.questionText}
                       </motion.div>
@@ -1385,12 +1415,20 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Action buttons */}
-                      <div className="flex gap-2 w-full mt-4 mb-5">
+                      <div className="flex gap-2 w-full mt-3 pb-1">
+                        <button
+                          type="button"
+                          onClick={() => router.back()}
+                          className="h-11 px-4 rounded-full text-[11px] font-extrabold tracking-widest uppercase bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground active:scale-[0.97] transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 border border-border/40"
+                        >
+                          <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.5} />
+                          Back
+                        </button>
                         <Button
                           onClick={engine.resetSession}
-                          className="flex-1 h-12 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
+                          className="flex-1 h-11 px-5 py-3 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
                         >
-                          <Swords className="w-3 h-3 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+                          <RotateCcw className="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500" />
                           Practice Again
                         </Button>
                       </div>

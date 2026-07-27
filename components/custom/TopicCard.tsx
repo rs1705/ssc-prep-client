@@ -32,6 +32,7 @@ export interface TopicCardProps {
   colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo";
   revisionConfig?: RevisionConfig;
   stats?: string;
+  badge?: string;
 }
 
 export const TopicCard = ({
@@ -45,6 +46,7 @@ export const TopicCard = ({
   colorTheme = "indigo",
   revisionConfig,
   stats = "Practice",
+  badge,
 }: TopicCardProps) => {
   const theme = colorTheme || "indigo";
   const themeMap = {
@@ -78,19 +80,23 @@ export const TopicCard = ({
       }}
     >
       <div>
-        {/* Card Header Info */}
-        <div className="flex items-start justify-between mb-3.5">
-          <div className="flex items-center gap-3">
-            {/* Emoji box */}
-            <div className={`flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none ${themeClass}`}>
-              {emoji}
-            </div>
-            <h3 className="font-bold text-foreground text-base tracking-tight">
-              {name}
-            </h3>
+        {/* Card Header Top Row: Emoji & Badge */}
+        <div className="flex items-start justify-between gap-2 mb-3">
+          {/* Emoji box */}
+          <div className={`flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none ${themeClass}`}>
+            {emoji}
           </div>
-
+          {badge && (
+            <span className="flex-shrink-0 whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 select-none shadow-2xs">
+              {badge}
+            </span>
+          )}
         </div>
+
+        {/* Topic Name */}
+        <h3 className="font-bold text-foreground text-base tracking-tight mb-1.5">
+          {name}
+        </h3>
 
         {/* Description */}
         <p className="text-xs text-muted-foreground leading-relaxed mb-4">
@@ -104,6 +110,7 @@ export const TopicCard = ({
           {canRevise && revisionConfig && (
             <RevisionDialog
               name={name}
+              emoji={emoji}
               revisionConfig={revisionConfig}
               trigger={
                 <Button

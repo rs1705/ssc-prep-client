@@ -7,6 +7,36 @@ const DIFFICULTY = {
   ALL: "ALL",
 };
 
+export const TOPIC_ID = {
+  // Current Mental Maths & Speed Drills
+  ADDITION: "addition",
+  SUBTRACTION: "subtraction",
+  MULTIPLICATION: "multiplication",
+  DIVISION: "division",
+  SQUARES: "squares",
+  CUBES: "cubes",
+  SQUARE_ROOTS: "square_roots",
+  CUBE_ROOTS: "cube_roots",
+  SIMPLIFICATION: "simplification",
+  PERCENTAGE: "percentage",
+  RATIO: "ratio",
+
+  // Future SSC CGL Tier-1 & Tier-2 Quant Topics
+  AVERAGES: "averages",
+  HCF_LCM: "hcf_lcm",
+  FRACTIONS: "fractions",
+  PROFIT_LOSS: "profit_loss",
+  SI_CI: "si_ci", // Simple & Compound Interest shortcuts
+  SPEED_TIME_DISTANCE: "speed_time_distance", // 5/18 and 18/5 conversion tables
+  TIME_WORK: "time_work", // Efficiency & Work splits
+  ALGEBRA_IDENTITIES: "algebra_identities", // x + 1/x drills
+  MENSURATION: "mensuration", // Multiples of 7 for circle area/perimeter
+  TRIGONOMETRY: "trigonometry", // Standard angle values (sin 30, tan 60)
+  NUMBER_SYSTEM: "number_system", // Divisibility & Remainder theorems
+} as const;
+
+export type TopicId = typeof TOPIC_ID[keyof typeof TOPIC_ID] | string;
+
 export interface DifficultyRangeConfig {
   easyMin: number;
   easyMax: number;
@@ -119,8 +149,64 @@ export interface Term {
   value: number;
 }
 
+export interface SSCPercentageConfig {
+  display: string;
+  numerator: number;
+  denominator: number;
+}
+
+export const SSC_PERCENTAGES: readonly SSCPercentageConfig[] = [
+  { display: "20%", numerator: 1, denominator: 5 },
+  { display: "25%", numerator: 1, denominator: 4 },
+  { display: "33.33%", numerator: 1, denominator: 3 },
+  { display: "40%", numerator: 2, denominator: 5 },
+  { display: "50%", numerator: 1, denominator: 2 },
+  { display: "60%", numerator: 3, denominator: 5 },
+  { display: "66.66%", numerator: 2, denominator: 3 },
+  { display: "75%", numerator: 3, denominator: 4 },
+  { display: "80%", numerator: 4, denominator: 5 },
+  // 1/6 Family
+  { display: "16.66%", numerator: 1, denominator: 6 },
+  { display: "83.33%", numerator: 5, denominator: 6 },
+  // 1/7 Family (Classic SSC CGL Favorite!)
+  { display: "14.28%", numerator: 1, denominator: 7 },
+  { display: "28.56%", numerator: 2, denominator: 7 },
+  { display: "42.84%", numerator: 3, denominator: 7 },
+  { display: "57.12%", numerator: 4, denominator: 7 },
+  { display: "71.42%", numerator: 5, denominator: 7 },
+  { display: "85.71%", numerator: 6, denominator: 7 },
+  // 1/8 Family
+  { display: "12.5%", numerator: 1, denominator: 8 },
+  { display: "37.5%", numerator: 3, denominator: 8 },
+  { display: "62.5%", numerator: 5, denominator: 8 },
+  { display: "87.5%", numerator: 7, denominator: 8 },
+  // 1/9 Family (Multiples of 11.11%)
+  { display: "11.11%", numerator: 1, denominator: 9 },
+  { display: "22.22%", numerator: 2, denominator: 9 },
+  { display: "44.44%", numerator: 4, denominator: 9 },
+  { display: "55.55%", numerator: 5, denominator: 9 },
+  { display: "77.77%", numerator: 7, denominator: 9 },
+  { display: "88.88%", numerator: 8, denominator: 9 },
+  // 1/11 Family (Multiples of 9.09%)
+  { display: "9.09%", numerator: 1, denominator: 11 },
+  { display: "18.18%", numerator: 2, denominator: 11 },
+  { display: "27.27%", numerator: 3, denominator: 11 },
+  { display: "36.36%", numerator: 4, denominator: 11 },
+  { display: "45.45%", numerator: 5, denominator: 11 },
+  { display: "54.54%", numerator: 6, denominator: 11 },
+  { display: "63.63%", numerator: 7, denominator: 11 },
+  { display: "72.72%", numerator: 8, denominator: 11 },
+  { display: "81.81%", numerator: 9, denominator: 11 },
+  { display: "90.90%", numerator: 10, denominator: 11 },
+  // 1/12 to 1/16 Advanced Speed Fractions
+  { display: "8.33%", numerator: 1, denominator: 12 },
+  { display: "7.69%", numerator: 1, denominator: 13 },
+  { display: "7.14%", numerator: 1, denominator: 14 },
+  { display: "6.66%", numerator: 1, denominator: 15 },
+  { display: "6.25%", numerator: 1, denominator: 16 },
+];
+
 const uniqueQuestionGenerator = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   generatorFn: () => any,
   exclusions: string[],
   maxRetries = 30,
@@ -143,22 +229,16 @@ const getRandomInt = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+export type QuestionType = "square" | "cube" | "sqrt" | "cbrt" | string;
+
 const generateOptions = (
   correctAnswer: number,
-  type:
-    | "square"
-    | "cube"
-    | "multiply"
-    | "addition"
-    | "subtraction"
-    | "multiplication"
-    | "division"
-    | "simplification",
+  type: QuestionType = "general",
   baseNum?: number,
 ): number[] => {
   let generatedOptions: number[] = [];
 
-  if (type === "square" && baseNum) {
+  if ((type === TOPIC_ID.SQUARES || type === "square") && baseNum) {
     const offSets = [baseNum - 1, baseNum + 1, baseNum + 3];
     generatedOptions = [
       correctAnswer,
@@ -166,7 +246,7 @@ const generateOptions = (
       offSets[1] * offSets[1],
       offSets[2] * offSets[2],
     ];
-  } else if (type === "cube" && baseNum) {
+  } else if ((type === TOPIC_ID.CUBES || type === "cube") && baseNum) {
     const offSets = [baseNum - 1, baseNum + 1, baseNum + 3];
     generatedOptions = [
       correctAnswer,
@@ -174,59 +254,35 @@ const generateOptions = (
       offSets[1] * offSets[1] * offSets[1],
       offSets[2] * offSets[2] * offSets[2],
     ];
-  } else if (type === "multiply" && baseNum) {
+  } else if (
+    type === TOPIC_ID.SQUARE_ROOTS ||
+    type === TOPIC_ID.CUBE_ROOTS ||
+    type === "sqrt" ||
+    type === "cbrt"
+  ) {
     generatedOptions = [
       correctAnswer,
-      baseNum - 10,
-      baseNum + 10,
-      baseNum + 20,
+      correctAnswer + 1,
+      correctAnswer + 2,
+      Math.max(1, correctAnswer - 1),
     ];
-  } else if (type === "addition") {
-    generatedOptions = [
-      correctAnswer,
-      correctAnswer - 10,
-      correctAnswer + 10,
-      correctAnswer + 30,
-    ];
-  } else if (type === "subtraction") {
-    // 1. Off-by-10 error (very common in borrowing)
-    const option2 =
-      correctAnswer > 10 ? correctAnswer - 10 : correctAnswer + 20;
-    const option3 = correctAnswer + 10;
-
-    // 2. Off-by-1 or 2 error (common arithmetic slip)
-    // We can use a small random offset to keep it unpredictable
-    const smallOffset = Math.random() > 0.5 ? 1 : 2;
-    const option4 =
-      correctAnswer > smallOffset
-        ? correctAnswer - smallOffset
-        : correctAnswer + smallOffset;
-
-    generatedOptions = [correctAnswer, option2, option3, option4];
-  } else if (type === "multiplication") {
-    generatedOptions = [
-      correctAnswer,
-      correctAnswer - 10,
-      correctAnswer + 10,
-      correctAnswer + 20,
-    ];
-  } else if (type === "division") {
-    generatedOptions = [
-      correctAnswer,
-      correctAnswer - 10,
-      correctAnswer + 10,
-      correctAnswer + 20,
-    ];
-  } else if (type === "simplification") {
-    generatedOptions = [
-      Math.floor(correctAnswer),
-      Math.floor(correctAnswer - 10),
-      Math.floor(correctAnswer + 10),
-      Math.floor(correctAnswer + 20),
-    ];
+  } else {
+    // Universal Smart Strategy for ALL arithmetic, percentages, ratios, simplification, etc.
+    const ans = Math.round(correctAnswer);
+    if (ans <= 15) {
+      generatedOptions = [ans, ans + 1, ans + 2, Math.max(1, ans - 1)];
+    } else {
+      generatedOptions = [ans, ans - 10, ans + 10, ans + 20];
+    }
   }
 
-  return generatedOptions.sort(() => Math.random() - 0.5);
+  // Ensure 4 unique options in case of collisions
+  const uniqueOptions = Array.from(new Set(generatedOptions));
+  while (uniqueOptions.length < 4) {
+    uniqueOptions.push(uniqueOptions[uniqueOptions.length - 1] + 5);
+  }
+
+  return uniqueOptions.sort(() => Math.random() - 0.5);
 };
 
 const getRandomIntByDifficulty = (
@@ -245,6 +301,39 @@ const getRandomIntByDifficulty = (
   return getRandomInt(config.anyMin, config.anyMax);
 };
 
+export const generateComplexTerm = (
+  type: "square" | "cube" | "sqrt" | "cbrt",
+  min: number,
+  max: number,
+): Term => {
+  const val = getRandomInt(min, max);
+  switch (type) {
+    case "square":
+      return { text: `${val}²`, value: val * val };
+    case "cube":
+      return { text: `${val}³`, value: val * val * val };
+    case "sqrt":
+      return { text: `√${val * val}`, value: val };
+    case "cbrt":
+      return { text: `³√${val * val * val}`, value: val };
+  }
+};
+
+export const generateSSCPercentageTerm = (
+  minMult: number,
+  maxMult: number,
+): Term => {
+  const config = SSC_PERCENTAGES[getRandomInt(0, SSC_PERCENTAGES.length - 1)];
+  const mult = getRandomInt(minMult, maxMult);
+  const base = mult * config.denominator;
+  const value = mult * config.numerator;
+
+  return {
+    text: `${config.display} of ${base}`,
+    value,
+  };
+};
+
 const generateSquareQuestion = (difficulty: string) => {
   const num = getRandomIntByDifficulty(difficulty, DIFFICULTY_CONFIGS.squares);
   const correctAnswer = num * num;
@@ -256,6 +345,40 @@ const generateSquareQuestion = (difficulty: string) => {
     options,
     baseNum: num,
     questionKey: `sq_${num}`,
+  };
+};
+
+const generateSquareRootQuestion = (difficulty: string) => {
+  const correctAnswer = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.squares,
+  );
+  const question = correctAnswer * correctAnswer;
+  const options = generateOptions(correctAnswer, "sqrt", correctAnswer);
+
+  return {
+    questionText: `√${question}`,
+    correctAnswer,
+    options,
+    baseNum: correctAnswer,
+    questionKey: `sqrt_${question}`,
+  };
+};
+
+const generateCubeRootQuestion = (difficulty: string) => {
+  const correctAnswer = getRandomIntByDifficulty(
+    difficulty,
+    DIFFICULTY_CONFIGS.cubes,
+  );
+  const question = correctAnswer * correctAnswer * correctAnswer;
+  const options = generateOptions(correctAnswer, "cbrt", correctAnswer);
+
+  return {
+    questionText: `³√${question}`,
+    correctAnswer,
+    options,
+    baseNum: correctAnswer,
+    questionKey: `cbrt_${question}`,
   };
 };
 
@@ -362,9 +485,21 @@ const generateDivisionQuestion = (difficulty: string) => {
 };
 
 const generateSimplificationQuestion = (difficulty: string) => {
+  let targetDiff = difficulty.toUpperCase();
+  if (
+    targetDiff === DIFFICULTY.ALL ||
+    ![DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD].includes(targetDiff)
+  ) {
+    const tiers = [DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD];
+    targetDiff = tiers[getRandomInt(0, tiers.length - 1)];
+  }
+
   let opsAllowed: string[] = ["+", "-", "*", "/"];
   let equation = "";
-  if (difficulty === DIFFICULTY.EASY) {
+  let engineEquation = "";
+  let displayEquation = "";
+
+  if (targetDiff === DIFFICULTY.EASY) {
     let operands = 3;
     let terms: Term[] = [];
     let ops: string[] = [];
@@ -395,15 +530,174 @@ const generateSimplificationQuestion = (difficulty: string) => {
         equation += ` ${ops[i]} `;
       }
     }
+    displayEquation = equation;
+    engineEquation = equation;
   }
 
-  const ast = buildAST(tokenize(equation));
-  const answer = evaluate(ast);
+  if (targetDiff === DIFFICULTY.MEDIUM) {
+    const archetype = getRandomInt(1, 5);
+    if (archetype === 1) {
+      //Blueprint for equation-> (P% of N) + (A² × B) - √C
+      const percTerm = generateSSCPercentageTerm(5, 20);
+      const squareTerm = generateComplexTerm("square", 16, 30);
+      const rootTerm = generateComplexTerm("sqrt", 16, 30);
+      const b = getRandomInt(20, 100);
+      displayEquation = `(${percTerm.text}) + (${squareTerm.text} × ${b}) - ${rootTerm.text}`;
+      engineEquation = `${percTerm.value} + ${squareTerm.value} * ${b} - ${rootTerm.value}`;
+    }
+    if (archetype === 2) {
+      //Blueprint for equation-> //[ (³√A + B²) ÷ C ] × D
+      const cubeRootTerm = generateComplexTerm("cbrt", 2, 8); // e.g. 6
+      const squareTerm = generateComplexTerm("square", 3, 9); // e.g. 64
+      const sum = cubeRootTerm.value + squareTerm.value; // e.g. 70
+      // Find a clean divisor C of sum:
+      const c = [2, 5, 7, 10].find((val) => sum % val === 0) || 2;
+      const d = getRandomInt(2, 6);
+      displayEquation = `[ (${cubeRootTerm.text} + ${squareTerm.text}) ÷ ${c} ] × ${d}`;
+      engineEquation = `[ (${cubeRootTerm.value} + ${squareTerm.value}) / ${c} ] * ${d}`;
+    }
+    if (archetype === 3) {
+      //Blueprint for equation-> (A² - B²) ÷ √C + D²
+      const squareTerm1 = generateComplexTerm("square", 21, 29);
+      const squareTerm2 = generateComplexTerm("square", 11, 20);
+      const diff = squareTerm1.value - squareTerm2.value;
+
+      const validFactors = [2, 3, 4, 5, 6, 8, 10].filter(
+        (val) => diff % val === 0,
+      );
+
+      const rootVal =
+        validFactors[getRandomInt(0, validFactors.length - 1)] || 2;
+
+      const rootTerm = { text: `√${rootVal * rootVal}`, value: rootVal };
+      const d = generateComplexTerm("square", 10, 20);
+      displayEquation = `(${squareTerm1.text} - ${squareTerm2.text}) ÷ ${rootTerm.text} + ${d.text}`;
+      engineEquation = `(${squareTerm1.value} - ${squareTerm2.value}) / ${rootTerm.value} + ${d.value}`;
+    }
+    if (archetype === 4) {
+      //Blueprint for equation->(P1% of N1) - (P2% of N2) + ³√A
+      let percTerm1 = generateSSCPercentageTerm(5, 20);
+      let percTerm2 = generateSSCPercentageTerm(10, 30);
+
+      if (percTerm1.value < percTerm2.value) {
+        [percTerm1, percTerm2] = [percTerm2, percTerm1];
+      }
+      const rootTerm = generateComplexTerm("cbrt", 8, 21);
+      displayEquation = `(${percTerm1.text}) - (${percTerm2.text}) + ${rootTerm.text}`;
+      engineEquation = `${percTerm1.value} - ${percTerm2.value} + ${rootTerm.value}`;
+    }
+    if (archetype === 5) {
+      //Blueprint for equation->[ A + { (B² × C) ÷ √D } ] - E
+      const a = getRandomInt(50, 150);
+      const termB = generateComplexTerm("square", 2, 8); // e.g. 4² (value: 16)
+      const termRootD = generateComplexTerm("sqrt", 2, 8); // e.g. √16 (value: 4)
+      const c = termRootD.value * getRandomInt(2, 5); // Guarantees clean division!
+      const e = getRandomInt(10, 30);
+      displayEquation = `[ ${a} + { (${termB.text} × ${c}) ÷ ${termRootD.text} } ] - ${e}`;
+      engineEquation = `[ ${a} + { (${termB.value} * ${c}) / ${termRootD.value} } ] - ${e}`;
+    }
+  }
+
+  if (targetDiff === DIFFICULTY.HARD) {
+    const archetype = getRandomInt(1, 6);
+    if (archetype === 1) {
+      //Blueprint: [ A - { B ÷ (C - D) } ] × E
+
+      const k = getRandomInt(2, 8);
+      const d = getRandomInt(2, 10);
+      const c = k + d; // Guaranteed: (C - D) === k
+      const b = k * getRandomInt(2, 8); // Guaranteed: B ÷ (C - D) is clean integer!
+      const a = getRandomInt(50, 100);
+      const e = getRandomInt(2, 5);
+      displayEquation = `[ ${a} - { ${b} ÷ (${c} - ${d}) } ] × ${e}`;
+      engineEquation = `[ ${a} - { ${b} / (${c} - ${d}) } ] * ${e}`;
+    }
+    if (archetype === 2) {
+      //Blueprint: [ (P% of N) + A² ] ÷ √B
+      const termPerc = generateSSCPercentageTerm(5, 20);
+      const termRoot = generateComplexTerm("sqrt", 2, 8); // e.g. √16 (value: 4)
+      // Make sure (termPerc.value + termSq.value) divides cleanly by termRoot.value:
+      const targetMultiple = termRoot.value * getRandomInt(20, 50);
+      const sqValue = targetMultiple - termPerc.value;
+      // If sqValue isn't a perfect square, we can just use a normal integer for A, or pick termPerc and termSq first and make termRoot a factor of their sum!
+      const termSq = generateComplexTerm("square", 3, 9);
+      const sum = termPerc.value + termSq.value;
+      const validFactors = [2, 3, 4, 5, 6, 8, 10].filter(
+        (val) => sum % val === 0,
+      );
+      const rootVal =
+        validFactors[getRandomInt(0, validFactors.length - 1)] || 2;
+      const rootTerm = { text: `√${rootVal * rootVal}`, value: rootVal };
+
+      displayEquation = `[ (${termPerc.text}) + ${termSq.text} ] ÷ ${rootTerm.text}`;
+      engineEquation = `[ (${termPerc.value}) + ${termSq.value} ] / ${rootTerm.value}`;
+    }
+    if (archetype === 3) {
+      //Blueprint: (P1% of N1) + (P2% of N2) - √A
+      const perc1 = generateSSCPercentageTerm(10, 30);
+      const perc2 = generateSSCPercentageTerm(10, 30);
+      const rootTerm = generateComplexTerm("sqrt", 5, 15);
+      displayEquation = `(${perc1.text}) + (${perc2.text}) - ${rootTerm.text}`;
+      engineEquation = `${perc1.value} + ${perc2.value} - ${rootTerm.value}`;
+    }
+    if (archetype === 4) {
+      //Blueprint: [ (A² - B²) ÷ C ] + ³√D
+
+      const sq1 = generateComplexTerm("square", 12, 20);
+      const sq2 = generateComplexTerm("square", 2, 10);
+      const diff = sq1.value - sq2.value;
+      const validFactors = [2, 3, 4, 5, 6, 8, 10].filter(
+        (val) => diff % val === 0,
+      );
+      const c = validFactors[getRandomInt(0, validFactors.length - 1)] || 2;
+      const cbrtTerm = generateComplexTerm("cbrt", 2, 6);
+      displayEquation = `[ (${sq1.text} - ${sq2.text}) ÷ ${c} ] + ${cbrtTerm.text}`;
+      engineEquation = `[ (${sq1.value} - ${sq2.value}) / ${c} ] + ${cbrtTerm.value}`;
+    }
+    if (archetype === 5) {
+      //Blueprint: P% of [ { A + (B × C) } - D² ]
+      // Pick percentage first so we know what denominator we must divide cleanly by!
+      const config =
+        SSC_PERCENTAGES[getRandomInt(0, SSC_PERCENTAGES.length - 1)];
+      const mult = getRandomInt(5, 20);
+      const targetSum = mult * config.denominator; // The inside of [] MUST equal targetSum!
+
+      const termD = generateComplexTerm("square", 2, 6);
+      const bcProduct = getRandomInt(10, 30);
+      const b = getRandomInt(2, 6);
+      const c = Math.floor(bcProduct / b);
+      const a = targetSum + termD.value - b * c; // Solves exact algebra so bracket === targetSum!
+
+      displayEquation = `${config.display} of [ { ${a} + (${b} × ${c}) } - ${termD.text} ]`;
+      engineEquation = `${mult * config.numerator}`; // Since we engineered bracket to equal targetSum, the whole answer is simply mult * numerator! But for AST parser:
+      // For Shunting Yard: `${config.numerator} * ( ( ${a} + (${b} * ${c}) - ${termD.value} ) / ${config.denominator} )`
+    }
+    if (archetype === 6) {
+      //Blueprint: √A + [ B × { C ÷ (D + E) } ]
+      const k = getRandomInt(2, 8);
+      const d = getRandomInt(2, 10);
+      const e = k - d > 0 ? k - d : 2;
+      const actualK = d + e;
+      const c = actualK * getRandomInt(2, 6); // Guarantees C ÷ (D + E) is clean!
+      const b = getRandomInt(2, 6);
+      const rootTerm = generateComplexTerm("sqrt", 5, 15);
+      displayEquation = `${rootTerm.text} + [ ${b} × { ${c} ÷ (${d} + ${e}) } ]`;
+      engineEquation = `${rootTerm.value} + [ ${b} * { ${c} / (${d} + ${e}) } ]`;
+    }
+  }
+
+  // Convert [], {} to standard () for Shunting Yard:
+  const normalizedEngineEquation = engineEquation
+    .replace(/\[|\{/g, "(")
+    .replace(/\]|\}/g, ")");
+
+  const ast = buildAST(tokenize(normalizedEngineEquation));
+  const answer = Math.round(evaluate(ast));
   return {
-    questionText: equation,
+    questionText: displayEquation, // UI sees rich symbols!
     correctAnswer: answer,
     options: generateOptions(answer, "simplification"),
-    questionKey: `simp_${equation}`,
+    questionKey: `simp_${displayEquation}`,
   };
 };
 
@@ -418,49 +712,59 @@ export const generateQuestion = (
 ) => {
   const diff = difficulty.toUpperCase();
   switch (topicId.toLowerCase()) {
-    case "squares":
+    case TOPIC_ID.SQUARES:
       return uniqueQuestionGenerator(
         () => generateSquareQuestion(diff),
         exclusions,
       );
-    case "cubes":
+    case TOPIC_ID.CUBES:
       return uniqueQuestionGenerator(
         () => generateCubeQuestion(diff),
         exclusions,
       );
-    case "addition":
+    case TOPIC_ID.ADDITION:
       return uniqueQuestionGenerator(
         () => generateAdditionQuestion(diff),
         exclusions,
       );
-    case "subtraction":
+    case TOPIC_ID.SUBTRACTION:
       return uniqueQuestionGenerator(
         () => generateSubtractionQuestion(diff),
         exclusions,
       );
-    case "multiplication":
+    case TOPIC_ID.MULTIPLICATION:
       return uniqueQuestionGenerator(
         () => generateMultiplicationQuestion(diff),
         exclusions,
       );
-    case "division":
+    case TOPIC_ID.DIVISION:
       return uniqueQuestionGenerator(
         () => generateDivisionQuestion(diff),
         exclusions,
       );
-    case "simplification":
+    case TOPIC_ID.SIMPLIFICATION:
       return uniqueQuestionGenerator(
         () => generateSimplificationQuestion(diff),
         exclusions,
       );
-    case "percentage":
+    case TOPIC_ID.PERCENTAGE:
       return uniqueQuestionGenerator(
         () => generatePercentageQuestion(diff),
         exclusions,
       );
-    case "ratio":
+    case TOPIC_ID.RATIO:
       return uniqueQuestionGenerator(
         () => generateRatioQuestion(diff),
+        exclusions,
+      );
+    case TOPIC_ID.SQUARE_ROOTS:
+      return uniqueQuestionGenerator(
+        () => generateSquareRootQuestion(diff),
+        exclusions,
+      );
+    case TOPIC_ID.CUBE_ROOTS:
+      return uniqueQuestionGenerator(
+        () => generateCubeRootQuestion(diff),
         exclusions,
       );
     default:

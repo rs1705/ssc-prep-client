@@ -94,10 +94,12 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent showCloseButton={false} className="sm:max-w-md border-border/80 flex flex-col gap-0 max-h-[85vh]">
         <DialogHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between space-y-0 text-left">
-          <DialogTitle className="text-xl font-black tracking-tight flex items-center gap-2 text-foreground">
-            <span className="flex items-center justify-center shrink-0 w-6 h-6 rounded-md text-[10px] font-black bg-primary/10 border border-primary/20 text-primary select-none">
-              {emoji}
-            </span>
+          <DialogTitle className="text-xl font-black tracking-tight flex items-center gap-2.5 text-foreground">
+            {emoji && (
+              <span className="flex items-center justify-center shrink-0 w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 text-primary select-none">
+                {emoji}
+              </span>
+            )}
             {name} Revision
           </DialogTitle>
           <div className="flex items-center gap-2 shrink-0">
