@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { EyeOff, Check, Copy, ChevronDown, X } from "lucide-react";
 import { RevisionConfig } from "./TopicCard";
+import { SSC_PERCENTAGES } from "@/lib/mathGenerator";
 
 interface RevisionDialogProps {
   name: string;
@@ -42,7 +43,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
     const length = rangeObj.max - rangeObj.min + 1;
     const items = Array.from({ length }, (_, i) => {
       const num = i + rangeObj.min;
-      let value = 0;
+      let value: string | number = 0;
       let text = "";
 
       if (type === "square") {
@@ -54,6 +55,12 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
       } else if (type === "table") {
         value = num;
         text = `Table ${num}`;
+      } else if (type === "percentage") {
+        const config = SSC_PERCENTAGES[num];
+        if (config) {
+          value = `${config.numerator}/${config.denominator}`;
+          text = config.display;
+        }
       }
 
       return { num, value, text };
@@ -179,13 +186,22 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                           <div
                             key={item.num}
                             onClick={() => handleRowClick(item.num, equation)}
-                            className={`flex items-center justify-start gap-6 h-9 px-3 border-b border-border/10 dark:border-border/5 hover:bg-muted/50 rounded-xl transition-all duration-150 cursor-pointer select-none group/row ${selfTest && !isRevealed ? "hover:border-primary/20" : ""
-                              }`}
+                            className={`flex items-center justify-between gap-3 h-9 px-3 border-b border-border/10 dark:border-border/5 hover:bg-muted/50 rounded-xl transition-all duration-150 cursor-pointer select-none group/row ${
+                              selfTest && !isRevealed
+                                ? "hover:border-primary/20 bg-primary/5"
+                                : ""
+                            }`}
                           >
-                            <span className="text-xs font-semibold text-muted-foreground min-w-[28px]">{item.text}</span>
-                            <span className="text-[10px] text-muted-foreground/30 font-bold">=</span>
+                            <div className="flex items-center gap-2.5 shrink-0">
+                              <span className="text-xs font-bold text-muted-foreground min-w-[60px] w-[60px] text-left font-mono tracking-tight">
+                                {item.text}
+                              </span>
+                              <span className="text-[11px] text-muted-foreground/30 font-black">
+                                =
+                              </span>
+                            </div>
 
-                            <div className="flex-1 flex items-center justify-between">
+                            <div className="flex-1 flex items-center justify-between pl-1">
                               {isCopied ? (
                                 <span className="text-xs font-bold text-emerald-500 flex items-center gap-1 animate-in fade-in duration-200">
                                   <Check className="w-3 h-3" />
@@ -196,14 +212,14 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                                   Reveal
                                 </span>
                               ) : (
-                                <span className="text-sm font-black text-foreground">
+                                <span className="text-sm font-black text-foreground font-mono tracking-tight whitespace-nowrap shrink-0">
                                   {item.value}
                                 </span>
                               )}
 
                               {/* Copy Icon on Hover (Only in Study Mode) */}
                               {!selfTest && !isCopied && (
-                                <Copy className="w-3 h-3 text-muted-foreground/0 group-hover/row:text-muted-foreground/50 transition-colors ml-2" />
+                                <Copy className="w-3 h-3 text-muted-foreground/0 group-hover/row:text-muted-foreground/50 transition-colors shrink-0" />
                               )}
                             </div>
                           </div>

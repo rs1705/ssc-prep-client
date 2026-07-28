@@ -35,7 +35,7 @@ export const TOPIC_ID = {
   NUMBER_SYSTEM: "number_system", // Divisibility & Remainder theorems
 } as const;
 
-export type TopicId = typeof TOPIC_ID[keyof typeof TOPIC_ID] | string;
+export type TopicId = (typeof TOPIC_ID)[keyof typeof TOPIC_ID] | string;
 
 export interface DifficultyRangeConfig {
   easyMin: number;
@@ -701,7 +701,62 @@ const generateSimplificationQuestion = (difficulty: string) => {
   };
 };
 
-const generatePercentageQuestion = (difficulty: string) => {};
+const generatePercentageQuestion = (difficulty: string) => {
+  if (!difficulty) return;
+  let targetDiff = difficulty.toUpperCase();
+
+  if (
+    targetDiff === DIFFICULTY.ALL ||
+    ![DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD].includes(targetDiff)
+  ) {
+    const tiers = [DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD];
+    targetDiff = tiers[getRandomInt(0, tiers.length - 1)];
+  }
+
+  let questionText = "";
+  let correctAnswer = 0;
+
+  if (targetDiff === DIFFICULTY.EASY) {
+    const archetype = getRandomInt(1, 3);
+
+    if (archetype === 1) {
+      // 1. Standard Direct Calculation: P% of N
+      let NUMBERS = Array.from({ length: 20 }, (_, i) => (i + 1) * 5);
+
+      let percentage = NUMBERS[getRandomInt(0, NUMBERS.length - 1)];
+      const base = 20 * getRandomInt(1, 25);
+
+      correctAnswer = (percentage * base) / 100;
+      questionText = `${percentage}% of ${base}`;
+    }
+
+    if (archetype === 2) {
+      // 2. SSC Fractional Table Shortcut: P% of N
+      const term = generateSSCPercentageTerm(5, 50);
+      questionText = term.text;
+      correctAnswer = term.value;
+    }
+
+    if (archetype === 3) {
+      // 3. Reverse Base Finding: "If P% of N = X, find N"
+      const config =
+        SSC_PERCENTAGES[getRandomInt(0, SSC_PERCENTAGES.length - 1)];
+      const mult = getRandomInt(5, 30);
+      const base = mult * config.denominator;
+      const val = mult * config.numerator;
+
+      questionText = `If ${config.display} of N = ${val}, then find N?`;
+      correctAnswer = base;
+    }
+  }
+
+  return {
+    questionText,
+    correctAnswer,
+    options: generateOptions(correctAnswer, "percentage"),
+    questionKey: `perc_${questionText}`,
+  };
+};
 
 const generateRatioQuestion = (difficulty: string) => {};
 
@@ -710,6 +765,8 @@ export const generateQuestion = (
   difficulty: string,
   exclusions: string[] = [],
 ) => {
+  if (!topicId || !difficulty) return;
+
   const diff = difficulty.toUpperCase();
   switch (topicId.toLowerCase()) {
     case TOPIC_ID.SQUARES:

@@ -188,7 +188,7 @@ export function TopBar() {
         <button
           aria-label="Toggle theme"
           onClick={toggleTheme}
-          className="w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+          className="md:hidden w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
         >
           {mounted && theme === "dark" ? (
             <Sun className="w-4 h-4" strokeWidth={1.75} />

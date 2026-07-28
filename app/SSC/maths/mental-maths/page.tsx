@@ -7,6 +7,7 @@ import { TOPIC_ID } from "@/lib/mathGenerator";
 import { useRouter } from "next/navigation";
 import posthog from "posthog-js";
 import Loader from "@/components/custom/loader";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface MathTopic {
   id: string;
@@ -23,6 +24,7 @@ interface MathTopicSection {
   id: string;
   label: string;
   description: string;
+  theme: "emerald" | "violet" | "rose" | "amber" | "sky";
   topics: MathTopic[];
 }
 
@@ -31,6 +33,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     id: "arithmetic",
     label: "⚡ Arithmetic",
     description: "Core speed — add, subtract, multiply, divide under pressure.",
+    theme: "emerald",
     topics: [
       {
         id: TOPIC_ID.ADDITION,
@@ -127,6 +130,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     label: "🔢 Powers & Roots",
     description:
       "Instant recall of squares, cubes, and their inverses — the backbone of Geometry & Mensuration.",
+    theme: "violet",
     topics: [
       {
         id: TOPIC_ID.SQUARES,
@@ -241,6 +245,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     label: "📊 Applied Math",
     description:
       "BODMAS chains, percentage shortcuts, and ratio splits — the skills that win SSC CGL.",
+    theme: "rose",
     topics: [
       {
         id: TOPIC_ID.SIMPLIFICATION,
@@ -288,6 +293,14 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
         difficulty: "Medium",
         stats: "Speed Calc",
         badge: "⭐ Must Master",
+        revisionConfig: {
+          type: "percentage",
+          ranges: [
+            { label: "Easy", range: "Core (1/2 to 1/5)", min: 0, max: 8 },
+            { label: "Medium", range: "1/6, 1/7 & 1/8 Families", min: 9, max: 20 },
+            { label: "Hard", range: "1/9, 1/11 & Advanced", min: 21, max: 41 },
+          ],
+        },
       },
       {
         id: TOPIC_ID.RATIO,
@@ -319,6 +332,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
 const MentalMaths = () => {
   const router = useRouter();
   const [loadingTopic, setLoadingTopic] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("all");
 
   const handleStart = (topicId: string) => {
     posthog.capture("mental_maths_topic_selected", { topic: topicId });
@@ -353,40 +367,83 @@ const MentalMaths = () => {
           </div>
         </div>
 
-        {MENTAL_MATHS_SECTIONS.map((section) => (
-          <section key={section.id} className="w-full">
-            {/* Section Header */}
-            <div className="mb-3">
-              <h3 className="text-lg font-extrabold tracking-tight text-foreground">
-                {section.label}
-              </h3>
-              <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                {section.description}
-              </p>
-            </div>
+        {/* Filter Chips */}
+        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+          <button
+            onClick={() => setActiveFilter("all")}
+            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+              activeFilter === "all"
+                ? "bg-foreground text-background shadow-md"
+                : "bg-muted/50 text-muted-foreground hover:bg-muted"
+            }`}
+          >
+            All Topics
+          </button>
+          {MENTAL_MATHS_SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => setActiveFilter(section.id)}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                activeFilter === section.id
+                  ? "bg-foreground text-background shadow-md"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
 
-            {/* Section Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-              {section.topics.map((topic, idx) => (
-                <div key={topic.id}>
-                  <TopicCard
-                    index={idx}
-                    cols={4}
-                    name={topic.name}
-                    emoji={topic.emoji}
-                    description={topic.description}
-                    difficulty={topic.difficulty}
-                    onStartClick={() => handleStart(topic.id)}
-                    colorTheme="emerald"
-                    revisionConfig={topic.revisionConfig}
-                    stats={topic.stats}
-                    badge={topic.badge}
-                  />
+        <div className="relative w-full min-h-[500px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeFilter}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="flex flex-col gap-8 w-full"
+            >
+              {MENTAL_MATHS_SECTIONS.filter((s) => activeFilter === "all" || activeFilter === s.id).map((section) => (
+                <section 
+                  key={section.id} 
+                  className="w-full"
+                >
+                {/* Section Header */}
+                <div className="mb-3">
+                  <h3 className="text-lg font-extrabold tracking-tight text-foreground">
+                    {section.label}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                    {section.description}
+                  </p>
                 </div>
+
+                {/* Section Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                  {section.topics.map((topic, idx) => (
+                    <div key={topic.id}>
+                        <TopicCard
+                          index={idx}
+                          cols={4}
+                          name={topic.name}
+                          emoji={topic.emoji}
+                          description={topic.description}
+                          difficulty={topic.difficulty}
+                          onStartClick={() => handleStart(topic.id)}
+                          colorTheme="emerald"
+                          revisionConfig={topic.revisionConfig}
+                          stats={topic.stats}
+                          badge={topic.badge}
+                        />
+                    </div>
+                  ))}
+                </div>
+                </section>
               ))}
-            </div>
-          </section>
-        ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {loadingTopic && (
