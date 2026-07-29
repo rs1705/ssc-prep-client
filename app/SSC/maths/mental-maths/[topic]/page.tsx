@@ -463,7 +463,6 @@ export default function MentalMathsPractice() {
   const progressText = isTimedMode
     ? `${timeRemaining}s remaining`
     : `${attemptedQuestionsCount} / ${questionLimit} Qs`;
-
   const containerHeightClass = "w-full h-auto mb-2 md:mb-4";
 
   return (
@@ -514,23 +513,12 @@ export default function MentalMathsPractice() {
           </div>
         )}
 
-        {/* 
-          Master Layout Wrapper: 
-          The idle screen is always in the DOM (but hidden visually when not idle) 
-          so it perfectly dictates the exact physical height of the entire card.
-          Other screens render absolutely on top of it.
-        */}
+        {/* Master Layout Wrapper */}
         <div className="relative w-full flex flex-col flex-1">
-          {/* 1. LOBBY CONFIGURATION SCREEN (Always rendered) */}
-          <div
-            className={`w-full flex flex-col gap-1 transition-all duration-300 ${
-              gameState === "idle"
-                ? "opacity-100 z-10 animate-in fade-in slide-in-from-bottom-3"
-                : "opacity-0 invisible pointer-events-none"
-            }`}
-            aria-hidden={gameState !== "idle"}
-          >
-            {/* Title Section */}
+          {/* 1. LOBBY CONFIGURATION SCREEN */}
+          {gameState === "idle" && (
+            <div className="w-full flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-3">
+              {/* Title Section */}
             <div className="text-center pb-1">
               <h2 className="text-2xl font-extrabold tracking-tight capitalize text-foreground">
                 {topic} Practice
@@ -542,7 +530,8 @@ export default function MentalMathsPractice() {
 
             <div className="flex flex-col gap-4 overflow-y-auto scrollbar-none pb-2">
               {/* Difficulty Card */}
-              <div className="bg-muted/10 border border-border/50 rounded-2xl p-3 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
+              {topic !== "mixed" && (
+                <div className="bg-muted/10 border border-border/50 rounded-2xl p-3 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
                 <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-2">
                   <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/20 text-primary font-mono text-[10px] pt-px">
                     1
@@ -580,6 +569,7 @@ export default function MentalMathsPractice() {
                   {getDifficultyDescription(topic, engine.state.difficulty)}
                 </p>
               </div>
+              )}
 
               {/* Practice Mode & Limits Card */}
               <div className="bg-muted/10 border border-border/50 rounded-2xl p-3 shadow-sm transition-all hover:bg-muted/20 hover:border-border">
@@ -589,6 +579,7 @@ export default function MentalMathsPractice() {
                   </span>
                   Practice Mode
                 </h3>
+                {topic !== "mixed" && (
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   {/* Timed Mode Card */}
                   <button
@@ -659,10 +650,11 @@ export default function MentalMathsPractice() {
                     <span className="font-bold text-[11px]">Freestyle</span>
                   </button>
                 </div>
+                )}
 
                 <div className="grid grid-cols-3 gap-2">
                   {engine.state.mode === "timed"
-                    ? [30, 60, 90].map((t) => {
+                    ? (topic === "mixed" ? [60, 120, 300] : [30, 60, 90]).map((t) => {
                         const isSelected = t === engine.state.timeLimit;
                         return (
                           <button
@@ -744,10 +736,11 @@ export default function MentalMathsPractice() {
               </Button>
             </div>
           </div>
+          )}
 
-          {/* ABSOLUTE OVERLAYS FOR OTHER GAME STATES (Perfectly matches idle height) */}
+          {/* OTHER GAME STATES */}
           {gameState !== "idle" && (
-            <div className="absolute inset-0 z-20 w-full h-full flex flex-col">
+            <div className="w-full flex flex-col flex-1 animate-in fade-in slide-in-from-bottom-3">
               {/* 2. THREE-SECOND START COUNTDOWN */}
               {gameState === "countdown" && (
                 <div className="h-full flex flex-col items-center justify-center">

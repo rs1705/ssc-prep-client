@@ -82,13 +82,13 @@ export const TopicCard = ({
     >
       <div>
         {/* Card Header Top Row: Emoji & Badge */}
-        <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex items-center justify-between gap-2 mb-3">
           {/* Emoji box */}
           <div className={`flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-2xl font-extrabold text-lg select-none ${themeClass}`}>
             {emoji}
           </div>
           {badge && (
-            <span className="flex-shrink-0 whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-extrabold tracking-wide bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 select-none shadow-2xs">
+            <span className="flex-shrink-0 whitespace-nowrap inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm select-none">
               {badge}
             </span>
           )}

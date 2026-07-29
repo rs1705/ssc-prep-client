@@ -25,10 +25,43 @@ interface MathTopicSection {
   label: string;
   description: string;
   theme: "emerald" | "violet" | "rose" | "amber" | "sky";
+  badge?: string;
   topics: MathTopic[];
 }
 
 const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
+  {
+    id: "ultimate",
+    label: "🔥 Ultimate Challenge",
+    description:
+      "The final frontier. A relentless, randomized onslaught of questions across all topics and difficulties.",
+    theme: "emerald",
+    badge: "✨ NEW",
+    topics: [
+      {
+        id: TOPIC_ID.MIXED,
+        name: "Mix Blitz",
+        emoji: (
+          <svg
+            className="w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+        ),
+        description:
+          "No time to think. Topics pivot every question. Lock yourself in Timed mode and test your true cognitive agility.",
+        difficulty: "Hard",
+        stats: "All Topics",
+        badge: "⚡ Ultimate",
+      },
+    ],
+  },
   {
     id: "arithmetic",
     label: "⚡ Arithmetic",
@@ -246,6 +279,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     description:
       "BODMAS chains, percentage shortcuts, and ratio splits — the skills that win SSC CGL.",
     theme: "rose",
+    badge: "✨ NEW",
     topics: [
       {
         id: TOPIC_ID.SIMPLIFICATION,
@@ -411,8 +445,13 @@ const MentalMaths = () => {
                 >
                 {/* Section Header */}
                 <div className="mb-3">
-                  <h3 className="text-lg font-extrabold tracking-tight text-foreground">
+                  <h3 className="text-lg font-extrabold tracking-tight text-foreground flex items-center gap-2">
                     {section.label}
+                    {section.badge && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-sm uppercase tracking-widest animate-pulse">
+                        {section.badge}
+                      </span>
+                    )}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                     {section.description}
