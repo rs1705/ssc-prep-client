@@ -1136,7 +1136,7 @@ export const generateMixedBlitzQuestion = () => {
   let difficulty = BLITZ_DIFFICULTIES[getRandomInt(0, BLITZ_DIFFICULTIES.length - 1)];
 
   // The custom override we discussed: Bump trivial EASY questions up to MEDIUM
-  const trivialTopics = [
+  const trivialTopics: string[] = [
     TOPIC_ID.ADDITION,
     TOPIC_ID.SUBTRACTION,
     TOPIC_ID.SIMPLIFICATION,
