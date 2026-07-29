@@ -57,6 +57,7 @@ export function useSidebar() {
   if (!context) {
     return {
       isCollapsed: false,
+      isMounted: true,
       setIsCollapsed: () => {},
       toggleSidebar: () => {},
     };

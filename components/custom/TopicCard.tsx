@@ -17,7 +17,8 @@ export interface RevisionConfig {
     | "table"
     | "subtraction"
     | "multiplication"
-    | "division";
+    | "division"
+    | "percentage";
   ranges: RevisionRange[];
 }
 
