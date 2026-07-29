@@ -745,8 +745,79 @@ const generatePercentageQuestion = (difficulty: string) => {
       const base = mult * config.denominator;
       const val = mult * config.numerator;
 
-      questionText = `If ${config.display} of N = ${val}, then find N?`;
+      questionText = `If ${config.display} of N = ${val}, find N?`;
       correctAnswer = base;
+    }
+  } else if (targetDiff === DIFFICULTY.MEDIUM) {
+    const archetype = getRandomInt(1, 3);
+
+    if (archetype === 1) {
+      // 1. Proportional Equality: "If P1% of X = P2% of Y, find X"
+      const p1 = getRandomInt(1, 10) * 5;
+      const p2 = getRandomInt(1, 15) * 5;
+      const m = getRandomInt(5, 20); // hidden multiplier
+
+      const y = p1 * m;
+      const x = p2 * m;
+
+      questionText = `If ${p1}% of X = ${p2}% of ${y}, find X`;
+      correctAnswer = x;
+    }
+
+    if (archetype === 2) {
+      // 2. Successive Percentage (Naked): Base increased by A%, then decreased by B%
+      const base = getRandomInt(1, 10) * 100;
+      const a = getRandomInt(1, 5) * 10;
+      const b = getRandomInt(1, 4) * 10;
+
+      correctAnswer = base * (1 + a / 100) * (1 - b / 100);
+      questionText = `${base} increased by ${a}%, then decreased by ${b}% = ?`;
+    }
+
+    if (archetype === 3) {
+      // 3. Dual-Base Sum: P1% of X + P2% of Y = ?
+      const term1 = generateSSCPercentageTerm(5, 20);
+      const term2 = generateSSCPercentageTerm(5, 20);
+      questionText = `${term1.text} + ${term2.text}`;
+      correctAnswer = term1.value + term2.value;
+    }
+  } else if (targetDiff === DIFFICULTY.HARD) {
+    const archetype = getRandomInt(1, 3);
+
+    if (archetype === 1) {
+      // 1. Percentage of Percentage: P1% of P2% of N = ?
+      const p1 = getRandomInt(1, 10) * 5; // e.g. 20
+      const p2 = getRandomInt(1, 15) * 5; // e.g. 25
+      const n = getRandomInt(1, 10) * 400; // multiple of 400 guarantees integer
+      correctAnswer = (p1 * p2 * n) / 10000;
+      questionText = `${p1}% of ${p2}% of ${n}`;
+    }
+
+    if (archetype === 2) {
+      // 2. Fractional Table Chaining: F1 of F2 of N = ?
+      const config1 =
+        SSC_PERCENTAGES[getRandomInt(0, SSC_PERCENTAGES.length - 1)];
+      const config2 =
+        SSC_PERCENTAGES[getRandomInt(0, SSC_PERCENTAGES.length - 1)];
+      const m = getRandomInt(2, 10);
+      const n = config1.denominator * config2.denominator * m;
+      correctAnswer = config1.numerator * config2.numerator * m;
+      questionText = `${config1.display} of ${config2.display} of ${n}`;
+    }
+
+    if (archetype === 3) {
+      // 3. Reverse Dual-Base Equation: P1% of X + P2% of Y = Z. Find X.
+      const config1 =
+        SSC_PERCENTAGES[getRandomInt(0, SSC_PERCENTAGES.length - 1)];
+      const mX = getRandomInt(2, 15);
+      const x = config1.denominator * mX;
+      const term1Value = config1.numerator * mX;
+
+      const term2 = generateSSCPercentageTerm(2, 10);
+      const z = term1Value + term2.value;
+
+      questionText = `If ${config1.display} of X + ${term2.text} = ${z}, find X`;
+      correctAnswer = x;
     }
   }
 
@@ -758,7 +829,245 @@ const generatePercentageQuestion = (difficulty: string) => {
   };
 };
 
-const generateRatioQuestion = (difficulty: string) => {};
+const gcd = (a: number, b: number): number => {
+  return b === 0 ? a : gcd(b, a % b);
+};
+
+const generateRatioQuestion = (difficulty: string) => {
+  let targetDiff = difficulty.toUpperCase();
+  let questionText, correctAnswer, options;
+  if (
+    targetDiff === DIFFICULTY.ALL ||
+    ![DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD].includes(targetDiff)
+  ) {
+    const tiers = [DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD];
+    targetDiff = tiers[getRandomInt(0, tiers.length - 1)];
+  }
+
+  if (targetDiff === DIFFICULTY.EASY) {
+    const archetype = getRandomInt(1, 3);
+    if (archetype === 1) {
+      let multiplier = getRandomInt(2, 20);
+      let a = getRandomInt(2, 20);
+      let b = getRandomInt(2, 20);
+
+      const divisor=gcd(a,b);
+      a/=divisor;
+      b/=divisor;
+
+      const askForA = Math.random() > 0.5;
+      const givenValue = askForA ? b * multiplier : a * multiplier;
+      const givenVar = askForA ? "B" : "A";
+      const askVar = askForA ? "A" : "B";
+      questionText = `If A:B=${a}:${b} and ${givenVar}=${givenValue}, what is the value of ${askVar}?`;
+      correctAnswer = askForA ? a * multiplier : b * multiplier;
+      options = generateOptions(correctAnswer, "ratio");
+    }
+    if (archetype === 2) {
+      let aRatio = getRandomInt(2, 8);
+      let bRatio1 = getRandomInt(3, 9);
+      const div1 = gcd(aRatio, bRatio1);
+      aRatio /= div1;
+      bRatio1 /= div1;
+
+      let bRatio2 = getRandomInt(2, 8);
+      let cRatio = getRandomInt(3, 9);
+      const div2 = gcd(bRatio2, cRatio);
+      bRatio2 /= div2;
+      cRatio /= div2;
+
+      // Combine ratios to find true proportions
+      const A = aRatio * bRatio2;
+      const C = bRatio1 * cRatio;
+
+      const multiplier = getRandomInt(2, 10);
+      const askForA = Math.random() > 0.5;
+      const givenValue = askForA ? C * multiplier : A * multiplier;
+      const givenVar = askForA ? "C" : "A";
+      const askVar = askForA ? "A" : "C";
+      
+      questionText = `If A:B=${aRatio}:${bRatio1} and B:C=${bRatio2}:${cRatio}, and ${givenVar}=${givenValue}, what is the value of ${askVar}?`;
+      correctAnswer = askForA ? A * multiplier : C * multiplier;
+      options = generateOptions(correctAnswer, "ratio");
+    } else if (archetype === 3) {
+      let a = getRandomInt(2, 9);
+      let b = getRandomInt(2, 9);
+      while (a === b) b = getRandomInt(2, 9);
+      const div = gcd(a, b);
+      a /= div; b /= div;
+
+      const multiplier = getRandomInt(2, 20);
+      const valA = a * multiplier;
+      const valB = b * multiplier;
+
+      const isSum = Math.random() > 0.5;
+      const givenVal = isSum ? valA + valB : Math.abs(valA - valB);
+      const condition = isSum ? "sum" : "difference";
+
+      const askType = getRandomInt(1, 4);
+      let askStr = "";
+      if (askType === 1) { askStr = "value of the smaller number"; correctAnswer = Math.min(valA, valB); }
+      else if (askType === 2) { askStr = "value of the larger number"; correctAnswer = Math.max(valA, valB); }
+      else if (askType === 3) { askStr = "value of A"; correctAnswer = valA; }
+      else { askStr = "value of B"; correctAnswer = valB; }
+
+      questionText = `Two numbers A and B are in the ratio ${a}:${b}. If their ${condition} is ${givenVal}, what is the ${askStr}?`;
+      options = generateOptions(correctAnswer, "ratio");
+    }
+  } else if (targetDiff === DIFFICULTY.MEDIUM) {
+    const archetype = getRandomInt(1, 3);
+    if (archetype === 1) {
+      const aRatio = getRandomInt(1, 5);
+      const bRatio = getRandomInt(2, 7);
+      const cRatio = getRandomInt(1, 6);
+      const sumRatio = aRatio + bRatio + cRatio;
+      const multiplier = getRandomInt(10, 50);
+      const total = sumRatio * multiplier;
+
+      const targetVar = ["A", "B", "C"][getRandomInt(0, 2)];
+      const targetRatio = targetVar === "A" ? aRatio : targetVar === "B" ? bRatio : cRatio;
+      
+      questionText = `An amount of ₹${total} is divided among A, B, and C in the ratio ${aRatio}:${bRatio}:${cRatio}. What is ${targetVar}'s share?`;
+      correctAnswer = targetRatio * multiplier;
+      options = generateOptions(correctAnswer, "ratio");
+    } else if (archetype === 2) {
+      const isFourth = Math.random() > 0.5;
+      if (isFourth) {
+        const a = getRandomInt(2, 10);
+        const b = getRandomInt(3, 12);
+        const multiplier = getRandomInt(2, 10);
+        const c = a * multiplier;
+        correctAnswer = b * multiplier;
+        questionText = `Find the fourth proportional to ${a}, ${b}, and ${c}.`;
+      } else {
+        const multiplier = getRandomInt(2, 8);
+        const a = getRandomInt(2, 6);
+        const b = a * multiplier;
+        correctAnswer = a * multiplier * multiplier;
+        questionText = `Find the third proportional to ${a} and ${b}.`;
+      }
+      options = generateOptions(correctAnswer, "ratio");
+    } else if (archetype === 3) {
+      let x = getRandomInt(2, 5);
+      let y = getRandomInt(3, 6);
+      let z = getRandomInt(4, 8);
+      const gcdXY = gcd(x, y);
+      const gcdXYZ = gcd(gcdXY, z);
+      x /= gcdXYZ; y /= gcdXYZ; z /= gcdXYZ;
+      
+      let ratioA = y * z;
+      let ratioB = x * z;
+      let ratioC = x * y;
+      const gcdABC = gcd(gcd(ratioA, ratioB), ratioC);
+      ratioA /= gcdABC; ratioB /= gcdABC; ratioC /= gcdABC;
+      
+      const sumRatio = ratioA + ratioB + ratioC;
+      const multiplier = getRandomInt(2, 10);
+      const total = sumRatio * multiplier;
+      
+      const targetVar = ["A", "B", "C"][getRandomInt(0, 2)];
+      const targetRatio = targetVar === "A" ? ratioA : targetVar === "B" ? ratioB : ratioC;
+      
+      questionText = `If ${x}A = ${y}B = ${z}C and A+B+C = ${total}, what is the value of ${targetVar}?`;
+      correctAnswer = targetRatio * multiplier;
+      options = generateOptions(correctAnswer, "ratio");
+    }
+  } else if (targetDiff === DIFFICULTY.HARD) {
+    const archetype = getRandomInt(1, 3);
+    if (archetype === 1) {
+      let aRatio = getRandomInt(3, 8);
+      let bRatio = getRandomInt(2, 6);
+      const div = gcd(aRatio, bRatio);
+      aRatio /= div; bRatio /= div;
+      
+      let x = getRandomInt(1, 4);
+      let y = getRandomInt(1, 4);
+      let z = getRandomInt(3, 6);
+      let w = getRandomInt(1, 3);
+      if (z * aRatio <= w * bRatio) z = Math.floor((w * bRatio) / aRatio) + getRandomInt(1, 3);
+      
+      let p = (x * aRatio) + (y * bRatio);
+      let q = (z * aRatio) - (w * bRatio);
+      const pqDiv = gcd(p, q);
+      p /= pqDiv; q /= pqDiv;
+      
+      const multiplier = getRandomInt(2, 10);
+      const askForA = Math.random() > 0.5;
+      const givenValue = askForA ? bRatio * multiplier : aRatio * multiplier;
+      const givenVar = askForA ? "B" : "A";
+      const askVar = askForA ? "A" : "B";
+      
+      questionText = `If (${x}A+${y}B)/(${z}A-${w}B) = ${p}/${q} and ${givenVar} = ${givenValue}, find ${askVar}.`;
+      correctAnswer = askForA ? aRatio * multiplier : bRatio * multiplier;
+      options = generateOptions(correctAnswer, "ratio");
+    } else if (archetype === 2) {
+      const aRatio = getRandomInt(2, 5);
+      const bRatio = getRandomInt(aRatio + 1, aRatio + 4); 
+      const k = getRandomInt(3, 12);
+      const addX = getRandomInt(4, 15);
+      
+      const n1 = aRatio * k;
+      const n2 = bRatio * k;
+      const new1 = n1 + addX;
+      const new2 = n2 + addX;
+      
+      const newGcd = gcd(new1, new2);
+      const cRatio = new1 / newGcd;
+      const dRatio = new2 / newGcd;
+
+      questionText = `Two numbers are in the ratio ${aRatio}:${bRatio}. If ${addX} is added to both, the new ratio becomes ${cRatio}:${dRatio}. Find the smaller number.`;
+      correctAnswer = n1;
+      options = generateOptions(correctAnswer, "ratio");
+    } else if (archetype === 3) {
+      let aRatio = getRandomInt(2, 5);
+      let bRatio1 = getRandomInt(2, 5);
+      const div1 = gcd(aRatio, bRatio1);
+      aRatio /= div1; bRatio1 /= div1;
+      
+      let bRatio2 = getRandomInt(2, 5);
+      let cRatio1 = getRandomInt(2, 5);
+      const div2 = gcd(bRatio2, cRatio1);
+      bRatio2 /= div2; cRatio1 /= div2;
+      
+      let cRatio2 = getRandomInt(2, 5);
+      let dRatio = getRandomInt(2, 5);
+      const div3 = gcd(cRatio2, dRatio);
+      cRatio2 /= div3; dRatio /= div3;
+      
+      const lcmB = (bRatio1 * bRatio2) / gcd(bRatio1, bRatio2);
+      let A = aRatio * (lcmB / bRatio1);
+      let B = lcmB;
+      let C = cRatio1 * (lcmB / bRatio2);
+      
+      const lcmC = (C * cRatio2) / gcd(C, cRatio2);
+      A = A * (lcmC / C);
+      B = B * (lcmC / C);
+      const finalC = lcmC;
+      const D = dRatio * (lcmC / cRatio2);
+      
+      const multiplier = getRandomInt(2, 6);
+      const vars = ["A", "B", "C", "D"];
+      const askIndex = getRandomInt(0, 3);
+      let givenIndex = getRandomInt(0, 3);
+      while (givenIndex === askIndex) givenIndex = getRandomInt(0, 3);
+      
+      const values = [A * multiplier, B * multiplier, finalC * multiplier, D * multiplier];
+      const givenVar = vars[givenIndex];
+      const askVar = vars[askIndex];
+      const givenValue = values[givenIndex];
+      
+      questionText = `If A:B=${aRatio}:${bRatio1}, B:C=${bRatio2}:${cRatio1}, C:D=${cRatio2}:${dRatio} and ${givenVar}=${givenValue}, find ${askVar}.`;
+      correctAnswer = values[askIndex];
+      options = generateOptions(correctAnswer, "ratio");
+    }
+  }
+  return {
+    questionText,
+    correctAnswer,
+    options,
+    questionKey: `ratio_${questionText}`,
+  };
+};
 
 export const generateQuestion = (
   topicId: string,

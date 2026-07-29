@@ -7,7 +7,7 @@ import { SidebarProvider, useSidebar } from "@/components/custom/sidebar-context
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, isMounted } = useSidebar();
 
   const isGameRoute = (path: string) => {
     if (path.includes('/hangman')) return true;
@@ -32,7 +32,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-[100dvh] mx-auto flex bg-background text-foreground w-full">
       {/* Left Sidebar Layout */}
-      <div className={`w-0 shrink-0 flex relative z-40 transition-all duration-300 ease-in-out ${sidebarWidthClass}`}>
+      <div className={`w-0 shrink-0 flex relative z-40 ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${sidebarWidthClass}`}>
         <Sidebar isFocusMode={isFocusMode} />
       </div>
       

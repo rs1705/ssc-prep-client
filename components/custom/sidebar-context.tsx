@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface SidebarContextType {
   isCollapsed: boolean;
+  isMounted: boolean;
   setIsCollapsed: (collapsed: boolean | ((prev: boolean) => boolean)) => void;
   toggleSidebar: () => void;
 }
@@ -12,12 +13,17 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("preppilot_sidebar_collapsed");
     if (saved !== null) {
       setIsCollapsed(saved === "true");
     }
+    // Set mounted after a microtask to ensure hydration completes before animations enable
+    requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
   }, []);
 
   const handleSetCollapsed = (value: boolean | ((prev: boolean) => boolean)) => {
@@ -36,6 +42,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
     <SidebarContext.Provider
       value={{
         isCollapsed,
+        isMounted,
         setIsCollapsed: handleSetCollapsed,
         toggleSidebar,
       }}

@@ -35,7 +35,7 @@ const secondaryNav = [
 
 export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   const pathname = usePathname();
-  const { isCollapsed, toggleSidebar } = useSidebar();
+  const { isCollapsed, isMounted, toggleSidebar } = useSidebar();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -95,7 +95,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/60 bg-background absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none transition-all duration-300 ease-in-out ${overlayClass}`}
+      className={`hidden md:flex flex-col border-r border-border/60 bg-background absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${overlayClass}`}
     >
       {/* Header Row with Logo & PanelLeft Toggle */}
       <div
@@ -103,11 +103,11 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           isCollapsed ? "flex-col gap-3 justify-center" : "justify-between"
         }`}
       >
-        <div className={`flex items-center min-w-0 transition-all duration-300 ease-in-out ${isCollapsed ? "gap-0" : "gap-3"}`}>
+        <div className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "gap-0" : "gap-3"}`}>
           <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-sm flex items-center justify-center text-white shrink-0">
             <Rocket className="w-5 h-5" />
           </div>
-          <div className={`leading-tight truncate transition-all duration-300 ease-in-out ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
+          <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
             <div className="text-[9px] font-medium tracking-widest uppercase opacity-70">
               PrepPilot
             </div>
@@ -152,14 +152,14 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-              <span className={`truncate transition-all duration-300 ease-in-out ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
+              <span className={`truncate ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
         })}
       </nav>
 
       {/* Support Section */}
-      <div className={`mt-8 mb-2 px-3 text-[9px] font-medium tracking-widest uppercase transition-all duration-300 ease-in-out ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-50 h-auto"}`}>
+      <div className={`mt-8 mb-2 px-3 text-[9px] font-medium tracking-widest uppercase ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-50 h-auto"}`}>
         Support
       </div>
       <nav className={`flex flex-col gap-1 w-full ${isCollapsed ? "mt-0" : ""}`}>
@@ -182,7 +182,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-              <span className={`truncate transition-all duration-300 ease-in-out ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
+              <span className={`truncate ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
         })}
@@ -228,19 +228,19 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       {/* Exam D-Day Widget */}
       <div 
         title="Exam D-Day: 142 days remaining"
-        className={`bg-card/60 ring-1 ring-border transition-all duration-300 ease-in-out relative overflow-hidden flex flex-col ${
+        className={`bg-card/60 ring-1 ring-border ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} relative overflow-hidden flex flex-col ${
           isCollapsed 
             ? "w-10 h-10 mx-auto rounded-xl items-center justify-center" 
             : "w-full p-4 rounded-2xl"
         }`}
       >
         {/* Compact View (Centered absolute) */}
-        <div className={`font-bold text-primary transition-all duration-300 ease-in-out absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
+        <div className={`font-bold text-primary ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
           142d
         </div>
         
         {/* Expanded View */}
-        <div className={`w-full transition-all duration-300 ease-in-out ${isCollapsed ? "opacity-0 invisible absolute top-4 left-4" : "opacity-100 relative"}`}>
+        <div className={`w-full ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-4 left-4" : "opacity-100 relative"}`}>
           <div className="text-[9px] font-medium tracking-widest uppercase mb-1 text-muted-foreground whitespace-nowrap">
             Exam D-Day
           </div>

@@ -51,7 +51,9 @@ const getQuestionFontSize = (text: string | undefined) => {
   if (len <= 10) return "text-4xl sm:text-5xl md:text-6xl";
   if (len <= 18) return "text-3xl sm:text-4xl md:text-5xl";
   if (len <= 28) return "text-2xl sm:text-3xl md:text-4xl";
-  return "text-xl sm:text-2xl md:text-3xl";
+  if (len <= 45) return "text-xl sm:text-2xl md:text-3xl";
+  if (len <= 70) return "text-lg sm:text-xl md:text-2xl";
+  return "text-base sm:text-lg md:text-xl leading-tight";
 };
 
 const renderTopicIcon = (topic: string, className?: string) => {
@@ -910,7 +912,7 @@ export default function MentalMathsPractice() {
                           stiffness: 350,
                           damping: 25,
                         }}
-                        className={`font-black tracking-tight text-center w-full font-mono ${getQuestionFontSize(
+                        className={`font-black tracking-tight text-center w-full font-mono break-words ${getQuestionFontSize(
                           engine.state.currentQuestion?.questionText,
                         )}`}
                       >

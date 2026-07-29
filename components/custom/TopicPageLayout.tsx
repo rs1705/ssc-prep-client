@@ -60,7 +60,7 @@ export const TopicPageLayout = ({
   };
 
   return (
-    <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 h-full flex-1 ${centerContent ? 'justify-start' : ''}`}>
+    <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 h-full flex-1 ${centerContent ? 'justify-center' : ''}`}>
       {/* Dynamic Breadcrumbs */}
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
         <div
@@ -113,7 +113,7 @@ export const TopicPageLayout = ({
       )}
 
       {/* Actual Content Wrapper */}
-      <div className={`flex flex-col items-center flex-1 w-full ${contentMaxWidthClass} ${centerContent ? 'justify-start pt-2 sm:pt-4 md:pt-8' : ''}`}>
+      <div className={`flex flex-col items-center flex-1 w-full ${contentMaxWidthClass} ${centerContent ? 'justify-center' : ''}`}>
         {children}
       </div>
     </div>
