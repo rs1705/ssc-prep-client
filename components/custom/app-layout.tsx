@@ -9,6 +9,10 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted } = useSidebar();
 
+  if (pathname === "/") {
+    return <>{children}</>;
+  }
+
   const isGameRoute = (path: string) => {
     if (path.includes('/hangman')) return true;
     if (path.includes('/fsrs')) return true;

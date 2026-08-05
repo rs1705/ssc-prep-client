@@ -21,7 +21,7 @@ import {
 import { useSidebar } from "@/components/custom/sidebar-context";
 
 const nav = [
-  { to: "/", label: "Dashboard", icon: Home },
+  { to: "/dashboard", label: "Dashboard", icon: Home },
   { to: "/practice", label: "Practice", icon: Zap },
   { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/bookmarks", label: "Bookmarks", icon: Bookmark },
@@ -134,7 +134,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       {/* Primary Nav Items */}
       <nav className="flex flex-col gap-1 w-full">
         {nav.map((n) => {
-          const active = n.to === "/" ? pathname === "/" : pathname.startsWith(n.to);
+          const active = n.to === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(n.to);
           const Icon = n.icon;
           return (
             <Link

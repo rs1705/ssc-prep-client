@@ -67,7 +67,7 @@ export const TopicPageLayout = ({
           className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground/80 select-none mb-2 px-4 sm:px-0 shrink-0`}
         >
           <Link
-            href="/"
+            href="/dashboard"
             className="hover:text-foreground transition-colors"
           >
             Home

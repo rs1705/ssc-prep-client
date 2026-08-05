@@ -1,398 +1,432 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useAuth } from "@/context/auth";
-import {
-  Flame,
-  ArrowUpRight,
-  Calculator,
-  Sigma,
-  Languages,
-  Newspaper,
-  Zap,
-  Target,
-  Bookmark,
-  ScrollText,
-  ChevronRight,
-  History,
-} from "lucide-react";
+import { ArrowRight, Brain, Zap, BookOpen, Target, Gamepad2, BarChart3, Rocket, XCircle, CheckCircle2, Check } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
-export default function Dashboard() {
-  const { user } = useAuth();
-  
-  const [greeting, setGreeting] = useState("Good morning");
+export default function LandingPage() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 17) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
+    setMounted(true);
   }, []);
 
-  // Dummy data mirroring the screenshot
-  const mockStats = {
-    streak: 12,
-    xp: "2,480",
-    todayGoal: 30,
-    solved: 12,
-    percent: "40%",
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0 }
+    }
   };
 
-  const subjects = [
-    {
-      icon: Calculator,
-      name: "Quant",
-      qs: "1,240 QS",
-      to: "/SSC/maths",
-      active: true,
-      theme: "emerald",
-    },
-    {
-      icon: Sigma,
-      name: "Reasoning",
-      qs: "890 QS",
-      to: "/SSC/reasoning",
-      theme: "amber",
-    },
-    {
-      icon: Languages,
-      name: "English",
-      qs: "720 QS",
-      to: "/SSC/english",
-      theme: "violet",
-    },
-    {
-      icon: Newspaper,
-      name: "GK / GS",
-      qs: "1,580 QS",
-      to: "/SSC/gk",
-      theme: "rose",
-    },
-  ];
-
-  const quickActions = [
-    { icon: Zap, label: "Speed Math", to: "/SSC/maths/mental-maths" },
-    {
-      icon: Target,
-      label: "Daily Flashcards",
-      to: "/SSC/english/flashcards/fsrs",
-    },
-    { icon: Bookmark, label: "Bookmarks", to: "/bookmarks" },
-  ];
-
-  const recentSessions = [
-    {
-      name: "Ratio & Proportion",
-      date: "22/25 · 12:40",
-      score: "88%",
-      xp: "+45 XP",
-      icon: Calculator,
-    },
-    {
-      name: "Reading Comp.",
-      date: "18/20 · 09:12",
-      score: "90%",
-      xp: "+30 XP",
-      icon: Languages,
-    },
-    {
-      name: "Static GK — History",
-      date: "14/20 · 14:20",
-      score: "70%",
-      xp: "+18 XP",
-      icon: Newspaper,
-    },
-  ];
-
-  const themeClasses: Record<string, { bg: string; text: string }> = {
-    emerald: { bg: "bg-emerald-500/10", text: "text-emerald-500 dark:text-emerald-400" },
-    amber: { bg: "bg-amber-500/10", text: "text-amber-500 dark:text-amber-400" },
-    violet: { bg: "bg-violet-500/10", text: "text-violet-500 dark:text-violet-400" },
-    rose: { bg: "bg-rose-500/10", text: "text-rose-500 dark:text-rose-400" },
+  const itemVariants = {
+    hidden: { opacity: 0, y: 8, scale: 0.95 },
+    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } }
   };
 
   return (
-    <div className="w-full">
-      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 md:mb-6 text-foreground animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
-        {greeting}, {user?.displayName?.split(" ")[0] || "Champ"}
-      </h1>
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden flex flex-col items-center relative scroll-smooth">
+      
+      {/* Dynamic Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <motion.div 
+          animate={{ y: [0, -30, 0], x: [0, 20, 0], scale: [1, 1.1, 1], opacity: [0.15, 0.25, 0.15] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 -left-20 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-amber-500/30 blur-[100px] rounded-full"
+        />
+        <motion.div 
+          animate={{ y: [0, 40, 0], x: [0, -30, 0], scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-1/4 -right-20 w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-orange-500/20 blur-[120px] rounded-full"
+        />
+        <motion.div 
+          animate={{ y: [0, -20, 0], opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30vw] h-[30vw] max-w-[400px] max-h-[400px] bg-rose-500/10 blur-[80px] rounded-full"
+        />
+      </div>
 
-      {/* Top Row: Target & Resume */}
-      <div className="grid lg:grid-cols-2 gap-5 mb-10">
-        {/* Streak / Target Card */}
-        <div className="rounded-3xl bg-card ring-1 ring-border p-7 shadow-sm animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground">
-              <Flame className="w-3.5 h-3.5 text-amber-500" strokeWidth={2.5} />
-              Streak · {mockStats.streak} days
-            </div>
-            <div className="text-right">
-              <div className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">
-                XP
-              </div>
-              <div className="text-lg font-bold text-amber-500">
-                {mockStats.xp}
-              </div>
-            </div>
-          </div>
-
-          <div className="text-xl font-bold tracking-tight mb-4 text-foreground">
-            Today's target · {mockStats.todayGoal} Qs
-          </div>
-
-          <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-3">
-            <div
-              className="h-full bg-primary"
-              style={{ width: mockStats.percent }}
-            />
-          </div>
-
-          <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:opacity-95 transition-colors">
-            <span>
-              {mockStats.solved} / {mockStats.todayGoal} solved
-            </span>
-            <span>{mockStats.percent}</span>
-          </div>
-
-          {/* Week tracker pills */}
-          <div className="mt-5 grid grid-cols-7 gap-1.5">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <div
-                key={i}
-                className={`h-3 rounded-full ${i < 5 ? "bg-primary" : i === 5 ? "bg-primary/40" : "bg-muted"}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Resume Card (Primary Background) */}
-        <Link
-          href="/SSC/maths/mental-maths"
-          className="group rounded-3xl bg-gradient-to-br from-amber-500 to-orange-500 text-white p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all shadow-[0_20px_60px_-20px_rgba(245,158,11,0.3)] hover:shadow-[0_28px_80px_-20px_rgba(245,158,11,0.5)] cursor-pointer animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-          style={{ animationDelay: "150ms", animationFillMode: "both" }}
+      {/* Navbar */}
+      <nav className="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-50">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }} 
+          animate={{ opacity: 1, x: 0 }} 
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex items-center gap-3"
         >
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="text-[10px] font-bold tracking-widest uppercase text-primary-foreground/70">
-                Resume
-              </div>
-              <div className="text-3xl font-extrabold tracking-tight mt-1 text-primary-foreground">
-                Speed Math — Percentages
-              </div>
-              <div className="opacity-80 text-sm mt-1 text-primary-foreground">
-                Mathematics
-              </div>
-            </div>
-            <div className="w-11 h-11 rounded-full bg-primary-foreground/10 flex items-center justify-center group-hover:bg-primary-foreground/20 transition-colors">
-              <ArrowUpRight className="w-5 h-5 text-primary-foreground" />
-            </div>
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg flex items-center justify-center text-white shrink-0 hover:rotate-12 transition-transform duration-300">
+            <Rocket className="w-5 h-5" />
           </div>
-
-          <div>
-            <div className="h-1.5 rounded-full bg-primary-foreground/15 overflow-hidden mb-2">
-              <div className="h-full bg-primary-foreground w-[32%]" />
-            </div>
-            <div className="flex items-center justify-between text-[11px] font-mono uppercase tracking-widest text-primary-foreground">
-              <span>Q 8 / 25</span>
-              <span>~ 8 min left</span>
-            </div>
+          <div className="leading-tight">
+            <div className="font-black text-xl tracking-tight text-foreground">PrepPilot</div>
+            <div className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">All SSC Exams</div>
           </div>
-        </Link>
-      </div>
-
-      {/* Main Bottom Section: Responsive Layout */}
-      <div className="flex flex-col xl:flex-row gap-8 xl:gap-10 mb-10 items-stretch">
+        </motion.div>
         
-        {/* Left Column (Main Content) */}
-        <div className="flex-1 flex flex-col gap-10 min-w-0">
-          
-          {/* Subjects Row */}
-          <div className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "200ms", animationFillMode: "both" }}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
-                Subjects
-              </div>
-              <Link
-                href="/SSC"
-                className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1"
-              >
-                All 4 <ArrowUpRight className="w-3 h-3" />
-              </Link>
-            </div>
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }} 
+          animate={{ opacity: 1, x: 0 }} 
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex items-center gap-4"
+        >
+          <Link 
+            href="/dashboard" 
+            className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-muted/50 hover:bg-muted text-sm font-bold transition-all text-foreground"
+          >
+            Sign In
+          </Link>
+          <Link 
+            href="/dashboard" 
+            className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-primary/25"
+          >
+            Enter App <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
+      </nav>
 
-            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
-              {subjects.map((s, idx) => {
-                const colors = themeClasses[s.theme];
-                return (
-                  <Link
-                    key={s.name}
-                    href={s.to}
-                    className="group rounded-2xl bg-card ring-1 ring-border p-5 hover:ring-primary/50 hover:-translate-y-1 hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full"
-                  >
-                    <div className="flex items-start justify-between mb-8">
-                      <div className={`w-12 h-12 rounded-full ${colors.bg} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3`}>
-                        <s.icon className={`w-5 h-5 ${colors.text}`} strokeWidth={2} />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-bold text-lg tracking-tight text-foreground">
-                        {s.name}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {s.qs}
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+      {/* Hero Section */}
+      <main className="w-full max-w-7xl mx-auto px-6 pt-16 pb-20 md:pt-28 md:pb-32 flex flex-col items-center text-center relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9, y: 10 }} 
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ type: "spring", damping: 20, stiffness: 200 }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted/80 backdrop-blur-sm border border-border/50 text-[11px] font-bold tracking-widest uppercase text-foreground/80 mb-8"
+        >
+          <span className="text-lg leading-none mb-0.5">✨</span>
+          Powered by Next-Gen AI Analytics
+        </motion.div>
 
-          {/* Quick Actions (Wide Screen Only - Individual Horizontal Cards) */}
-          <div className="hidden xl:block animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
-            <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground mb-4">
-              Quick actions
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {quickActions.map((q, idx) => (
-                <Link
-                  key={q.label}
-                  href={q.to}
-                  className="rounded-2xl bg-card ring-1 ring-border p-5 flex items-center gap-4 hover:ring-primary/50 transition-all shadow-sm cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
-                    <q.icon className="w-4 h-4 text-primary-foreground" strokeWidth={2} />
-                  </div>
-                  <div className="font-semibold text-foreground">{q.label}</div>
-                </Link>
-              ))}
-            </div>
-          </div>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+          className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter leading-[1.05] mb-6 max-w-5xl text-foreground"
+        >
+          The Ultimate Arsenal for <br className="hidden md:block" />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500">
+            All SSC Exams.
+          </span>
+        </motion.h1>
 
-          {/* Second Row for Medium Screens (lg and below): Quick Actions & Recent Sessions */}
-          <div className="xl:hidden flex flex-col gap-8">
-            
-            {/* Quick Actions */}
-            <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
-              <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground mb-4">
-                Quick actions
-              </div>
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 h-full">
-                {quickActions.map((q, idx) => (
-                  <Link
-                    key={q.label}
-                    href={q.to}
-                    className="flex-1 rounded-2xl bg-card ring-1 ring-border p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 hover:ring-primary/50 transition-all shadow-sm cursor-pointer justify-center text-center sm:text-left"
-                  >
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
-                      <q.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary-foreground" strokeWidth={2} />
-                    </div>
-                    <div className="font-semibold text-foreground text-[10px] sm:text-sm leading-tight">{q.label}</div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+          className="text-lg md:text-2xl text-foreground/80 max-w-3xl mb-12 font-medium leading-relaxed"
+        >
+          From CGL to MTS, train your brain with AI-driven analytics, a vast bank of PYQs (2020-2025), and zero distractions. No clutter. No ads. Just pure focus.
+        </motion.p>
 
-            {/* Recent Sessions */}
-            <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "500ms", animationFillMode: "both" }}>
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
-                  Recent Sessions
-                </div>
-                <Link
-                  href="/history"
-                  className="text-[10px] font-bold tracking-widest uppercase text-primary hover:text-primary/80 flex items-center gap-1"
-                >
-                  History <ChevronRight className="w-3 h-3" />
-                </Link>
-              </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row items-center gap-4"
+        >
+          <Link 
+            href="/dashboard" 
+            className="group flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-foreground text-background text-lg font-bold hover:scale-105 transition-all w-full sm:w-auto shadow-xl shadow-foreground/10"
+          >
+            Start Practicing Free <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <a 
+            href="#competitor-dig" 
+            className="flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-muted/50 hover:bg-muted text-foreground text-lg font-bold transition-all w-full sm:w-auto backdrop-blur-sm"
+          >
+            See The Difference
+          </a>
+        </motion.div>
+      </main>
 
-              <div className="bg-card ring-1 ring-border rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between">
-                {recentSessions.map((session, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between p-3 sm:p-4 hover:bg-muted/50 rounded-2xl transition-colors cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-background transition-colors">
-                        <session.icon className="w-4 h-4 text-primary" />
-                      </div>
-                      <div>
-                        <div className="font-bold text-sm text-foreground">
-                          {session.name}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5">
-                          {session.date}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right flex flex-col items-end gap-0.5">
-                      <div className="font-bold text-primary text-sm flex items-center gap-1">
-                        {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-                      </div>
-                      <div className="text-[10px] font-mono tracking-widest text-muted-foreground">
-                        {session.xp}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* The Competitor Dig Section */}
+      <section id="competitor-dig" className="w-full py-24 relative z-10 border-t border-border/40 bg-gradient-to-b from-card/30 to-background">
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div 
+            initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-black tracking-tight text-foreground mb-4">
+              Why We Are Different
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-foreground/80 md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+              Tired of the famous "T-Book" or "O-Board" apps looking like 1990s ad-boards? We were too.
+            </motion.p>
+          </motion.div>
 
-        {/* Right Column: Recent Sessions (Wide Screen Only) */}
-        <div className="hidden xl:flex w-[350px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-[10px] font-bold font-mono tracking-widest uppercase text-muted-foreground">
-              Recent Sessions
-            </div>
-            <Link
-              href="/history"
-              className="text-[10px] font-bold tracking-widest uppercase text-primary hover:text-primary/80 flex items-center gap-1"
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+            {/* The Old Way */}
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-card/50 border border-border/50 rounded-3xl p-8 flex flex-col relative overflow-hidden group"
             >
-              History <ChevronRight className="w-3 h-3" />
-            </Link>
-          </div>
-
-          <div className="bg-card ring-1 ring-border rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between">
-            {recentSessions.map((session, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between p-4 hover:bg-muted/50 rounded-2xl transition-colors cursor-pointer group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0 group-hover:bg-background transition-colors">
-                    <session.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm text-foreground">
-                      {session.name}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-0.5">
-                      {session.date}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right flex flex-col items-end gap-0.5">
-                  <div className="font-bold text-primary text-sm flex items-center gap-1">
-                    {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-                  </div>
-                  <div className="text-[10px] font-mono tracking-widest text-muted-foreground">
-                    {session.xp}
-                  </div>
-                </div>
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <XCircle className="w-24 h-24 text-rose-500" />
               </div>
-            ))}
+              <h3 className="text-2xl font-bold mb-6 text-foreground/70 flex items-center gap-2">
+                <XCircle className="w-6 h-6 text-rose-500" /> Legacy Apps
+              </h3>
+              <ul className="flex flex-col gap-4 text-foreground/80">
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold mt-0.5">✕</span> Cluttered, messy UI that distracts you.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold mt-0.5">✕</span> Bombarded with pop-up ads and up-sells.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold mt-0.5">✕</span> Generic analytics that don't actually help.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold mt-0.5">✕</span> Feels like a chore to use every day.
+                </li>
+              </ul>
+            </motion.div>
+
+            {/* The PrepPilot Way */}
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-gradient-to-br from-card to-background border-2 border-primary/40 rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-primary transition-colors shadow-2xl shadow-primary/5"
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <CheckCircle2 className="w-24 h-24 text-emerald-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
+                <CheckCircle2 className="w-6 h-6 text-emerald-500" /> PrepPilot
+              </h3>
+              <ul className="flex flex-col gap-4 text-foreground font-medium">
+                <li className="flex items-start gap-3">
+                  <span className="text-emerald-500 font-bold mt-0.5">✓</span> Minimalist, distraction-free environment.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-emerald-500 font-bold mt-0.5">✓</span> Zero ads. Zero visual clutter.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-emerald-500 font-bold mt-0.5">✓</span> Deep AI-driven analytics that pinpoint weaknesses.
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-emerald-500 font-bold mt-0.5">✓</span> Gamified, lightning-fast interactions.
+                </li>
+              </ul>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Footer */}
-      <div className="text-center text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60 py-8 flex items-center justify-center gap-2">
-        <ScrollText className="w-3 h-3" /> Quiet focus · 5AM library mode
-      </div>
+      {/* The Arsenal (Features Section) */}
+      <section className="w-full bg-card/20 border-y border-border/40 py-24 relative z-10 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div 
+            initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-black tracking-tight text-foreground mb-4">
+              Your Complete Arsenal
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-foreground/80 md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+              Everything you need to crack the exam, built natively with speed and retention in mind.
+            </motion.p>
+          </motion.div>
+
+          <motion.div 
+            initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}
+            variants={containerVariants}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {/* Feature 1 */}
+            <motion.div variants={itemVariants} className="group relative flex flex-col p-8 rounded-2xl bg-card border border-border shadow-xs hover:shadow-md hover:border-emerald-500/30 hover:ring-1 hover:ring-emerald-500/30 transition-all duration-300 ease-out hover:-translate-y-0.5">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 overflow-hidden">
+                <BookOpen className="w-7 h-7 transition-all duration-500 ease-out group-hover:scale-125 group-hover:-rotate-12" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">Authentic PYQs (2020-2025)</h3>
+              <p className="text-foreground/80 leading-relaxed text-sm">
+                Practice from a vast bank of past year papers covering SSC CGL, CPO, MTS, CHSL, and GD to understand exact exam patterns.
+              </p>
+            </motion.div>
+
+            {/* Feature 2 */}
+            <motion.div variants={itemVariants} className="group relative flex flex-col p-8 rounded-2xl bg-card border border-border shadow-xs hover:shadow-md hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/30 transition-all duration-300 ease-out hover:-translate-y-0.5">
+              <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 text-cyan-500 flex items-center justify-center mb-6 overflow-hidden">
+                <BarChart3 className="w-7 h-7 transition-all duration-500 ease-out group-hover:scale-125 group-hover:rotate-12" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">AI Detailed Analysis</h3>
+              <p className="text-foreground/80 leading-relaxed text-sm">
+                Get your detailed analysis with the help of AI. Track exact accuracy, pacing, and discover weak topics instantly.
+              </p>
+            </motion.div>
+
+            {/* Feature 3 */}
+            <motion.div variants={itemVariants} className="group relative flex flex-col p-8 rounded-2xl bg-card border border-border shadow-xs hover:shadow-md hover:border-blue-500/30 hover:ring-1 hover:ring-blue-500/30 transition-all duration-300 ease-out hover:-translate-y-0.5">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6 overflow-hidden">
+                <Target className="w-7 h-7 transition-all duration-500 ease-out group-hover:scale-110 group-hover:text-blue-400" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">Topic-Wise Practice</h3>
+              <p className="text-foreground/80 leading-relaxed text-sm">
+                Granular, highly-focused drills targeting specific weak points across Quantitative Aptitude, Reasoning, English, and GK.
+              </p>
+            </motion.div>
+
+            {/* Feature 4 */}
+            <motion.div variants={itemVariants} className="group relative flex flex-col p-8 rounded-2xl bg-card border border-border shadow-xs hover:shadow-md hover:border-amber-500/30 hover:ring-1 hover:ring-amber-500/30 transition-all duration-300 ease-out hover:-translate-y-0.5">
+              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-6 overflow-hidden">
+                <Zap className="w-7 h-7 transition-all duration-500 ease-out group-hover:scale-125 group-hover:rotate-12 group-hover:fill-amber-500/20" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">Speed Math Arena</h3>
+              <p className="text-foreground/80 leading-relaxed text-sm">
+                Timed numerical drills, custom difficulty bounds, and instant pacing feedback to drastically reduce your calculation times.
+              </p>
+            </motion.div>
+
+            {/* Feature 5 */}
+            <motion.div variants={itemVariants} className="group relative flex flex-col p-8 rounded-2xl bg-card border border-border shadow-xs hover:shadow-md hover:border-violet-500/30 hover:ring-1 hover:ring-violet-500/30 transition-all duration-300 ease-out hover:-translate-y-0.5">
+              <div className="w-14 h-14 rounded-2xl bg-violet-500/10 text-violet-500 flex items-center justify-center mb-6 overflow-hidden">
+                <Brain className="w-7 h-7 transition-all duration-500 ease-out group-hover:scale-125 group-hover:-rotate-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">Smart Flashcards (FSRS)</h3>
+              <p className="text-foreground/80 leading-relaxed text-sm">
+                Powered by the advanced Free Spaced Repetition Scheduler algorithm to guarantee high retention of GS facts and English vocabulary.
+              </p>
+            </motion.div>
+
+            {/* Feature 6 */}
+            <motion.div variants={itemVariants} className="group relative flex flex-col p-8 rounded-2xl bg-card border border-border shadow-xs hover:shadow-md hover:border-rose-500/30 hover:ring-1 hover:ring-rose-500/30 transition-all duration-300 ease-out hover:-translate-y-0.5">
+              <div className="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center mb-6 overflow-hidden">
+                <Gamepad2 className="w-7 h-7 transition-all duration-500 ease-out group-hover:scale-125 group-hover:-translate-y-1" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">Gamified Learning</h3>
+              <p className="text-foreground/80 leading-relaxed text-sm">
+                Engaging mini-games like Hangman and Crosswords to learn dry vocabulary and static GK without the burnout.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing / Subscription Section */}
+      <section className="w-full py-24 relative z-10 bg-background">
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div 
+            initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-black tracking-tight text-foreground mb-4">
+              Simple, Transparent Pricing
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-foreground/80 md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+              Start for free, upgrade when you are ready to dominate the leaderboard.
+            </motion.p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Free Tier */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: "easeOut" }}
+              className="bg-card/50 border border-border/50 rounded-3xl p-8 flex flex-col hover:border-border transition-colors shadow-sm"
+            >
+              <div className="mb-8">
+                <h3 className="text-2xl font-black text-foreground mb-2">Starter</h3>
+                <p className="text-foreground/70 text-sm font-medium">For casual learners exploring the platform.</p>
+                <div className="mt-6 flex items-baseline gap-1">
+                  <span className="text-4xl font-black text-foreground">₹0</span>
+                  <span className="text-muted-foreground font-medium">/forever</span>
+                </div>
+              </div>
+              
+              <ul className="flex flex-col gap-4 text-foreground/80 font-medium mb-10 flex-1">
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-emerald-500 shrink-0" /> PYQ Starter Vault (3 Past Papers per Exam)
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-emerald-500 shrink-0" /> Daily Speed Sprints (10 min mixed-mode)
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-emerald-500 shrink-0" /> Freestyle Flashcards
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-emerald-500 shrink-0" /> Basic Scoring & Tracking
+                </li>
+              </ul>
+              
+              <Link 
+                href="/dashboard" 
+                className="w-full py-3 rounded-2xl bg-muted text-foreground font-bold hover:bg-muted/80 transition-colors text-center"
+              >
+                Start Free
+              </Link>
+            </motion.div>
+
+            {/* Pro Tier */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+              className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-2 border-primary/40 rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-primary transition-colors shadow-xl shadow-primary/5"
+            >
+              <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl rounded-tr-2xl">
+                Most Popular
+              </div>
+              <div className="mb-8">
+                <h3 className="text-2xl font-black text-foreground mb-2 flex items-center gap-2">
+                  PrepPilot <span className="bg-primary text-primary-foreground px-2 py-0.5 rounded-md text-sm">PRO</span>
+                </h3>
+                <p className="text-foreground/70 text-sm font-medium">For serious aspirants aiming for top ranks.</p>
+                <div className="mt-6 flex items-baseline gap-1">
+                  <span className="text-4xl font-black text-foreground">₹99</span>
+                  <span className="text-muted-foreground font-medium">/month</span>
+                </div>
+              </div>
+              
+              <ul className="flex flex-col gap-4 text-foreground font-medium mb-10 flex-1">
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-primary shrink-0" /> <span className="font-bold">Full PYQ Vault:</span> All Historical Shifts
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-primary shrink-0" /> <span className="font-bold">AI Roadmap Analytics:</span> Weakness Insights
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-primary shrink-0" /> <span className="font-bold">Topic-Specific:</span> Math Drills unlocked
+                </li>
+                <li className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-primary shrink-0" /> <span className="font-bold">Study Mode:</span> FSRS Flashcard Syncing
+                </li>
+              </ul>
+              
+              <Link 
+                href="/dashboard" 
+                className="w-full py-3 rounded-2xl bg-primary text-primary-foreground font-bold hover:opacity-90 hover:scale-[1.02] transition-all text-center shadow-lg shadow-primary/25"
+              >
+                Upgrade to Pro
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Footer */}
+      <footer className="w-full bg-card/30 pt-24 pb-12 text-center border-t border-border/10 relative z-10">
+        <div className="max-w-3xl mx-auto px-6 mb-16">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-black mb-6 tracking-tight"
+          >
+            Ready to boost your score?
+          </motion.h2>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+            <Link 
+              href="/dashboard" 
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-primary text-primary-foreground text-lg font-bold hover:scale-105 transition-all shadow-xl shadow-primary/20"
+            >
+              Start Free Trial <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+        </div>
+        <div className="text-muted-foreground text-sm font-medium">
+          © {new Date().getFullYear()} PrepPilot. Built for SSC Aspirants.
+        </div>
+      </footer>
+
     </div>
   );
 }

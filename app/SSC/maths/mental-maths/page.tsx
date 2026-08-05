@@ -55,7 +55,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "No time to think. Topics pivot every question. Lock yourself in Timed mode and test your true cognitive agility.",
+          "Rapid-fire calculation across all topics. Build ultimate cognitive agility.",
         difficulty: "Hard",
         stats: "All Topics",
         badge: "⚡ Ultimate",
@@ -86,7 +86,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Master double and triple-digit additions to speed run through data interpretation table queries.",
+          "Drill 2-3 digit sums. Stop using pen and paper for basic arithmetic.",
         difficulty: "Easy",
         stats: "2-3 Digits",
       },
@@ -107,7 +107,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Develop rapid deduction instincts. Solve complex differences instantly to handle multi-step arithmetic questions with ease.",
+          "Master carry-overs and rapid differences in your head.",
         difficulty: "Easy",
         stats: "2-3 Digits",
       },
@@ -129,7 +129,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Multiply multi-digit numbers in seconds. Dominate multiplication sprints to ace compound interest and mensuration questions.",
+          "Crush 2-digit multiplications. Essential for compound interest tricks.",
         difficulty: "Hard",
         stats: "2-3 Digits",
       },
@@ -152,7 +152,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Master division quotients and remainders estimation. Estimate complex ratios and simplify fractions under intense time pressure.",
+          "Instantly estimate quotients. Crucial for data interpretation (DI).",
         difficulty: "Hard",
         stats: "2-3 Digits",
       },
@@ -183,7 +183,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Master squares up to 50 to accelerate compound interest, geometry area, and algebraic calculations.",
+          "Memorize 1-50. The absolute backbone of mensuration and series.",
         difficulty: "Easy",
         stats: "1-50",
         badge: "🔥 High Yield",
@@ -215,7 +215,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Memorize cube values up to 30 to conquer volume formulas and number series reasoning puzzles.",
+          "Lock in 1-30. Essential for fast compound interest calculations.",
         difficulty: "Medium",
         stats: "1-30",
         revisionConfig: {
@@ -244,7 +244,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Instantly find square roots of perfect squares up to 2500. Essential for Mensuration and Geometry calculations.",
+          "Instantly recognize perfect squares to save seconds in algebra.",
         difficulty: "Easy",
         stats: "1-50 Roots",
         badge: "💡 Speed Boost",
@@ -267,7 +267,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Recognize perfect cube roots up to 27000 in seconds. A secret weapon for volume questions and Number System.",
+          "Spot cube roots instantly. A lifesaver for number series.",
         difficulty: "Medium",
         stats: "1-30 Roots",
       },
@@ -299,7 +299,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Solve BODMAS chains with nested brackets, percentages, squares, and roots under intense exam pressure.",
+          "Master bracket logic and signs. Never lose a free BODMAS mark.",
         difficulty: "Hard",
         stats: "BODMAS",
         badge: "🔥 High Yield",
@@ -323,7 +323,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Ace rapid percentage computations and SSC fractional shortcuts. The foundation for Profit & Loss and Interest.",
+          "Drill standard fractions (1/2 to 1/11). The cheat code for Arithmetic.",
         difficulty: "Medium",
         stats: "Speed Calc",
         badge: "⭐ Must Master",
@@ -355,7 +355,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
           </svg>
         ),
         description:
-          "Master proportional reasoning and ratio splits. Instantly find missing terms and divide quantities for Partnership & Mixtures.",
+          "Speed-split values across ratios. The foundation of mixtures and ages.",
         difficulty: "Medium",
         stats: "Proportions",
       },
@@ -376,30 +376,13 @@ const MentalMaths = () => {
 
   return (
     <TopicPageLayout
-      title="Mental Maths Arena & Speed Drills"
+      title="Mental"
       description="Spend 10 minutes daily here to build instinctive calculation speed so you can attempt every question before the sectional timer expires."
       contentMaxWidthClass="w-full"
     >
-      <div className="flex flex-col gap-8 w-full">
-        {/* Daily Warm-up Pro-Tip Banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-sky-500/10 border border-emerald-500/20 p-5 shadow-xs">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-extrabold text-lg select-none">
-              💡
-            </div>
-            <div className="space-y-1">
-              <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
-                SSC Aspirant Daily Warm-Up Routine
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 uppercase">
-                  10 Mins / Day
-                </span>
-              </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                With strict sectional timers in SSC CGL, you cannot afford to calculate from scratch in the exam hall. Build muscle memory for <span className="font-semibold text-foreground">Squares (up to 50)</span>, <span className="font-semibold text-foreground">Fraction-to-Percentage tables</span>, and <span className="font-semibold text-foreground">BODMAS shortcuts</span>. Mastering these high-yield drills is the secret to attempting all 25 Quant questions in 15 minutes!
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="flex flex-col xl:flex-row gap-8 w-full">
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col gap-8 w-full min-w-0">
 
         {/* Filter Chips */}
         <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
@@ -459,29 +442,103 @@ const MentalMaths = () => {
                 </div>
 
                 {/* Section Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-                  {section.topics.map((topic, idx) => (
-                    <div key={topic.id}>
-                        <TopicCard
-                          index={idx}
-                          cols={4}
-                          name={topic.name}
-                          emoji={topic.emoji}
-                          description={topic.description}
-                          difficulty={topic.difficulty}
-                          onStartClick={() => handleStart(topic.id)}
-                          colorTheme="emerald"
-                          revisionConfig={topic.revisionConfig}
-                          stats={topic.stats}
-                          badge={topic.badge}
-                        />
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 w-full">
+                  {section.topics.map((topic, idx) => {
+                    const isMixBlitz = topic.id === TOPIC_ID.MIXED;
+                    const isTwoCol = section.topics.length === 2 || section.topics.length === 4;
+                    const isThreeCol = section.topics.length === 3;
+                    
+                    const spanClass = isMixBlitz 
+                      ? "lg:col-span-12" 
+                      : isTwoCol
+                        ? "lg:col-span-6"
+                        : isThreeCol
+                          ? "lg:col-span-4"
+                          : "lg:col-span-4"; // Default fallback
+                    
+                    return (
+                      <div key={topic.id} className={spanClass}>
+                          <TopicCard
+                            index={idx}
+                            cols={isMixBlitz ? 1 : isTwoCol ? 2 : 3}
+                            name={topic.name}
+                            emoji={topic.emoji}
+                            description={topic.description}
+                            difficulty={topic.difficulty}
+                            onStartClick={() => handleStart(topic.id)}
+                            colorTheme={section.theme}
+                            revisionConfig={topic.revisionConfig}
+                            stats={topic.stats}
+                            badge={topic.badge}
+                          />
+                      </div>
+                    );
+                  })}
                 </div>
                 </section>
               ))}
             </motion.div>
           </AnimatePresence>
+        </div>
+        </div>
+
+        {/* Right Rail - Stats & Streak Panel (Desktop Only) */}
+        <div className="hidden xl:flex w-80 flex-col gap-6 shrink-0 animate-in fade-in slide-in-from-right-4 duration-500">
+          {/* Streak Card */}
+          <div className="bg-card border border-border shadow-sm rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition-all"></div>
+            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <span className="text-orange-500 text-base drop-shadow-sm">🔥</span> Current Streak
+            </h3>
+            <div className="flex items-end gap-1.5">
+              <span className="text-6xl font-black text-foreground font-mono leading-none tracking-tighter">12</span>
+              <span className="text-sm font-bold text-muted-foreground mb-1.5 uppercase tracking-widest">Days</span>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium leading-relaxed z-10">
+              You're in the <span className="text-foreground font-bold">top 5%</span> of aspirants. Keep practicing daily to boost calculation speed!
+            </p>
+          </div>
+
+          {/* Global Stats Card */}
+          <div className="bg-card border border-border shadow-sm rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+              Your Analytics
+            </h3>
+            <div className="flex flex-col gap-4 z-10">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-muted-foreground">Questions Solved</span>
+                <span className="text-sm font-black font-mono tracking-tight">1,248</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-muted-foreground">Average Speed</span>
+                <span className="text-sm font-black font-mono tracking-tight text-emerald-500 dark:text-emerald-400">4.2s / Q</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-muted-foreground">Overall Accuracy</span>
+                <span className="text-sm font-black font-mono tracking-tight">92%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Daily Warm-up Pro-Tip Banner */}
+          <div className="bg-card border border-border shadow-sm rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group bg-gradient-to-b from-emerald-500/5 to-transparent">
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <span className="text-emerald-500 text-base drop-shadow-sm">💡</span> Pro Tip
+            </h3>
+            <div className="space-y-2 z-10">
+              <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
+                Daily Warm-Up
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 uppercase">
+                  10 Mins
+                </span>
+              </h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                With strict sectional timers, you cannot afford to calculate from scratch. Build muscle memory for <span className="font-semibold text-foreground">Squares</span>, <span className="font-semibold text-foreground">Fractions</span>, and <span className="font-semibold text-foreground">BODMAS</span> to attempt all 25 Quant questions in 15 mins!
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
