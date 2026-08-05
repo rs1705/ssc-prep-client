@@ -35,7 +35,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     label: "🔥 Ultimate Challenge",
     description:
       "The final frontier. A relentless, randomized onslaught of questions across all topics and difficulties.",
-    theme: "emerald",
+    theme: "amber",
     badge: "✨ NEW",
     topics: [
       {
@@ -43,7 +43,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
         name: "Mix Blitz",
         emoji: (
           <svg
-            className="w-5 h-5"
+            className="w-5 h-5 text-amber-500 dark:text-amber-400 drop-shadow-sm"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

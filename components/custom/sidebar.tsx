@@ -19,6 +19,7 @@ import {
   Moon,
 } from "lucide-react";
 import { useSidebar } from "@/components/custom/sidebar-context";
+import { useAuth } from "@/context/auth";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: Home },
@@ -37,6 +38,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted, toggleSidebar } = useSidebar();
   const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -88,14 +90,14 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   };
 
   const overlayClass = isFocusMode && !isCollapsed
-    ? "w-64 lg:w-72 xl:w-80 p-6 shadow-2xl"
+    ? "w-56 lg:w-64 p-5 shadow-2xl"
     : isCollapsed
     ? "w-[72px] px-3 py-5 items-center"
-    : "w-64 lg:w-72 xl:w-80 p-6";
+    : "w-56 lg:w-64 p-5";
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/60 bg-background absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${overlayClass}`}
+      className={`hidden md:flex flex-col border-r border-border/60 bg-background absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
     >
       {/* Header Row with Logo & PanelLeft Toggle */}
       <div
@@ -103,11 +105,11 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           isCollapsed ? "flex-col gap-3 justify-center" : "justify-between"
         }`}
       >
-        <div className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "gap-0" : "gap-3"}`}>
+        <Link href="/" className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "gap-0" : "gap-3"} hover:opacity-80 transition-opacity`}>
           <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-sm flex items-center justify-center text-white shrink-0">
             <Rocket className="w-5 h-5" />
           </div>
-          <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
+          <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
             <div className="text-[9px] font-medium tracking-widest uppercase opacity-70">
               PrepPilot
             </div>
@@ -115,25 +117,12 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               SSC · CGL Track
             </div>
           </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={toggleSidebar}
-          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-          className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors cursor-pointer"
-        >
-          {isCollapsed ? (
-            <PanelLeftOpen className="w-5 h-5 text-primary" />
-          ) : (
-            <PanelLeftClose className="w-5 h-5" />
-          )}
-        </button>
+        </Link>
       </div>
 
       {/* Primary Nav Items */}
       <nav className="flex flex-col gap-1 w-full">
-        {nav.map((n) => {
+        {(user ? nav : nav.filter(n => n.to === "/practice")).map((n) => {
           const active = n.to === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(n.to);
           const Icon = n.icon;
           return (
@@ -152,14 +141,14 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-              <span className={`truncate ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
+              <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
         })}
       </nav>
 
       {/* Support Section */}
-      <div className={`mt-8 mb-2 px-3 text-[9px] font-medium tracking-widest uppercase ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-50 h-auto"}`}>
+      <div className={`mt-8 mb-2 px-3 text-[9px] font-medium tracking-widest uppercase ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-50 h-auto"}`}>
         Support
       </div>
       <nav className={`flex flex-col gap-1 w-full ${isCollapsed ? "mt-0" : ""}`}>
@@ -182,23 +171,72 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-              <span className={`truncate ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
+              <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
         })}
       </nav>
 
-      {/* Theme Toggle Widget */}
-      {mounted && (
+      {/* Exam D-Day Widget */}
+      <div 
+        title="Exam D-Day: 142 days remaining"
+        className={`mt-auto mb-4 bg-card/60 ring-1 ring-border ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
+          isCollapsed 
+            ? "w-10 h-10 mx-auto rounded-xl items-center justify-center shrink-0" 
+            : "w-full p-4 rounded-2xl"
+        }`}
+      >
+        {/* Compact View (Centered absolute) */}
+        <div className={`font-bold text-primary ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
+          142d
+        </div>
+        
+        {/* Expanded View */}
+        <div className={`w-full ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-4 left-4" : "opacity-100 relative"}`}>
+          <div className="text-[9px] font-medium tracking-widest uppercase mb-1 text-muted-foreground whitespace-nowrap">
+            Exam D-Day
+          </div>
+          <div className="text-2xl font-bold tracking-tight whitespace-nowrap">
+            142 <span className="text-xs font-normal text-muted-foreground">days</span>
+          </div>
+          <div className="h-1 mt-3 bg-muted rounded-full overflow-hidden w-full">
+            <div className="h-full bg-primary w-1/3" />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Controls Group */}
+      <div className="flex flex-col gap-1 pb-1">
         <button
-          onClick={toggleTheme}
-          title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          className={`mt-auto mb-2 flex items-center justify-between rounded-xl transition-colors hover:bg-card/40 cursor-pointer ${
+          onClick={toggleSidebar}
+          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          className={`flex items-center rounded-xl transition-colors hover:bg-card/40 cursor-pointer text-muted-foreground hover:text-foreground ${
             isCollapsed 
-              ? "p-2 w-10 h-10 mx-auto flex-col justify-center" 
-              : "px-3 py-2.5 w-full"
+              ? "p-2 w-10 h-10 mx-auto justify-center" 
+              : "px-3 py-2.5 w-full gap-3"
           }`}
         >
+          {isCollapsed ? (
+            <PanelLeftOpen className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+          ) : (
+            <>
+              <PanelLeftClose className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+              <span className="text-sm font-medium">Collapse Sidebar</span>
+            </>
+          )}
+        </button>
+
+        {/* Theme Toggle Widget */}
+        {mounted && (
+          <button
+            onClick={toggleTheme}
+            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            className={`flex items-center justify-between rounded-xl transition-colors hover:bg-card/40 cursor-pointer ${
+              isCollapsed 
+                ? "p-2 w-10 h-10 mx-auto flex-col justify-center" 
+                : "px-3 py-2.5 w-full"
+            }`}
+          >
           {isCollapsed ? (
             theme === "dark" ? (
               <Moon className="w-5 h-5 shrink-0 text-foreground" strokeWidth={1.75} />
@@ -223,34 +261,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             </>
           )}
         </button>
-      )}
-
-      {/* Exam D-Day Widget */}
-      <div 
-        title="Exam D-Day: 142 days remaining"
-        className={`bg-card/60 ring-1 ring-border ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} relative overflow-hidden flex flex-col ${
-          isCollapsed 
-            ? "w-10 h-10 mx-auto rounded-xl items-center justify-center" 
-            : "w-full p-4 rounded-2xl"
-        }`}
-      >
-        {/* Compact View (Centered absolute) */}
-        <div className={`font-bold text-primary ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
-          142d
-        </div>
-        
-        {/* Expanded View */}
-        <div className={`w-full ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-4 left-4" : "opacity-100 relative"}`}>
-          <div className="text-[9px] font-medium tracking-widest uppercase mb-1 text-muted-foreground whitespace-nowrap">
-            Exam D-Day
-          </div>
-          <div className="text-2xl font-bold tracking-tight whitespace-nowrap">
-            142 <span className="text-xs font-normal text-muted-foreground">days</span>
-          </div>
-          <div className="h-1 mt-3 bg-muted rounded-full overflow-hidden w-full">
-            <div className="h-full bg-primary w-1/3" />
-          </div>
-        </div>
+        )}
       </div>
     </aside>
   );

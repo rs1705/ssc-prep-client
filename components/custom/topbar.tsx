@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation";
 
 export function TopBar() {
   const { theme, setTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user, logout, signInWithGoogle } = useAuth();
   const { isCollapsed, toggleSidebar } = useSidebar();
   const pathname = usePathname();
   const [clock, setClock] = useState<{ time: string; day: string } | null>(null);
@@ -124,9 +124,10 @@ export function TopBar() {
                 <div className="font-semibold text-sm tracking-tight">SSC · CGL Track</div>
               </div>
             </div>
-            <nav className="flex flex-col gap-1">
-              {mobileNav.map((n) => {
-                const active = n.to === "/" ? pathname === "/" : pathname.startsWith(n.to);
+            {/* Mobile Nav Links */}
+            <nav className="flex flex-col gap-2 p-4 mt-4">
+              {(user ? mobileNav : mobileNav.filter(n => n.to === "/practice")).map((n) => {
+                const active = n.to === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(n.to);
                 const Icon = n.icon;
                 return (
                   <Link
@@ -218,16 +219,12 @@ export function TopBar() {
           </DropdownMenu>
         ) : mounted ? (
           <div className="flex items-center gap-2 ml-1 sm:ml-2">
-            <Link href="/signin">
-              <button className="h-10 px-4 text-[10px] tracking-widest font-bold uppercase text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-full transition-all hidden sm:flex items-center justify-center cursor-pointer">
-                Sign In
-              </button>
-            </Link>
-            <Link href="/signup">
-              <button className="h-10 px-5 text-[10px] font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center">
-                Sign Up
-              </button>
-            </Link>
+            <button 
+              onClick={signInWithGoogle}
+              className="h-10 px-5 text-[10px] font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center gap-2"
+            >
+              Continue with Google
+            </button>
           </div>
         ) : null}
       </div>

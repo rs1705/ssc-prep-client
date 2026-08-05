@@ -31,19 +31,19 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     ? "md:w-[72px]"
     : isCollapsed
     ? "md:w-[72px]"
-    : "md:w-64 lg:w-72 xl:w-80";
+    : "md:w-56 lg:w-64";
 
   return (
     <div className="min-h-[100dvh] mx-auto flex bg-background text-foreground w-full">
       {/* Left Sidebar Layout */}
-      <div className={`w-0 shrink-0 flex relative z-40 ${isMounted ? 'transition-all duration-300 ease-in-out' : ''} ${sidebarWidthClass}`}>
+      <div className={`w-0 shrink-0 flex relative z-40 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${sidebarWidthClass}`}>
         <Sidebar isFocusMode={isFocusMode} />
       </div>
       
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
         <div className="mx-auto flex-1 flex flex-col w-full max-w-7xl">
-          <div className={`shrink-0 ${isFocusMode ? "md:hidden" : ""}`}>
+          <div className="shrink-0">
             <TopBar />
           </div>
           <main 

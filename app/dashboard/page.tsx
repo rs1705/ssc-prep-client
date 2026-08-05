@@ -1,4 +1,5 @@
 "use client";
+import { ProtectedRoute } from "@/components/custom/ProtectedRoute";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -113,14 +114,15 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="w-full">
-      <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 md:mb-6 text-foreground animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
-        {greeting}, {user?.displayName?.split(" ")[0] || "Champ"}
-      </h1>
+    <ProtectedRoute>
+      <div className="w-full h-full p-4 lg:p-8 space-y-8 pb-32 overflow-x-hidden max-w-[1600px] mx-auto">
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 md:mb-6 text-foreground animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
+          {greeting}, {user?.displayName?.split(" ")[0] || "Champ"}
+        </h1>
 
-      {/* Top Row: Target & Resume */}
-      <div className="grid lg:grid-cols-2 gap-5 mb-10">
-        {/* Streak / Target Card */}
+        {/* Top Row: Target & Resume */}
+        <div className="grid lg:grid-cols-2 gap-5 mb-10">
+          {/* Streak / Target Card */}
         <div className="rounded-3xl bg-card ring-1 ring-border p-7 shadow-sm animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase text-muted-foreground">
@@ -393,6 +395,7 @@ export default function Dashboard() {
       <div className="text-center text-[10px] font-bold tracking-widest uppercase text-muted-foreground/60 py-8 flex items-center justify-center gap-2">
         <ScrollText className="w-3 h-3" /> Quiet focus · 5AM library mode
       </div>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }
