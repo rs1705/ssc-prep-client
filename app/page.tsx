@@ -55,7 +55,7 @@ function AnimatedCounter({ target, suffix = "", prefix = "", className = "", del
 
   useEffect(() => {
     if (isInView) {
-      const controls = animate(count, target, { duration, ease: [0.22, 1, 0.36, 1], delay });
+      const controls = animate(count, target, { duration, ease: [0.22, 1, 0.36, 1] as const, delay });
       return controls.stop;
     }
   }, [isInView, count, target, delay, duration]);
@@ -226,7 +226,7 @@ export default function LandingPage() {
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.4, 0.25, 1] } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.4, 0.25, 1] as const } }
   };
 
   /* ─── Features with static Tailwind classes (fixes broken dynamic class generation) ─── */
@@ -501,7 +501,7 @@ export default function LandingPage() {
                               initial={{ width: 0 }}
                               whileInView={{ width: `${stat.val}%` }}
                               viewport={{ once: true }}
-                              transition={{ delay: 0.2 + i * 0.15, duration: 3, ease: [0.22, 1, 0.36, 1] }}
+                              transition={{ delay: 0.2 + i * 0.15, duration: 3, ease: [0.22, 1, 0.36, 1] as const }}
                             />
                           </div>
                         </div>
