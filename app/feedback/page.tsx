@@ -172,7 +172,7 @@ export default function FeedbackPage() {
                   <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
                     <span className="text-sky-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">PYQs & Topic Practice:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-[9px] bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">Sectional Pyqs & Topic wise Pyqs:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-[9px] bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">

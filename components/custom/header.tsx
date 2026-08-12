@@ -300,7 +300,7 @@ const Header = () => {
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Target className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
-                                    Topic Practice{" "}
+                                    Topic wise Pyqs{" "}
                                     <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
@@ -721,7 +721,7 @@ const Header = () => {
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Target className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
-                            Topic Practice{" "}
+                            Topic wise Pyqs{" "}
                             <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>

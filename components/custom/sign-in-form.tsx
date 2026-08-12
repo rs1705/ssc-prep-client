@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { LogIn } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormItem,
@@ -27,6 +30,7 @@ const formSchema = z.object({
 type SignUpFormValues = z.infer<typeof formSchema>;
 
 const SignInForm = () => {
+  const router = useRouter();
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,7 +40,8 @@ const SignInForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    console.log("Login details:", values);
+    router.push("/dashboard");
   };
   return (
     <div className="w-full">

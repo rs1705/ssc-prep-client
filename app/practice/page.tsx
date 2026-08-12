@@ -90,16 +90,16 @@ export default function PracticeHomePage() {
                       className="flex flex-col gap-8 w-full"
                     >
                       {/* Subject Banner */}
-                      <div className={`w-full rounded-2xl sm:rounded-3xl border bg-gradient-to-br ${tab.bgClass} p-5 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 shadow-sm overflow-hidden relative`}>
+                      <div className={`w-full rounded-2xl border bg-gradient-to-br ${tab.bgClass} p-4 sm:p-5 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 shadow-sm overflow-hidden relative`}>
                         {/* Decorative background blobs */}
                         <div className={`absolute -right-10 -top-10 w-32 h-32 sm:w-40 sm:h-40 rounded-full blur-3xl opacity-50 pointer-events-none ${tab.iconBgClass}`} />
                         <div className={`absolute right-40 -bottom-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full blur-3xl opacity-30 pointer-events-none ${tab.iconBgClass}`} />
                         
-                        <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl ${tab.iconBgClass} flex items-center justify-center shrink-0 shadow-inner ring-1 ring-border/50`}>
-                          <tab.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${tab.textClass}`} strokeWidth={2} />
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${tab.iconBgClass} flex items-center justify-center shrink-0 shadow-inner ring-1 ring-border/50`}>
+                          <tab.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${tab.textClass}`} strokeWidth={2} />
                         </div>
                         <div className="z-10">
-                          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground mb-1">{tab.label}</h2>
+                          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground mb-1">{tab.label}</h2>
                           <p className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-2">
                             <span className="flex h-2 w-2 relative">
                               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${tab.iconBgClass.replace('bg-', 'bg-').replace('/10', '')}`}></span>

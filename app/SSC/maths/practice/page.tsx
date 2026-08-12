@@ -6,7 +6,7 @@ import ComingSoon from "@/components/custom/ComingSoon";
 export default function TopicPracticePage() {
     return (
         <ComingSoon 
-            pageTitle="Topic Practice"
+            pageTitle="Topic wise Pyqs"
             title="Coming Soon"
             description="Topic-wise worksheets and custom practice modules are under development. Stay tuned!"
         />

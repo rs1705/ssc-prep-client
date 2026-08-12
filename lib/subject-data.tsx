@@ -27,7 +27,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       colorTheme: "emerald",
     },
     {
-      title: "Topic Practice",
+      title: "Topic wise Pyqs",
       description: "Chapter-wise drills sorted by difficulty.",
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
@@ -35,7 +35,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       colorTheme: "emerald",
     },
     {
-      title: "PYQ Practice",
+      title: "Sectional Pyqs",
       description:
         "Practice with previous year questions to master exam patterns.",
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
@@ -54,7 +54,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       colorTheme: "violet",
     },
     {
-      title: "Topic Practice",
+      title: "Topic wise Pyqs",
       description: "Chapter-wise drills sorted by difficulty.",
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
@@ -62,7 +62,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       colorTheme: "violet",
     },
     {
-      title: "PYQ Practice",
+      title: "Sectional Pyqs",
       description:
         "Practice with previous year questions to master exam patterns.",
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
@@ -82,7 +82,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
   ],
   gk: [
     {
-      title: "Topic Practice",
+      title: "Topic wise Pyqs",
       description: "Chapter-wise drills sorted by difficulty.",
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
@@ -90,7 +90,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       colorTheme: "rose",
     },
     {
-      title: "PYQ Practice",
+      title: "Sectional Pyqs",
       description:
         "Practice with previous year questions to master exam patterns.",
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
@@ -101,7 +101,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
   ],
   reasoning: [
     {
-      title: "Topic Practice",
+      title: "Topic wise Pyqs",
       description: "Chapter-wise drills sorted by difficulty.",
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
@@ -109,7 +109,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       colorTheme: "amber",
     },
     {
-      title: "PYQ Practice",
+      title: "Sectional Pyqs",
       description:
         "Practice with previous year questions to master exam patterns.",
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
