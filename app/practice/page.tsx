@@ -63,7 +63,7 @@ export default function PracticeHomePage() {
       <div className="w-full mt-2 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
         <Tabs defaultValue="maths" value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col gap-8">
           <div className="flex w-full justify-start overflow-x-auto pb-2 scrollbar-none">
-            <TabsList className="h-13 p-1.5 bg-card/60 backdrop-blur-xl border border-border/40 rounded-2xl shadow-xs gap-1">
+            <TabsList className="h-13 p-1.5 bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border border-border/40 rounded-2xl shadow-xs gap-1">
               {TAB_DATA.map((tab) => (
                 <TabsTrigger 
                   key={tab.id} 
@@ -90,7 +90,7 @@ export default function PracticeHomePage() {
                       className="flex flex-col gap-8 w-full"
                     >
                       {/* Subject Banner */}
-                      <div className={`w-full rounded-3xl border bg-card/60 backdrop-blur-2xl ${tab.bgClass} p-5 sm:p-6 sm:px-7 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-xl shadow-black/5 overflow-hidden relative noise-overlay`}>
+                      <div className={`w-full rounded-3xl border bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl ${tab.bgClass} p-5 sm:p-6 sm:px-7 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-xl shadow-black/5 overflow-hidden relative noise-overlay`}>
                         {/* Decorative background blobs */}
                         <div className={`absolute -right-10 -top-10 w-36 h-36 sm:w-44 sm:h-44 rounded-full blur-3xl opacity-60 pointer-events-none ${tab.iconBgClass}`} />
                         <div className={`absolute right-40 -bottom-10 w-28 h-28 sm:w-36 sm:h-36 rounded-full blur-3xl opacity-40 pointer-events-none ${tab.iconBgClass}`} />
