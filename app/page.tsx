@@ -31,24 +31,19 @@ function TypewriterHeroText() {
 
   useEffect(() => {
     const currentWord = WORDS[wordIndex];
-    
     let timeout: NodeJS.Timeout;
 
     if (!isDeleting && text === currentWord) {
-      // Finished typing full word -> pause for 1800ms
       timeout = setTimeout(() => {
         setIsDeleting(true);
-      }, 1800);
+      }, 2000);
     } else if (isDeleting && text === "") {
-      // Finished deleting word -> move to next word and pause briefly
       setIsDeleting(false);
       setWordIndex((prev) => (prev + 1) % WORDS.length);
-      timeout = setTimeout(() => {}, 300);
+      timeout = setTimeout(() => {}, 350);
     } else {
-      // Typing or deleting
       const nextCharCount = isDeleting ? text.length - 1 : text.length + 1;
-      const delta = isDeleting ? 45 : 85;
-      
+      const delta = isDeleting ? 50 : 95;
       timeout = setTimeout(() => {
         setText(currentWord.substring(0, nextCharCount));
       }, delta);
@@ -67,10 +62,8 @@ function TypewriterHeroText() {
       >
         {text || "\u00A0"}
       </span>
-      <motion.span
-        animate={{ opacity: [1, 0, 1] }}
-        transition={{ duration: 0.75, repeat: Infinity, ease: "linear" }}
-        className="inline-block w-[3px] sm:w-[4px] md:w-[5px] h-[0.82em] bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 ml-1.5 translate-y-[2px] rounded-full shrink-0 shadow-sm shadow-amber-500/50"
+      <span
+        className="inline-block w-[3px] sm:w-[4px] md:w-[5px] h-[0.82em] bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 ml-1.5 translate-y-[2px] rounded-full shrink-0 shadow-sm shadow-amber-500/50 animate-[cursor-blink_0.9s_step-end_infinite]"
       />
     </span>
   );
@@ -151,45 +144,12 @@ function TimelineIcon({ children, baseClass, activeClass }: { children: React.Re
   );
 }
 
-/* ─── 3D TiltCard with Snappy Physics ─── */
+/* ─── Lightweight Responsive Card (Zero Mobile Lag) ─── */
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
-  const springConfig = { damping: 25, stiffness: 350, mass: 0.4 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [4, -4]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-4, 4]), springConfig);
-  
-  const spotX = useSpring(useTransform(mouseX, [-0.5, 0.5], [0, 100]), springConfig);
-  const spotY = useSpring(useTransform(mouseY, [-0.5, 0.5], [0, 100]), springConfig);
-  const spotlightBackground = useMotionTemplate`radial-gradient(circle at ${spotX}% ${spotY}%, rgba(245,158,11,0.08) 0%, transparent 75%)`;
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top, width, height } = currentTarget.getBoundingClientRect();
-    mouseX.set((clientX - left) / width - 0.5);
-    mouseY.set((clientY - top) / height - 0.5);
-  }
-
-  function handleMouseLeave() {
-    mouseX.set(0);
-    mouseY.set(0);
-  }
-
   return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      className={`relative rounded-2xl ${className}`}
-    >
-      <motion.div
-        className="absolute inset-0 z-10 pointer-events-none rounded-2xl"
-        style={{ background: spotlightBackground }}
-      />
-      <div style={{ transform: "translateZ(20px)" }} className="h-full">
-        {children}
-      </div>
-    </motion.div>
+    <div className={`relative rounded-2xl transition-all duration-300 md:hover:-translate-y-1 ${className}`}>
+      {children}
+    </div>
   );
 }
 
@@ -234,8 +194,8 @@ function InteractiveHeroDashboard() {
 
   return (
     <div className="w-full relative">
-      {/* Background Glow */}
-      <div className="absolute -inset-10 bg-gradient-to-b from-amber-500/20 via-orange-500/10 to-amber-500/15 blur-[90px] rounded-full pointer-events-none" />
+      {/* Background Glow — Desktop only */}
+      <div className="hidden md:block absolute -inset-10 bg-gradient-to-b from-amber-500/20 via-orange-500/10 to-amber-500/15 blur-[90px] rounded-full pointer-events-none" />
 
       {/* Floating Ambient Badges */}
       <motion.div 
@@ -257,7 +217,7 @@ function InteractiveHeroDashboard() {
       </motion.div>
 
       {/* Main Glassmorphic Window */}
-      <div className="relative rounded-2xl sm:rounded-3xl border border-amber-500/25 bg-card/60 backdrop-blur-2xl overflow-hidden shadow-2xl shadow-amber-500/10 flex flex-col noise-overlay">
+      <div className="relative rounded-2xl sm:rounded-3xl border border-amber-500/25 bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-2xl shadow-amber-500/10 flex flex-col noise-overlay">
         
         {/* Window Chrome Header & Interactive Tabs */}
         <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 border-b border-border/40 bg-background/40">
@@ -615,10 +575,10 @@ function InfiniteTestimonials() {
         <div className="absolute top-0 left-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 right-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
         
-        <div className="flex animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap">
+        <div className="flex animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap will-change-transform">
           {[...testimonials, ...testimonials].map((t, i) => (
             <div key={i} className="inline-block w-[300px] sm:w-[380px] whitespace-normal mx-3">
-              <div className="bg-card/40 backdrop-blur-md border border-border/40 rounded-2xl p-6 h-full flex flex-col relative noise-overlay hover:border-amber-500/30 transition-colors">
+              <div className="cv-auto bg-card/95 md:bg-card/40 backdrop-blur-none md:backdrop-blur-md border border-border/40 rounded-2xl p-6 h-full flex flex-col relative noise-overlay hover:border-amber-500/30 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-md">
                     {t.name.charAt(0)}
@@ -731,29 +691,33 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden flex flex-col items-center relative scroll-smooth">
       
-      {/* ─── Ambient Glow Blobs ─── */}
+      {/* ─── Ambient Glow Blobs — Lightweight on mobile, animated on desktop ─── */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10" aria-hidden="true">
-        <motion.div 
-          animate={{ y: [0, -30, 0], x: [0, 20, 0], scale: [1, 1.15, 1], opacity: [0.15, 0.28, 0.15] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[12%] -left-20 w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-amber-500/30 blur-[120px] rounded-full"
-        />
-        <motion.div 
-          animate={{ y: [0, 40, 0], x: [0, -30, 0], scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[20%] -right-20 w-[45vw] h-[45vw] max-w-[700px] max-h-[700px] bg-orange-500/25 blur-[140px] rounded-full"
-        />
-        <motion.div 
-          animate={{ y: [0, 25, 0], x: [0, -15, 0], opacity: [0.06, 0.14, 0.06] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[60%] left-[20%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-violet-500/15 blur-[100px] rounded-full"
-        />
+        <div className="hidden md:block">
+          <motion.div 
+            animate={{ y: [0, -30, 0], x: [0, 20, 0], scale: [1, 1.15, 1], opacity: [0.15, 0.28, 0.15] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[12%] -left-20 w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-amber-500/30 blur-[120px] rounded-full"
+          />
+          <motion.div 
+            animate={{ y: [0, 40, 0], x: [0, -30, 0], scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute bottom-[20%] -right-20 w-[45vw] h-[45vw] max-w-[700px] max-h-[700px] bg-orange-500/25 blur-[140px] rounded-full"
+          />
+          <motion.div 
+            animate={{ y: [0, 25, 0], x: [0, -15, 0], opacity: [0.06, 0.14, 0.06] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute top-[60%] left-[20%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-violet-500/15 blur-[100px] rounded-full"
+          />
+        </div>
+        {/* Zero-overhead static ambient backdrop for mobile phones */}
+        <div className="block md:hidden absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(245,158,11,0.12),transparent_70%)]" />
         <div className="absolute inset-0 dot-grid pointer-events-none" />
       </div>
 
       {/* ─── Floating Pill Navbar ─── */}
       <header className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2 z-50 sticky top-0">
-        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/80 backdrop-blur-xl border border-border/40 shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
+        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border border-border/40 shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent pointer-events-none" />
           
           <motion.div 
@@ -931,7 +895,7 @@ export default function LandingPage() {
       </main>
 
       {/* ─── How It Works ─── */}
-      <section id="how-it-works" className="w-full py-16 sm:py-24 relative z-10 bg-background">
+      <section id="how-it-works" className="cv-auto w-full py-16 sm:py-24 relative z-10 bg-background">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div 
@@ -1033,7 +997,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Features Arsenal ─── */}
-      <section className="w-full py-16 sm:py-24 relative z-10">
+      <section className="cv-auto w-full py-16 sm:py-24 relative z-10">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <motion.div 
@@ -1063,11 +1027,11 @@ export default function LandingPage() {
                 <TiltCard key={f.title}>
                   <motion.div 
                     variants={itemVariants} 
-                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full noise-overlay overflow-hidden`}
+                    className={`cv-auto group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl border border-border/40 ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full noise-overlay overflow-hidden`}
                   >
-                    {/* Focused Corner Radial Aura */}
+                    {/* Focused Corner Radial Aura — Desktop Only */}
                     <div 
-                      className={`absolute -top-10 -right-10 w-36 h-36 rounded-full bg-gradient-to-br ${f.auraBg} blur-2xl pointer-events-none opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-500 ease-out`}
+                      className={`hidden md:block absolute -top-10 -right-10 w-36 h-36 rounded-full bg-gradient-to-br ${f.auraBg} blur-2xl pointer-events-none opacity-60 group-hover:opacity-100 group-hover:scale-125 transition-all duration-500 ease-out`}
                       aria-hidden="true"
                     />
 
@@ -1102,7 +1066,7 @@ export default function LandingPage() {
       <InfiniteTestimonials />
 
       {/* ─── Pricing / Subscription Section ─── */}
-      <section className="w-full py-20 sm:py-24 relative z-10 bg-background">
+      <section className="cv-auto w-full py-20 sm:py-24 relative z-10 bg-background">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div 
@@ -1161,7 +1125,7 @@ export default function LandingPage() {
             {/* Pro Tier */}
             <TiltCard>
               <div className="relative p-[2px] rounded-3xl overflow-hidden shadow-2xl shadow-amber-500/20 group h-full">
-                <div className="absolute inset-[-100%] animate-[border-spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(245,158,11,1)_360deg)] opacity-80 pointer-events-none" />
+                <div className="hidden md:block absolute inset-[-100%] animate-[border-spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(245,158,11,1)_360deg)] opacity-80 pointer-events-none" />
                 
                 <div className="bg-gradient-to-br from-zinc-950 to-zinc-900 rounded-[22px] p-7 sm:p-8 flex flex-col relative overflow-hidden text-white h-full noise-overlay z-10 border border-amber-500/20">
                   <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-bl-xl shadow-lg z-10 font-mono">
@@ -1218,7 +1182,7 @@ export default function LandingPage() {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         
         <div className="max-w-3xl mx-auto px-4 sm:px-6 mb-16 text-center relative">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
+          <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
           
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
             Your selection{" "}
