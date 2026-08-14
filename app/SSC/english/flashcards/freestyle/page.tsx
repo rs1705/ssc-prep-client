@@ -115,49 +115,42 @@ const FreestylePage = () => {
         className="flex flex-col items-center w-full transition-all duration-300"
       >
         {/* Control Panel Container */}
-        <div className="flex flex-col gap-1.5 w-full bg-card border border-primary/20 rounded-3xl pt-2 sm:pt-3 px-3.5 sm:px-5 pb-3 sm:pb-4 mb-2 sm:mb-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          {/* Header Row: Title & Quit */}
+        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3.5 mb-1.5 shadow-xs">
+          {/* Header Row: Title + Mode on Left, Quit on Right */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
-            <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex items-center gap-2 min-w-0">
               <Dices
-                className="w-[18px] h-[18px] text-primary/80 shrink-0"
+                className="w-4 h-4 text-primary/80 shrink-0"
                 fill="currentColor"
                 fillOpacity={0.1}
               />
-              <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal uppercase">
+              <span className="font-extrabold text-sm sm:text-base tracking-tight text-foreground uppercase">
                 Flashcards
+              </span>
+              <span className="text-muted-foreground/40 font-normal text-xs">•</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                {activeTab}
               </span>
             </div>
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-8 w-8 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              className="h-7 w-7 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
             >
-              <X className="w-4 h-4" strokeWidth={2.5} />
+              <X className="w-3.5 h-3.5" strokeWidth={2.5} />
             </button>
-          </div>
-
-          {/* Mode Context */}
-          <div className="flex items-center justify-between w-full gap-2 flex-shrink-0 -mt-1.5">
-            <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
-              <span>Freestyle Mode</span>
-              <span className="text-muted-foreground/35 font-normal">•</span>
-              <span className="font-semibold text-primary">
-                {activeTab.toUpperCase()}
-              </span>
-            </div>
           </div>
 
           {/* Tabs & Filters Dialog */}
           {!isError && (
             <>
-              <div className="flex flex-row items-center gap-1.5 sm:gap-2.5 w-full mt-1">
-                <TabsList className="flex-1 !h-11 bg-muted/60 border border-border/60 p-1 rounded-xl shadow-sm">
+              <div className="flex flex-row items-center gap-1.5 sm:gap-2 w-full mt-0.5">
+                <TabsList className="flex-1 !h-8 sm:!h-9 bg-muted/60 border border-border/60 p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
                   {TABS.map((tab) => (
                     <TabsTrigger
                       key={tab}
                       value={tab}
-                      className="flex-1 h-full hover:cursor-pointer hover:text-foreground data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-lg transition-all duration-200 font-bold uppercase text-[10px] sm:text-xs text-muted-foreground data-[state=active]:text-foreground"
+                      className="flex-1 h-full hover:cursor-pointer hover:text-foreground data-[state=active]:bg-background data-[state=active]:shadow-2xs rounded-md sm:rounded-lg transition-all duration-200 font-bold uppercase text-[9px] sm:text-xs text-muted-foreground data-[state=active]:text-foreground"
                     >
                       {tab}
                     </TabsTrigger>
@@ -177,7 +170,7 @@ const FreestylePage = () => {
                     localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
                   }}
                 >
-                  <SelectTrigger className="w-12 sm:w-14 !h-11 rounded-xl px-0 sm:px-2 flex justify-center items-center text-xs sm:text-sm font-bold uppercase shadow-sm hover:shadow-md bg-background border-border hover:cursor-pointer">
+                  <SelectTrigger className="w-10 sm:w-12 !h-8 sm:!h-9 rounded-lg sm:rounded-xl px-0 sm:px-1.5 flex justify-center items-center text-xs font-bold uppercase shadow-2xs bg-background border-border hover:cursor-pointer">
                     <SelectValue placeholder="A" />
                   </SelectTrigger>
                   <SelectContent className="max-h-[300px]">
@@ -197,10 +190,10 @@ const FreestylePage = () => {
                   <SheetTrigger asChild>
                     <Button
                       variant="outline"
-                      className="h-11 hover:cursor-pointer border-border shadow-sm hover:shadow-md hover:bg-muted/50 transition-all duration-200 rounded-xl px-2 sm:px-3 flex items-center gap-1 sm:gap-1.5"
+                      className="h-8 sm:h-9 hover:cursor-pointer border-border shadow-2xs hover:bg-muted/50 transition-all rounded-lg sm:rounded-xl px-2 sm:px-2.5 flex items-center gap-1"
                     >
-                      <SlidersVertical className="w-4 h-4 text-muted-foreground shrink-0" />
-                      <span className="font-semibold text-[10px] sm:text-xs text-foreground hidden min-[400px]:inline">
+                      <SlidersVertical className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                      <span className="font-semibold text-[9px] sm:text-xs text-foreground hidden min-[400px]:inline">
                         Filters
                       </span>
                     </Button>
@@ -308,18 +301,18 @@ const FreestylePage = () => {
 
               {/* Progress Bar Container */}
               {totalCards > 0 && (
-                <div className="w-full mt-3 flex flex-col gap-1 px-1">
+                <div className="w-full mt-1.5 flex flex-col gap-0.5 px-0.5">
                   <div className="w-full flex justify-between items-end mb-0.5">
-                    <span className="text-[10px] font-bold tracking-wider text-muted-foreground select-none">
+                    <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none">
                       PROGRESS
                     </span>
-                    <span className="text-[10px] font-bold tracking-wider text-muted-foreground select-none font-mono">
+                    <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none font-mono">
                       {currentCardNumber} / {totalCards}
                     </span>
                   </div>
                   <ProgressBar
                     value={(currentCardNumber / totalCards) * 100}
-                    className="h-1.5 bg-muted border border-border/50"
+                    className="h-1 bg-muted border border-border/50"
                     barClassName="bg-primary rounded-full"
                   />
                 </div>

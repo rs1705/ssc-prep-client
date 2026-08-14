@@ -241,7 +241,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
         <div className="flex flex-col items-center w-full">
 
 
-          <div className="relative w-full min-h-[420px] sm:min-h-[460px] md:min-h-[480px]">
+          <div className="relative w-full min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] md:min-h-[460px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
@@ -252,7 +252,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[380px] min-[375px]:min-h-[440px] sm:min-h-[500px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] md:min-h-[460px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div
@@ -285,7 +285,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                       opacity: 1,
                       rotateY: 0,
                       scale: 1,
-                      zIndex: 10,
+                      zIndex: 1,
                     }}
                     exit={{
                       x: direction > 0 ? -250 : 250,
@@ -325,7 +325,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             </button>
           </div>
           <div className="w-full">
-            <div className="w-full h-14 mt-3 flex items-center">
+            <div className="w-full h-12 sm:h-14 mt-2 sm:mt-3 flex items-center">
               {isFlipped && (
                 <div className="flex primary-buttons gap-2 sm:gap-2.5 w-full animate-in fade-in duration-200 ease-out">
                   {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
@@ -335,7 +335,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                         <button
                           key={actionKey}
                           type="button"
-                          className={`flex-1 font-bold rounded-2xl py-3 sm:py-3.5 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
+                          className={`flex-1 font-bold rounded-xl sm:rounded-2xl py-2.5 sm:py-3.5 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
                           onClick={() => onActionClick(actionKey)}
                         >
                           <span className="font-bold">{actionConfig.label}</span>
@@ -353,7 +353,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
         </div>
       ) : (
         <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[380px] min-[375px]:min-h-[440px] rounded-3xl bg-card border border-border shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center p-6 sm:p-8 min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] rounded-3xl bg-card border border-border shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">
               No Cards Found

@@ -81,56 +81,51 @@ const FsrsPage = () => {
       <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={true}>
       <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-1.5 w-full bg-card border border-primary/20 rounded-3xl pt-2 sm:pt-3 px-3.5 sm:px-5 pb-3 sm:pb-4 mb-2 sm:mb-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          {/* Row 1: Left is Section Title, Right is Quit Button */}
+        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3.5 mb-1.5 shadow-xs">
+          {/* Row 1: Left is Section Title & Mode, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
-            <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex items-center gap-2 min-w-0">
               <BookOpen
-                className="w-[18px] h-[18px] text-primary/80 shrink-0"
+                className="w-4 h-4 text-primary/80 shrink-0"
                 fill="currentColor"
                 fillOpacity={0.1}
               />
-              <span className="font-black text-lg sm:text-xl tracking-tight text-foreground leading-normal uppercase">
+              <span className="font-extrabold text-sm sm:text-base tracking-tight text-foreground uppercase">
                 Flashcards
+              </span>
+              <span className="text-muted-foreground/40 font-normal text-xs">•</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+                Daily Review
               </span>
             </div>
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-8 w-8 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              className="h-7 w-7 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
             >
-              <X className="w-4 h-4" strokeWidth={2.5} />
+              <X className="w-3.5 h-3.5" strokeWidth={2.5} />
             </button>
           </div>
 
-          {/* Row 2: Left is active mode details */}
-          <div className="flex items-center justify-between w-full gap-2 flex-shrink-0">
-            <div className="flex items-center gap-1.5 pl-[26px] min-w-0 text-[10px] font-bold uppercase tracking-wider text-muted-foreground select-none">
-              <span>Study Mode</span>
-              <span className="text-muted-foreground/35 font-normal">•</span>
-              <span className="font-semibold text-primary">Daily Review</span>
+          {/* Progress Bar Container */}
+          {totalCards > 0 && !isLoading && !isError && (
+            <div className="w-full mt-1 flex flex-col gap-0.5 px-0.5">
+              <div className="w-full flex justify-between items-end mb-0.5">
+                <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none">
+                  PROGRESS
+                </span>
+                <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none font-mono">
+                  {currentCardNumber} / {totalCards}
+                </span>
+              </div>
+              <ProgressBar
+                value={(currentCardNumber / totalCards) * 100}
+                className="h-1 bg-muted border border-border/50"
+                barClassName="bg-primary rounded-full"
+              />
             </div>
-          </div>
+          )}
         </div>
-        
-        {/* Progress Bar Container */}
-        {totalCards > 0 && !isLoading && !isError && (
-          <div className="w-full mb-3 flex flex-col gap-1 px-1 mt-1">
-            <div className="w-full flex justify-between items-end mb-0.5">
-              <span className="text-[10px] font-bold tracking-wider text-muted-foreground select-none">
-                PROGRESS
-              </span>
-              <span className="text-[10px] font-bold tracking-wider text-muted-foreground select-none font-mono">
-                {currentCardNumber} / {totalCards}
-              </span>
-            </div>
-            <ProgressBar
-              value={(currentCardNumber / totalCards) * 100}
-              className="h-1.5 bg-muted border border-border/50"
-              barClassName="bg-primary rounded-full"
-            />
-          </div>
-        )}
 
         <div className="w-full">
           {isLoading ? (

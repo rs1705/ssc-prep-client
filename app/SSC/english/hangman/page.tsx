@@ -36,34 +36,34 @@ export default function HangmanDemoPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-[100dvh] bg-background">
+    <div className="flex flex-col min-h-[100dvh] max-h-[100dvh] overflow-hidden bg-background">
       {/* Top Header */}
-      <div className="w-full h-14 sm:h-16 flex items-center justify-between px-4 sm:px-8 border-b border-border/40 shrink-0 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="w-full h-12 sm:h-14 flex items-center justify-between px-3 sm:px-6 border-b border-border/40 shrink-0 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
+        <div className="flex items-center gap-2.5 min-w-0">
           <Link href="/SSC/english">
             <Button
               variant="ghost"
               size="icon"
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full hover:bg-card/60 shrink-0 border border-border/40"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-card/60 shrink-0 border border-border/40"
             >
-              <ChevronLeft className="w-5 h-5 text-muted-foreground" />
+              <ChevronLeft className="w-4 h-4 text-muted-foreground" />
             </Button>
           </Link>
           <div className="flex flex-col min-w-0">
-            <span className="text-sm sm:text-base font-extrabold text-foreground truncate uppercase tracking-wider">
+            <span className="text-xs sm:text-sm font-extrabold text-foreground truncate uppercase tracking-wider">
               Hangman Sprint
             </span>
-            <span className="text-[10px] sm:text-xs font-mono font-semibold text-violet-500 truncate">
+            <span className="text-[9px] sm:text-[10px] font-mono font-semibold text-violet-500 truncate">
               High-Frequency Vocabulary
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="bg-card/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-violet-500/30 flex items-center gap-2 shadow-xs">
-            <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="bg-card/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-violet-500/30 flex items-center gap-1.5 shadow-2xs">
+            <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
               Score
             </span>
-            <span className="text-sm font-black font-mono text-violet-600 dark:text-violet-400">
+            <span className="text-xs sm:text-sm font-black font-mono text-violet-600 dark:text-violet-400">
               450
             </span>
           </div>
@@ -71,55 +71,53 @@ export default function HangmanDemoPage() {
       </div>
 
       {/* Main Game Container */}
-      <main className="flex-1 w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-4 sm:pt-6 pb-6 sm:pb-8 px-4 sm:px-0">
+      <main className="flex-1 w-full max-w-sm sm:max-w-md mx-auto flex flex-col justify-between pt-2 sm:pt-4 pb-3 sm:pb-5 px-3 sm:px-0 overflow-hidden">
         
         {/* Top Progress & Lives */}
-        <div className="w-full flex flex-col gap-3">
+        <div className="w-full flex flex-col gap-1.5 shrink-0">
           <div className="flex items-center justify-between px-1">
-            <div className="flex gap-1.5">
+            <div className="flex gap-1">
               {Array.from({ length: totalLives }).map((_, i) => (
                 <div key={i}>
                   {i < totalLives - wrongGuesses ? (
-                    <Heart className="w-5 h-5 text-rose-500 fill-rose-500 drop-shadow-sm animate-pulse" />
+                    <Heart className="w-4 h-4 text-rose-500 fill-rose-500 drop-shadow-xs animate-pulse" />
                   ) : (
-                    <HeartCrack className="w-5 h-5 text-muted-foreground/30" />
+                    <HeartCrack className="w-4 h-4 text-muted-foreground/30" />
                   )}
                 </div>
               ))}
             </div>
-            <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2.5 py-0.5 rounded-full border border-border/40">
+            <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2 py-0.5 rounded-full border border-border/40">
               Word 4 of 10
             </span>
           </div>
           <ProgressBar
             value={40}
-            className="h-2 bg-muted/60 rounded-full overflow-hidden border border-border/30"
+            className="h-1.5 bg-muted/60 rounded-full overflow-hidden border border-border/30"
             barClassName="bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full"
           />
         </div>
 
         {/* Central Puzzle Area */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-3.5 py-2">
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 sm:gap-3 py-1 my-auto">
           {/* Hangman Graphic/Visualizer Placeholder */}
-          <div className="relative w-20 h-20 flex items-center justify-center">
-            <div className="relative flex flex-col items-center gap-1">
-               <span className="text-4xl text-foreground font-black drop-shadow-md">
-                 {wrongGuesses > 0 ? "😰" : "🤔"}
-               </span>
-               <span className="text-[9px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-widest border border-rose-500/20">
-                 {wrongGuesses} / {totalLives} Strikes
-               </span>
-            </div>
+          <div className="relative flex flex-col items-center gap-0.5">
+            <span className="text-2xl sm:text-3xl text-foreground font-black drop-shadow-xs">
+              {wrongGuesses > 0 ? "😰" : "🤔"}
+            </span>
+            <span className="text-[8px] sm:text-[9px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full uppercase tracking-widest border border-rose-500/20">
+              {wrongGuesses} / {totalLives} Strikes
+            </span>
           </div>
 
           {/* Hidden Word Display */}
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+          <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5">
             {mockWord.split("").map((letter, i) => {
               const isRevealed = guessedLetters.has(letter);
               return (
                 <div
                   key={i}
-                  className={`w-9 h-11 sm:w-11 sm:h-13 flex items-center justify-center rounded-xl border text-lg sm:text-xl font-black font-mono uppercase transition-all duration-300 shadow-sm ${
+                  className={`w-7 h-9 sm:w-9 sm:h-11 flex items-center justify-center rounded-lg sm:rounded-xl border text-sm sm:text-lg font-black font-mono uppercase transition-all duration-300 shadow-2xs ${
                     isRevealed
                       ? "bg-violet-500/15 border-violet-500/40 text-violet-600 dark:text-violet-300 shadow-violet-500/10 scale-105"
                       : "bg-card/40 backdrop-blur-sm border-border/60 text-transparent"
@@ -132,11 +130,11 @@ export default function HangmanDemoPage() {
           </div>
 
           {/* Definition Hint */}
-          <div className="bg-card/60 backdrop-blur-xl border border-violet-500/25 rounded-2xl p-3 w-full text-center shadow-lg shadow-black/5 relative overflow-hidden noise-overlay">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-violet-500 to-indigo-500"></div>
-            <div className="flex items-start justify-center gap-2">
-              <HelpCircle className="w-3.5 h-3.5 text-violet-500 shrink-0 mt-0.5" />
-              <p className="text-xs font-semibold text-foreground/90 leading-relaxed italic">
+          <div className="bg-card/60 backdrop-blur-xl border border-violet-500/25 rounded-xl p-2 sm:p-2.5 w-full text-center shadow-md shadow-black/5 relative overflow-hidden noise-overlay">
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-indigo-500"></div>
+            <div className="flex items-start justify-center gap-1.5">
+              <HelpCircle className="w-3 h-3 text-violet-500 shrink-0 mt-0.5" />
+              <p className="text-[11px] sm:text-xs font-semibold text-foreground/90 leading-relaxed italic">
                 "{mockHint}"
               </p>
             </div>
@@ -144,7 +142,7 @@ export default function HangmanDemoPage() {
         </div>
 
         {/* Virtual Keyboard */}
-        <div className="w-full flex flex-col gap-2 mt-2">
+        <div className="w-full flex flex-col gap-1 sm:gap-1.5 shrink-0">
           {keyboardRows.map((row, rowIndex) => (
             <div
               key={rowIndex}
@@ -156,7 +154,7 @@ export default function HangmanDemoPage() {
                 const isWrong = isGuessed && !mockWord.includes(key);
 
                 let keyClasses =
-                  "bg-card/60 backdrop-blur-md border-border/50 text-foreground hover:bg-card hover:border-border active:scale-[0.95] shadow-xs";
+                  "bg-card/60 backdrop-blur-md border-border/50 text-foreground hover:bg-card hover:border-border active:scale-[0.95] shadow-2xs";
                 
                 if (isCorrect) {
                   keyClasses = "bg-emerald-500/20 border-emerald-500/40 text-emerald-600 dark:text-emerald-300 opacity-60 cursor-default";
@@ -169,7 +167,7 @@ export default function HangmanDemoPage() {
                     key={key}
                     onClick={() => !isGuessed && handleKeyPress(key)}
                     disabled={isGuessed}
-                    className={`flex-1 max-w-[36px] sm:max-w-[42px] h-11 sm:h-13 rounded-xl sm:rounded-2xl border flex items-center justify-center text-sm sm:text-base font-black font-mono transition-all select-none touch-manipulation cursor-pointer ${keyClasses}`}
+                    className={`flex-1 max-w-[34px] sm:max-w-[40px] h-9 sm:h-11 rounded-lg sm:rounded-xl border flex items-center justify-center text-xs sm:text-sm font-black font-mono transition-all select-none touch-manipulation cursor-pointer ${keyClasses}`}
                   >
                     {key}
                   </button>
