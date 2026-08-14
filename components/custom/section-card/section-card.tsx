@@ -57,23 +57,35 @@ const SectionCard: React.FC<SectionCardProps> = ({
     },
   };
 
+  const glowMap: Record<string, string> = {
+    emerald: "bg-emerald-500/10",
+    amber: "bg-amber-500/10",
+    rose: "bg-rose-500/10",
+    cyan: "bg-cyan-500/10",
+    blue: "bg-blue-500/10",
+    orange: "bg-orange-500/10",
+    violet: "bg-violet-500/10",
+    indigo: "bg-amber-500/10",
+  };
+
   const currentTheme = themeMap[theme];
+  const glowClass = glowMap[theme] || "bg-amber-500/10";
 
   return (
     <div
-      className={`group rounded-2xl p-6 flex flex-col justify-between transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 ${
+      className={`group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden noise-overlay shadow-lg shadow-black/5 ${
         isClickable
-          ? "bg-card ring-1 ring-border shadow-sm hover:-translate-y-0.5 hover:ring-primary/50"
-          : "bg-card/50 ring-1 ring-border/50"
+          ? "bg-card/60 backdrop-blur-xl border border-border/40 hover:border-amber-500/30 hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1"
+          : "bg-card/30 backdrop-blur-md border border-border/20 opacity-75"
       }`}
       style={{
-        animationDelay: `${index * 120}ms`,
+        animationDelay: `${index * 100}ms`,
         animationFillMode: "both",
       }}
     >
-      <div>
+      <div className="relative z-10">
         <div
-          className={`w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 ${
+          className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40 ${
             isClickable
               ? currentTheme.iconWrapper
               : "bg-muted text-muted-foreground"
@@ -81,10 +93,10 @@ const SectionCard: React.FC<SectionCardProps> = ({
         >
           {icon}
         </div>
-        <h3 className="text-lg font-bold tracking-tight mb-2 text-foreground">
+        <h3 className="text-lg sm:text-xl font-extrabold tracking-tight mb-2 text-foreground group-hover:text-amber-500 transition-colors">
           {title}
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6 font-medium">
           {description}
         </p>
       </div>
@@ -93,13 +105,13 @@ const SectionCard: React.FC<SectionCardProps> = ({
         {isClickable ? (
           <Link
             href={linkTo}
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-[10px] font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-mono font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200"
           >
             {buttonText}{" "}
-            <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         ) : (
-          <div className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground text-[10px] font-bold tracking-widest uppercase px-5 py-3 rounded-full">
+          <div className="inline-flex items-center gap-2 bg-muted text-muted-foreground text-[10px] font-mono font-bold tracking-widest uppercase px-5 py-3 rounded-full border border-border/40">
             {buttonText}
           </div>
         )}

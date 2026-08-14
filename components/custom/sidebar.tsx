@@ -89,31 +89,29 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
     });
   };
 
-  const overlayClass = isFocusMode && !isCollapsed
-    ? "w-56 lg:w-64 p-5 shadow-2xl"
-    : isCollapsed
+  const overlayClass = isCollapsed
     ? "w-[72px] px-3 py-5 items-center"
     : "w-56 lg:w-64 p-5";
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/60 bg-background absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
+      className={`hidden md:flex flex-col border-r border-border/40 bg-background/90 backdrop-blur-2xl absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none noise-overlay ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
     >
-      {/* Header Row with Logo & PanelLeft Toggle */}
+      {/* Header Row with Logo */}
       <div
-        className={`flex items-center mb-8 w-full ${
+        className={`flex items-center mb-6 w-full ${
           isCollapsed ? "flex-col gap-3 justify-center" : "justify-between"
         }`}
       >
-        <Link href="/" className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "gap-0" : "gap-3"} hover:opacity-80 transition-opacity`}>
-          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-sm flex items-center justify-center text-white shrink-0">
+        <Link href="/" className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "gap-0" : "gap-3"} group`}>
+          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform duration-300">
             <Rocket className="w-5 h-5" />
           </div>
           <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
-            <div className="text-[9px] font-medium tracking-widest uppercase opacity-70">
-              PrepPilot
+            <div className="text-[9px] font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
+              PrepPilot <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
             </div>
-            <div className="font-semibold text-sm tracking-tight truncate">
+            <div className="font-extrabold text-sm tracking-tight truncate text-foreground">
               SSC · CGL Track
             </div>
           </div>
@@ -130,17 +128,17 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               key={n.to}
               href={n.to}
               title={isCollapsed ? n.label : undefined}
-              className={`flex items-center rounded-xl text-sm font-medium transition-colors ${
+              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border ${
                 isCollapsed
                   ? "justify-center w-10 h-10 mx-auto"
-                  : "gap-3 px-3 py-2.5"
+                  : "gap-3 px-3 py-2"
               } ${
                 active
-                  ? "bg-card text-foreground ring-1 ring-border shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-card/40"
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
               }`}
             >
-              <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-500" : "text-muted-foreground group-hover:text-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
               <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
@@ -148,7 +146,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       </nav>
 
       {/* Support Section */}
-      <div className={`mt-8 mb-2 px-3 text-[9px] font-medium tracking-widest uppercase ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-50 h-auto"}`}>
+      <div className={`mt-5 mb-1 px-3 text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground/60 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-70 h-auto"}`}>
         Support
       </div>
       <nav className={`flex flex-col gap-1 w-full ${isCollapsed ? "mt-0" : ""}`}>
@@ -160,17 +158,17 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               key={n.to}
               href={n.to}
               title={isCollapsed ? n.label : undefined}
-              className={`flex items-center rounded-xl text-sm font-medium transition-colors ${
+              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border ${
                 isCollapsed
                   ? "justify-center w-10 h-10 mx-auto"
-                  : "gap-3 px-3 py-2.5"
+                  : "gap-3 px-3 py-2"
               } ${
                 active
-                  ? "bg-card text-foreground ring-1 ring-border shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-card/40"
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
               }`}
             >
-              <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-500" : "text-muted-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
               <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
@@ -180,48 +178,53 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       {/* Exam D-Day Widget */}
       <div 
         title="Exam D-Day: 142 days remaining"
-        className={`mt-auto mb-4 bg-card/60 ring-1 ring-border ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
+        className={`mt-auto mb-3 bg-card/60 backdrop-blur-md border border-amber-500/20 shadow-sm ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
           isCollapsed 
             ? "w-10 h-10 mx-auto rounded-xl items-center justify-center shrink-0" 
-            : "w-full p-4 rounded-2xl"
+            : "w-full p-3.5 rounded-2xl"
         }`}
       >
         {/* Compact View (Centered absolute) */}
-        <div className={`font-bold text-primary ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
+        <div className={`font-mono font-bold text-amber-500 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
           142d
         </div>
         
         {/* Expanded View */}
-        <div className={`w-full ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-4 left-4" : "opacity-100 relative"}`}>
-          <div className="text-[9px] font-medium tracking-widest uppercase mb-1 text-muted-foreground whitespace-nowrap">
-            Exam D-Day
+        <div className={`w-full ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-3 left-3" : "opacity-100 relative"}`}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
+              Exam D-Day
+            </span>
+            <span className="text-[9px] font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+              Tier 1
+            </span>
           </div>
-          <div className="text-2xl font-bold tracking-tight whitespace-nowrap">
-            142 <span className="text-xs font-normal text-muted-foreground">days</span>
+          <div className="text-xl font-black font-mono tracking-tight whitespace-nowrap text-foreground flex items-baseline gap-1.5">
+            142 <span className="text-xs font-mono font-normal text-muted-foreground">days</span>
           </div>
-          <div className="h-1 mt-3 bg-muted rounded-full overflow-hidden w-full">
-            <div className="h-full bg-primary w-1/3" />
+          <div className="h-1.5 mt-2.5 bg-muted/60 rounded-full overflow-hidden w-full border border-border/30">
+            <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-1/3 shadow-sm shadow-amber-500/50" />
           </div>
         </div>
       </div>
 
       {/* Bottom Controls Group */}
-      <div className="flex flex-col gap-1 pb-1">
+      <div className="flex flex-col gap-1">
         <button
           onClick={toggleSidebar}
           title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-          className={`flex items-center rounded-xl transition-colors hover:bg-card/40 cursor-pointer text-muted-foreground hover:text-foreground ${
+          className={`flex items-center rounded-xl transition-colors duration-150 border border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer text-muted-foreground hover:text-foreground ${
             isCollapsed 
               ? "p-2 w-10 h-10 mx-auto justify-center" 
-              : "px-3 py-2.5 w-full gap-3"
+              : "px-3 py-2 w-full gap-3"
           }`}
         >
           {isCollapsed ? (
-            <PanelLeftOpen className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+            <PanelLeftOpen className="w-4 h-4 shrink-0" strokeWidth={1.75} />
           ) : (
             <>
               <PanelLeftClose className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-              <span className="text-sm font-medium">Collapse Sidebar</span>
+              <span className="text-xs sm:text-sm font-medium">Collapse Sidebar</span>
             </>
           )}
         </button>
@@ -231,32 +234,32 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           <button
             onClick={toggleTheme}
             title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            className={`flex items-center justify-between rounded-xl transition-colors hover:bg-card/40 cursor-pointer ${
+            className={`flex items-center justify-between rounded-xl transition-colors duration-150 border border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer ${
               isCollapsed 
                 ? "p-2 w-10 h-10 mx-auto flex-col justify-center" 
-                : "px-3 py-2.5 w-full"
+                : "px-3 py-2 w-full"
             }`}
           >
           {isCollapsed ? (
             theme === "dark" ? (
-              <Moon className="w-5 h-5 shrink-0 text-foreground" strokeWidth={1.75} />
+              <Moon className="w-4 h-4 shrink-0 text-amber-400" strokeWidth={1.75} />
             ) : (
-              <Sun className="w-5 h-5 shrink-0 text-foreground" strokeWidth={1.75} />
+              <Sun className="w-4 h-4 shrink-0 text-amber-500" strokeWidth={1.75} />
             )
           ) : (
             <>
               <div className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground">
                 {theme === "dark" ? (
-                  <Moon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+                  <Moon className="w-4 h-4 shrink-0 text-amber-400" strokeWidth={1.75} />
                 ) : (
-                  <Sun className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+                  <Sun className="w-4 h-4 shrink-0 text-amber-500" strokeWidth={1.75} />
                 )}
-                <span className="text-sm font-medium">Dark Mode</span>
+                <span className="text-xs sm:text-sm font-medium">Dark Mode</span>
               </div>
               
               {/* iOS Style Toggle Switch */}
-              <div className={`relative w-11 h-6 rounded-full transition-colors duration-300 ease-in-out shrink-0 ${theme === "dark" ? "bg-emerald-500" : "bg-muted-foreground/30"}`}>
-                <div className={`absolute top-[2px] left-[2px] bg-white w-5 h-5 rounded-full shadow-sm transition-transform duration-300 ease-in-out flex items-center justify-center ${theme === "dark" ? "translate-x-5" : "translate-x-0"}`} />
+              <div className={`relative w-8 h-4.5 rounded-full transition-colors duration-300 ease-in-out shrink-0 ${theme === "dark" ? "bg-amber-500 shadow-inner" : "bg-muted-foreground/30"}`}>
+                <div className={`absolute top-[2px] left-[2px] bg-white w-3.5 h-3.5 rounded-full shadow-sm transition-transform duration-300 ease-in-out flex items-center justify-center ${theme === "dark" ? "translate-x-3.5" : "translate-x-0"}`} />
               </div>
             </>
           )}

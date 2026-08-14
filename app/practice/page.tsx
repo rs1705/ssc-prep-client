@@ -60,15 +60,15 @@ export default function PracticeHomePage() {
       description="Your central command for all subjects. Jump straight into drills, flashcards, and mock tests."
       hideBreadcrumbs={true}
     >
-      <div className="w-full mt-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
+      <div className="w-full mt-2 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
         <Tabs defaultValue="maths" value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col gap-8">
           <div className="flex w-full justify-start overflow-x-auto pb-2 scrollbar-none">
-            <TabsList className="h-12 p-1 bg-muted/50 rounded-xl">
+            <TabsList className="h-13 p-1.5 bg-card/60 backdrop-blur-xl border border-border/40 rounded-2xl shadow-xs gap-1">
               {TAB_DATA.map((tab) => (
                 <TabsTrigger 
                   key={tab.id} 
                   value={tab.id}
-                  className="h-full rounded-lg px-6 font-semibold text-sm transition-all data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-foreground"
+                  className="h-full rounded-xl px-5 font-bold text-xs sm:text-sm tracking-tight transition-all data-[state=active]:bg-foreground data-[state=active]:text-background data-[state=active]:shadow-md cursor-pointer"
                 >
                   <tab.icon className="w-4 h-4 mr-2" />
                   {tab.label}
@@ -90,22 +90,22 @@ export default function PracticeHomePage() {
                       className="flex flex-col gap-8 w-full"
                     >
                       {/* Subject Banner */}
-                      <div className={`w-full rounded-2xl border bg-gradient-to-br ${tab.bgClass} p-4 sm:p-5 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 shadow-sm overflow-hidden relative`}>
+                      <div className={`w-full rounded-3xl border bg-card/60 backdrop-blur-2xl ${tab.bgClass} p-5 sm:p-6 sm:px-7 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-xl shadow-black/5 overflow-hidden relative noise-overlay`}>
                         {/* Decorative background blobs */}
-                        <div className={`absolute -right-10 -top-10 w-32 h-32 sm:w-40 sm:h-40 rounded-full blur-3xl opacity-50 pointer-events-none ${tab.iconBgClass}`} />
-                        <div className={`absolute right-40 -bottom-10 w-24 h-24 sm:w-32 sm:h-32 rounded-full blur-3xl opacity-30 pointer-events-none ${tab.iconBgClass}`} />
+                        <div className={`absolute -right-10 -top-10 w-36 h-36 sm:w-44 sm:h-44 rounded-full blur-3xl opacity-60 pointer-events-none ${tab.iconBgClass}`} />
+                        <div className={`absolute right-40 -bottom-10 w-28 h-28 sm:w-36 sm:h-36 rounded-full blur-3xl opacity-40 pointer-events-none ${tab.iconBgClass}`} />
                         
-                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${tab.iconBgClass} flex items-center justify-center shrink-0 shadow-inner ring-1 ring-border/50`}>
-                          <tab.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${tab.textClass}`} strokeWidth={2} />
+                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl ${tab.iconBgClass} flex items-center justify-center shrink-0 shadow-inner ring-1 ring-border/50`}>
+                          <tab.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${tab.textClass}`} strokeWidth={2} />
                         </div>
                         <div className="z-10">
-                          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground mb-1">{tab.label}</h2>
-                          <p className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-2">
+                          <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground mb-1">{tab.label}</h2>
+                          <p className="text-xs sm:text-sm font-mono font-medium text-muted-foreground flex items-center gap-2">
                             <span className="flex h-2 w-2 relative">
                               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${tab.iconBgClass.replace('bg-', 'bg-').replace('/10', '')}`}></span>
                               <span className={`relative inline-flex rounded-full h-2 w-2 ${tab.iconBgClass.replace('bg-', 'bg-').replace('/10', '')}`}></span>
                             </span>
-                            {tab.sections.length} active practice modules
+                            {tab.sections.length} ACTIVE PRACTICE MODULES
                           </p>
                         </div>
                       </div>

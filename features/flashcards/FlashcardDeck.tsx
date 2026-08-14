@@ -23,90 +23,94 @@ interface FlashcardDeckProps {
 
 export const COLOR_SCHEMES = [
   {
-    bg: "from-rose-50 to-rose-200",
-    textMain: "text-slate-800",
-    textSecondary: "text-slate-500",
-    accent: "text-rose-700",
-    accentBg: "bg-white/50 border-rose-200/80",
+    bg: "from-rose-50 to-rose-100/90 dark:from-rose-950/40 dark:to-zinc-900",
+    textMain: "text-rose-950 dark:text-rose-100",
+    textSecondary: "text-rose-700/80 dark:text-rose-300/70",
+    accent: "text-rose-600 dark:text-rose-400",
+    accentBg: "bg-white/60 dark:bg-rose-950/50 border-rose-200/80 dark:border-rose-500/25",
     barBg: "bg-gradient-to-r from-rose-400 to-rose-500",
-    border: "border border-rose-300/80",
+    border: "border border-rose-200/80 dark:border-rose-500/30",
   },
   {
-    bg: "from-sky-50 to-sky-200",
-    textMain: "text-slate-800",
-    textSecondary: "text-slate-500",
-    accent: "text-sky-600",
-    accentBg: "bg-white/50 border-sky-200/80",
+    bg: "from-sky-50 to-sky-100/90 dark:from-sky-950/40 dark:to-zinc-900",
+    textMain: "text-sky-950 dark:text-sky-100",
+    textSecondary: "text-sky-700/80 dark:text-sky-300/70",
+    accent: "text-sky-600 dark:text-sky-400",
+    accentBg: "bg-white/60 dark:bg-sky-950/50 border-sky-200/80 dark:border-sky-500/25",
     barBg: "bg-gradient-to-r from-sky-400 to-sky-500",
-    border: "border border-sky-300/80",
+    border: "border border-sky-200/80 dark:border-sky-500/30",
   },
   {
-    bg: "from-violet-50 to-violet-200",
-    textMain: "text-slate-800",
-    textSecondary: "text-slate-500",
-    accent: "text-violet-700",
-    accentBg: "bg-white/50 border-violet-200/80",
+    bg: "from-violet-50 to-violet-100/90 dark:from-violet-950/40 dark:to-zinc-900",
+    textMain: "text-violet-950 dark:text-violet-100",
+    textSecondary: "text-violet-700/80 dark:text-violet-300/70",
+    accent: "text-violet-600 dark:text-violet-400",
+    accentBg: "bg-white/60 dark:bg-violet-950/50 border-violet-200/80 dark:border-violet-500/25",
     barBg: "bg-gradient-to-r from-violet-400 to-violet-500",
-    border: "border border-violet-300/80",
+    border: "border border-violet-200/80 dark:border-violet-500/30",
   },
   {
-    bg: "from-stone-50 to-stone-200",
-    textMain: "text-stone-800",
-    textSecondary: "text-stone-500",
-    accent: "text-stone-700",
-    accentBg: "bg-white/50 border-stone-200/80",
-    barBg: "bg-gradient-to-r from-stone-400 to-stone-500",
-    border: "border border-stone-300/80",
-  },
-  {
-    bg: "from-emerald-50 to-emerald-200",
-    textMain: "text-slate-800",
-    textSecondary: "text-slate-500",
-    accent: "text-emerald-700",
-    accentBg: "bg-white/50 border-emerald-200/80",
-    barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500",
-    border: "border border-emerald-300/80",
-  },
-  {
-    bg: "from-slate-50 to-slate-200",
-    textMain: "text-slate-800",
-    textSecondary: "text-slate-500",
-    accent: "text-slate-600",
-    accentBg: "bg-white/50 border-slate-200/80",
-    barBg: "bg-gradient-to-r from-slate-400 to-slate-500",
-    border: "border border-slate-300/80",
-  },
-  {
-    bg: "from-amber-50 to-amber-200",
-    textMain: "text-stone-800",
-    textSecondary: "text-stone-500",
-    accent: "text-amber-900",
-    accentBg: "bg-white/50 border-amber-200/80",
+    bg: "from-amber-50 to-amber-100/90 dark:from-amber-950/40 dark:to-zinc-900",
+    textMain: "text-amber-950 dark:text-amber-100",
+    textSecondary: "text-amber-800/80 dark:text-amber-300/70",
+    accent: "text-amber-600 dark:text-amber-400",
+    accentBg: "bg-white/60 dark:bg-amber-950/50 border-amber-200/80 dark:border-amber-500/25",
     barBg: "bg-gradient-to-r from-amber-500 to-amber-600",
-    border: "border border-amber-300/80",
+    border: "border border-amber-200/80 dark:border-amber-500/30",
+  },
+  {
+    bg: "from-emerald-50 to-emerald-100/90 dark:from-emerald-950/40 dark:to-zinc-900",
+    textMain: "text-emerald-950 dark:text-emerald-100",
+    textSecondary: "text-emerald-700/80 dark:text-emerald-300/70",
+    accent: "text-emerald-600 dark:text-emerald-400",
+    accentBg: "bg-white/60 dark:bg-emerald-950/50 border-emerald-200/80 dark:border-emerald-500/25",
+    barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500",
+    border: "border border-emerald-200/80 dark:border-emerald-500/30",
+  },
+  {
+    bg: "from-indigo-50 to-indigo-100/90 dark:from-indigo-950/40 dark:to-zinc-900",
+    textMain: "text-indigo-950 dark:text-indigo-100",
+    textSecondary: "text-indigo-700/80 dark:text-indigo-300/70",
+    accent: "text-indigo-600 dark:text-indigo-400",
+    accentBg: "bg-white/60 dark:bg-indigo-950/50 border-indigo-200/80 dark:border-indigo-500/25",
+    barBg: "bg-gradient-to-r from-indigo-400 to-indigo-500",
+    border: "border border-indigo-200/80 dark:border-indigo-500/30",
+  },
+  {
+    bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
+    textMain: "text-stone-900 dark:text-zinc-100",
+    textSecondary: "text-stone-600 dark:text-zinc-400",
+    accent: "text-amber-600 dark:text-amber-400",
+    accentBg: "bg-white/60 dark:bg-zinc-800/60 border-stone-200/80 dark:border-zinc-700/40",
+    barBg: "bg-gradient-to-r from-stone-400 to-stone-500",
+    border: "border border-stone-200/80 dark:border-zinc-800",
   },
 ];
 
 export const BUTTON_ACTIONS = {
   AGAIN: {
     label: "AGAIN",
+    sub: "< 1m",
     rating: 1,
-    color: "hover:bg-red-50  border-red-300 bg-red-200",
+    color: "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/40 border-b-[4px] border-b-rose-600/70 hover:bg-rose-500/25 hover:border-rose-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   HARD: {
     label: "HARD",
+    sub: "2d",
     rating: 2,
-    color: "hover:bg-orange-50  border-orange-300 bg-orange-200",
+    color: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40 border-b-[4px] border-b-amber-600/70 hover:bg-amber-500/25 hover:border-amber-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   GOOD: {
     label: "GOOD",
+    sub: "4d",
     rating: 3,
-    color: "hover:bg-blue-50  border-blue-300 bg-blue-200",
+    color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40 border-b-[4px] border-b-emerald-600/70 hover:bg-emerald-500/25 hover:border-emerald-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   EASY: {
     label: "EASY",
+    sub: "7d",
     rating: 4,
-    color: "hover:bg-emerald-50 border-emerald-300 bg-emerald-200",
+    color: "bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/40 border-b-[4px] border-b-sky-600/70 hover:bg-sky-500/25 hover:border-sky-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
 } as const;
 export type ActionType = keyof typeof BUTTON_ACTIONS;
@@ -242,36 +246,30 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full text-slate-800 shadow-md items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "md:hidden" : ""} bg-white opacity-90 hover:opacity-100`}
+              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
             >
-              <MoveLeft className="w-6 h-6" />
+              <MoveLeft className="w-5 h-5" />
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[420px] sm:min-h-[460px] md:min-h-[480px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full min-h-[380px] min-[375px]:min-h-[440px] sm:min-h-[500px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div
-                    key={`${currentCardId}-${navCount}`}
-                    className="row-start-1 col-start-1 w-full cursor-grab active:cursor-grabbing select-none"
+                    key={`${currentCard._id}-${navCount}`}
                     custom={direction}
+                    className="row-start-1 col-start-1 w-full cursor-grab active:cursor-grabbing select-none"
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.7}
                     onDragStart={() => setIsDragging(true)}
-                    onDragEnd={(event, info) => {
-                      setTimeout(() => setIsDragging(false), 100);
+                    onDragEnd={(e, { offset, velocity }) => {
+                      setTimeout(() => setIsDragging(false), 80);
                       const swipeThreshold = 40;
                       const velocityThreshold = 400;
-                      if (
-                        info.offset.x < -swipeThreshold ||
-                        info.velocity.x < -velocityThreshold
-                      ) {
+                      if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
                         onNextClick();
-                      } else if (
-                        info.offset.x > swipeThreshold ||
-                        info.velocity.x > velocityThreshold
-                      ) {
+                      } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
                         onPrevClick();
                       }
                     }}
@@ -298,9 +296,9 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                     }}
                     transition={{
                       type: "spring",
-                      stiffness: 350,
-                      damping: 30,
-                      mass: 1,
+                      stiffness: 380,
+                      damping: 28,
+                      mass: 0.8,
                     }}
                   >
                     <Flashcard
@@ -319,29 +317,32 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
 
             {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full text-slate-800 shadow-md items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-slate-200 ${deck.length <= 1 ? "md:hidden" : ""} bg-white opacity-90 hover:opacity-100`}
+              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
-              <MoveRight className="w-6 h-6" />
+              <MoveRight className="w-5 h-5" />
             </button>
           </div>
           <div className="w-full">
-            <div className="w-full h-12 mt-2 flex items-center">
+            <div className="w-full h-14 mt-3 flex items-center">
               {isFlipped && (
-                <div className="flex primary-buttons gap-1 w-full animate-in fade-in duration-300 ease-out">
+                <div className="flex primary-buttons gap-2 sm:gap-2.5 w-full animate-in fade-in duration-200 ease-out">
                   {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
                     (actionKey) => {
                       const actionConfig = BUTTON_ACTIONS[actionKey];
                       return (
-                        <Button
+                        <button
                           key={actionKey}
-                          variant="outline"
-                          className={`fade-up active:scale-95 transition-all duration-200 flex-1 hover:font-bold hover:cursor-pointer rounded-xl py-3 text-xs font-semibold ${actionConfig.color}`}
+                          type="button"
+                          className={`flex-1 font-bold rounded-2xl py-3 sm:py-3.5 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
                           onClick={() => onActionClick(actionKey)}
                         >
-                          {actionConfig.label}
-                        </Button>
+                          <span className="font-bold">{actionConfig.label}</span>
+                          <span className="text-[9px] font-normal opacity-80 font-mono">
+                            {actionConfig.sub}
+                          </span>
+                        </button>
                       );
                     },
                   )}

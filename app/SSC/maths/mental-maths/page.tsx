@@ -382,16 +382,16 @@ const MentalMaths = () => {
     >
       <div className="flex flex-col xl:flex-row gap-8 w-full">
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col gap-8 w-full min-w-0">
+        <div className="flex-1 flex flex-col gap-6 w-full min-w-0">
 
         {/* Filter Chips */}
-        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-2">
+        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-1.5 bg-card/50 backdrop-blur-xl p-1.5 rounded-2xl border border-border/40">
           <button
             onClick={() => setActiveFilter("all")}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+            className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
               activeFilter === "all"
-                ? "bg-foreground text-background shadow-md"
-                : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                ? "bg-foreground text-background shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-card/60"
             }`}
           >
             All Topics
@@ -400,10 +400,10 @@ const MentalMaths = () => {
             <button
               key={section.id}
               onClick={() => setActiveFilter(section.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+              className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeFilter === section.id
-                  ? "bg-foreground text-background shadow-md"
-                  : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                  ? "bg-foreground text-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-card/60"
               }`}
             >
               {section.label}
@@ -427,16 +427,16 @@ const MentalMaths = () => {
                   className="w-full"
                 >
                 {/* Section Header */}
-                <div className="mb-3">
-                  <h3 className="text-lg font-extrabold tracking-tight text-foreground flex items-center gap-2">
+                <div className="mb-3.5">
+                  <h3 className="text-lg sm:text-xl font-black tracking-tight text-foreground flex items-center gap-2">
                     {section.label}
                     {section.badge && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-sm uppercase tracking-widest animate-pulse">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/25 shadow-xs uppercase tracking-wider">
                         {section.badge}
                       </span>
                     )}
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 leading-relaxed font-medium">
                     {section.description}
                   </p>
                 </div>
@@ -454,7 +454,7 @@ const MentalMaths = () => {
                         ? "lg:col-span-6"
                         : isThreeCol
                           ? "lg:col-span-4"
-                          : "lg:col-span-4"; // Default fallback
+                          : "lg:col-span-4";
                     
                     return (
                       <div key={topic.id} className={spanClass}>
@@ -485,57 +485,54 @@ const MentalMaths = () => {
         {/* Right Rail - Stats & Streak Panel (Desktop Only) */}
         <div className="hidden xl:flex w-80 flex-col gap-6 shrink-0 animate-in fade-in slide-in-from-right-4 duration-500">
           {/* Streak Card */}
-          <div className="bg-card border border-border shadow-sm rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition-all"></div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <span className="text-orange-500 text-base drop-shadow-sm">🔥</span> Current Streak
+          <div className="bg-card/60 backdrop-blur-2xl border border-amber-500/25 shadow-xl shadow-amber-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group noise-overlay">
+            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <span className="text-amber-500 text-base">🔥</span> Current Streak
             </h3>
-            <div className="flex items-end gap-1.5">
-              <span className="text-6xl font-black text-foreground font-mono leading-none tracking-tighter">12</span>
-              <span className="text-sm font-bold text-muted-foreground mb-1.5 uppercase tracking-widest">Days</span>
+            <div className="flex items-end gap-2">
+              <span className="text-5xl font-black text-foreground font-mono leading-none tracking-tighter text-amber-500">12</span>
+              <span className="text-xs font-mono font-bold text-muted-foreground mb-1 uppercase tracking-widest">Days Locked</span>
             </div>
             <p className="text-xs text-muted-foreground font-medium leading-relaxed z-10">
-              You're in the <span className="text-foreground font-bold">top 5%</span> of aspirants. Keep practicing daily to boost calculation speed!
+              You're in the <span className="text-foreground font-bold font-mono">top 5%</span> of aspirants. Daily consistency compounds rapid speed!
             </p>
           </div>
 
           {/* Global Stats Card */}
-          <div className="bg-card border border-border shadow-sm rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">
-              Your Analytics
+          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group noise-overlay">
+            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground">
+              Performance Telemetry
             </h3>
             <div className="flex flex-col gap-4 z-10">
               <div className="flex justify-between items-center">
                 <span className="text-xs font-semibold text-muted-foreground">Questions Solved</span>
-                <span className="text-sm font-black font-mono tracking-tight">1,248</span>
+                <span className="text-sm font-black font-mono tracking-tight text-foreground">1,248</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-xs font-semibold text-muted-foreground">Average Speed</span>
-                <span className="text-sm font-black font-mono tracking-tight text-emerald-500 dark:text-emerald-400">4.2s / Q</span>
+                <span className="text-sm font-black font-mono tracking-tight text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">4.2s / Q</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-xs font-semibold text-muted-foreground">Overall Accuracy</span>
-                <span className="text-sm font-black font-mono tracking-tight">92%</span>
+                <span className="text-sm font-black font-mono tracking-tight text-foreground">92%</span>
               </div>
             </div>
           </div>
 
           {/* Daily Warm-up Pro-Tip Banner */}
-          <div className="bg-card border border-border shadow-sm rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group bg-gradient-to-b from-emerald-500/5 to-transparent">
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <span className="text-emerald-500 text-base drop-shadow-sm">💡</span> Pro Tip
+          <div className="bg-card/60 backdrop-blur-2xl border border-emerald-500/25 shadow-xl shadow-emerald-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group noise-overlay">
+            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <span className="text-emerald-500 text-base">💡</span> Pro Tip
             </h3>
             <div className="space-y-2 z-10">
               <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
                 Daily Warm-Up
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-extrabold tracking-wider bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 uppercase">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 uppercase border border-emerald-500/20">
                   10 Mins
                 </span>
               </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                With strict sectional timers, you cannot afford to calculate from scratch. Build muscle memory for <span className="font-semibold text-foreground">Squares</span>, <span className="font-semibold text-foreground">Fractions</span>, and <span className="font-semibold text-foreground">BODMAS</span> to attempt all 25 Quant questions in 15 mins!
+              <p className="text-xs text-muted-foreground leading-relaxed font-medium">
+                Sectional timers give you zero room for manual scratch work. Lock in <span className="font-bold text-foreground">Squares</span>, <span className="font-bold text-foreground">Fractions</span>, and <span className="font-bold text-foreground">BODMAS</span> to solve 25 Quant questions in 15 mins.
               </p>
             </div>
           </div>

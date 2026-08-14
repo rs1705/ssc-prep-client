@@ -172,47 +172,52 @@ export function TopBar() {
         </Sheet>
 
         {mounted && (
-          <div className="text-[9px] font-medium tracking-widest uppercase opacity-70">
-            {timeLabel} · {dayLabel}
+          <div className="flex items-center gap-2">
+            <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-muted-foreground bg-card/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-border/40 shadow-xs flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>{timeLabel}</span>
+              <span className="text-border">|</span>
+              <span className="text-foreground/80">{dayLabel}</span>
+            </div>
           </div>
         )}
       </div>
-      <div className="flex items-center gap-1.5 sm:gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <Link href="/" className="md:hidden">
           <button
             aria-label="Home"
-            className="w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+            className="w-10 h-10 rounded-full border border-border/40 shadow-xs bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
           >
-            <Home className="w-4 h-4" strokeWidth={1.75} />
+            <Home className="w-4 h-4 text-foreground/80" strokeWidth={1.75} />
           </button>
         </Link>
         <button
           aria-label="Toggle theme"
           onClick={toggleTheme}
-          className="md:hidden w-10 h-10 rounded-full ring-1 ring-border shadow-sm bg-card flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+          className="md:hidden w-10 h-10 rounded-full border border-border/40 shadow-xs bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
         >
           {mounted && theme === "dark" ? (
-            <Sun className="w-4 h-4" strokeWidth={1.75} />
+            <Sun className="w-4 h-4 text-amber-400" strokeWidth={1.75} />
           ) : (
-            <Moon className="w-4 h-4" strokeWidth={1.75} />
+            <Moon className="w-4 h-4 text-amber-500" strokeWidth={1.75} />
           )}
         </button>
 
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-center rounded-full ring-1 ring-border shadow-sm hover:opacity-85 hover:shadow-md transition-all focus:outline-none ml-1 sm:ml-2 cursor-pointer">
-                <Avatar className="w-10 h-10">
+              <button className="flex items-center justify-center rounded-full border border-amber-500/30 shadow-xs hover:border-amber-500/60 hover:shadow-md hover:shadow-amber-500/10 transition-all focus:outline-none ml-1 sm:ml-2 cursor-pointer ring-2 ring-transparent focus:ring-amber-500/20">
+                <Avatar className="w-10 h-10 ring-1 ring-background">
                   <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
-                  <AvatarFallback>U</AvatarFallback>
+                  <AvatarFallback className="bg-amber-500/10 text-amber-500 font-bold">U</AvatarFallback>
                 </Avatar>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer" onClick={logout}>
-                <LogOut className="mr-2 w-4 h-4" />
+            <DropdownMenuContent align="end" className="w-52 rounded-2xl bg-card/95 backdrop-blur-xl border border-border/50 shadow-2xl p-2">
+              <DropdownMenuLabel className="px-3 py-2 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-border/40 my-1" />
+              <DropdownMenuItem className="text-destructive font-medium focus:text-destructive focus:bg-destructive/10 rounded-xl px-3 py-2 cursor-pointer transition-colors" onClick={logout}>
+                <LogOut className="mr-2.5 w-4 h-4" />
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -221,7 +226,7 @@ export function TopBar() {
           <div className="flex items-center gap-2 ml-1 sm:ml-2">
             <button 
               onClick={signInWithGoogle}
-              className="h-10 px-5 text-[10px] font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center gap-2"
+              className="h-10 px-5 text-[10px] font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center gap-2"
             >
               Continue with Google
             </button>

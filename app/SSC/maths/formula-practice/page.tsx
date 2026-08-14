@@ -1,14 +1,247 @@
 "use client";
 
-import React from "react";
-import ComingSoon from "@/components/custom/ComingSoon";
+import React, { useState } from "react";
+import Link from "next/link";
+import { 
+  Calculator, Sparkles, Copy, Check, Eye, EyeOff, 
+  Swords, Search, BookOpen, ChevronRight 
+} from "lucide-react";
+import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+interface FormulaCard {
+  id: string;
+  category: "algebra" | "trigo" | "geometry" | "mensuration" | "arithmetic";
+  title: string;
+  formula: string;
+  explanation: string;
+  example: string;
+  tag: string;
+}
+
+const FORMULAS: FormulaCard[] = [
+  {
+    id: "f-1",
+    category: "algebra",
+    title: "If x + 1/x = k",
+    formula: "x² + 1/x² = k² - 2  ·  x³ + 1/x³ = k³ - 3k",
+    explanation: "Standard algebraic symmetric recurrence for higher polynomial degrees.",
+    example: "If x + 1/x = 4, then x² + 1/x² = 14, and x³ + 1/x³ = 52.",
+    tag: "Algebra PYQ Favorite",
+  },
+  {
+    id: "f-2",
+    category: "algebra",
+    title: "Sum of Cubes: a³ + b³ + c³ - 3abc",
+    formula: "(a + b + c) · [a² + b² + c² - (ab + bc + ca)]",
+    explanation: "Special Condition: If a + b + c = 0, then a³ + b³ + c³ = 3abc.",
+    example: "If a = 25, b = -15, c = -10, sum is 0, so a³ + b³ + c³ = 3(25)(-15)(-10) = 11,250.",
+    tag: "SSC CGL Tier 1 & 2",
+  },
+  {
+    id: "f-3",
+    category: "trigo",
+    title: "Secant & Tangent Conjugate: sec θ + tan θ = k",
+    formula: "sec θ - tan θ = 1/k  ⇒  sec θ = (k² + 1)/2k,  tan θ = (k² - 1)/2k",
+    explanation: "Derived directly from sec² θ - tan² θ = 1. Same applies to cosec θ ± cot θ.",
+    example: "If sec θ + tan θ = 5, then sec θ - tan θ = 1/5 = 0.2.",
+    tag: "Trigonometry",
+  },
+  {
+    id: "f-4",
+    category: "geometry",
+    title: "Circle Intersecting Chords Theorem",
+    formula: "PA · PB = PC · PD",
+    explanation: "When two chords AB and CD intersect at point P (internal or external).",
+    example: "If PA=4, PB=6, PC=3, then PD = (4×6)/3 = 8 cm.",
+    tag: "Geometry Theorem",
+  },
+  {
+    id: "f-5",
+    category: "geometry",
+    title: "Direct & Transverse Common Tangent (DCT / TCT)",
+    formula: "DCT = √(d² - (r₁ - r₂)²)   ·   TCT = √(d² - (r₁ + r₂)²)",
+    explanation: "Where d is distance between circle centers, and r₁, r₂ are radii.",
+    example: "If d=13, r₁=8, r₂=3, DCT = √(169 - 25) = 12 cm.",
+    tag: "Circle Tangents",
+  },
+  {
+    id: "f-6",
+    category: "mensuration",
+    title: "Frustum of a Right Circular Cone",
+    formula: "Volume = (1/3)πh (R² + r² + Rr)  ·  CSA = πl (R + r)",
+    explanation: "Where l = √(h² + (R - r)²), R = bottom radius, r = top radius.",
+    example: "Used for bucket and truncated conical vessel questions.",
+    tag: "Mensuration 3D",
+  },
+  {
+    id: "f-7",
+    category: "arithmetic",
+    title: "Compound vs Simple Interest Difference (2 & 3 Years)",
+    formula: "Diff (2 yrs) = P(R/100)²   ·   Diff (3 yrs) = P(R/100)² · (3 + R/100)",
+    explanation: "Fast calculation of principal or rate without compounding manually.",
+    example: "If P = ₹10,000, R = 10%, Diff for 2 yrs = 10000 × (0.01) = ₹100.",
+    tag: "CI - SI Shortcut",
+  },
+  {
+    id: "f-8",
+    category: "arithmetic",
+    title: "Alligation & Mixture Rule",
+    formula: "Quantity (Cheaper) / Quantity (Dearer) = (d - m) / (m - c)",
+    explanation: "Where c = cheaper price, d = dearer price, m = mean average price.",
+    example: "Mix ₹15/kg wheat with ₹20/kg wheat to get ₹18/kg ⇒ ratio is (20-18)/(18-15) = 2:3.",
+    tag: "Mixture Ratio",
+  },
+];
 
 export default function FormulaPracticePage() {
-    return (
-        <ComingSoon 
-            pageTitle="Formulas & Tricks"
-            title="Coming Soon"
-            description="We are currently preparing shortcuts, formula cards, and cheatsheets for this section. Stay tuned!"
-        />
-    );
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [hiddenFormulas, setHiddenFormulas] = useState<Record<string, boolean>>({});
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const toggleHide = (id: string) => {
+    setHiddenFormulas((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleCopy = (id: string, formula: string) => {
+    navigator.clipboard.writeText(formula);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const filteredFormulas = FORMULAS.filter((f) => {
+    const matchesCat = activeCategory === "all" || f.category === activeCategory;
+    const matchesQuery = 
+      f.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      f.formula.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      f.tag.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCat && matchesQuery;
+  });
+
+  return (
+    <TopicPageLayout
+      title="Formulas & Speed Math Cheatsheets"
+      description="Essential theorems, algebraic identities, and shortcut formulas calibrated for lightning-fast Tier 1 & Tier 2 solving."
+      contentMaxWidthClass="w-full max-w-[1300px]"
+    >
+      <div className="flex flex-col gap-8 py-2">
+        {/* Filter Bar & Search */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
+            {[
+              { id: "all", label: "All Formulas" },
+              { id: "algebra", label: "Algebra" },
+              { id: "trigo", label: "Trigonometry" },
+              { id: "geometry", label: "Geometry" },
+              { id: "mensuration", label: "Mensuration" },
+              { id: "arithmetic", label: "Arithmetic" },
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
+                  activeCategory === cat.id
+                    ? "bg-foreground text-background shadow-xs"
+                    : "text-muted-foreground hover:text-foreground hover:bg-card/80"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative w-full sm:w-72">
+            <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Input
+              type="text"
+              placeholder="Search formulas & identities..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
+            />
+          </div>
+        </div>
+
+        {/* Formulas Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {filteredFormulas.map((card) => {
+            const isHidden = hiddenFormulas[card.id];
+            return (
+              <div
+                key={card.id}
+                className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between noise-overlay relative overflow-hidden group"
+              >
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+                      {card.tag}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => toggleHide(card.id)}
+                        title={isHidden ? "Reveal formula" : "Hide formula to test yourself"}
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors cursor-pointer"
+                      >
+                        {isHidden ? <Eye className="w-3.5 h-3.5 text-amber-500" /> : <EyeOff className="w-3.5 h-3.5" />}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(card.id, card.formula)}
+                        title="Copy formula"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors cursor-pointer"
+                      >
+                        {copiedId === card.id ? (
+                          <Check className="w-3.5 h-3.5 text-emerald-500" />
+                        ) : (
+                          <Copy className="w-3.5 h-3.5" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-black tracking-tight text-foreground mb-3">
+                    {card.title}
+                  </h3>
+
+                  {/* Formula Box */}
+                  <div className={`p-4 rounded-2xl border transition-all duration-300 font-mono text-sm sm:text-base font-black ${
+                    isHidden 
+                      ? "bg-muted/40 border-border/40 text-muted-foreground/30 blur-sm select-none cursor-pointer" 
+                      : "bg-card/80 border-amber-500/30 text-amber-500 shadow-inner"
+                  }`}
+                  onClick={() => isHidden && toggleHide(card.id)}
+                  >
+                    {card.formula}
+                  </div>
+
+                  <p className="text-xs text-foreground/80 leading-relaxed font-medium mt-3">
+                    {card.explanation}
+                  </p>
+
+                  <div className="text-[11px] text-muted-foreground bg-card/40 border border-border/30 p-2.5 rounded-xl mt-2 font-mono">
+                    <span className="text-foreground font-bold">Example:</span> {card.example}
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-border/40 relative z-10">
+                  <Link href="/SSC/maths/mental-maths">
+                    <Button
+                      variant="ghost"
+                      className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border border-amber-500/20"
+                    >
+                      <Swords className="w-3.5 h-3.5" />
+                      Test in Mental Maths Drill
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </TopicPageLayout>
+  );
 }

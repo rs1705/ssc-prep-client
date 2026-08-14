@@ -55,22 +55,22 @@ const SignInForm = () => {
         </p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3.5 sm:space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="space-y-1">
-                <FormLabel className="text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider">Email</FormLabel>
+              <FormItem className="space-y-1.5">
+                <FormLabel className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">Email Address</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
                     placeholder="Enter your email"
-                    className="h-11 sm:h-12 rounded-xl bg-muted/50 border-transparent hover:bg-muted focus-visible:bg-transparent focus-visible:border-primary transition-colors text-sm px-3.5"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-red-500 font-medium">
+                <p className="text-left text-xs text-rose-500 font-medium">
                   {form.formState.errors.email?.message}
                 </p>
               </FormItem>
@@ -80,10 +80,10 @@ const SignInForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem className="space-y-1">
+              <FormItem className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-[11px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider">Password</FormLabel>
-                  <Link href="#" className="text-xs font-medium text-primary hover:underline">
+                  <FormLabel className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">Password</FormLabel>
+                  <Link href="#" className="text-xs font-mono font-semibold text-amber-500 hover:text-amber-400 transition-colors">
                     Forgot password?
                   </Link>
                 </div>
@@ -91,18 +91,18 @@ const SignInForm = () => {
                   <Input
                     type="password"
                     placeholder="Enter your password"
-                    className="h-11 sm:h-12 rounded-xl bg-muted/50 border-transparent hover:bg-muted focus-visible:bg-transparent focus-visible:border-primary transition-colors text-sm px-3.5"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-red-500 font-medium">
+                <p className="text-left text-xs text-rose-500 font-medium">
                   {form.formState.errors.password?.message}
                 </p>
               </FormItem>
             )}
           />
-          <div className="pt-1.5">
-            <Button type="submit" className="w-full h-11 sm:h-12 px-5 py-2.5 rounded-full text-[11px] font-extrabold tracking-widest uppercase gap-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
+          <div className="pt-2">
+            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-[11px] font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
               <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
               Sign In
             </Button>

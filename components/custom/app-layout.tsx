@@ -27,9 +27,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   const isFocusMode = isGameRoute(pathname);
-  const sidebarWidthClass = isFocusMode
-    ? "md:w-[72px]"
-    : isCollapsed
+  const sidebarWidthClass = isCollapsed
     ? "md:w-[72px]"
     : "md:w-56 lg:w-64";
 
