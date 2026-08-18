@@ -222,7 +222,7 @@ export default function Dashboard() {
           {/* Resume Card */}
           <Link
             href="/SSC/maths/mental-maths"
-            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
             style={{ animationDelay: "150ms", animationFillMode: "both" }}
           >
             {/* Ambient Shine Overlay */}

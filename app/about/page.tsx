@@ -116,7 +116,7 @@ export default function AboutPage() {
               <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
                 {stat.label}
               </span>
-              <div className="text-xl sm:text-2xl font-black font-mono tracking-tight text-foreground my-1.5 text-amber-500">
+              <div className="text-xl sm:text-2xl font-black font-mono tracking-tight my-1.5 text-amber-500">
                 {stat.val}
               </div>
               <span className="text-[11px] text-muted-foreground font-medium truncate">

@@ -362,7 +362,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                         <button
                           key={actionKey}
                           type="button"
-                          className={`flex-1 font-bold rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
+                          className={`flex-1 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
                           onClick={() => onActionClick(actionKey)}
                         >
                           <span className="font-bold">{actionConfig.label}</span>

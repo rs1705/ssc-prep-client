@@ -490,7 +490,7 @@ const MentalMaths = () => {
               <span className="text-amber-500 text-base">🔥</span> Current Streak
             </h3>
             <div className="flex items-end gap-2">
-              <span className="text-5xl font-black text-foreground font-mono leading-none tracking-tighter text-amber-500">12</span>
+              <span className="text-5xl font-black font-mono leading-none tracking-tighter text-amber-500">12</span>
               <span className="text-xs font-mono font-bold text-muted-foreground mb-1 uppercase tracking-widest">Days Locked</span>
             </div>
             <p className="text-xs text-muted-foreground font-medium leading-relaxed z-10">
