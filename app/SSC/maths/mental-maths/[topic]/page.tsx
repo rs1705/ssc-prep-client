@@ -47,14 +47,14 @@ const COUNTDOWN_MESSAGES = [
 ];
 
 const getQuestionFontSize = (text: string | undefined) => {
-  if (!text) return "text-4xl sm:text-5xl lg:text-6xl";
+  if (!text) return "text-3xl sm:text-4xl md:text-5xl";
   const len = text.length;
-  if (len <= 10) return "text-4xl sm:text-5xl md:text-6xl lg:text-7xl";
-  if (len <= 18) return "text-3xl sm:text-4xl md:text-5xl lg:text-6xl";
-  if (len <= 28) return "text-2xl sm:text-3xl md:text-4xl lg:text-5xl";
-  if (len <= 45) return "text-xl sm:text-2xl md:text-3xl lg:text-4xl";
-  if (len <= 70) return "text-lg sm:text-xl md:text-2xl lg:text-3xl";
-  return "text-base sm:text-lg md:text-xl lg:text-2xl leading-tight";
+  if (len <= 10) return "text-3xl sm:text-4xl md:text-5xl lg:text-6xl";
+  if (len <= 18) return "text-2xl sm:text-3xl md:text-4xl lg:text-5xl";
+  if (len <= 28) return "text-xl sm:text-2xl md:text-3xl lg:text-4xl";
+  if (len <= 45) return "text-lg sm:text-xl md:text-2xl lg:text-3xl";
+  if (len <= 70) return "text-base sm:text-lg md:text-xl lg:text-2xl";
+  return "text-sm sm:text-base md:text-lg leading-tight";
 };
 
 const renderTopicIcon = (topic: string, className?: string) => {
@@ -535,19 +535,19 @@ export default function MentalMathsPractice() {
 
   return (
     <TopicPageLayout
-      contentMaxWidthClass="w-full max-w-3xl"
+      contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px] lg:max-w-[500px]"
       hideBreadcrumbs={true}
       centerContent={true}
     >
       <div
-        className="relative w-full flex flex-col bg-card border border-primary/30 rounded-3xl shadow-sm select-none transition-all duration-300 p-3.5 sm:p-6 md:p-7 flex-1 max-h-[calc(100dvh-4.5rem)] md:max-h-[calc(100dvh-5.5rem)] overflow-hidden"
+        className="relative w-full flex flex-col bg-card border border-primary/30 rounded-3xl shadow-sm select-none transition-all duration-300 p-3 sm:p-4 md:p-5 flex-1 max-h-[calc(90dvh-4rem)] md:max-h-[calc(90dvh-4.5rem)] overflow-hidden"
       >
         {gameState === "active" && (
-          <div className="flex justify-end w-full shrink-0 -mt-1.5 -mr-1.5 sm:-mt-2 sm:-mr-2 z-50">
+          <div className="flex justify-end w-full shrink-0 -mt-1 -mr-1 sm:-mt-1.5 sm:-mr-1.5 z-50">
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-8 w-8 mb-1 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              className="h-7 w-7 sm:h-8 sm:w-8 mb-1 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
               title="Quit"
             >
               <X className="w-4 h-4" strokeWidth={2.5} />
@@ -555,11 +555,11 @@ export default function MentalMathsPractice() {
           </div>
         )}
         {gameState === "game_over" && (
-          <div className="flex justify-end w-full shrink-0 -mt-1.5 -mr-1.5 sm:-mt-2 sm:-mr-2 z-50">
+          <div className="flex justify-end w-full shrink-0 -mt-1 -mr-1 sm:-mt-1.5 sm:-mr-1.5 z-50">
             <button
               type="button"
               onClick={() => router.back()}
-              className="h-8 w-8 mb-1 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              className="h-7 w-7 sm:h-8 sm:w-8 mb-1 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
               title="Close"
             >
               <X className="w-4 h-4" strokeWidth={2.5} />
@@ -571,39 +571,39 @@ export default function MentalMathsPractice() {
         <div className="relative w-full flex flex-col flex-1 min-h-0">
           {/* 1. LOBBY CONFIGURATION SCREEN */}
           {gameState === "idle" && (
-            <div className="w-full flex flex-col flex-1 justify-between max-w-2xl mx-auto py-1 sm:py-4 animate-in fade-in slide-in-from-bottom-3">
+            <div className="w-full flex flex-col flex-1 justify-between mx-auto py-0.5 sm:py-1.5 md:py-2 animate-in fade-in slide-in-from-bottom-3 min-h-0">
               {/* Header: Back & Title in one clean bar */}
-              <div className="flex items-center justify-between w-full shrink-0 mb-1 sm:mb-2">
+              <div className="flex items-center justify-between w-full shrink-0 mb-1 sm:mb-1.5">
                 <button
                   type="button"
                   onClick={() => router.back()}
-                  className="flex items-center gap-1.5 h-8 px-2.5 -ml-1.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none text-xs sm:text-sm font-semibold"
+                  className="flex items-center gap-1.5 h-7 sm:h-8 px-2 sm:px-2.5 -ml-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none text-xs sm:text-sm font-semibold"
                   title="Back"
                 >
                   <ArrowLeft className="w-4 h-4" strokeWidth={2.5} />
                   <span>Back</span>
                 </button>
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-lg sm:text-2xl font-extrabold tracking-tight capitalize text-foreground">
+                  <h2 className="text-base sm:text-xl md:text-2xl font-extrabold tracking-tight capitalize text-foreground">
                     {topic.replace("-", " ")} Drill
                   </h2>
                 </div>
-                <div className="w-12" /> {/* Spacer */}
+                <div className="w-10 sm:w-12" /> {/* Spacer */}
               </div>
 
-              <div className="flex flex-col justify-evenly flex-1 gap-4 sm:gap-6 md:gap-8 px-0.5 py-1.5 sm:py-2">
+              <div className="flex flex-col justify-evenly flex-1 gap-2.5 sm:gap-4 md:gap-5 px-0.5 py-1 sm:py-2 min-h-0">
                 {/* 1. Difficulty Card */}
                 {topic !== "mixed" && (
-                  <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-sm shadow-black/5">
-                    <div className="flex items-center gap-2.5 mb-2.5">
-                      <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 font-mono text-[10px] sm:text-xs font-bold">
+                  <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 font-mono text-[10px] sm:text-xs font-bold">
                         1
                       </span>
                       <h3 className="text-[10px] sm:text-xs font-bold font-mono uppercase tracking-widest text-muted-foreground">
                         Select Difficulty
                       </h3>
                     </div>
-                    <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
+                    <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                       {(["easy", "medium", "hard", "all"] as const).map((d) => {
                         const isSelected = d === engine.state.difficulty;
                         const label =
@@ -619,9 +619,9 @@ export default function MentalMathsPractice() {
                             key={d}
                             type="button"
                             onClick={() => handleDifficultyChange(d)}
-                            className={`rounded-xl sm:rounded-2xl h-10 sm:h-11 md:h-12 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border select-none ${
+                            className={`rounded-xl sm:rounded-2xl h-8 sm:h-9 md:h-9.5 flex items-center justify-center font-medium font-mono text-xs transition-all duration-75 cursor-pointer border select-none ${
                               isSelected
-                                ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                                ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
                                 : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
                             }`}
                           >
@@ -643,9 +643,9 @@ export default function MentalMathsPractice() {
                 )}
 
                 {/* 2. Practice Mode Card */}
-                <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-sm shadow-black/5">
-                  <div className="flex items-center gap-2.5 mb-2.5">
-                    <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-amber-400/15 text-amber-500 dark:text-amber-400 border border-amber-400/30 font-mono text-[10px] sm:text-xs font-bold">
+                <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-400/15 text-amber-500 dark:text-amber-400 border border-amber-400/30 font-mono text-[10px] sm:text-xs font-bold">
                       2
                     </span>
                     <h3 className="text-[10px] sm:text-xs font-bold font-mono uppercase tracking-widest text-muted-foreground">
@@ -653,35 +653,37 @@ export default function MentalMathsPractice() {
                     </h3>
                   </div>
                   {topic !== "mixed" && (
-                    <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-2.5">
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-2 sm:mb-2.5">
                       <button
                         type="button"
                         onClick={() => handleModeChange("timed")}
-                        className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center gap-2 min-h-[80px] sm:min-h-[96px] md:min-h-[104px] transition-all duration-75 cursor-pointer border select-none px-3 sm:px-4 ${
+                        className={`rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[88px] sm:min-h-[96px] md:min-h-[104px] transition-all duration-75 cursor-pointer border select-none p-2.5 sm:p-3 ${
                           engine.state.mode === "timed"
-                            ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                            : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 active:border-b-[1px] active:translate-y-[2px]"
+                            ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[4px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
+                            : "bg-card/70 border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-amber-400/40 active:border-b-[1px] active:translate-y-[3px]"
                         }`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 shrink-0"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <circle cx="12" cy="12" r="10" />
-                          <polyline points="12 6 12 12 16 14" />
-                        </svg>
+                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "timed" ? "bg-amber-500/20 text-amber-600 dark:text-amber-300" : "bg-muted/70 text-muted-foreground"}`}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                          </svg>
+                        </div>
                         <div className="flex flex-col text-center">
-                          <span className={`font-black font-mono text-xs sm:text-sm ${engine.state.mode === "timed" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}>
+                          <span className={`font-semibold font-mono text-xs sm:text-sm ${engine.state.mode === "timed" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}>
                             Timed
                           </span>
-                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-medium -mt-0.5">
-                            Race clock
+                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-normal">
+                            Race the clock
                           </span>
                         </div>
                       </button>
@@ -689,29 +691,31 @@ export default function MentalMathsPractice() {
                       <button
                         type="button"
                         onClick={() => handleModeChange("freestyle")}
-                        className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center gap-2 min-h-[80px] sm:min-h-[96px] md:min-h-[104px] transition-all duration-75 cursor-pointer border select-none px-3 sm:px-4 ${
+                        className={`rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[88px] sm:min-h-[96px] md:min-h-[104px] transition-all duration-75 cursor-pointer border select-none p-2.5 sm:p-3 ${
                           engine.state.mode === "freestyle"
-                            ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                            : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 active:border-b-[1px] active:translate-y-[2px]"
+                            ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[4px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
+                            : "bg-card/70 border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-amber-400/40 active:border-b-[1px] active:translate-y-[3px]"
                         }`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 shrink-0"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                        </svg>
+                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "freestyle" ? "bg-amber-500/20 text-amber-600 dark:text-amber-300" : "bg-muted/70 text-muted-foreground"}`}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                          </svg>
+                        </div>
                         <div className="flex flex-col text-center">
-                          <span className={`font-black font-mono text-xs sm:text-sm ${engine.state.mode === "freestyle" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}>
+                          <span className={`font-semibold font-mono text-xs sm:text-sm ${engine.state.mode === "freestyle" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}>
                             Freestyle
                           </span>
-                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-medium -mt-0.5">
+                          <span className="text-[9px] sm:text-[10px] text-muted-foreground font-normal">
                             No pressure
                           </span>
                         </div>
@@ -720,7 +724,7 @@ export default function MentalMathsPractice() {
                   )}
 
                   {/* Mode Limits */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                     {engine.state.mode === "timed"
                       ? (topic === "mixed" ? [60, 120, 300] : [30, 60, 90]).map(
                           (t) => {
@@ -730,9 +734,9 @@ export default function MentalMathsPractice() {
                                 key={t}
                                 type="button"
                                 onClick={() => handleTimerLimitChange(t)}
-                                className={`rounded-xl sm:rounded-2xl h-9 sm:h-10 md:h-11 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border select-none ${
+                                className={`rounded-xl sm:rounded-2xl h-8 sm:h-9 md:h-9.5 flex items-center justify-center font-medium font-mono text-xs transition-all duration-75 cursor-pointer border select-none ${
                                   isSelected
-                                    ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                                    ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
                                     : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
                                 }`}
                               >
@@ -748,9 +752,9 @@ export default function MentalMathsPractice() {
                               key={q}
                               type="button"
                               onClick={() => handleQuestionLimitChange(q)}
-                              className={`rounded-xl sm:rounded-2xl h-9 sm:h-10 md:h-11 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border select-none ${
+                              className={`rounded-xl sm:rounded-2xl h-8 sm:h-9 md:h-9.5 flex items-center justify-center font-medium font-mono text-xs transition-all duration-75 cursor-pointer border select-none ${
                                 isSelected
-                                  ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                                  ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
                                   : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
                               }`}
                             >
@@ -762,31 +766,31 @@ export default function MentalMathsPractice() {
                 </div>
 
                 {/* 3. Input Layout Card */}
-                <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-sm shadow-black/5">
-                  <div className="flex items-center gap-2.5 mb-2.5">
-                    <span className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-amber-400/15 text-amber-500 dark:text-amber-400 border border-amber-400/30 font-mono text-[10px] sm:text-xs font-bold">
+                <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-amber-400/15 text-amber-500 dark:text-amber-400 border border-amber-400/30 font-mono text-[10px] sm:text-xs font-bold">
                       3
                     </span>
                     <h3 className="text-[10px] sm:text-xs font-bold font-mono uppercase tracking-widest text-muted-foreground">
                       Input Layout
                     </h3>
                   </div>
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                     <button
                       type="button"
                       onClick={() => setInputLayout("mcq")}
-                      className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13 sm:h-16 md:h-18 transition-all duration-75 cursor-pointer border select-none p-2 ${
+                      className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13 sm:h-14 md:h-14 transition-all duration-75 cursor-pointer border select-none p-2 sm:p-2.5 ${
                         inputLayout === "mcq"
-                          ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                          ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
                           : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 active:border-b-[1px] active:translate-y-[2px]"
                       }`}
                     >
                       <span
-                        className={`font-black font-mono text-xs sm:text-sm ${inputLayout === "mcq" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}
+                        className={`font-semibold font-mono text-xs sm:text-sm ${inputLayout === "mcq" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}
                       >
                         MCQS
                       </span>
-                      <span className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">
+                      <span className="text-[9px] sm:text-[10px] text-muted-foreground font-normal mt-0.5">
                         Pick 1 of 4 options
                       </span>
                     </button>
@@ -794,18 +798,18 @@ export default function MentalMathsPractice() {
                     <button
                       type="button"
                       onClick={() => setInputLayout("keys")}
-                      className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13 sm:h-16 md:h-18 transition-all duration-75 cursor-pointer border select-none p-2 ${
+                      className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13 sm:h-14 md:h-14 transition-all duration-75 cursor-pointer border select-none p-2 sm:p-2.5 ${
                         inputLayout === "keys"
-                          ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-black shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                          ? "bg-amber-400/20 dark:bg-amber-400/15 border-amber-400/60 dark:border-amber-400/50 border-b-[3px] border-b-amber-500 text-amber-600 dark:text-amber-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
                           : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-amber-400/40 active:border-b-[1px] active:translate-y-[2px]"
                       }`}
                     >
                       <span
-                        className={`font-black font-mono text-xs sm:text-sm ${inputLayout === "keys" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}
+                        className={`font-semibold font-mono text-xs sm:text-sm ${inputLayout === "keys" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}
                       >
                         NUMPAD
                       </span>
-                      <span className="text-[9px] sm:text-[10px] text-muted-foreground font-medium">
+                      <span className="text-[9px] sm:text-[10px] text-muted-foreground font-normal mt-0.5">
                         Type it out fast
                       </span>
                     </button>
@@ -814,9 +818,9 @@ export default function MentalMathsPractice() {
               </div>
 
               {/* Start Button */}
-              <div className="flex w-full shrink-0 mt-1 sm:mt-2">
+              <div className="flex w-full shrink-0 mt-1 sm:mt-1.5">
                 <Button
-                  className="w-full h-13 sm:h-16 md:h-18 rounded-2xl text-xs sm:text-sm md:text-base font-mono font-black tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center group"
+                  className="w-full h-11 sm:h-12 md:h-12.5 rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center group"
                   onClick={handleStartPractice}
                 >
                   <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
@@ -858,19 +862,19 @@ export default function MentalMathsPractice() {
               {/* 3. ACTIVE PRACTICE BOARD */}
               {gameState === "active" && (
                 /* Active Game Container - Zero Scroll Fit */
-                <div className="h-full w-full flex flex-col flex-1 gap-2 sm:gap-3">
+                <div className="h-full w-full flex flex-col flex-1 gap-1.5 sm:gap-2.5">
                   {/* Top Bar: Topic Badge + Score Pill + Switcher */}
-                  <div className="flex items-center justify-between w-full pb-2 gap-2">
+                  <div className="flex items-center justify-between w-full pb-1.5 gap-2">
                     {/* Left: Topic Icon + Name & Tags */}
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-2xl text-primary flex items-center justify-center border border-primary/20">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-primary/10 rounded-2xl text-primary flex items-center justify-center border border-primary/20">
                         {renderTopicIcon(
                           topic,
-                          "w-4 h-4 sm:w-5 sm:h-5 shrink-0",
+                          "w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 shrink-0",
                         )}
                       </div>
                       <div className="flex flex-col min-w-0 justify-center">
-                        <span className="font-black text-sm sm:text-base tracking-tight text-foreground leading-none capitalize truncate">
+                        <span className="font-black text-xs sm:text-sm md:text-base tracking-tight text-foreground leading-none capitalize truncate">
                           {topic}
                         </span>
                         <div className="flex items-center gap-1.5 mt-1 min-w-0 text-[9px] font-mono font-bold uppercase tracking-wider select-none">
@@ -952,7 +956,7 @@ export default function MentalMathsPractice() {
                   </div>
 
                   {/* Progress / Timer Row */}
-                  <div className="w-full flex flex-col gap-1 my-1">
+                  <div className="w-full flex flex-col gap-1 my-0.5 sm:my-1">
                     {/* Labels Row */}
                     <div className="flex justify-between items-center px-1">
                       <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-muted-foreground select-none">
@@ -977,7 +981,7 @@ export default function MentalMathsPractice() {
                   {/* Question Box */}
                   <div
                     className={`
-                            my-1 sm:my-2 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-4 sm:py-6 px-4 sm:px-6 min-h-[150px] overflow-hidden border transition-all duration-200 ease-in-out select-none relative shadow-sm
+                            my-0.5 sm:my-1.5 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-3 sm:py-4 md:py-5 px-4 sm:px-6 min-h-[110px] sm:min-h-[130px] md:min-h-[145px] overflow-hidden border transition-all duration-200 ease-in-out select-none relative shadow-sm
                             ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 scale-[1.01]" : ""}
                             ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500/60 bg-rose-500/15 text-rose-600 dark:text-rose-300 scale-[0.99]" : ""}
                             ${engine.state.currentAnswerStatus === "skipped" ? "border-amber-500/60 bg-amber-500/15 text-amber-600 dark:text-amber-300" : ""}
@@ -1005,7 +1009,7 @@ export default function MentalMathsPractice() {
                   </div>
 
                   {/* Wrapper for Inputs & Keypad */}
-                  <div className="w-full shrink-0 relative flex flex-col justify-end pb-1 h-[280px] sm:h-[320px] md:h-[340px]">
+                  <div className="w-full shrink-0 relative flex flex-col justify-end pb-0.5 h-[255px] sm:h-[280px] md:h-[300px] lg:h-[320px]">
                     <AnimatePresence mode="wait">
                       {inputLayout === "keys" ? (
                         <motion.div
@@ -1014,7 +1018,7 @@ export default function MentalMathsPractice() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.12, ease: "easeInOut" }}
-                          className="flex flex-col gap-2.5 sm:gap-3 w-full h-full justify-between"
+                          className="flex flex-col gap-2 sm:gap-2.5 w-full h-full justify-between"
                         >
                           {/* Answer Input Bar */}
                           <form
@@ -1033,12 +1037,12 @@ export default function MentalMathsPractice() {
                               onChange={(e) =>
                                 setUserInput(e.target.value.replace(/\D/g, ""))
                               }
-                              className="h-10 sm:h-11 md:h-12 flex-1 rounded-2xl text-center px-4 text-lg sm:text-xl font-bold font-mono border border-border/60 bg-card/70 backdrop-blur-md focus-visible:bg-card focus-visible:border-amber-400/70 focus-visible:ring-2 focus-visible:ring-amber-400/20 caret-amber-400 shadow-inner transition-all"
+                              className="h-9 sm:h-10 md:h-11 flex-1 rounded-2xl text-center px-4 text-base sm:text-lg md:text-xl font-bold font-mono border border-border/60 bg-card/70 backdrop-blur-md focus-visible:bg-card focus-visible:border-amber-400/70 focus-visible:ring-2 focus-visible:ring-amber-400/20 caret-amber-400 shadow-inner transition-all"
                               autoFocus
                             />
                             <Button
                               type="submit"
-                              className="h-10 sm:h-11 md:h-12 w-22 sm:w-28 md:w-32 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-white border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-amber-500/25"
+                              className="h-9 sm:h-10 md:h-11 w-20 sm:w-24 md:w-28 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-white border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-amber-500/25"
                               onClick={() => handleEnterSubmit(userInput)}
                             >
                               Enter
@@ -1046,7 +1050,7 @@ export default function MentalMathsPractice() {
                             <Button
                               type="button"
                               variant="ghost"
-                              className="h-10 sm:h-11 md:h-12 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card border border-border/50 border-b-[3px] border-b-border active:border-b-[1px] active:translate-y-[2px] transition-all duration-75 cursor-pointer"
+                              className="h-9 sm:h-10 md:h-11 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card border border-border/50 border-b-[3px] border-b-border active:border-b-[1px] active:translate-y-[2px] transition-all duration-75 cursor-pointer"
                               onClick={() => handleEnterSubmit("skip")}
                             >
                               Skip
@@ -1054,7 +1058,7 @@ export default function MentalMathsPractice() {
                           </form>
 
                           {/* Tactile 3D Keypad */}
-                          <div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 md:gap-2.5 p-2 sm:p-2.5 bg-card/50 backdrop-blur-xl border border-border/40 rounded-2xl sm:rounded-3xl shadow-inner h-full min-h-0">
+                          <div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 sm:p-2 md:p-2.5 bg-card/50 backdrop-blur-xl border border-border/40 rounded-2xl sm:rounded-3xl shadow-inner h-full min-h-0">
                             {[
                               "1",
                               "2",
@@ -1077,8 +1081,8 @@ export default function MentalMathsPractice() {
                                   btn === "Clear"
                                     ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-500/25 border-rose-500/40 border-b-[4px] border-b-rose-600/70 active:border-b-[1px] active:translate-y-[3px] text-xs sm:text-sm font-bold uppercase font-mono shadow-xs"
                                     : btn === "⌫"
-                                      ? "bg-muted/60 text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] text-lg sm:text-xl font-sans shadow-xs"
-                                      : "bg-card/90 text-foreground hover:bg-card hover:border-amber-400/60 hover:border-b-amber-500 border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] text-xl sm:text-2xl shadow-xs"
+                                      ? "bg-muted/60 text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] text-base sm:text-lg md:text-xl font-sans shadow-xs"
+                                      : "bg-card/90 text-foreground hover:bg-card hover:border-amber-400/60 hover:border-b-amber-500 border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] text-lg sm:text-xl md:text-2xl shadow-xs"
                                 }`}
                               >
                                 {btn}
@@ -1093,10 +1097,10 @@ export default function MentalMathsPractice() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.12, ease: "easeInOut" }}
-                          className="flex flex-col items-center justify-end flex-1 h-full gap-3 sm:gap-4 w-full"
+                          className="flex flex-col items-center justify-end flex-1 h-full gap-2.5 sm:gap-3.5 w-full"
                         >
                           {/* 3D MCQ Options Grid */}
-                          <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full h-full mx-auto min-h-0">
+                          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-3.5 w-full h-full mx-auto min-h-0">
                             {engine?.state?.currentQuestion?.options?.map(
                               (option, idx) => {
                                 const optionLabels = ["A", "B", "C", "D"];
@@ -1117,7 +1121,7 @@ export default function MentalMathsPractice() {
                                   <button
                                     key={idx}
                                     type="button"
-                                    className={`relative w-full h-full font-bold rounded-2xl sm:rounded-3xl border transition-all duration-75 ease-out flex flex-col items-center justify-center p-3 active:border-b-[1px] active:translate-y-[4px] cursor-pointer select-none backdrop-blur-md group ${highlightClass}`}
+                                    className={`relative w-full h-full font-bold rounded-2xl sm:rounded-3xl border transition-all duration-75 ease-out flex flex-col items-center justify-center p-2 sm:p-2.5 md:p-3 active:border-b-[1px] active:translate-y-[4px] cursor-pointer select-none backdrop-blur-md group ${highlightClass}`}
                                     onClick={() => {
                                       if (
                                         engine.state.currentAnswerStatus !==
@@ -1128,10 +1132,10 @@ export default function MentalMathsPractice() {
                                       handleEnterSubmit(option);
                                     }}
                                   >
-                                    <span className="absolute top-2.5 left-3 px-2 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-muted-foreground group-hover:text-foreground font-mono text-[10px] sm:text-xs font-bold tracking-wider transition-colors">
+                                    <span className="absolute top-2 left-2.5 px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-muted-foreground group-hover:text-foreground font-mono text-[9px] sm:text-[10px] md:text-xs font-bold tracking-wider transition-colors">
                                       {optionLabels[idx] || idx + 1}
                                     </span>
-                                    <span className="font-mono text-2xl sm:text-3xl font-bold tracking-tight mt-1">
+                                    <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mt-1">
                                       {option}
                                     </span>
                                   </button>
@@ -1140,11 +1144,11 @@ export default function MentalMathsPractice() {
                             )}
                           </div>
                           {/* 3D Skip Button for MCQ */}
-                          <div className="flex justify-center items-center pt-1 shrink-0">
+                          <div className="flex justify-center items-center shrink-0">
                             <button
                               type="button"
                               onClick={() => handleEnterSubmit("skip")}
-                              className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card rounded-xl px-6 py-2 border border-border/50 border-b-[3px] border-b-border active:border-b-[1px] active:translate-y-[2px] transition-all duration-75 cursor-pointer"
+                              className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card rounded-xl px-5 sm:px-6 py-1.5 sm:py-2 border border-border/50 border-b-[3px] border-b-border active:border-b-[1px] active:translate-y-[2px] transition-all duration-75 cursor-pointer"
                             >
                               Skip
                             </button>
@@ -1194,7 +1198,7 @@ export default function MentalMathsPractice() {
                   const accuracyColors = getAccuracyColorClasses(accuracy);
 
                   return (
-                    <div className="w-full h-full flex-1 flex flex-col items-center text-left py-1 sm:py-2 animate-in fade-in duration-300 relative min-h-0">
+                    <div className="w-full h-full flex-1 flex flex-col items-center text-left py-0.5 sm:py-1.5 md:py-2 animate-in fade-in duration-300 relative min-h-0">
                       {/* Localized Confetti Canvas */}
                       <canvas
                         ref={confettiCanvasRef}
@@ -1202,9 +1206,9 @@ export default function MentalMathsPractice() {
                       />
 
                       {/* Header */}
-                      <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between pb-3 sm:pb-5 border-b border-foreground/20 gap-2.5 sm:gap-4 shrink-0">
-                        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
-                          <div className="p-2 sm:p-2.5 rounded-full border flex items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20 shadow-sm shrink-0">
+                      <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between pb-2.5 sm:pb-3 md:pb-4 border-b border-foreground/20 gap-2 sm:gap-3 shrink-0">
+                        <div className="flex items-start sm:items-center gap-2.5 sm:gap-3 md:gap-4">
+                          <div className="p-1.5 sm:p-2 md:p-2.5 rounded-full border flex items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20 shadow-sm shrink-0">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="24"
@@ -1215,7 +1219,7 @@ export default function MentalMathsPractice() {
                               strokeWidth="2.2"
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              className="w-5 h-5 sm:w-8 sm:h-8"
+                              className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7"
                             >
                               <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
                               <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
@@ -1226,25 +1230,25 @@ export default function MentalMathsPractice() {
                             </svg>
                           </div>
                           <div>
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
-                              <h2 className="text-lg sm:text-2xl font-black text-foreground tracking-tight leading-tight">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 md:gap-3">
+                              <h2 className="text-base sm:text-xl md:text-2xl font-black text-foreground tracking-tight leading-tight">
                                 Session complete
                               </h2>
-                              <div className="flex items-center gap-1.5 select-none">
-                                <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border border-border/50">
+                              <div className="flex items-center gap-1 sm:gap-1.5 select-none">
+                                <span className="px-1.5 sm:px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border border-border/50">
                                   {topic}
                                 </span>
-                                <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border border-border/50">
+                                <span className="px-1.5 sm:px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border border-border/50">
                                   {engine.state.mode === "timed"
                                     ? "Timed"
                                     : "Freestyle"}
                                 </span>
-                                <span className="px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border border-border/50">
+                                <span className="px-1.5 sm:px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border border-border/50">
                                   {engine.state.difficulty}
                                 </span>
                               </div>
                             </div>
-                            <p className="text-muted-foreground text-xs mt-1 sm:mt-2 font-medium">
+                            <p className="text-muted-foreground text-[11px] sm:text-xs mt-0.5 sm:mt-1 font-medium">
                               <strong className="text-foreground">
                                 {correct}
                               </strong>{" "}
@@ -1272,12 +1276,12 @@ export default function MentalMathsPractice() {
                         </div>
                       </div>
 
-                      {/* Mobile View Switcher (Overview vs Review) */}
-                      <div className="w-full flex lg:hidden items-center bg-muted/60 p-1 rounded-2xl border border-border/50 mt-2 sm:mt-3 shrink-0">
+                      {/* View Switcher (Overview vs Review) */}
+                      <div className="w-full flex items-center bg-muted/60 p-0.5 sm:p-1 rounded-2xl border border-border/50 mt-1.5 sm:mt-2 shrink-0">
                         <button
                           type="button"
                           onClick={() => setResultsTab("overview")}
-                          className={`flex-1 py-1.5 px-3 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          className={`flex-1 py-1 sm:py-1.5 px-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                             resultsTab === "overview"
                               ? "bg-card text-foreground shadow-xs border border-border/60 font-black"
                               : "text-muted-foreground hover:text-foreground"
@@ -1289,7 +1293,7 @@ export default function MentalMathsPractice() {
                         <button
                           type="button"
                           onClick={() => setResultsTab("review")}
-                          className={`flex-1 py-1.5 px-3 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          className={`flex-1 py-1 sm:py-1.5 px-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                             resultsTab === "review"
                               ? "bg-card text-foreground shadow-xs border border-border/60 font-black"
                               : "text-muted-foreground hover:text-foreground"
@@ -1301,19 +1305,17 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Main Layout Container */}
-                      <div className="w-full flex flex-col lg:flex-row flex-1 h-full min-h-0 gap-4 lg:gap-0 mt-2 sm:mt-3">
-                        {/* LEFT COLUMN: Overview Stats & Pacing */}
+                      <div className="w-full flex flex-col flex-1 h-full min-h-0 mt-1.5 sm:mt-2.5">
+                        {/* OVERVIEW PANEL: Stats & Pacing */}
                         <div
-                          className={`w-full lg:w-[300px] xl:w-[320px] shrink-0 flex-col justify-between gap-5 lg:gap-8 pt-2 sm:pt-4 lg:pt-5 pb-2 lg:pb-5 lg:pr-6 overflow-y-auto lg:overflow-visible ${
-                            resultsTab === "overview"
-                              ? "flex flex-1 min-h-0 lg:flex-initial"
-                              : "hidden lg:flex"
+                          className={`w-full flex-col justify-between gap-3 sm:gap-4 md:gap-5 pt-1.5 sm:pt-2.5 pb-1 overflow-y-auto ${
+                            resultsTab === "overview" ? "flex flex-1 min-h-0" : "hidden"
                           }`}
                         >
                           {/* Top Stats Block */}
-                          <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+                          <div className="flex items-center gap-3 sm:gap-4 md:gap-5 shrink-0">
                             {/* Giant Accuracy Gauge */}
-                            <div className="relative flex flex-col items-center justify-center w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] shrink-0">
+                            <div className="relative flex flex-col items-center justify-center w-[85px] h-[85px] sm:w-[95px] sm:h-[95px] md:w-[105px] md:h-[105px] shrink-0">
                               <svg className="w-full h-full transform -rotate-90 relative z-10">
                                 <circle
                                   cx="50%"
@@ -1337,18 +1339,18 @@ export default function MentalMathsPractice() {
                                 />
                               </svg>
                               <div className="absolute flex flex-col items-center justify-center z-20">
-                                <span className="text-xl sm:text-2xl font-black tracking-tight text-foreground font-mono leading-none mb-1">
+                                <span className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-foreground font-mono leading-none mb-0.5">
                                   {animatedAccuracy}%
                                 </span>
-                                <span className="text-[8px] sm:text-[9px] text-muted-foreground font-bold uppercase tracking-widest mt-0.5">
+                                <span className="text-[8px] sm:text-[9px] text-muted-foreground font-bold uppercase tracking-widest">
                                   Accuracy
                                 </span>
                               </div>
                             </div>
 
                             {/* Stacked Counts */}
-                            <div className="flex flex-col flex-1 gap-1.5 sm:gap-2.5">
-                              <div className="flex items-center justify-between px-2.5 py-1.5 sm:px-3 sm:py-2 bg-muted/30 rounded-xl border border-border/50">
+                            <div className="flex flex-col flex-1 gap-1 sm:gap-1.5 md:gap-2">
+                              <div className="flex items-center justify-between px-2 py-1 sm:px-2.5 sm:py-1.5 bg-muted/30 rounded-lg sm:rounded-xl border border-border/50">
                                 <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
                                   Correct
                                 </span>
@@ -1356,7 +1358,7 @@ export default function MentalMathsPractice() {
                                   {correct}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between px-2.5 py-1.5 sm:px-3 sm:py-2 bg-muted/30 rounded-xl border border-border/50">
+                              <div className="flex items-center justify-between px-2 py-1 sm:px-2.5 sm:py-1.5 bg-muted/30 rounded-lg sm:rounded-xl border border-border/50">
                                 <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
                                   Incorrect
                                 </span>
@@ -1364,7 +1366,7 @@ export default function MentalMathsPractice() {
                                   {wrong}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between px-2.5 py-1.5 sm:px-3 sm:py-2 bg-muted/30 rounded-xl border border-border/50">
+                              <div className="flex items-center justify-between px-2 py-1 sm:px-2.5 sm:py-1.5 bg-muted/30 rounded-lg sm:rounded-xl border border-border/50">
                                 <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
                                   Skipped
                                 </span>
@@ -1377,12 +1379,12 @@ export default function MentalMathsPractice() {
 
                           {/* Pacing Chart */}
                           {engine.state.history.length > 0 && (
-                            <div className="w-full flex flex-col flex-1 pt-3 sm:pt-4 border-t border-border border-dashed min-h-[140px]">
-                              <div className="flex justify-between items-center mb-2 sm:mb-4 shrink-0">
-                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                            <div className="w-full flex flex-col flex-1 pt-2 sm:pt-3 md:pt-3.5 border-t border-border border-dashed min-h-[115px]">
+                              <div className="flex justify-between items-center mb-1.5 sm:mb-2 md:mb-3 shrink-0">
+                                <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                                   Pace per question
                                 </span>
-                                <span className="text-[10px] text-muted-foreground font-mono">
+                                <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono">
                                   target{" "}
                                   {getTargetTime(
                                     topic,
@@ -1392,63 +1394,111 @@ export default function MentalMathsPractice() {
                                 </span>
                               </div>
 
-                              <div className="relative flex-1 flex w-full min-h-[100px] sm:min-h-[140px] pl-7 pb-5 mt-1 sm:mt-2">
+                              <div className="relative flex-1 flex w-full min-h-[85px] sm:min-h-[100px] md:min-h-[115px] pl-6 pb-4 mt-0.5 sm:mt-1">
                                 {/* Y-axis Labels */}
-                                <div className="absolute left-0 top-0 bottom-5 w-6 flex flex-col justify-between items-end text-[9px] text-muted-foreground font-mono pr-2">
-                                  <span>30s</span>
-                                  <span>15s</span>
+                                <div className="absolute left-0 top-0 bottom-4 w-5 flex flex-col justify-between text-[8px] sm:text-[9px] text-muted-foreground/60 font-mono text-right pr-1 select-none">
+                                  <span>
+                                    {Math.max(
+                                      ...engine.state.history.map(
+                                        (h) => (h.timeTaken ?? 0) / 1000,
+                                      ),
+                                      getTargetTime(
+                                        topic,
+                                        engine.state.difficulty,
+                                      ),
+                                    ).toFixed(0)}
+                                    s
+                                  </span>
+                                  <span>
+                                    {(
+                                      Math.max(
+                                        ...engine.state.history.map(
+                                          (h) => (h.timeTaken ?? 0) / 1000,
+                                        ),
+                                        getTargetTime(
+                                          topic,
+                                          engine.state.difficulty,
+                                        ),
+                                      ) / 2
+                                    ).toFixed(0)}
+                                    s
+                                  </span>
                                   <span>0s</span>
                                 </div>
-                                {/* Target Line */}
-                                <div className="absolute left-7 right-0 top-[66.66%] border-t border-dashed border-orange-500 z-0"></div>
-                                {/* Target Label */}
-                                <div className="absolute right-0 top-[66.66%] -translate-y-1/2 bg-background px-1 text-[8px] font-bold text-orange-500/80 z-0">
-                                  TARGET{" "}
-                                  {getTargetTime(
-                                    topic,
-                                    engine.state.difficulty,
-                                  )}
-                                  s
-                                </div>
 
-                                <div className="relative flex-1 flex items-end justify-between gap-1.5 border-l border-b border-border">
-                                  {/* Bars */}
-                                  {engine.state.history.map((item, idx) => {
-                                    const timeSec =
-                                      (item.timeTaken ?? 0) / 1000;
-                                    const targetSec = getTargetTime(
-                                      topic,
-                                      engine.state.difficulty,
-                                    );
-                                    const heightPct = Math.max(
-                                      2,
-                                      Math.min(
-                                        (timeSec / (targetSec * 3)) * 100,
+                                {/* Target Line */}
+                                <div
+                                  className="absolute left-6 right-0 border-b border-amber-500/40 border-dashed z-10 pointer-events-none"
+                                  style={{
+                                    bottom: `${Math.min(
+                                      100,
+                                      (getTargetTime(
+                                        topic,
+                                        engine.state.difficulty,
+                                      ) /
+                                        Math.max(
+                                          ...engine.state.history.map(
+                                            (h) => (h.timeTaken ?? 0) / 1000,
+                                          ),
+                                          getTargetTime(
+                                            topic,
+                                            engine.state.difficulty,
+                                          ),
+                                        )) *
                                         100,
+                                    )}%`,
+                                  }}
+                                />
+
+                                {/* Bars */}
+                                <div className="flex-1 flex items-end gap-1 sm:gap-1.5 h-full z-20">
+                                  {engine.state.history.map((h, idx) => {
+                                    const timeSec = (h.timeTaken ?? 0) / 1000;
+                                    const maxTime = Math.max(
+                                      ...engine.state.history.map(
+                                        (item) => (item.timeTaken ?? 0) / 1000,
+                                      ),
+                                      getTargetTime(
+                                        topic,
+                                        engine.state.difficulty,
                                       ),
                                     );
-                                    const isWrong = item.status === "wrong";
+                                    const heightPct = Math.min(
+                                      100,
+                                      Math.max(8, (timeSec / maxTime) * 100),
+                                    );
+                                    const isTargetMet =
+                                      timeSec <=
+                                      getTargetTime(
+                                        topic,
+                                        engine.state.difficulty,
+                                      );
 
                                     return (
                                       <div
                                         key={idx}
-                                        className="relative flex flex-col justify-end items-center flex-1 z-10 group h-full"
+                                        className="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer"
                                       >
                                         <div
-                                          className={`w-full rounded-sm transition-all cursor-crosshair ${isWrong ? "bg-rose-400/80 hover:bg-rose-500" : "bg-emerald-400/80 hover:bg-emerald-500"}`}
+                                          className={`w-full rounded-t-md transition-all duration-300 group-hover:brightness-125 ${
+                                            h.status === "correct"
+                                              ? isTargetMet
+                                                ? "bg-emerald-500"
+                                                : "bg-emerald-500/60"
+                                              : h.status === "wrong"
+                                                ? "bg-rose-500"
+                                                : "bg-amber-500/60"
+                                          }`}
                                           style={{ height: `${heightPct}%` }}
                                         />
-                                        {/* X-axis Label (only show every 5th or first/last if many) */}
-                                        {(idx === 0 ||
-                                          idx ===
-                                            engine.state.history.length - 1 ||
-                                          (idx + 1) % 5 === 0) && (
-                                          <div className="absolute top-full mt-1 text-[8px] text-muted-foreground font-mono text-center">
+                                        {/* X-axis Label */}
+                                        {engine.state.history.length <= 15 && (
+                                          <div className="absolute top-full mt-0.5 text-[7px] sm:text-[8px] text-muted-foreground font-mono text-center">
                                             Q{idx + 1}
                                           </div>
                                         )}
                                         {/* Tooltip */}
-                                        <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border border-border text-popover-foreground text-[10px] font-mono px-2 py-1 rounded shadow-lg whitespace-nowrap z-50">
+                                        <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border border-border text-popover-foreground text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap z-50">
                                           Q{idx + 1}: {timeSec.toFixed(1)}s
                                         </div>
                                       </div>
@@ -1456,62 +1506,33 @@ export default function MentalMathsPractice() {
                                   })}
                                 </div>
                               </div>
-
-                              <div className="w-full flex justify-between items-center text-[10px] text-muted-foreground mt-2 sm:mt-4 font-mono shrink-0">
-                                <span>
-                                  avg{" "}
-                                  {(
-                                    engine.state.history.reduce(
-                                      (acc, curr) =>
-                                        acc + (curr.timeTaken ?? 0),
-                                      0,
-                                    ) /
-                                    Math.max(1, engine.state.history.length) /
-                                    1000
-                                  ).toFixed(1)}
-                                  s
-                                </span>
-                                <span className="text-emerald-600 dark:text-emerald-400">
-                                  fastest{" "}
-                                  {(
-                                    Math.min(
-                                      ...engine.state.history.map(
-                                        (h) => h.timeTaken ?? Infinity,
-                                      ),
-                                    ) / 1000
-                                  ).toFixed(1)}
-                                  s
-                                </span>
-                              </div>
                             </div>
                           )}
                         </div>
 
-                        {/* RIGHT COLUMN: Review Answers */}
+                        {/* REVIEW PANEL: Review Answers */}
                         <div
-                          className={`w-full lg:flex-1 flex-col h-full lg:min-h-0 lg:border-l border-foreground/20 pt-2 sm:pt-4 lg:pt-5 pb-1 lg:pb-5 lg:pl-6 lg:pr-2 ${
-                            resultsTab === "review"
-                              ? "flex flex-1 min-h-0"
-                              : "hidden lg:flex"
+                          className={`w-full flex-col h-full min-h-0 pt-1.5 sm:pt-2.5 pb-1 ${
+                            resultsTab === "review" ? "flex flex-1 min-h-0" : "hidden"
                           }`}
                         >
-                          <div className="flex justify-between items-center mb-2 sm:mb-4 shrink-0">
-                            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                          <div className="flex justify-between items-center mb-1.5 sm:mb-2 md:mb-3 shrink-0">
+                            <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                               Review
                             </span>
-                            <span className="text-[10px] text-muted-foreground font-mono">
+                            <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono">
                               {engine.state.history.length} questions
                             </span>
                           </div>
 
                           {engine.state.history.length === 0 ? (
                             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-                              <span className="text-2xl mb-2">📋</span>
+                              <span className="text-xl sm:text-2xl mb-1 sm:mb-2">📋</span>
                               <p className="text-xs">No questions attempted</p>
                             </div>
                           ) : (
                             <div className="relative flex-1 min-h-0 h-full">
-                              <div className="absolute inset-0 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent pr-1 sm:pr-2 lg:pr-4">
+                              <div className="absolute inset-0 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent pr-1 sm:pr-2 md:pr-3">
                                 <div className="flex flex-col divide-y divide-border/80">
                                   {engine.state.history.map((item, idx) => {
                                     const isCorrect = item.status === "correct";
@@ -1521,24 +1542,24 @@ export default function MentalMathsPractice() {
                                     return (
                                       <div
                                         key={idx}
-                                        className="flex items-start justify-between py-2.5 sm:py-3.5 px-1 sm:px-2 -mx-1 sm:-mx-2 rounded-none hover:bg-muted/40 transition-colors group"
+                                        className="flex items-start justify-between py-2 sm:py-2.5 md:py-3 px-1 sm:px-1.5 -mx-1 sm:-mx-1.5 rounded-none hover:bg-muted/40 transition-colors group"
                                       >
-                                        <div className="flex items-start gap-2.5 sm:gap-4 flex-1 min-w-0 pr-2 sm:pr-4">
-                                          <span className="text-[10px] font-mono text-muted-foreground/50 w-5 mt-0.5 shrink-0">
+                                        <div className="flex items-start gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0 pr-2 sm:pr-3">
+                                          <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground/50 w-4 sm:w-5 mt-0.5 shrink-0">
                                             {String(idx + 1).padStart(2, "0")}.
                                           </span>
                                           <div className="flex items-center justify-center mt-0.5 shrink-0">
                                             {isCorrect && (
-                                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                                              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
                                             )}
                                             {isWrong && (
-                                              <XCircle className="w-4 h-4 text-rose-500" />
+                                              <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-500" />
                                             )}
                                             {isSkipped && (
-                                              <MinusCircle className="w-4 h-4 text-amber-500" />
+                                              <MinusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500" />
                                             )}
                                           </div>
-                                          <div className="text-xs sm:text-[13px] font-mono font-extrabold text-foreground flex-1 flex flex-wrap gap-x-1.5 sm:gap-x-2 gap-y-1 items-baseline min-w-0">
+                                          <div className="text-xs sm:text-[13px] font-mono font-extrabold text-foreground flex-1 flex flex-wrap gap-x-1.5 sm:gap-x-2 gap-y-0.5 items-baseline min-w-0">
                                             <span className="text-foreground/90">
                                               {item.questionText} =
                                             </span>
@@ -1550,7 +1571,7 @@ export default function MentalMathsPractice() {
                                               ) : (
                                                 <span className="font-semibold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
                                                   {item.correctAnswer}
-                                                  <span className="text-muted-foreground/60 text-[10px] sm:text-[11px] ml-2 mr-1 font-semibold ">
+                                                  <span className="text-muted-foreground/60 text-[9px] sm:text-[10px] md:text-[11px] ml-1.5 mr-1 font-semibold">
                                                     You:
                                                   </span>
                                                   <span className="line-through text-rose-500 opacity-70">
@@ -1562,34 +1583,34 @@ export default function MentalMathsPractice() {
                                           </div>
                                         </div>
 
-                                        <div className="flex items-center gap-2 sm:gap-4 mt-0.5 shrink-0">
-                                          <div className="w-[64px] sm:w-[84px]">
+                                        <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 mt-0.5 shrink-0">
+                                          <div className="w-[58px] sm:w-[68px] md:w-[76px]">
                                             {isCorrect && (
-                                              <div className="w-full text-center py-[2px] sm:py-[3px] rounded-full bg-emerald-500/5 text-emerald-600 dark:text-emerald-400 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
+                                              <div className="w-full text-center py-[1.5px] sm:py-[2px] rounded-full bg-emerald-500/5 text-emerald-600 dark:text-emerald-400 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
                                                 Correct
                                               </div>
                                             )}
                                             {isWrong && (
-                                              <div className="w-full text-center py-[2px] sm:py-[3px] rounded-full bg-rose-500/5 text-rose-600 dark:text-rose-400 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
+                                              <div className="w-full text-center py-[1.5px] sm:py-[2px] rounded-full bg-rose-500/5 text-rose-600 dark:text-rose-400 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
                                                 Incorrect
                                               </div>
                                             )}
                                             {isSkipped && (
-                                              <div className="w-full text-center py-[2px] sm:py-[3px] rounded-full bg-amber-500/5 text-amber-600 dark:text-amber-500 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
+                                              <div className="w-full text-center py-[1.5px] sm:py-[2px] rounded-full bg-amber-500/5 text-amber-600 dark:text-amber-500 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
                                                 Skipped
                                               </div>
                                             )}
                                           </div>
 
-                                          <div className="w-10 sm:w-12 flex justify-end">
+                                          <div className="w-9 sm:w-11 flex justify-end">
                                             {!isSkipped && (
-                                              <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] font-mono text-orange-500/80 shrink-0">
+                                              <div className="flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px] md:text-[11px] font-mono text-orange-500/80 shrink-0">
                                                 {(item.timeTaken ?? 0) / 1000 >
                                                 getTargetTime(
                                                   topic,
                                                   engine.state.difficulty,
                                                 ) ? (
-                                                  <span className="text-xs sm:text-sm">
+                                                  <span className="text-xs">
                                                     🐢
                                                   </span>
                                                 ) : (
@@ -1627,17 +1648,17 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Footer Actions */}
-                      <div className="w-full flex gap-2.5 sm:gap-3 pt-3 sm:pt-5 border-t border-foreground/20 shrink-0">
+                      <div className="w-full flex gap-2 sm:gap-2.5 md:gap-3 pt-2 sm:pt-2.5 md:pt-3 border-t border-foreground/20 shrink-0">
                         <button
                           type="button"
                           onClick={() => router.back()}
-                          className="flex-[3] h-11 sm:h-12 lg:h-13 flex items-center justify-center rounded-2xl text-xs font-mono font-bold tracking-widest uppercase bg-card/70 text-foreground hover:bg-card border border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer shadow-xs select-none"
+                          className="flex-[3] h-10 sm:h-11 md:h-12 flex items-center justify-center rounded-2xl text-xs font-mono font-bold tracking-widest uppercase bg-card/70 text-foreground hover:bg-card border border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer shadow-xs select-none"
                         >
                           Back
                         </button>
                         <Button
                           onClick={engine.resetSession}
-                          className="flex-[7] h-11 sm:h-12 lg:h-13 px-4 sm:px-5 py-2 rounded-2xl text-xs sm:text-xs lg:text-sm font-mono font-black tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-white border-0 border-b-[5px] border-b-amber-600 active:border-b-[1px] active:translate-y-[4px] hover:brightness-105 transition-all duration-75 hover:cursor-pointer flex items-center justify-center shadow-lg shadow-amber-500/30 group"
+                          className="flex-[7] h-10 sm:h-11 md:h-12 px-3 sm:px-4 py-2 rounded-2xl text-xs sm:text-xs md:text-sm font-mono font-black tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-white border-0 border-b-[5px] border-b-amber-600 active:border-b-[1px] active:translate-y-[4px] hover:brightness-105 transition-all duration-75 hover:cursor-pointer flex items-center justify-center shadow-lg shadow-amber-500/30 group"
                         >
                           <Swords className="w-4 h-4 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
                           Practice Again
@@ -1646,8 +1667,8 @@ export default function MentalMathsPractice() {
 
                       {/* Minimalist Guest Auth Prompt */}
                       {!user && (
-                        <div className="w-full mt-2 sm:mt-4 text-center shrink-0 animate-in fade-in duration-700 delay-300">
-                          <p className="text-[10px] text-muted-foreground/80 font-medium tracking-wide">
+                        <div className="w-full mt-1 sm:mt-1.5 text-center shrink-0 animate-in fade-in duration-700 delay-300">
+                          <p className="text-[9px] sm:text-[10px] text-muted-foreground/80 font-medium tracking-wide">
                             Playing as a Guest.{" "}
                             <button 
                               onClick={signInWithGoogle} 

@@ -108,27 +108,27 @@ const FreestylePage = () => {
 
   return (
     <>
-      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={false}>
+      <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
       <Tabs
         defaultValue={activeTab}
         onValueChange={(val) => setActiveTab(val)}
         className="flex flex-col items-center w-full transition-all duration-300"
       >
         {/* Control Panel Container */}
-        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
+        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border border-border/60 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
           {/* Header Row: Title + Mode on Left, Quit on Right */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
               <Dices
-                className="w-4 h-4 text-primary/80 shrink-0"
+                className="w-4 h-4 text-violet-500 dark:text-violet-400 shrink-0"
                 fill="currentColor"
-                fillOpacity={0.1}
+                fillOpacity={0.15}
               />
               <span className="font-extrabold text-sm sm:text-base tracking-tight text-foreground uppercase">
                 Flashcards
               </span>
               <span className="text-muted-foreground/40 font-normal text-xs">•</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
                 {activeTab}
               </span>
             </div>
@@ -313,7 +313,7 @@ const FreestylePage = () => {
                   <ProgressBar
                     value={(currentCardNumber / totalCards) * 100}
                     className="h-1 bg-muted border border-border/50"
-                    barClassName="bg-primary rounded-full"
+                    barClassName="bg-gradient-to-r from-violet-500 to-purple-600 rounded-full"
                   />
                 </div>
               )}
@@ -322,13 +322,13 @@ const FreestylePage = () => {
         </div>
 
         {/* Flashcard Deck Area */}
-        <div className="relative w-full mt-2">
+        <div className="relative w-full flex-1 flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px] mt-2">
           {isLoading ? (
-            <div className="flex flex-row justify-center min-h-[300px] items-center">
+            <div className="flex-1 w-full h-full min-h-[45dvh] flex flex-col justify-center items-center py-8">
               <Loader size="lg" text="Loading flashcards..." />
             </div>
           ) : isError ? (
-            <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
+            <div className="flex flex-1 justify-center items-center min-h-[350px] p-6 w-full">
               <ErrorState
                 title="Failed to Load Flashcards"
                 description="We encountered an issue while loading your vocabulary practice cards. Please try again."

@@ -5,13 +5,7 @@ import { Dices, BookOpen } from "lucide-react";
 
 const sections: SectionCardProps[] = [
   {
-    icon: (
-      <Dices
-        className="w-8 h-8 text-violet-500 dark:text-violet-400"
-        fill="currentColor"
-        fillOpacity={0.1}
-      />
-    ),
+    icon: <Dices className="w-5 h-5" strokeWidth={2} />,
     title: "Freestyle Mode",
     description:
       "Flip and practice vocabulary words freely at your own speed with zero pressure and complete flexibility.",
@@ -22,13 +16,7 @@ const sections: SectionCardProps[] = [
     colorTheme: "violet",
   },
   {
-    icon: (
-      <BookOpen
-        className="w-8 h-8 text-violet-500 dark:text-violet-400"
-        fill="currentColor"
-        fillOpacity={0.1}
-      />
-    ),
+    icon: <BookOpen className="w-5 h-5" strokeWidth={2} />,
     title: "Study Mode",
     description:
       "Utilize intelligent Spaced Repetition to automatically review weak items and lock in memories.",

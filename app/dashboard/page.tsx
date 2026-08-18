@@ -322,7 +322,7 @@ export default function Dashboard() {
                     href={q.to}
                     className="rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 p-4.5 flex items-center gap-4 hover:border-amber-500/30 hover:shadow-md transition-all shadow-xs cursor-pointer group"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
                     </div>
                     <div className="font-bold text-sm text-foreground group-hover:text-amber-500 transition-colors">{q.label}</div>
@@ -343,9 +343,9 @@ export default function Dashboard() {
                     <Link
                       key={q.label}
                       href={q.to}
-                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/30 transition-all shadow-xs cursor-pointer justify-center text-center sm:text-left"
+                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/30 transition-all shadow-xs cursor-pointer justify-center text-center sm:text-left group"
                     >
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                         <q.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2} />
                       </div>
                       <div className="font-bold text-foreground text-[10px] sm:text-xs leading-tight">{q.label}</div>
@@ -375,7 +375,7 @@ export default function Dashboard() {
                       className="flex items-center justify-between p-3 sm:p-3.5 hover:bg-muted/40 rounded-2xl transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-muted/70 flex items-center justify-center shrink-0 group-hover:bg-background transition-colors border border-border/30">
+                        <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center shrink-0 group-hover:bg-background transition-all duration-300 ease-out group-hover:scale-110 shadow-inner ring-1 ring-border/40">
                           <session.icon className="w-4 h-4 text-foreground/80" />
                         </div>
                         <div>
@@ -424,7 +424,7 @@ export default function Dashboard() {
                   className="flex items-center justify-between p-3.5 hover:bg-muted/40 rounded-2xl transition-all cursor-pointer group border border-transparent hover:border-border/40"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center shrink-0 group-hover:bg-card transition-colors border border-border/30 shadow-2xs">
+                    <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center shrink-0 group-hover:bg-card transition-all duration-300 ease-out group-hover:scale-110 shadow-inner ring-1 ring-border/40">
                       <session.icon className="w-4 h-4 text-foreground/80" />
                     </div>
                     <div>

@@ -53,7 +53,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
     },
     indigo: {
       iconWrapper:
-        "bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_2px_8px_rgba(245,158,11,0.05)]",
+        "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
     },
   };
 

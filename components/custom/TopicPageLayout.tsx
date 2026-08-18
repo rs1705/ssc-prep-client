@@ -113,7 +113,7 @@ export const TopicPageLayout = ({
       )}
 
       {/* Actual Content Wrapper */}
-      <div className={`flex flex-col items-center w-full flex-1 ${contentMaxWidthClass}`}>
+      <div className={`flex flex-col items-center w-full flex-1 ${centerContent ? 'justify-center' : ''} ${contentMaxWidthClass}`}>
         {children}
       </div>
     </div>

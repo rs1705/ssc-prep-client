@@ -333,6 +333,16 @@ This file tracks the in-depth, step-by-step feature implementations and bug fixe
 - **Rating Action Bar (`Again`, `Hard`, `Good`, `Easy`)**: `h-12 sm:h-14 mt-2 sm:mt-3` with `py-2.5 sm:py-3.5` tactile 3D buttons, positioned comfortably within visible space below the deck.
 
 ### 🔤 Hangman Vocabulary Sprint (`app/SSC/english/hangman/page.tsx`)
-- **Zero-Scroll Viewport Layout**: Replaced cramped heights with fluid `max-w-sm sm:max-w-md md:max-w-lg mx-auto flex flex-col justify-between pt-1.5 sm:pt-3 pb-2 sm:pb-4`.
+- **Zero-Scroll Viewport Layout**: Replaced cramped heights with fluid `max-w-sm sm:max-w-md md:max-w-[480px] mx-auto flex flex-col justify-between pt-1.5 sm:pt-3 pb-2 sm:pb-4`.
 - **Enlarged Letter Tiles & Definition**: Word tiles (`w-8 h-10 sm:w-10 sm:h-12 md:w-11 md:h-13 text-base sm:text-lg md:text-xl font-mono font-black`), definition hint card (`p-3 sm:p-4 text-xs sm:text-sm md:text-base font-semibold`), and virtual keyboard keys (`max-w-[34px] sm:max-w-[42px] h-9 sm:h-11 md:h-12`).
+
+---
+
+## 🎮 Game Screen Width Harmonization & Ergonomic Focus Pass
+- **Width Reduction Across Medium/Large Viewports**: Replaced stretched `max-w-3xl` (768px) and `max-w-2xl` containers with a unified, compact, focused arcade constraint (`max-w-sm sm:max-w-md md:max-w-[480px] lg:max-w-[500px]`) across all 4 game screens:
+  - **Speed Math Drill (`/SSC/maths/mental-maths/[topic]`)**: Reduced from `max-w-3xl` to `max-w-[480px] / md:max-w-[500px]`, bringing numpads, MCQ options, and question cards into tight, comfortable focus without horizontal over-expansion on desktop/laptop screens.
+  - **Scorecard Layout**: Streamlined the results view from a crowded two-column split into full-width dedicated Overview (gauge, stats, pacing chart) and Review (question list) tab panels.
+  - **FSRS & Freestyle Flashcards (`/SSC/english/flashcards/fsrs`, `freestyle`)**: Bounded to `max-w-sm sm:max-w-md md:max-w-[480px]`.
+  - **Hangman Sprint (`/SSC/english/hangman`)**: Standardized to `max-w-sm sm:max-w-md md:max-w-[480px]`.
+
 

@@ -43,7 +43,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
         name: "Mix Blitz",
         emoji: (
           <svg
-            className="w-5 h-5 text-amber-500 dark:text-amber-400 drop-shadow-sm"
+            className="w-5 h-5"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -540,7 +540,7 @@ const MentalMaths = () => {
       </div>
 
       {loadingTopic && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-md z-50 flex items-center justify-center animate-in fade-in duration-200">
+        <div className="fixed inset-0 w-screen h-[100dvh] bg-background/80 backdrop-blur-md z-50 flex flex-col items-center justify-center animate-in fade-in duration-200">
           <Loader size="lg" text="Loading practice lobby..." />
         </div>
       )}

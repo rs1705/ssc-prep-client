@@ -71,7 +71,7 @@ export default function HangmanDemoPage() {
       </div>
 
       {/* Main Game Container */}
-      <main className="flex-1 w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto flex flex-col justify-between pt-1.5 sm:pt-3 pb-2 sm:pb-4 px-3 sm:px-0 overflow-hidden">
+      <main className="flex-1 w-full max-w-sm sm:max-w-md md:max-w-[480px] mx-auto flex flex-col justify-between pt-1.5 sm:pt-3 pb-2 sm:pb-4 px-3 sm:px-0 overflow-hidden">
         
         {/* Top Progress & Lives */}
         <div className="w-full flex flex-col gap-1.5 shrink-0">

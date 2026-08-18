@@ -41,14 +41,18 @@ const FsrsPage = () => {
   const totalCards = data ? data.length : 0;
   const router = useRouter();
 
-  if (isAuthLoading)
+  if (isAuthLoading) {
     return (
-      <Loader
-        size="lg"
-        text="Checking auth session..."
-        className="min-h-[300px]"
-      />
+      <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
+        <div className="flex-1 w-full h-full min-h-[50dvh] flex flex-col items-center justify-center">
+          <Loader
+            size="lg"
+            text="Checking auth session..."
+          />
+        </div>
+      </TopicPageLayout>
     );
+  }
 
   if (!user) {
     return (
@@ -65,7 +69,7 @@ const FsrsPage = () => {
               session!
             </p>
             <Link href="/signin">
-              <Button className="h-10 px-5 text-sm font-semibold rounded-xl shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 hover:cursor-pointer flex items-center gap-2">
+              <Button className="h-10 px-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full shadow-xs hover:shadow-md hover:shadow-amber-500/20 bg-gradient-to-r from-amber-500 to-orange-500 text-white active:scale-95 transition-all hover:cursor-pointer border-0 flex items-center gap-2">
                 <LogIn className="w-4 h-4" />
                 Sign In
               </Button>
@@ -78,23 +82,23 @@ const FsrsPage = () => {
 
   return (
     <>
-      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={false}>
+      <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
       <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
+        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border border-border/60 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
           {/* Row 1: Left is Section Title & Mode, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
               <BookOpen
-                className="w-4 h-4 text-primary/80 shrink-0"
+                className="w-4 h-4 text-violet-500 dark:text-violet-400 shrink-0"
                 fill="currentColor"
-                fillOpacity={0.1}
+                fillOpacity={0.15}
               />
               <span className="font-extrabold text-sm sm:text-base tracking-tight text-foreground uppercase">
                 Flashcards
               </span>
               <span className="text-muted-foreground/40 font-normal text-xs">•</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
                 Daily Review
               </span>
             </div>
@@ -121,21 +125,22 @@ const FsrsPage = () => {
               <ProgressBar
                 value={(currentCardNumber / totalCards) * 100}
                 className="h-1 bg-muted border border-border/50"
-                barClassName="bg-primary rounded-full"
+                barClassName="bg-gradient-to-r from-violet-500 to-purple-600 rounded-full"
               />
             </div>
           )}
         </div>
 
-        <div className="w-full">
+        <div className="w-full flex-1 flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px]">
           {isLoading ? (
-            <Loader
-              size="lg"
-              text="Syncing study deck..."
-              className="min-h-[300px]"
-            />
+            <div className="flex-1 w-full h-full min-h-[45dvh] flex flex-col items-center justify-center py-8">
+              <Loader
+                size="lg"
+                text="Syncing study deck..."
+              />
+            </div>
           ) : isError ? (
-            <div className="flex justify-center items-center min-h-[350px] p-6 w-full">
+            <div className="flex flex-1 justify-center items-center min-h-[350px] p-6 w-full">
               <ErrorState
                 title="Failed to Load Study Deck"
                 description="We encountered an issue syncing your spaced repetition study deck. Please try again."
@@ -145,9 +150,11 @@ const FsrsPage = () => {
           ) : data?.length > 0 ? (
             <FlashcardDeck deck={data} isLinear={false} mode="study" />
           ) : (
-            <p className="text-center font-medium text-muted-foreground mt-4">
-              No study cards available today! 🎉
-            </p>
+            <div className="flex-1 flex flex-col items-center justify-center min-h-[220px] p-6 text-center">
+              <p className="text-center font-medium text-muted-foreground">
+                No study cards available today! 🎉
+              </p>
+            </div>
           )}
         </div>
       </div>
