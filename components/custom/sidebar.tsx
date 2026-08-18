@@ -95,7 +95,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/40 bg-background/90 backdrop-blur-2xl absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none noise-overlay ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
+      className={`hidden md:flex flex-col border-r border-border/40 bg-background/90 backdrop-blur-2xl absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
     >
       {/* Header Row with Logo */}
       <div

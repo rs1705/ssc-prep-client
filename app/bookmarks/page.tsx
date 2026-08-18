@@ -169,7 +169,7 @@ export default function BookmarksPage() {
                 return (
                   <div
                     key={item.id}
-                    className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between noise-overlay relative overflow-hidden group hover:-translate-y-1"
+                    className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
                   >
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-3">
@@ -227,7 +227,7 @@ export default function BookmarksPage() {
               })}
             </div>
           ) : (
-            <div className="p-12 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 flex flex-col items-center justify-center text-center max-w-md mx-auto my-8 noise-overlay">
+            <div className="p-12 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 flex flex-col items-center justify-center text-center max-w-md mx-auto my-8">
               <Bookmark className="w-12 h-12 text-muted-foreground/40 mb-3" />
               <h4 className="text-base font-black text-foreground">No Bookmarks Found</h4>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">

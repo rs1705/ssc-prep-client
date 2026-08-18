@@ -160,7 +160,7 @@ export default function Dashboard() {
         {/* Top Row: Target & Resume */}
         <div className="grid lg:grid-cols-2 gap-5 mb-10">
           {/* Streak / Target Card */}
-          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border border-amber-500/20 p-6 sm:p-7 shadow-xl shadow-amber-500/5 relative overflow-hidden noise-overlay animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
+          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border border-amber-500/20 p-6 sm:p-7 shadow-xl shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
             {/* Ambient Corner Glow */}
             <div className="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -222,7 +222,7 @@ export default function Dashboard() {
           {/* Resume Card */}
           <Link
             href="/SSC/maths/mental-maths"
-            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer relative overflow-hidden noise-overlay animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
             style={{ animationDelay: "150ms", animationFillMode: "both" }}
           >
             {/* Ambient Shine Overlay */}
@@ -417,7 +417,7 @@ export default function Dashboard() {
               </Link>
             </div>
 
-            <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-3 flex flex-col shadow-xl shadow-black/5 h-full justify-between gap-1.5 noise-overlay">
+            <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-3 flex flex-col shadow-xl shadow-black/5 h-full justify-between gap-1.5">
               {recentSessions.map((session, i) => (
                 <div
                   key={i}

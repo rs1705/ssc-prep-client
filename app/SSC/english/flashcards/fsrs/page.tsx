@@ -78,10 +78,10 @@ const FsrsPage = () => {
 
   return (
     <>
-      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={true}>
+      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={false}>
       <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3.5 mb-1.5 shadow-xs">
+        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
           {/* Row 1: Left is Section Title & Mode, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">

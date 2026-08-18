@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
@@ -9,19 +9,16 @@ import { Toaster } from "react-hot-toast";
 
 import { AppLayout } from "@/components/custom/app-layout";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -39,7 +36,7 @@ export default function RootLayout({
       <Providers>
         <PostHogProvider>
           <body
-            className={`${inter.variable} ${jetbrainsMono.variable} ${plusJakartaSans.variable} font-sans antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
           >
             <Toaster position="top-center" />
             <ThemeProvider

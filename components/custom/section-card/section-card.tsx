@@ -73,7 +73,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
   return (
     <div
-      className={`cv-auto group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden noise-overlay shadow-lg shadow-black/5 ${
+      className={`group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden shadow-lg shadow-black/5 ${
         isClickable
           ? "bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border border-border/40 hover:border-amber-500/30 hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1"
           : "bg-card/90 md:bg-card/30 backdrop-blur-none md:backdrop-blur-md border border-border/20 opacity-75"
@@ -105,14 +105,14 @@ const SectionCard: React.FC<SectionCardProps> = ({
         {isClickable ? (
           <Link
             href={linkTo}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-mono font-bold tracking-widest uppercase px-5 py-3 rounded-full hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200"
+            className="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-mono font-bold tracking-wider uppercase px-5 py-2.5 rounded-full hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200"
           >
-            {buttonText}{" "}
-            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+            <span>{buttonText}</span>
+            <ArrowRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         ) : (
-          <div className="inline-flex items-center gap-2 bg-muted text-muted-foreground text-[10px] font-mono font-bold tracking-widest uppercase px-5 py-3 rounded-full border border-border/40">
-            {buttonText}
+          <div className="inline-flex items-center justify-center gap-2.5 bg-muted text-muted-foreground text-xs font-mono font-bold tracking-wider uppercase px-5 py-2.5 rounded-full border border-border/40">
+            <span>{buttonText}</span>
           </div>
         )}
       </div>

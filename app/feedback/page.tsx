@@ -178,7 +178,7 @@ export default function FeedbackPage() {
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-2">
         {/* Left Column: Form / Success Card */}
         <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden noise-overlay">
+          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
             {/* Ambient Lighting Mesh */}
             <div className="absolute -top-12 -right-12 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -412,7 +412,7 @@ export default function FeedbackPage() {
         {/* Right Column: Roadmap & Developer SLA (Desktop Rail) */}
         <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
           {/* Upcoming Roadmap Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-6 shadow-xl shadow-black/5 noise-overlay relative overflow-hidden">
+          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/40">
@@ -451,7 +451,7 @@ export default function FeedbackPage() {
           </div>
 
           {/* Developer Commitment Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 noise-overlay relative overflow-hidden">
+          <div className="bg-card/60 backdrop-blur-2xl border border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 relative overflow-hidden">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/20">
                 <HeartHandshake className="w-4.5 h-4.5" />

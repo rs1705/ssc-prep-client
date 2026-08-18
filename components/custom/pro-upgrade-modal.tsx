@@ -92,7 +92,7 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
                   </li>
                   <li className="flex items-start gap-3 text-sm font-semibold text-foreground/90">
                     <Check className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span><span className="text-foreground font-bold">FSRS Flashcards:</span> Algorithmically synced study mode.</span>
+                    <span><span className="text-foreground font-bold">Smart Flashcards:</span> Algorithmically synced study mode.</span>
                   </li>
                 </ul>
 

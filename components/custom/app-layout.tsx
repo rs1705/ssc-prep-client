@@ -46,7 +46,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </div>
           <main 
             key={isFocusMode ? "focus" : "normal"}
-            className={`flex-1 flex flex-col animate-in fade-in duration-500 fill-mode-forwards min-h-0 ${isFocusMode ? "p-3 sm:p-4 md:p-6 items-center" : "px-4 sm:px-6 md:px-8 pb-16"}`}
+            className={`flex-1 flex flex-col animate-in fade-in duration-500 fill-mode-forwards min-h-0 ${isFocusMode ? "px-3 pt-0 pb-2 sm:px-4 sm:pt-0 sm:pb-3 md:px-6 md:pt-0 md:pb-4 items-center justify-start overflow-hidden" : "px-4 sm:px-6 md:px-8 pb-16"}`}
           >
             {children}
           </main>

@@ -107,15 +107,15 @@ const FreestylePage = () => {
   const totalCards = data ? data.length : 0;
 
   return (
-    <div className="flex flex-col w-full overflow-x-hidden">
-      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={true}>
+    <>
+      <TopicPageLayout contentMaxWidthClass="w-full max-w-[500px]" hideBreadcrumbs={true} centerContent={false}>
       <Tabs
         defaultValue={activeTab}
         onValueChange={(val) => setActiveTab(val)}
         className="flex flex-col items-center w-full transition-all duration-300"
       >
         {/* Control Panel Container */}
-        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3.5 mb-1.5 shadow-xs">
+        <div className="flex flex-col gap-1 w-full bg-card border border-primary/20 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
           {/* Header Row: Title + Mode on Left, Quit on Right */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -396,7 +396,7 @@ const FreestylePage = () => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-    </div>
+    </>
   );
 };
 export default FreestylePage;

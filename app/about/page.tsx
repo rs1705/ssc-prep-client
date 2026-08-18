@@ -10,7 +10,7 @@ import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { Button } from "@/components/ui/button";
 
 const TELEMETRY_STATS = [
-  { label: "Memory Retention", val: "FSRS v4.5", desc: "Scientific spaced repetition" },
+  { label: "Memory Retention", val: "94%+", desc: "Scientific spaced repetition" },
   { label: "Arithmetic Target", val: "< 10s / Q", desc: "Instinctive mental math" },
   { label: "Syllabus Coverage", val: "CGL 2026", desc: "Strictly authenticated PYQs" },
   { label: "Distraction Level", val: "0.00%", desc: "Obsidian focused dark UI" },
@@ -26,9 +26,9 @@ const PILLARS = [
     glow: "bg-emerald-500/10",
   },
   {
-    title: "Long-Term Retention via FSRS",
+    title: "Long-Term Retention via Flashcards",
     tag: "Vocab & GK",
-    desc: "Stop re-reading the same vocabulary lists endlessly. Our Free Spaced Repetition Scheduler schedules reviews right before your brain forgets, cutting study hours in half.",
+    desc: "Stop re-reading the same vocabulary lists endlessly. Our Smart Flashcard system schedules reviews right before your brain forgets, cutting study hours in half.",
     icon: Brain,
     theme: "text-violet-500 bg-violet-500/10 border-violet-500/20",
     glow: "bg-violet-500/10",
@@ -71,7 +71,7 @@ export default function AboutPage() {
     >
       <div className="flex flex-col gap-12 py-2">
         {/* Hero Section */}
-        <div className="relative rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 p-8 sm:p-12 shadow-xl shadow-black/5 noise-overlay overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8">
+        <div className="relative rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 p-8 sm:p-12 shadow-xl shadow-black/5 overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="absolute -top-16 -right-16 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -111,7 +111,7 @@ export default function AboutPage() {
           {TELEMETRY_STATS.map((stat, i) => (
             <div 
               key={i} 
-              className="p-5 rounded-2xl bg-card/60 backdrop-blur-xl border border-border/40 noise-overlay flex flex-col justify-between shadow-sm hover:border-amber-500/30 transition-colors"
+              className="p-5 rounded-2xl bg-card/60 backdrop-blur-xl border border-border/40 flex flex-col justify-between shadow-sm hover:border-amber-500/30 transition-colors"
             >
               <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
                 {stat.label}
@@ -143,7 +143,7 @@ export default function AboutPage() {
               return (
                 <div
                   key={i}
-                  className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between shadow-lg shadow-black/5 noise-overlay relative overflow-hidden group hover:-translate-y-1"
+                  className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between shadow-lg shadow-black/5 relative overflow-hidden group hover:-translate-y-1"
                 >
                   <div className={`absolute -right-6 -top-6 w-28 h-28 ${pillar.glow} rounded-full blur-2xl group-hover:scale-125 transition-transform`} />
                   
@@ -171,7 +171,7 @@ export default function AboutPage() {
         </div>
 
         {/* Comparison Section: Traditional vs PrepPilot */}
-        <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 p-6 sm:p-10 noise-overlay shadow-xl shadow-black/5 flex flex-col gap-6">
+        <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 p-6 sm:p-10 shadow-xl shadow-black/5 flex flex-col gap-6">
           <div>
             <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest">
               Methodology Breakdown

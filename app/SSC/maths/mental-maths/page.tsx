@@ -485,7 +485,7 @@ const MentalMaths = () => {
         {/* Right Rail - Stats & Streak Panel (Desktop Only) */}
         <div className="hidden xl:flex w-80 flex-col gap-6 shrink-0 animate-in fade-in slide-in-from-right-4 duration-500">
           {/* Streak Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-amber-500/25 shadow-xl shadow-amber-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group noise-overlay">
+          <div className="bg-card/60 backdrop-blur-2xl border border-amber-500/25 shadow-xl shadow-amber-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
             <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <span className="text-amber-500 text-base">🔥</span> Current Streak
             </h3>
@@ -499,7 +499,7 @@ const MentalMaths = () => {
           </div>
 
           {/* Global Stats Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group noise-overlay">
+          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
             <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground">
               Performance Telemetry
             </h3>
@@ -520,7 +520,7 @@ const MentalMaths = () => {
           </div>
 
           {/* Daily Warm-up Pro-Tip Banner */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-emerald-500/25 shadow-xl shadow-emerald-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group noise-overlay">
+          <div className="bg-card/60 backdrop-blur-2xl border border-emerald-500/25 shadow-xl shadow-emerald-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
             <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <span className="text-emerald-500 text-base">💡</span> Pro Tip
             </h3>

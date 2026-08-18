@@ -19,7 +19,7 @@ export default function ComingSoon({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col items-center justify-center text-center p-8 sm:p-10 min-h-[420px] w-full max-w-lg mx-auto rounded-3xl bg-card/60 backdrop-blur-2xl border border-amber-500/25 shadow-xl shadow-amber-500/5 mt-10 relative overflow-hidden noise-overlay"
+        className="flex flex-col items-center justify-center text-center p-8 sm:p-10 min-h-[420px] w-full max-w-lg mx-auto rounded-3xl bg-card/60 backdrop-blur-2xl border border-amber-500/25 shadow-xl shadow-amber-500/5 mt-10 relative overflow-hidden"
       >
         {/* Background decorative blobs */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-30">

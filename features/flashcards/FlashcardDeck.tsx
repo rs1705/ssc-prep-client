@@ -77,6 +77,33 @@ export const COLOR_SCHEMES = [
     border: "border border-indigo-200/80 dark:border-indigo-500/30",
   },
   {
+    bg: "from-orange-50 to-orange-100/90 dark:from-orange-950/40 dark:to-zinc-900",
+    textMain: "text-orange-950 dark:text-orange-100",
+    textSecondary: "text-orange-800/80 dark:text-orange-300/70",
+    accent: "text-orange-600 dark:text-orange-400",
+    accentBg: "bg-white/60 dark:bg-orange-950/50 border-orange-200/80 dark:border-orange-500/25",
+    barBg: "bg-gradient-to-r from-orange-400 to-orange-500",
+    border: "border border-orange-200/80 dark:border-orange-500/30",
+  },
+  {
+    bg: "from-teal-50 to-teal-100/90 dark:from-teal-950/40 dark:to-zinc-900",
+    textMain: "text-teal-950 dark:text-teal-100",
+    textSecondary: "text-teal-800/80 dark:text-teal-300/70",
+    accent: "text-teal-600 dark:text-teal-400",
+    accentBg: "bg-white/60 dark:bg-teal-950/50 border-teal-200/80 dark:border-teal-500/25",
+    barBg: "bg-gradient-to-r from-teal-400 to-teal-500",
+    border: "border border-teal-200/80 dark:border-teal-500/30",
+  },
+  {
+    bg: "from-fuchsia-50 to-fuchsia-100/90 dark:from-fuchsia-950/40 dark:to-zinc-900",
+    textMain: "text-fuchsia-950 dark:text-fuchsia-100",
+    textSecondary: "text-fuchsia-800/80 dark:text-fuchsia-300/70",
+    accent: "text-fuchsia-600 dark:text-fuchsia-400",
+    accentBg: "bg-white/60 dark:bg-fuchsia-950/50 border-fuchsia-200/80 dark:border-fuchsia-500/25",
+    barBg: "bg-gradient-to-r from-fuchsia-400 to-fuchsia-500",
+    border: "border border-fuchsia-200/80 dark:border-fuchsia-500/30",
+  },
+  {
     bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
     textMain: "text-stone-900 dark:text-zinc-100",
     textSecondary: "text-stone-600 dark:text-zinc-400",
@@ -241,7 +268,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
         <div className="flex flex-col items-center w-full">
 
 
-          <div className="relative w-full min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] md:min-h-[460px]">
+          <div className="relative w-full h-[380px] min-[375px]:h-[410px] min-[414px]:h-[430px] sm:h-[450px] md:h-[475px] lg:h-[490px]">
             {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
               onClick={onPrevClick}
@@ -252,13 +279,13 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             </button>
 
             {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] md:min-h-[460px] [perspective:1000px]">
+            <div className="relative grid place-items-center w-full h-[380px] min-[375px]:h-[410px] min-[414px]:h-[430px] sm:h-[450px] md:h-[475px] lg:h-[490px] [perspective:1000px]">
               {currentCard ? (
                 <AnimatePresence custom={direction}>
                   <motion.div
                     key={`${currentCard._id}-${navCount}`}
                     custom={direction}
-                    className="row-start-1 col-start-1 w-full cursor-grab active:cursor-grabbing select-none"
+                    className="row-start-1 col-start-1 w-full h-full cursor-grab active:cursor-grabbing select-none"
                     drag="x"
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={0.7}
@@ -325,7 +352,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             </button>
           </div>
           <div className="w-full">
-            <div className="w-full h-12 sm:h-14 mt-2 sm:mt-3 flex items-center">
+            <div className="w-full h-12 sm:h-13 mt-4 sm:mt-5 flex items-center">
               {isFlipped && (
                 <div className="flex primary-buttons gap-2 sm:gap-2.5 w-full animate-in fade-in duration-200 ease-out">
                   {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
@@ -335,7 +362,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                         <button
                           key={actionKey}
                           type="button"
-                          className={`flex-1 font-bold rounded-xl sm:rounded-2xl py-2.5 sm:py-3.5 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
+                          className={`flex-1 font-bold rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
                           onClick={() => onActionClick(actionKey)}
                         >
                           <span className="font-bold">{actionConfig.label}</span>

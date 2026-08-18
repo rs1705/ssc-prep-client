@@ -60,7 +60,7 @@ export const TopicPageLayout = ({
   };
 
   return (
-    <div className={`flex flex-col items-center w-full mx-auto pt-0 pb-3 h-full flex-1 ${centerContent ? 'justify-center' : ''}`}>
+    <div className={`flex flex-col items-center w-full mx-auto ${hideBreadcrumbs ? 'pb-0' : 'pb-3'} h-full flex-1 ${centerContent ? 'justify-center' : 'justify-start pt-0'}`}>
       {/* Dynamic Breadcrumbs */}
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
         <div
@@ -113,7 +113,7 @@ export const TopicPageLayout = ({
       )}
 
       {/* Actual Content Wrapper */}
-      <div className={`flex flex-col items-center flex-1 w-full ${contentMaxWidthClass} ${centerContent ? 'justify-center' : ''}`}>
+      <div className={`flex flex-col items-center w-full flex-1 ${contentMaxWidthClass}`}>
         {children}
       </div>
     </div>

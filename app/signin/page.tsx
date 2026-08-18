@@ -30,7 +30,7 @@ const SigninPage = () => {
       {/* Background Ambient Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-[460px] bg-card/60 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border border-border/40 shadow-2xl shadow-black/10 flex flex-col gap-4 relative overflow-hidden noise-overlay">
+      <div className="w-full max-w-[460px] bg-card/60 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border border-border/40 shadow-2xl shadow-black/10 flex flex-col gap-4 relative overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 w-fit mb-3">
             <Sparkles className="w-3 h-3" />

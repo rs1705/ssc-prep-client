@@ -102,7 +102,7 @@ export function TopBar() {
   ];
 
   return (
-    <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-4 sm:py-6">
+    <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-3.5 shrink-0">
       <div className="flex items-center gap-3">
         {/* Hamburger for mobile */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

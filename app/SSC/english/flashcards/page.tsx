@@ -31,7 +31,7 @@ const sections: SectionCardProps[] = [
     ),
     title: "Study Mode",
     description:
-      "Utilize intelligent Spaced Repetition algorithms (FSRS) to automatically review weak items and lock in memories.",
+      "Utilize intelligent Spaced Repetition to automatically review weak items and lock in memories.",
     linkTo: "/SSC/english/flashcards/fsrs",
     knowMoreText:
       "1. Smart Memory Assistant: The app checks how well you know each word and automatically schedules when you need to see it next.\n\n2. Focus on Weak Words: Words you struggle to remember are shown frequently, while words you already know are hidden until you actually need to refresh them.\n\n3. Memorize 3x Faster: Instead of wasting hours reviewing words you already master, you focus 100% of your energy on your weak spots.\n\nBest For:\n\n ▪️ Locking vocabulary into your long-term memory 🧠\n\n    ▪️ High-efficiency, highly-focused study sessions ⏱️\n\n    ▪️ Watching your weak spots disappear day by day ✅",

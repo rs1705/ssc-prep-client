@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@/firebase/config";
 import LoadingOverlay from "@/components/custom/loading-overlay";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import {
   User,
   onAuthStateChanged,
@@ -18,6 +19,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
+  isLoggingOut: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -25,8 +27,10 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -51,21 +55,25 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const logout = async () => {
-    setIsLoading(true);
+    setIsLoggingOut(true);
+    toast.dismiss("auth-guard");
     try {
+      router.replace("/");
       await signOut(auth);
+      toast.dismiss("auth-guard");
       toast.success("Signed out successfully!");
     } catch (error) {
       console.error("Logout failed:", error);
       toast.error("Logout failed. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsLoggingOut(false);
     }
   };
 
   const AuthCtx = {
     user: user,
     isLoading,
+    isLoggingOut,
     signInWithGoogle,
     logout,
   };

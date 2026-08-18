@@ -86,7 +86,7 @@ export const TopicCard = ({
 
   return (
     <div
-      className="cv-auto group relative h-full flex flex-col justify-between p-5 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border border-border/40 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 hover:border-amber-500/30 transition-all duration-300 ease-out hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2 zoom-in-95 select-none noise-overlay overflow-hidden"
+      className="group relative h-full flex flex-col justify-between p-5 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border border-border/40 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 hover:border-amber-500/30 transition-all duration-300 ease-out hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2 zoom-in-95 select-none overflow-hidden"
       style={{
         animationDelay: `${Math.floor(index / cols) * 100}ms`,
         animationFillMode: "both",

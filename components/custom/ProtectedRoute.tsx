@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, isLoading, isLoggingOut } = useAuth();
   const router = useRouter();
 
   const wasLoggedIn = useRef(!!user);
@@ -15,16 +15,16 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     if (user) {
       wasLoggedIn.current = true;
     }
-    if (!user) {
-      // Only show error toast if they are trying to access without ever being logged in
-      if (!wasLoggedIn.current) {
+    if (!isLoading && !user) {
+      // Only show error toast if they are trying to access without ever being logged in and not currently logging out
+      if (!isLoggingOut && !wasLoggedIn.current) {
         toast.error("Please sign in to access this page.", { id: "auth-guard" });
       }
       router.replace("/");
     }
-  }, [user, router]);
+  }, [user, isLoading, isLoggingOut, router]);
 
-  if (!user) return null;
+  if (isLoading || !user) return null;
 
   return <>{children}</>;
 }

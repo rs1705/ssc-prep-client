@@ -306,3 +306,33 @@ This file tracks the in-depth, step-by-step feature implementations and bug fixe
   1. Verify workspace initialization on Ubuntu.
   2. Implement `MathTerm`, `SSC_PERCENTAGES`, `generateComplexTerm()`, and `generateSSCPercentageTerm()` in `lib/mathGenerator.ts`.
   3. Wire up the Medium and Hard templates in `generateSimplificationQuestion()` and implement `generatePercentageQuestion()`.
+
+---
+
+## [2026-08-14] Game Screen Viewport Height Architecture & Zero-Scroll Ergonomics
+
+### 🎯 Core Architecture Principle: Fit in Visible Vertical Space without Cramping
+- **Rule Definition**: All active game and practice screens (`/SSC/maths/mental-maths/[topic]`, `/SSC/english/flashcards/fsrs`, `/SSC/english/flashcards/freestyle`, `/SSC/english/hangman`) MUST fit 100% within the visible vertical screen height (`100dvh` minus navigation bars and padding) so that the user never needs to scroll vertically during gameplay, while simultaneously maintaining **generous, expansive, comfortable** component heights, touch targets, and typography across mobile, medium (tablets/laptops), and large desktop monitors.
+
+### 🧩 Layout Container & Focus Mode Spacing Refinement
+- **Focus Mode Main Container (`app-layout.tsx`)**: Refined focus mode padding to `px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 items-center justify-center min-h-0 overflow-hidden`. This recovers over 24px of dead vertical space on standard laptop screens (e.g., 1280x800, 1366x768) without causing layout shift.
+- **Dynamic TopicPageLayout Bottom Margin (`TopicPageLayout.tsx`)**: Dynamically omitted `pb-3` when `hideBreadcrumbs` is active (`${hideBreadcrumbs ? 'pb-0' : 'pb-3'}`) to ensure game cards are vertically centered with zero off-screen push.
+
+### ⚡ Mental Maths Speed Drill (`app/SSC/maths/mental-maths/[topic]/page.tsx`)
+- **Eliminated Rigid Artificial Height Caps**: Replaced `containerHeightClass = "w-full min-h-[40vh] lg:min-h-[50vh]"` with dynamic responsive state-driven classes:
+  - **Lobby Setup Screen (`idle`)**: A spacious `max-w-xl` card (`p-4 sm:p-6 md:p-7`) with `h-10 sm:h-11 md:h-12` difficulty buttons, `h-11 sm:h-12 md:h-13` practice mode buttons, `h-14 sm:h-16 md:h-18` dual-stack input layout cards (MCQs / Numpad), and `h-12 sm:h-13 md:h-14` 3D gradient launch CTA. Total height ~480px–520px fits cleanly on any screen without vertical scroll.
+  - **Active Practice Board (`active`)**: Flex-growing container (`flex-1 justify-between min-h-[480px] sm:min-h-[520px] md:min-h-[560px] max-h-[calc(100dvh-4.5rem)] md:max-h-[calc(100dvh-5.5rem)]`).
+  - **Question Display Box**: Fluidly scales (`min-h-[110px] sm:min-h-[130px] md:min-h-[150px] max-h-[190px]`) with responsive typography (`text-3xl sm:text-4xl md:text-5xl font-black font-mono`).
+  - **Tactile Keypad Grid**: Balanced button heights (`h-10 sm:h-12 md:h-13.5`) and answer input bar (`h-10 sm:h-11 md:h-12`), providing ample touch areas and large `text-xl sm:text-2xl` numerals.
+  - **MCQ 3D Options**: `h-18 sm:h-21 md:h-24` option cards with bold A/B/C/D badges and large fonts, leaving the skip button visible without scrolling.
+
+### 🎴 Flashcards & Spaced Repetition (`Flashcard.tsx`, `FlashcardDeck.tsx`, `fsrs/page.tsx`, `freestyle/page.tsx`)
+- **Coordinated Height System**: Unified the 3D perspective wrapper in `FlashcardDeck.tsx` with `Flashcard.tsx` to `h-[380px] min-[375px]:h-[420px] min-[414px]:h-[440px] sm:h-[450px] md:h-[470px]`.
+- **Card Front Typography**: Scaled main word to `text-3xl min-[375px]:text-4xl sm:text-5xl font-black`, pronunciation to `text-xs sm:text-base`, and badges to `text-[10px] sm:text-xs`.
+- **Card Back Typography & Sub-card Spacing**: Definition (`text-sm sm:text-base md:text-lg font-bold`), Synonyms & Antonyms subcards (`p-2 sm:p-2.5 md:p-3 rounded-xl sm:rounded-2xl`, items `px-2 sm:px-2.5 py-0.5 sm:py-1`), and Example sentence subcard (`p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl`).
+- **Rating Action Bar (`Again`, `Hard`, `Good`, `Easy`)**: `h-12 sm:h-14 mt-2 sm:mt-3` with `py-2.5 sm:py-3.5` tactile 3D buttons, positioned comfortably within visible space below the deck.
+
+### 🔤 Hangman Vocabulary Sprint (`app/SSC/english/hangman/page.tsx`)
+- **Zero-Scroll Viewport Layout**: Replaced cramped heights with fluid `max-w-sm sm:max-w-md md:max-w-lg mx-auto flex flex-col justify-between pt-1.5 sm:pt-3 pb-2 sm:pb-4`.
+- **Enlarged Letter Tiles & Definition**: Word tiles (`w-8 h-10 sm:w-10 sm:h-12 md:w-11 md:h-13 text-base sm:text-lg md:text-xl font-mono font-black`), definition hint card (`p-3 sm:p-4 text-xs sm:text-sm md:text-base font-semibold`), and virtual keyboard keys (`max-w-[34px] sm:max-w-[42px] h-9 sm:h-11 md:h-12`).
+

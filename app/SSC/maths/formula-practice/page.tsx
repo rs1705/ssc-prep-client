@@ -93,6 +93,60 @@ const FORMULAS: FormulaCard[] = [
     example: "Mix ₹15/kg wheat with ₹20/kg wheat to get ₹18/kg ⇒ ratio is (20-18)/(18-15) = 2:3.",
     tag: "Mixture Ratio",
   },
+  {
+    id: "f-9",
+    category: "geometry",
+    title: "Inradius & Circumradius of Right-Angled Triangle",
+    formula: "Inradius (r) = (P + B - H)/2   ·   Circumradius (R) = H/2",
+    explanation: "Where P = Perpendicular, B = Base, H = Hypotenuse. Area = r × s (semi-perimeter).",
+    example: "For a 6, 8, 10 triangle: r = (6 + 8 - 10)/2 = 2 cm, R = 10/2 = 5 cm.",
+    tag: "Triangle Radii",
+  },
+  {
+    id: "f-10",
+    category: "geometry",
+    title: "Apollonius' Theorem (Median Length)",
+    formula: "AB² + AC² = 2(AD² + BD²)",
+    explanation: "Where AD is median to side BC in triangle ABC, and BD = DC = BC/2.",
+    example: "If AB=7, AC=9, BC=8 (BD=4), then 49 + 81 = 2(AD² + 16) ⇒ AD = 7 cm.",
+    tag: "Median Formula",
+  },
+  {
+    id: "f-11",
+    category: "trigo",
+    title: "Maxima & Minima of a sin θ + b cos θ",
+    formula: "Maximum = +√(a² + b²)   ·   Minimum = -√(a² + b²)",
+    explanation: "For a sin² θ + b cosec² θ (where a,b > 0), Minimum Value = 2√(ab).",
+    example: "For 3 sin θ + 4 cos θ: Max = +√(9 + 16) = +5, Min = -5.",
+    tag: "Trigo Extrema",
+  },
+  {
+    id: "f-12",
+    category: "arithmetic",
+    title: "Successive Discounts & Equivalence",
+    formula: "Single Equivalent Discount = x + y - (xy / 100) %",
+    explanation: "For 3 successive discounts: compute for first two, then combine with third.",
+    example: "Two successive discounts of 20% and 10% = 20 + 10 - 2 = 28% total discount.",
+    tag: "Profit & Discount",
+  },
+  {
+    id: "f-13",
+    category: "arithmetic",
+    title: "Boats & Streams (Upstream & Downstream)",
+    formula: "Boat Speed (u) = (D + U)/2   ·   Current Speed (v) = (D - U)/2",
+    explanation: "Where D = Downstream Speed (u + v), U = Upstream Speed (u - v).",
+    example: "If Downstream is 14 km/h and Upstream is 8 km/h, Boat in still water = (14+8)/2 = 11 km/h.",
+    tag: "Speed & Streams",
+  },
+  {
+    id: "f-14",
+    category: "mensuration",
+    title: "Rhombus: Area & Side Relation",
+    formula: "Area = (1/2) · d₁ · d₂   ·   4a² = d₁² + d₂²",
+    explanation: "Diagonals of a rhombus bisect each other at 90 degrees.",
+    example: "If d₁=12, d₂=16, then Area = (1/2)(12)(16) = 96 cm², Side a = √(36 + 64) = 10 cm.",
+    tag: "Rhombus Geometry",
+  },
 ];
 
 export default function FormulaPracticePage() {
@@ -171,7 +225,7 @@ export default function FormulaPracticePage() {
             return (
               <div
                 key={card.id}
-                className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between noise-overlay relative overflow-hidden group"
+                className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
               >
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-3">

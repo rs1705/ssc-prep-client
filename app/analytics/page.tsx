@@ -74,7 +74,7 @@ const SUBJECT_ACCURACY = [
     status: "Good",
     color: "bg-violet-500",
     textColor: "text-violet-500",
-    badge: "FSRS Active",
+    badge: "Flashcards Active",
   },
   {
     subject: "General Knowledge",
@@ -107,7 +107,7 @@ const WEAK_AREAS = [
     topic: "One Word Substitution (Medical Terms)",
     subject: "English Vocab",
     accuracy: "71%",
-    recommendation: "Daily FSRS session due for 14 specialized suffix cards.",
+    recommendation: "Daily Flashcard session due for 14 specialized suffix cards.",
     linkTo: "/SSC/english/flashcards/fsrs",
   },
 ];
@@ -154,7 +154,7 @@ export default function AnalyticsPage() {
               return (
                 <div
                   key={i}
-                  className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden noise-overlay group hover:-translate-y-0.5"
+                  className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-0.5"
                 >
                   <div className="flex items-center justify-between mb-4 relative z-10">
                     <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
@@ -180,7 +180,7 @@ export default function AnalyticsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left: Subject Mastery Telemetry */}
             <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-              <div className="p-6 sm:p-8 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 noise-overlay relative overflow-hidden">
+              <div className="p-6 sm:p-8 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/40">
@@ -229,7 +229,7 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Weekly Speed Progress Chart Banner */}
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 noise-overlay flex flex-col gap-4">
+              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-amber-500" />
@@ -263,7 +263,7 @@ export default function AnalyticsPage() {
 
             {/* Right: AI Weak Area Radar & Prescriptions */}
             <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-rose-500/25 shadow-xl shadow-rose-500/5 noise-overlay relative overflow-hidden">
+              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-rose-500/25 shadow-xl shadow-rose-500/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-border/40">
@@ -311,7 +311,7 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Weekly Goal Progress Card */}
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 noise-overlay relative overflow-hidden">
+              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center border border-amber-500/20">
                     <Target className="w-4 h-4" />
