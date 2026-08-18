@@ -30,53 +30,60 @@ const SectionCard: React.FC<SectionCardProps> = ({
   const isClickable = linkTo !== "#";
   const theme = colorTheme || "indigo";
 
-  const themeMap = {
+  const themeMap: Record<
+    string,
+    {
+      iconWrapper: string;
+      hoverBorder: string;
+      hoverBg: string;
+    }
+  > = {
     sky: {
       iconWrapper:
         "bg-sky-500/10 text-sky-600 dark:text-sky-400 shadow-[0_2px_8px_rgba(14,165,233,0.05)]",
+      hoverBorder: "hover:border-sky-500/50",
+      hoverBg: "hover:bg-sky-500/[0.03]",
     },
     emerald: {
       iconWrapper:
         "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
+      hoverBorder: "hover:border-emerald-500/50",
+      hoverBg: "hover:bg-emerald-500/[0.03]",
     },
     rose: {
       iconWrapper:
         "bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
+      hoverBorder: "hover:border-rose-500/50",
+      hoverBg: "hover:bg-rose-500/[0.03]",
     },
     amber: {
       iconWrapper:
         "bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_2px_8px_rgba(245,158,11,0.05)]",
+      hoverBorder: "hover:border-amber-500/50",
+      hoverBg: "hover:bg-amber-500/[0.03]",
     },
     violet: {
       iconWrapper:
         "bg-violet-500/10 text-violet-600 dark:text-violet-400 shadow-[0_2px_8px_rgba(139,92,246,0.05)]",
+      hoverBorder: "hover:border-violet-500/50",
+      hoverBg: "hover:bg-violet-500/[0.03]",
     },
     indigo: {
       iconWrapper:
         "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
+      hoverBorder: "hover:border-indigo-500/50",
+      hoverBg: "hover:bg-indigo-500/[0.03]",
     },
   };
 
-  const glowMap: Record<string, string> = {
-    emerald: "bg-emerald-500/10",
-    amber: "bg-amber-500/10",
-    rose: "bg-rose-500/10",
-    cyan: "bg-cyan-500/10",
-    blue: "bg-blue-500/10",
-    orange: "bg-orange-500/10",
-    violet: "bg-violet-500/10",
-    indigo: "bg-amber-500/10",
-  };
-
-  const currentTheme = themeMap[theme];
-  const glowClass = glowMap[theme] || "bg-amber-500/10";
+  const currentTheme = themeMap[theme] || themeMap.indigo;
 
   return (
     <div
       className={`group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden shadow-lg shadow-black/5 ${
         isClickable
-          ? "bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border border-border/40 hover:border-amber-500/30 hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1"
-          : "bg-card/90 md:bg-card/30 backdrop-blur-none md:backdrop-blur-md border border-border/20 opacity-75"
+          ? `bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1`
+          : "bg-card/90 md:bg-card/30 backdrop-blur-none md:backdrop-blur-md border-2 border-border/30 opacity-75"
       }`}
       style={{
         animationDelay: `${index * 100}ms`,

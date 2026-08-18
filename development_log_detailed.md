@@ -345,4 +345,10 @@ This file tracks the in-depth, step-by-step feature implementations and bug fixe
   - **FSRS & Freestyle Flashcards (`/SSC/english/flashcards/fsrs`, `freestyle`)**: Bounded to `max-w-sm sm:max-w-md md:max-w-[480px]`.
   - **Hangman Sprint (`/SSC/english/hangman`)**: Standardized to `max-w-sm sm:max-w-md md:max-w-[480px]`.
 
+---
 
+## 🎨 2px Card Border Standardization, Mastery Progress & Refined Hover System
+- **2px Card Border Framing (`border-2 border-border/60`)**: Upgraded card borders across the Dashboard, `TopicCard.tsx`, and `SectionCard.tsx` from hairline 1px to a crisp 2px border structure.
+- **Mastery Progression in Dashboard Subjects**: Added the dedicated "Mastery" segment with percentage indicators and gradient progress bars across the 4 subject command center tiles.
+- **Refined Subtle Hover Color Fills**: Replaced legacy neon blur glow blobs with gentle, theme-colored fills and borders (`hover:bg-[theme]/[0.03] hover:border-[theme]/50`) across Dashboard subject tiles, SectionCard hubs, and TopicCard grids.
+- **Nested Progress Bar Container**: Today's Target / Quest card now encloses the animated gradient progress bar in its own bordered pill container (`bg-muted/70 border border-border/50 p-0.5`).

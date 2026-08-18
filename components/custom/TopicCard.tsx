@@ -54,31 +54,45 @@ export const TopicCard = ({
     string,
     {
       iconWrapper: string;
+      hoverBorder: string;
+      hoverBg: string;
     }
   > = {
     sky: {
       iconWrapper:
         "bg-sky-500/10 text-sky-600 dark:text-sky-400 shadow-[0_2px_8px_rgba(14,165,233,0.05)]",
+      hoverBorder: "hover:border-sky-500/50",
+      hoverBg: "hover:bg-sky-500/[0.03]",
     },
     emerald: {
       iconWrapper:
         "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
+      hoverBorder: "hover:border-emerald-500/50",
+      hoverBg: "hover:bg-emerald-500/[0.03]",
     },
     rose: {
       iconWrapper:
         "bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
+      hoverBorder: "hover:border-rose-500/50",
+      hoverBg: "hover:bg-rose-500/[0.03]",
     },
     amber: {
       iconWrapper:
         "bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_2px_8px_rgba(245,158,11,0.05)]",
+      hoverBorder: "hover:border-amber-500/50",
+      hoverBg: "hover:bg-amber-500/[0.03]",
     },
     indigo: {
       iconWrapper:
         "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
+      hoverBorder: "hover:border-indigo-500/50",
+      hoverBg: "hover:bg-indigo-500/[0.03]",
     },
     violet: {
       iconWrapper:
         "bg-violet-500/10 text-violet-600 dark:text-violet-400 shadow-[0_2px_8px_rgba(139,92,246,0.05)]",
+      hoverBorder: "hover:border-violet-500/50",
+      hoverBg: "hover:bg-violet-500/[0.03]",
     },
   };
 
@@ -87,7 +101,7 @@ export const TopicCard = ({
 
   return (
     <div
-      className="group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border border-border/50 shadow-sm hover:shadow-xl hover:shadow-black/5 hover:border-amber-500/40 transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden"
+      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 shadow-sm hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
       style={{
         animationDelay: `${Math.floor(index / cols) * 80}ms`,
         animationFillMode: "both",

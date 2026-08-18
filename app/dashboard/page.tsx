@@ -17,6 +17,7 @@ import {
   ScrollText,
   ChevronRight,
   History,
+  Gamepad2,
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -31,7 +32,6 @@ export default function Dashboard() {
     else setGreeting("Good evening");
   }, []);
 
-  // Dummy data mirroring the screenshot
   const mockStats = {
     streak: 12,
     xp: "2,480",
@@ -46,7 +46,7 @@ export default function Dashboard() {
       name: "Quant",
       qs: "1,240 QS",
       to: "/SSC/maths",
-      active: true,
+      progress: 68,
       theme: "emerald",
     },
     {
@@ -54,6 +54,7 @@ export default function Dashboard() {
       name: "Reasoning",
       qs: "890 QS",
       to: "/SSC/reasoning",
+      progress: 54,
       theme: "amber",
     },
     {
@@ -61,6 +62,7 @@ export default function Dashboard() {
       name: "English",
       qs: "720 QS",
       to: "/SSC/english",
+      progress: 42,
       theme: "violet",
     },
     {
@@ -68,6 +70,7 @@ export default function Dashboard() {
       name: "GK / GS",
       qs: "1,580 QS",
       to: "/SSC/gk",
+      progress: 35,
       theme: "rose",
     },
   ];
@@ -79,7 +82,7 @@ export default function Dashboard() {
       label: "Daily Flashcards",
       to: "/SSC/english/flashcards/fsrs",
     },
-    { icon: Bookmark, label: "Bookmarks", to: "/bookmarks" },
+    { icon: Gamepad2, label: "Hangman Sprint", to: "/SSC/english/hangman" },
   ];
 
   const recentSessions = [
@@ -106,30 +109,40 @@ export default function Dashboard() {
     },
   ];
 
-  const themeClasses: Record<string, { bg: string; text: string; border: string; glow: string }> = {
+  const themeClasses: Record<string, { 
+    bg: string; 
+    text: string; 
+    hoverBorder: string; 
+    hoverBg: string;
+    barGrad: string;
+  }> = {
     emerald: { 
       bg: "bg-emerald-500/10 dark:bg-emerald-500/15", 
       text: "text-emerald-600 dark:text-emerald-400",
-      border: "hover:border-emerald-500/40 hover:shadow-emerald-500/10",
-      glow: "from-emerald-500/10 to-transparent",
+      hoverBorder: "hover:border-emerald-500/50",
+      hoverBg: "hover:bg-emerald-500/[0.03]",
+      barGrad: "from-emerald-400 to-emerald-600",
     },
     amber: { 
       bg: "bg-amber-500/10 dark:bg-amber-500/15", 
       text: "text-amber-600 dark:text-amber-400",
-      border: "hover:border-amber-500/40 hover:shadow-amber-500/10",
-      glow: "from-amber-500/10 to-transparent",
+      hoverBorder: "hover:border-amber-500/50",
+      hoverBg: "hover:bg-amber-500/[0.03]",
+      barGrad: "from-amber-400 to-orange-500",
     },
     violet: { 
       bg: "bg-violet-500/10 dark:bg-violet-500/15", 
       text: "text-violet-600 dark:text-violet-400",
-      border: "hover:border-violet-500/40 hover:shadow-violet-500/10",
-      glow: "from-violet-500/10 to-transparent",
+      hoverBorder: "hover:border-violet-500/50",
+      hoverBg: "hover:bg-violet-500/[0.03]",
+      barGrad: "from-violet-400 to-purple-600",
     },
     rose: { 
       bg: "bg-rose-500/10 dark:bg-rose-500/15", 
       text: "text-rose-600 dark:text-rose-400",
-      border: "hover:border-rose-500/40 hover:shadow-rose-500/10",
-      glow: "from-rose-500/10 to-transparent",
+      hoverBorder: "hover:border-rose-500/50",
+      hoverBg: "hover:bg-rose-500/[0.03]",
+      barGrad: "from-rose-400 to-rose-600",
     },
   };
 
@@ -150,7 +163,7 @@ export default function Dashboard() {
             </h1>
           </div>
           <div className="hidden sm:flex items-center gap-2">
-            <div className="px-4 py-2 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 text-xs font-mono font-bold text-muted-foreground flex items-center gap-2">
+            <div className="px-4 py-2 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/50 text-xs font-mono font-bold text-muted-foreground flex items-center gap-2 shadow-xs">
               <Target className="w-4 h-4 text-amber-500" />
               <span>Target: Tier 1 Exam</span>
             </div>
@@ -160,10 +173,7 @@ export default function Dashboard() {
         {/* Top Row: Target & Resume */}
         <div className="grid lg:grid-cols-2 gap-5 mb-10">
           {/* Streak / Target Card */}
-          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border border-amber-500/20 p-6 sm:p-7 shadow-xl shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
-            {/* Ambient Corner Glow */}
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-
+          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 shadow-lg shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
             <div className="flex items-center justify-between mb-4 relative z-10">
               <div className="flex items-center gap-2 text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border border-border/40">
                 <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" strokeWidth={2.5} />
@@ -183,9 +193,10 @@ export default function Dashboard() {
               Today's Target · <span className="font-mono text-amber-500">{mockStats.todayGoal}</span> Qs
             </div>
 
-            <div className="h-2 bg-muted/60 rounded-full overflow-hidden mb-3 border border-border/30 relative z-10">
+            {/* Progress bar inside its own container */}
+            <div className="w-full h-3 bg-muted/70 rounded-full overflow-hidden mb-3 border border-border/50 p-0.5 relative z-10">
               <div
-                className="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-full shadow-sm shadow-amber-500/50 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-full shadow-xs transition-all duration-500"
                 style={{ width: mockStats.percent }}
               />
             </div>
@@ -219,15 +230,12 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Resume Card */}
+          {/* Quick Resume Card with 2px Outer Border */}
           <Link
             href="/SSC/maths/mental-maths"
-            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
+            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer border-2 border-amber-600/70 dark:border-amber-400/40 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
             style={{ animationDelay: "150ms", animationFillMode: "both" }}
           >
-            {/* Ambient Shine Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
             <div className="flex items-start justify-between relative z-10">
               <div>
                 <div className="inline-flex items-center gap-1 text-[10px] font-mono font-bold tracking-widest uppercase bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white mb-2">
@@ -263,7 +271,7 @@ export default function Dashboard() {
           {/* Left Column (Main Content) */}
           <div className="flex-1 flex flex-col gap-10 min-w-0">
             
-            {/* Subjects Row */}
+            {/* Subjects Row with 2px borders, Mastery progress bars, and subtle hover color fill */}
             <div className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "200ms", animationFillMode: "both" }}>
               <div className="flex items-center justify-between mb-4">
                 <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-2">
@@ -285,23 +293,35 @@ export default function Dashboard() {
                     <Link
                       key={s.name}
                       href={s.to}
-                      className={`group rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.border}`}
+                      className={`group rounded-3xl bg-card/70 backdrop-blur-xl border-2 border-border/60 p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
                     >
-                      {/* Ambient Glow */}
-                      <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${colors.glow} rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`} />
-
-                      <div className="flex items-start justify-between mb-6 relative z-10">
+                      <div className="flex items-start justify-between mb-4 relative z-10">
                         <div className={`w-12 h-12 rounded-2xl ${colors.bg} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40`}>
-                          <s.icon className={`w-5 h-5 ${colors.text}`} strokeWidth={2} />
+                          <s.icon className={`w-5 h-5 ${colors.text}`} strokeWidth={2.2} />
                         </div>
                         <ArrowUpRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                       </div>
+                      
                       <div className="relative z-10">
                         <div className="font-extrabold text-lg tracking-tight text-foreground group-hover:text-amber-500 transition-colors">
                           {s.name}
                         </div>
                         <div className="text-xs font-mono font-semibold text-muted-foreground mt-0.5">
                           {s.qs}
+                        </div>
+
+                        {/* Mastery Progress Bar */}
+                        <div className="mt-4 pt-3 border-t border-border/40">
+                          <div className="flex justify-between text-[10px] font-mono font-bold text-muted-foreground mb-1.5">
+                            <span>Mastery</span>
+                            <span className={colors.text}>{s.progress}%</span>
+                          </div>
+                          <div className="w-full h-1.5 rounded-full bg-muted/60 overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full bg-gradient-to-r ${colors.barGrad}`}
+                              style={{ width: `${s.progress}%` }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </Link>
@@ -320,7 +340,7 @@ export default function Dashboard() {
                   <Link
                     key={q.label}
                     href={q.to}
-                    className="rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 p-4.5 flex items-center gap-4 hover:border-amber-500/30 hover:shadow-md transition-all shadow-xs cursor-pointer group"
+                    className="rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-4.5 flex items-center gap-4 hover:border-amber-500/40 hover:bg-amber-500/[0.03] hover:shadow-md transition-all shadow-xs cursor-pointer group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
@@ -343,7 +363,7 @@ export default function Dashboard() {
                     <Link
                       key={q.label}
                       href={q.to}
-                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/30 transition-all shadow-xs cursor-pointer justify-center text-center sm:text-left group"
+                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all shadow-xs cursor-pointer justify-center text-center sm:text-left group"
                     >
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                         <q.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2} />
@@ -368,7 +388,7 @@ export default function Dashboard() {
                   </Link>
                 </div>
 
-                <div className="bg-card/60 backdrop-blur-xl border border-border/40 rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between gap-1">
+                <div className="bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between gap-1">
                   {recentSessions.map((session, i) => (
                     <div
                       key={i}
@@ -417,7 +437,7 @@ export default function Dashboard() {
               </Link>
             </div>
 
-            <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-3 flex flex-col shadow-xl shadow-black/5 h-full justify-between gap-1.5">
+            <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/60 rounded-3xl p-3 flex flex-col shadow-xl shadow-black/5 h-full justify-between gap-1.5">
               {recentSessions.map((session, i) => (
                 <div
                   key={i}
