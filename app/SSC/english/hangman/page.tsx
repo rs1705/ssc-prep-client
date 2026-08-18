@@ -93,7 +93,7 @@ export default function HangmanDemoPage() {
           </div>
           <ProgressBar
             value={40}
-            barClassName="bg-gradient-to-r from-violet-500 to-indigo-500"
+            barClassName="bg-gradient-to-r from-amber-500 to-orange-500"
           />
         </div>
 

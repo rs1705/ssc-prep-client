@@ -40,7 +40,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
-        <div className="mx-auto flex-1 flex flex-col w-full max-w-7xl">
+        <div className="mx-auto flex-1 flex flex-col w-full max-w-[1400px]">
           <div className="shrink-0">
             <TopBar />
           </div>

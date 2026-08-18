@@ -124,7 +124,7 @@ const FsrsPage = () => {
               </div>
               <ProgressBar
                 value={(currentCardNumber / totalCards) * 100}
-                barClassName="bg-gradient-to-r from-violet-500 to-purple-600"
+                barClassName="bg-gradient-to-r from-amber-500 to-orange-500"
               />
             </div>
           )}

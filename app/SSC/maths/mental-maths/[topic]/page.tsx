@@ -504,7 +504,7 @@ export default function MentalMathsPractice() {
       ? engine.state.timeRemaining
       : null;
 
-  let barColorClass = "";
+  let barColorClass = "bg-gradient-to-r from-amber-500 to-orange-500";
   let timerTextColorClass = "text-muted-foreground";
 
   if (isTimedMode && sec !== null) {

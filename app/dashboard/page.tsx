@@ -423,7 +423,7 @@ export default function Dashboard() {
           </div>
 
           {/* Right Column: Recent Sessions (Wide Screen Only) */}
-          <div className="hidden xl:flex w-[360px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
+          <div className="hidden xl:flex w-[280px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
             <div className="flex items-center justify-between mb-4">
               <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1.5">
                 <History className="w-3.5 h-3.5 text-amber-500" />
