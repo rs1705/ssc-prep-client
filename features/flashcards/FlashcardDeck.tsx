@@ -29,7 +29,7 @@ export const COLOR_SCHEMES = [
     accent: "text-rose-600 dark:text-rose-400",
     accentBg: "bg-white/60 dark:bg-rose-950/50 border-rose-200/80 dark:border-rose-500/25",
     barBg: "bg-gradient-to-r from-rose-400 to-rose-500",
-    border: "border border-rose-200/80 dark:border-rose-500/30",
+    border: "border-2 border-rose-200/80 dark:border-rose-500/30",
   },
   {
     bg: "from-sky-50 to-sky-100/90 dark:from-sky-950/40 dark:to-zinc-900",
@@ -38,7 +38,7 @@ export const COLOR_SCHEMES = [
     accent: "text-sky-600 dark:text-sky-400",
     accentBg: "bg-white/60 dark:bg-sky-950/50 border-sky-200/80 dark:border-sky-500/25",
     barBg: "bg-gradient-to-r from-sky-400 to-sky-500",
-    border: "border border-sky-200/80 dark:border-sky-500/30",
+    border: "border-2 border-sky-200/80 dark:border-sky-500/30",
   },
   {
     bg: "from-violet-50 to-violet-100/90 dark:from-violet-950/40 dark:to-zinc-900",
@@ -47,7 +47,7 @@ export const COLOR_SCHEMES = [
     accent: "text-violet-600 dark:text-violet-400",
     accentBg: "bg-white/60 dark:bg-violet-950/50 border-violet-200/80 dark:border-violet-500/25",
     barBg: "bg-gradient-to-r from-violet-400 to-violet-500",
-    border: "border border-violet-200/80 dark:border-violet-500/30",
+    border: "border-2 border-violet-200/80 dark:border-violet-500/30",
   },
   {
     bg: "from-amber-50 to-amber-100/90 dark:from-amber-950/40 dark:to-zinc-900",
@@ -56,7 +56,7 @@ export const COLOR_SCHEMES = [
     accent: "text-amber-600 dark:text-amber-400",
     accentBg: "bg-white/60 dark:bg-amber-950/50 border-amber-200/80 dark:border-amber-500/25",
     barBg: "bg-gradient-to-r from-amber-500 to-amber-600",
-    border: "border border-amber-200/80 dark:border-amber-500/30",
+    border: "border-2 border-amber-200/80 dark:border-amber-500/30",
   },
   {
     bg: "from-emerald-50 to-emerald-100/90 dark:from-emerald-950/40 dark:to-zinc-900",
@@ -65,7 +65,7 @@ export const COLOR_SCHEMES = [
     accent: "text-emerald-600 dark:text-emerald-400",
     accentBg: "bg-white/60 dark:bg-emerald-950/50 border-emerald-200/80 dark:border-emerald-500/25",
     barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500",
-    border: "border border-emerald-200/80 dark:border-emerald-500/30",
+    border: "border-2 border-emerald-200/80 dark:border-emerald-500/30",
   },
   {
     bg: "from-indigo-50 to-indigo-100/90 dark:from-indigo-950/40 dark:to-zinc-900",
@@ -74,7 +74,7 @@ export const COLOR_SCHEMES = [
     accent: "text-indigo-600 dark:text-indigo-400",
     accentBg: "bg-white/60 dark:bg-indigo-950/50 border-indigo-200/80 dark:border-indigo-500/25",
     barBg: "bg-gradient-to-r from-indigo-400 to-indigo-500",
-    border: "border border-indigo-200/80 dark:border-indigo-500/30",
+    border: "border-2 border-indigo-200/80 dark:border-indigo-500/30",
   },
   {
     bg: "from-orange-50 to-orange-100/90 dark:from-orange-950/40 dark:to-zinc-900",
@@ -83,7 +83,7 @@ export const COLOR_SCHEMES = [
     accent: "text-orange-600 dark:text-orange-400",
     accentBg: "bg-white/60 dark:bg-orange-950/50 border-orange-200/80 dark:border-orange-500/25",
     barBg: "bg-gradient-to-r from-orange-400 to-orange-500",
-    border: "border border-orange-200/80 dark:border-orange-500/30",
+    border: "border-2 border-orange-200/80 dark:border-orange-500/30",
   },
   {
     bg: "from-teal-50 to-teal-100/90 dark:from-teal-950/40 dark:to-zinc-900",
@@ -92,7 +92,7 @@ export const COLOR_SCHEMES = [
     accent: "text-teal-600 dark:text-teal-400",
     accentBg: "bg-white/60 dark:bg-teal-950/50 border-teal-200/80 dark:border-teal-500/25",
     barBg: "bg-gradient-to-r from-teal-400 to-teal-500",
-    border: "border border-teal-200/80 dark:border-teal-500/30",
+    border: "border-2 border-teal-200/80 dark:border-teal-500/30",
   },
   {
     bg: "from-fuchsia-50 to-fuchsia-100/90 dark:from-fuchsia-950/40 dark:to-zinc-900",
@@ -101,7 +101,7 @@ export const COLOR_SCHEMES = [
     accent: "text-fuchsia-600 dark:text-fuchsia-400",
     accentBg: "bg-white/60 dark:bg-fuchsia-950/50 border-fuchsia-200/80 dark:border-fuchsia-500/25",
     barBg: "bg-gradient-to-r from-fuchsia-400 to-fuchsia-500",
-    border: "border border-fuchsia-200/80 dark:border-fuchsia-500/30",
+    border: "border-2 border-fuchsia-200/80 dark:border-fuchsia-500/30",
   },
   {
     bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
@@ -110,7 +110,7 @@ export const COLOR_SCHEMES = [
     accent: "text-amber-600 dark:text-amber-400",
     accentBg: "bg-white/60 dark:bg-zinc-800/60 border-stone-200/80 dark:border-zinc-700/40",
     barBg: "bg-gradient-to-r from-stone-400 to-stone-500",
-    border: "border border-stone-200/80 dark:border-zinc-800",
+    border: "border-2 border-stone-200/80 dark:border-zinc-800",
   },
 ];
 
@@ -156,7 +156,7 @@ export type ActionType = keyof typeof BUTTON_ACTIONS;
   }
 
   Progress Bar (FlashcardDeck.tsx):
-  - Container class: "relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border border-slate-600/50 shadow-inner"
+  - Container class: "relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border-2 border-slate-600/50 shadow-inner"
   - Progress fill class: "absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transition-all duration-300"
   - Text class: "absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
 */
@@ -273,7 +273,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
+              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
             >
               <MoveLeft className="w-5 h-5" />
             </button>
@@ -344,7 +344,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
 
             {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
+              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >
@@ -362,7 +362,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                         <button
                           key={actionKey}
                           type="button"
-                          className={`flex-1 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
+                          className={`flex-1 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border-2 select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
                           onClick={() => onActionClick(actionKey)}
                         >
                           <span className="font-bold">{actionConfig.label}</span>
@@ -380,7 +380,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
         </div>
       ) : (
         <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-6 sm:p-8 min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] rounded-3xl bg-card border border-border shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center p-6 sm:p-8 min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] rounded-3xl bg-card border-2 border-border shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">
               No Cards Found

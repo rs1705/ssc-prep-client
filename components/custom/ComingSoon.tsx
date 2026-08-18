@@ -19,7 +19,7 @@ export default function ComingSoon({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col items-center justify-center text-center p-8 sm:p-10 min-h-[420px] w-full max-w-lg mx-auto rounded-3xl bg-card/60 backdrop-blur-2xl border border-amber-500/25 shadow-xl shadow-amber-500/5 mt-10 relative overflow-hidden"
+        className="flex flex-col items-center justify-center text-center p-8 sm:p-10 min-h-[420px] w-full max-w-lg mx-auto rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/25 shadow-xl shadow-amber-500/5 mt-10 relative overflow-hidden"
       >
         {/* Background decorative blobs */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-30">
@@ -44,7 +44,7 @@ export default function ComingSoon({
         <motion.div 
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6 relative shadow-inner"
+          className="w-20 h-20 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center mb-6 relative shadow-inner"
         >
           <Construction className="w-10 h-10 text-amber-500" />
           <motion.div
@@ -61,7 +61,7 @@ export default function ComingSoon({
         </p>
         
         <motion.div 
-          className="mt-8 flex gap-2 items-center z-10 bg-card/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-amber-500/30 shadow-xs"
+          className="mt-8 flex gap-2 items-center z-10 bg-card/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border-2 border-amber-500/30 shadow-xs"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}

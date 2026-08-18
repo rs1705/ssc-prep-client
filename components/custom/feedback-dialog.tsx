@@ -131,7 +131,7 @@ export default function FeedbackDialog() {
       <DialogContent className="sm:max-w-[450px] overflow-hidden">
         {isSuccess ? (
           <div className="flex flex-col items-center text-center py-6 animate-in fade-in zoom-in-95 duration-300">
-            <div className="p-3 bg-emerald-500/10 rounded-full border border-emerald-500/20 text-emerald-500 mb-4">
+            <div className="p-3 bg-emerald-500/10 rounded-full border-2 border-emerald-500/20 text-emerald-500 mb-4">
               <CheckCircle2 className="w-10 h-10 animate-bounce" />
             </div>
             <DialogTitle className="text-xl font-bold text-foreground">Thank You!</DialogTitle>
@@ -162,7 +162,7 @@ export default function FeedbackDialog() {
             </DialogHeader>
 
             {showRoadmap && (
-              <div className="bg-muted/50 rounded-2xl p-4 border border-border/80 animate-in slide-in-from-top-2 duration-300 space-y-3">
+              <div className="bg-muted/50 rounded-2xl p-4 border-2 border-border/80 animate-in slide-in-from-top-2 duration-300 space-y-3">
                 <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
                   <span>🚀</span> App Roadmap & Upcoming Features
                 </h4>
@@ -207,7 +207,7 @@ export default function FeedbackDialog() {
                         key={cat.id}
                         type="button"
                         onClick={() => form.setValue("category", cat.id)}
-                        className={`h-11 rounded-xl border text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
+                        className={`h-11 rounded-xl border-2 text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
                           isSelected
                             ? "border-primary bg-primary/10 text-primary shadow-sm font-bold"
                             : "border-border bg-card text-foreground " + cat.color
@@ -223,7 +223,7 @@ export default function FeedbackDialog() {
               {/* Rating selection */}
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">How is your experience?</Label>
-                <div className="flex justify-between p-2.5 bg-muted/40 border rounded-2xl">
+                <div className="flex justify-between p-2.5 bg-muted/40 border-2 rounded-2xl">
                   {RATING_EMOJIS.map((rating) => {
                     const isSelected = form.watch("rating") === rating.value;
                     return (
@@ -269,7 +269,7 @@ export default function FeedbackDialog() {
                   placeholder="Describe what went wrong or how we can improve..."
                   {...form.register("message")}
                   rows={3}
-                  className="w-full rounded-2xl border border-input bg-card p-3 text-sm font-medium shadow-sm transition-all focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 placeholder:text-muted-foreground/60 resize-none min-h-[80px]"
+                  className="w-full rounded-2xl border-2 border-input bg-card p-3 text-sm font-medium shadow-sm transition-all focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 placeholder:text-muted-foreground/60 resize-none min-h-[80px]"
                 />
                 {form.formState.errors.message && (
                   <p className="text-xs text-red-500 font-medium">
@@ -288,7 +288,7 @@ export default function FeedbackDialog() {
                   type="text"
                   placeholder="Enter your name"
                   {...form.register("name")}
-                  className="h-11 rounded-xl border border-input bg-card font-medium text-sm"
+                  className="h-11 rounded-xl border-2 border-input bg-card font-medium text-sm"
                 />
                 {form.formState.errors.name && (
                   <p className="text-xs text-red-500 font-medium">

@@ -116,7 +116,7 @@ export const TopicCard = ({
             {emoji}
           </div>
           {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25 shadow-2xs select-none">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 shadow-2xs select-none">
               {badge}
             </span>
           )}
@@ -134,9 +134,9 @@ export const TopicCard = ({
       </div>
 
       {/* Bottom Controls Row */}
-      <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-border/40 relative z-10 gap-2">
+      <div className="flex items-center justify-between mt-5 pt-3.5 border-t-2 border-border/40 relative z-10 gap-2">
         {/* Left: Stats Pill */}
-        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border border-border/40 truncate max-w-[120px]">
+        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border-2 border-border/40 truncate max-w-[120px]">
           {stats}
         </span>
 
@@ -151,7 +151,7 @@ export const TopicCard = ({
               trigger={
                 <Button
                   variant="ghost"
-                  className="px-3 py-1.5 h-8 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border border-border/50 active:scale-95 transition-all cursor-pointer"
+                  className="px-3 py-1.5 h-8 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border-2 border-border/50 active:scale-95 transition-all cursor-pointer"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   Revise

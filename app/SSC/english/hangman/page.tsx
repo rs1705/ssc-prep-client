@@ -38,13 +38,13 @@ export default function HangmanDemoPage() {
   return (
     <div className="flex flex-col min-h-[100dvh] max-h-[100dvh] overflow-hidden bg-background">
       {/* Top Header */}
-      <div className="w-full h-12 sm:h-14 flex items-center justify-between px-3 sm:px-6 border-b border-border/40 shrink-0 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
+      <div className="w-full h-12 sm:h-14 flex items-center justify-between px-3 sm:px-6 border-b-2 border-border/40 shrink-0 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
         <div className="flex items-center gap-2.5 min-w-0">
           <Link href="/SSC/english">
             <Button
               variant="ghost"
               size="icon"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-card/60 shrink-0 border border-border/40"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-card/60 shrink-0 border-2 border-border/40"
             >
               <ChevronLeft className="w-4 h-4 text-muted-foreground" />
             </Button>
@@ -59,7 +59,7 @@ export default function HangmanDemoPage() {
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <div className="bg-card/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-violet-500/30 flex items-center gap-1.5 shadow-2xs">
+          <div className="bg-card/60 backdrop-blur-md px-2.5 py-1 rounded-full border-2 border-violet-500/30 flex items-center gap-1.5 shadow-2xs">
             <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
               Score
             </span>
@@ -87,14 +87,13 @@ export default function HangmanDemoPage() {
                 </div>
               ))}
             </div>
-            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2.5 py-0.5 rounded-full border border-border/40">
+            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2.5 py-0.5 rounded-full border-2 border-border/40">
               Word 4 of 10
             </span>
           </div>
           <ProgressBar
             value={40}
-            className="h-1.5 sm:h-2 bg-muted/60 rounded-full overflow-hidden border border-border/30"
-            barClassName="bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full"
+            barClassName="bg-gradient-to-r from-violet-500 to-indigo-500"
           />
         </div>
 
@@ -105,7 +104,7 @@ export default function HangmanDemoPage() {
             <span className="text-3xl sm:text-4xl text-foreground font-black drop-shadow-xs">
               {wrongGuesses > 0 ? "😰" : "🤔"}
             </span>
-            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-widest border border-rose-500/20">
+            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-widest border-2 border-rose-500/20">
               {wrongGuesses} / {totalLives} Strikes
             </span>
           </div>
@@ -117,7 +116,7 @@ export default function HangmanDemoPage() {
               return (
                 <div
                   key={i}
-                  className={`w-8 h-10 sm:w-10 sm:h-12 md:w-11 md:h-13 flex items-center justify-center rounded-xl sm:rounded-2xl border text-base sm:text-lg md:text-xl font-black font-mono uppercase transition-all duration-300 shadow-2xs ${
+                  className={`w-8 h-10 sm:w-10 sm:h-12 md:w-11 md:h-13 flex items-center justify-center rounded-xl sm:rounded-2xl border-2 text-base sm:text-lg md:text-xl font-black font-mono uppercase transition-all duration-300 shadow-2xs ${
                     isRevealed
                       ? "bg-violet-500/15 border-violet-500/40 text-violet-600 dark:text-violet-300 shadow-violet-500/10 scale-105"
                       : "bg-card/40 backdrop-blur-sm border-border/60 text-transparent"
@@ -130,7 +129,7 @@ export default function HangmanDemoPage() {
           </div>
 
           {/* Definition Hint */}
-          <div className="bg-card/60 backdrop-blur-xl border border-violet-500/25 rounded-2xl p-3 sm:p-4 w-full text-center shadow-md shadow-black/5 relative overflow-hidden">
+          <div className="bg-card/60 backdrop-blur-xl border-2 border-violet-500/25 rounded-2xl p-3 sm:p-4 w-full text-center shadow-md shadow-black/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-indigo-500"></div>
             <div className="flex items-start justify-center gap-2">
               <HelpCircle className="w-3.5 h-3.5 text-violet-500 shrink-0 mt-0.5" />
@@ -167,7 +166,7 @@ export default function HangmanDemoPage() {
                     key={key}
                     onClick={() => !isGuessed && handleKeyPress(key)}
                     disabled={isGuessed}
-                    className={`flex-1 max-w-[34px] sm:max-w-[42px] h-9 sm:h-11 md:h-12 rounded-lg sm:rounded-xl border flex items-center justify-center text-xs sm:text-sm font-black font-mono transition-all select-none touch-manipulation cursor-pointer ${keyClasses}`}
+                    className={`flex-1 max-w-[34px] sm:max-w-[42px] h-9 sm:h-11 md:h-12 rounded-lg sm:rounded-xl border-2 flex items-center justify-center text-xs sm:text-sm font-black font-mono transition-all select-none touch-manipulation cursor-pointer ${keyClasses}`}
                   >
                     {key}
                   </button>

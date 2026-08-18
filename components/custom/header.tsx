@@ -119,7 +119,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="w-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-md border-b border-border/40 sticky top-0 z-50">
+    <nav className="w-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-md border-b-2 border-border/40 sticky top-0 z-50">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
           {/* Logo */}
@@ -155,7 +155,7 @@ const Header = () => {
                     <NavigationMenuContent className="p-0 md:w-[420px] lg:w-[440px]">
                       <div className="flex h-[260px]">
                         {/* Left Pane - Subjects list */}
-                        <div className="w-[170px] p-2 border-r border-border/40 flex flex-col gap-1 bg-accent/10 dark:bg-slate-900/20">
+                        <div className="w-[170px] p-2 border-r-2 border-border/40 flex flex-col gap-1 bg-accent/10 dark:bg-slate-900/20">
                           {/* English */}
                           <div
                             onMouseEnter={() => setHoveredSubject("english")}
@@ -218,7 +218,7 @@ const Header = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   href="/SSC/english"
-                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b border-border/40 pb-1"
+                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b-2 border-border/40 pb-1"
                                 >
                                   Go to English Homepage
                                 </Link>
@@ -271,7 +271,7 @@ const Header = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   href="/SSC/maths"
-                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b border-border/40 pb-1"
+                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b-2 border-border/40 pb-1"
                                 >
                                   Go to Maths Homepage
                                 </Link>
@@ -324,7 +324,7 @@ const Header = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   href="/SSC/reasoning"
-                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b border-border/40 pb-1"
+                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b-2 border-border/40 pb-1"
                                 >
                                   Go to Reasoning Homepage
                                 </Link>
@@ -375,7 +375,7 @@ const Header = () => {
                               <NavigationMenuLink asChild>
                                 <Link
                                   href="/SSC/gk"
-                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b border-border/40 pb-1"
+                                  className="text-xs font-bold uppercase tracking-wider text-primary hover:underline transition-colors border-b-2 border-border/40 pb-1"
                                 >
                                   Go to GK Homepage
                                 </Link>
@@ -469,9 +469,9 @@ const Header = () => {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="h-11 px-3 pr-5 hover:cursor-pointer flex-row items-center font-semibold bg-accent/30 rounded-full hover:bg-accent border border-border shadow-sm">
+                    <NavigationMenuTrigger className="h-11 px-3 pr-5 hover:cursor-pointer flex-row items-center font-semibold bg-accent/30 rounded-full hover:bg-accent border-2 border-border shadow-sm">
                       <div className="flex items-center gap-3">
-                        <Avatar className="w-8 h-8 border border-border/50">
+                        <Avatar className="w-8 h-8 border-2 border-border/50">
                           <AvatarImage
                             src={
                               user.photoURL ||
@@ -486,7 +486,7 @@ const Header = () => {
                       </div>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent className="p-2 min-w-[200px]">
-                      <div className="px-2 py-2 mb-2 border-b border-border/40">
+                      <div className="px-2 py-2 mb-2 border-b-2 border-border/40">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                           My Account
                         </p>
@@ -543,7 +543,7 @@ const Header = () => {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="flex items-center justify-center rounded-full hover:opacity-85 transition-opacity focus:outline-none focus:ring-0 mr-1"
               >
-                <Avatar className="w-8 h-8 border border-border/50 shadow-sm">
+                <Avatar className="w-8 h-8 border-2 border-border/50 shadow-sm">
                   <AvatarImage
                     src={user.photoURL || "https://github.com/evilrabbit.png"}
                   />
@@ -559,7 +559,7 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 px-3.5 text-sm font-semibold rounded-xl border border-border hover:bg-accent/60 transition-colors shadow-sm"
+                  className="h-9 px-3.5 text-sm font-semibold rounded-xl border-2 border-border hover:bg-accent/60 transition-colors shadow-sm"
                 >
                   Sign In
                 </Button>
@@ -585,7 +585,7 @@ const Header = () => {
             </Button>
 
             {isMobileMenuOpen && (
-              <div className="fixed top-14 left-0 right-0 bottom-0 w-full h-[calc(100vh-56px)] bg-background z-40 border-t border-border flex flex-col animate-fadeIn overflow-y-auto">
+              <div className="fixed top-14 left-0 right-0 bottom-0 w-full h-[calc(100vh-56px)] bg-background z-40 border-t-2 border-border flex flex-col animate-fadeIn overflow-y-auto">
                 <div className="flex flex-col gap-2 mt-6">
                   <Link
                     href="/"
@@ -602,7 +602,7 @@ const Header = () => {
                     Home
                   </Link>
 
-                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl mx-4 my-1 border border-border/40 max-h-[380px] overflow-y-auto">
+                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl mx-4 my-1 border-2 border-border/40 max-h-[380px] overflow-y-auto">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 px-3">
                       Subjects
                     </p>
@@ -619,7 +619,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "english"
-                            ? "bg-background shadow-sm border border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border/50"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -683,7 +683,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "maths"
-                            ? "bg-background shadow-sm border border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border/50"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -749,7 +749,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "reasoning"
-                            ? "bg-background shadow-sm border border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border/50"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -814,7 +814,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "gk"
-                            ? "bg-background shadow-sm border border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border/50"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -900,15 +900,15 @@ const Header = () => {
                     Feedback
                   </Link>
 
-                  <div className="mt-8 border-t border-border/40 pt-6">
+                  <div className="mt-8 border-t-2 border-border/40 pt-6">
                     {user ? (
                       <div className="flex flex-col gap-2 px-8">
-                        <div className="p-4 rounded-2xl bg-accent/30 border border-border/50 flex flex-col gap-3 mb-2">
+                        <div className="p-4 rounded-2xl bg-accent/30 border-2 border-border/50 flex flex-col gap-3 mb-2">
                           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                             My Account
                           </p>
                           <div className="flex items-center gap-3">
-                            <Avatar className="w-8 h-8 border border-border/50 shadow-sm">
+                            <Avatar className="w-8 h-8 border-2 border-border/50 shadow-sm">
                               <AvatarImage
                                 src={
                                   user.photoURL ||

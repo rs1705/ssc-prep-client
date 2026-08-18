@@ -18,7 +18,7 @@ export const Loader = ({ className = "", size = "md", text }: LoaderProps) => {
     <div className={`flex flex-col items-center justify-center gap-3 ${className}`}>
       <div className="relative flex items-center justify-center">
         {/* Outer glowing pulsing ring */}
-        <div className={`absolute rounded-full bg-primary/10 animate-ping ${
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 animate-ping ${
           size === "sm" ? "w-8 h-8" : size === "md" ? "w-14 h-14" : "w-20 h-20"
         }`} />
         

@@ -16,7 +16,7 @@ export function MobileFocusDock() {
 
   return (
     <div className="flex md:hidden animate-in slide-in-from-bottom-8 fade-in duration-500 z-50 mt-auto mb-4 mx-auto w-max relative [@media(min-height:720px)]:fixed [@media(min-height:720px)]:bottom-6 [@media(min-height:720px)]:left-1/2 [@media(min-height:720px)]:-translate-x-1/2">
-      <div className="flex items-center gap-1.5 px-3 py-2 bg-card/85 backdrop-blur-xl border border-border/60 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-full">
+      <div className="flex items-center gap-1.5 px-3 py-2 bg-card/85 backdrop-blur-xl border-2 border-border/60 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-full">
         {dockItems.map((item) => {
           const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
           const Icon = item.icon;

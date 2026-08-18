@@ -445,7 +445,7 @@ function InteractiveHeroDashboard() {
       <motion.div 
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card/80 backdrop-blur-xl border border-amber-500/30 shadow-xl shadow-amber-500/10 absolute -top-5 -left-6 z-30 font-mono text-xs font-bold text-foreground"
+        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card/80 backdrop-blur-xl border-2 border-amber-500/30 shadow-xl shadow-amber-500/10 absolute -top-5 -left-6 z-30 font-mono text-xs font-bold text-foreground"
       >
         <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
         <span>14-Day Streak 🔥</span>
@@ -454,17 +454,17 @@ function InteractiveHeroDashboard() {
       <motion.div 
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card/80 backdrop-blur-xl border border-emerald-500/30 shadow-xl shadow-emerald-500/10 absolute -bottom-4 -right-6 z-30 font-mono text-xs font-bold text-foreground"
+        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card/80 backdrop-blur-xl border-2 border-emerald-500/30 shadow-xl shadow-emerald-500/10 absolute -bottom-4 -right-6 z-30 font-mono text-xs font-bold text-foreground"
       >
         <TrendingUp className="w-4 h-4 text-emerald-500" />
         <span>+18 Marks in Quant 📈</span>
       </motion.div>
 
       {/* Main Glassmorphic Window */}
-      <div className="relative rounded-2xl sm:rounded-3xl border border-amber-500/25 bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-2xl shadow-amber-500/10 flex flex-col">
+      <div className="relative rounded-2xl sm:rounded-3xl border-2 border-amber-500/25 bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-2xl shadow-amber-500/10 flex flex-col">
         
         {/* Window Chrome Header & Interactive Tabs */}
-        <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 border-b border-border/40 bg-background/40">
+        <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 border-b-2 border-border/40 bg-background/40">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded-full bg-rose-500/80" />
@@ -475,7 +475,7 @@ function InteractiveHeroDashboard() {
           </div>
 
           {/* Interactive Mode Pills */}
-          <div className="flex items-center gap-1 bg-background/80 p-1 rounded-xl border border-border/40 shadow-inner">
+          <div className="flex items-center gap-1 bg-background/80 p-1 rounded-xl border-2 border-border/40 shadow-inner">
             {[
               { id: "analytics", label: "AI Analytics", icon: BarChart3 },
               { id: "maths", label: "Maths Sprint", icon: Zap },
@@ -500,7 +500,7 @@ function InteractiveHeroDashboard() {
             })}
           </div>
 
-          <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+          <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border-2 border-emerald-500/20 px-2.5 py-1 rounded-full">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             LIVE SIMULATION
           </div>
@@ -521,7 +521,7 @@ function InteractiveHeroDashboard() {
                 className="grid grid-cols-1 md:grid-cols-3 gap-4"
               >
                 {/* Column 1: Sectional Split */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border border-border/40 p-4 flex flex-col justify-between">
+                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-[10px] font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <BarChart3 className="w-3.5 h-3.5 text-amber-500" /> Sectional Accuracy
@@ -554,7 +554,7 @@ function InteractiveHeroDashboard() {
                 </div>
 
                 {/* Column 2: Accuracy Trend */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border border-border/40 p-4 flex flex-col justify-between">
+                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-[10px] font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <Activity className="w-3.5 h-3.5 text-amber-500" /> 7-Shift Mastery Curve
@@ -678,7 +678,7 @@ function InteractiveHeroDashboard() {
                 </div>
 
                 {/* Column 3: Overall Rank Metric */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border border-border/40 p-4 flex flex-col items-center justify-center text-center">
+                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col items-center justify-center text-center">
                   <span className="text-[10px] font-mono font-bold uppercase text-muted-foreground mb-3 flex items-center gap-1">
                     <Target className="w-3.5 h-3.5 text-amber-500" /> Overall Accuracy
                   </span>
@@ -695,11 +695,11 @@ function InteractiveHeroDashboard() {
                     <span className="text-2xl font-black font-mono text-foreground">86%</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 w-full">
-                    <div className="bg-card/60 rounded p-1.5 border border-border/30">
+                    <div className="bg-card/60 rounded p-1.5 border-2 border-border/30">
                       <div className="text-xs font-black font-mono text-foreground">164.5</div>
                       <div className="text-[7px] font-mono uppercase text-muted-foreground">Proj. Score</div>
                     </div>
-                    <div className="bg-card/60 rounded p-1.5 border border-border/30">
+                    <div className="bg-card/60 rounded p-1.5 border-2 border-border/30">
                       <div className="text-xs font-black font-mono text-amber-500">42s</div>
                       <div className="text-[7px] font-mono uppercase text-muted-foreground">Avg / Q</div>
                     </div>
@@ -721,14 +721,14 @@ function InteractiveHeroDashboard() {
                 {/* Header with question indicators and streak */}
                 <div className="flex flex-wrap items-center justify-between gap-2 w-full mb-3 px-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20 flex items-center gap-1.5">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20 flex items-center gap-1.5">
                       <Timer className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "6s" }} /> Speed Sprint
                     </span>
                     <span className="text-xs font-mono text-muted-foreground hidden sm:inline">{currentQ.level}</span>
                   </div>
 
                   {/* Question Pills */}
-                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border border-border/30">
+                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border/30">
                     {SPRINT_QUESTIONS.map((q, idx) => (
                       <button
                         key={idx}
@@ -749,7 +749,7 @@ function InteractiveHeroDashboard() {
                   </div>
 
                   {sprintStreak > 0 && (
-                    <span className="text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 flex items-center gap-1">
+                    <span className="text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full border-2 border-amber-500/20 flex items-center gap-1">
                       🔥 {sprintStreak}
                     </span>
                   )}
@@ -785,7 +785,7 @@ function InteractiveHeroDashboard() {
                         whileHover={{ scale: 1.04 }}
                         whileTap={{ scale: 0.96 }}
                         onClick={() => handleMathChoice(option)}
-                        className={`py-3 rounded-xl border text-base font-mono font-black transition-all ${btnStyle}`}
+                        className={`py-3 rounded-xl border-2 text-base font-mono font-black transition-all ${btnStyle}`}
                       >
                         {option}
                       </motion.button>
@@ -798,7 +798,7 @@ function InteractiveHeroDashboard() {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono w-full bg-emerald-500/10 p-2.5 rounded-xl border border-emerald-500/20 text-emerald-400 font-bold"
+                    className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono w-full bg-emerald-500/10 p-2.5 rounded-xl border-2 border-emerald-500/20 text-emerald-400 font-bold"
                   >
                     <div className="flex items-center gap-2 text-left">
                       <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -844,7 +844,7 @@ function InteractiveHeroDashboard() {
                 {/* Header with Card Topic Selector */}
                 <div className="flex flex-wrap items-center justify-between gap-2 w-full mb-3 px-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-violet-400 bg-violet-500/10 px-2.5 py-1 rounded-full border border-violet-500/20 flex items-center gap-1.5">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-violet-400 bg-violet-500/10 px-2.5 py-1 rounded-full border-2 border-violet-500/20 flex items-center gap-1.5">
                       <Brain className="w-3.5 h-3.5" /> Spaced Recall
                     </span>
                     <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline">
@@ -853,7 +853,7 @@ function InteractiveHeroDashboard() {
                   </div>
 
                   {/* 4 Card Selector Pills */}
-                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border border-border/30">
+                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border/30">
                     {FLASHCARD_DEMOS.map((card, idx) => (
                       <button
                         key={idx}
@@ -914,7 +914,7 @@ function InteractiveHeroDashboard() {
 
                         {/* Subject-Specific Metadata Box */}
                         {currentCard.type === "vocab" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div>
                               <span className="text-emerald-400 font-bold">Synonyms: </span>
                               <span className="text-muted-foreground">{currentCard.synonyms.join(", ")}</span>
@@ -927,7 +927,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "idiom" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div>
                               <span className="text-amber-400 font-bold">Related: </span>
                               <span className="text-muted-foreground">{currentCard.related.join(", ")}</span>
@@ -940,7 +940,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "polity" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div className="sm:col-span-2">
                               <span className="text-amber-400 font-bold">Key Note: </span>
                               <span className="text-muted-foreground">{currentCard.landmarkNote}</span>
@@ -949,7 +949,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "history" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div>
                               <span className="text-amber-400 font-bold">Impact: </span>
                               <span className="text-muted-foreground">{currentCard.impact}</span>
@@ -985,7 +985,7 @@ function InteractiveHeroDashboard() {
                       <button
                         key={b.label}
                         onClick={() => handleRating(b.label)}
-                        className={`p-2 rounded-xl border flex flex-col items-center justify-center transition-all hover:scale-102 cursor-pointer ${b.color}`}
+                        className={`p-2 rounded-xl border-2 flex flex-col items-center justify-center transition-all hover:scale-102 cursor-pointer ${b.color}`}
                       >
                         <span className="text-[11px] font-bold font-mono">{b.label}</span>
                         <span className="text-[8px] opacity-75 font-mono">{b.time}</span>
@@ -1024,7 +1024,7 @@ function InfiniteTestimonials() {
     <section className="w-full py-20 relative z-10 overflow-hidden bg-background">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
           <Heart className="w-3 h-3 text-amber-500" /> Wall of Love
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">Trusted by Top SSC Rankers</h2>
@@ -1038,7 +1038,7 @@ function InfiniteTestimonials() {
         <div className="flex animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap will-change-transform">
           {[...testimonials, ...testimonials].map((t, i) => (
             <div key={i} className="inline-block w-[300px] sm:w-[380px] whitespace-normal mx-3">
-              <div className="bg-card/95 md:bg-card/40 backdrop-blur-none md:backdrop-blur-md border border-border/40 rounded-2xl p-6 h-full flex flex-col relative hover:border-amber-500/30 transition-colors">
+              <div className="bg-card/95 md:bg-card/40 backdrop-blur-none md:backdrop-blur-md border-2 border-border/40 rounded-2xl p-6 h-full flex flex-col relative hover:border-amber-500/30 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-md">
                     {t.name.charAt(0)}
@@ -1067,10 +1067,10 @@ function SyllabusMatrixSection() {
   const Icon = section.icon;
 
   return (
-    <section className="w-full py-16 sm:py-24 relative z-10 bg-background/50 border-t border-border/40">
+    <section className="w-full py-16 sm:py-24 relative z-10 bg-background/50 border-t-2 border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
             <Layers className="w-3.5 h-3.5 text-amber-500" /> Complete Exam Blueprint
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1091,7 +1091,7 @@ function SyllabusMatrixSection() {
                 key={sec.id}
                 type="button"
                 onClick={() => setSelectedSection(sec.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold font-mono transition-all border cursor-pointer ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold font-mono transition-all border-2 cursor-pointer ${
                   isSelected
                     ? "bg-amber-500 text-zinc-950 border-amber-400 shadow-md shadow-amber-500/20 font-black"
                     : "bg-card/60 border-border/40 text-foreground/80 hover:bg-card hover:text-foreground"
@@ -1108,16 +1108,16 @@ function SyllabusMatrixSection() {
         </div>
 
         {/* Selected Section Header & Topics Grid */}
-        <div className="bg-card/60 backdrop-blur-xl border border-border/40 rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-border/40">
+        <div className="bg-card/60 backdrop-blur-xl border-2 border-border/40 rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b-2 border-border/40">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center border border-amber-500/20 shadow-inner">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center border-2 border-amber-500/20 shadow-inner">
                 <Icon className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="text-xl font-black text-foreground tracking-tight flex items-center gap-2">
                   {section.title}
-                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border-2 border-amber-500/20">
                     {section.badge}
                   </span>
                 </h3>
@@ -1126,7 +1126,7 @@ function SyllabusMatrixSection() {
             </div>
 
             <Link href="/practice" className="shrink-0">
-              <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/30 text-xs font-mono font-bold transition-all cursor-pointer">
+              <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border-2 border-amber-500/30 text-xs font-mono font-bold transition-all cursor-pointer">
                 <span>Practice {section.title.split(" ")[0]} PYQs</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -1138,7 +1138,7 @@ function SyllabusMatrixSection() {
             {section.topics.map((t, idx) => (
               <div
                 key={idx}
-                className="p-3.5 sm:p-4 rounded-2xl bg-card/50 border border-border/40 hover:border-amber-500/30 transition-all flex items-center justify-between gap-3 group"
+                className="p-3.5 sm:p-4 rounded-2xl bg-card/50 border-2 border-border/40 hover:border-amber-500/30 transition-all flex items-center justify-between gap-3 group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
@@ -1149,7 +1149,7 @@ function SyllabusMatrixSection() {
                 <div className="flex items-center gap-2 shrink-0 font-mono">
                   <span className="text-[10px] text-muted-foreground font-medium">{t.pyqs}</span>
                   <span
-                    className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${
+                    className={`text-[9px] font-bold px-2 py-0.5 rounded-full border-2 ${
                       t.weight === "High"
                         ? "bg-rose-500/10 text-rose-500 border-rose-500/20"
                         : "bg-blue-500/10 text-blue-500 border-blue-500/20"
@@ -1176,7 +1176,7 @@ function AspirantFaqSection() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
             <HelpCircle className="w-3.5 h-3.5 text-amber-500" /> Aspirant Knowledge Base
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1193,7 +1193,7 @@ function AspirantFaqSection() {
             return (
               <div
                 key={i}
-                className={`rounded-2xl border transition-all overflow-hidden ${
+                className={`rounded-2xl border-2 transition-all overflow-hidden ${
                   isOpen 
                     ? "bg-card/70 border-amber-500/30 shadow-lg shadow-amber-500/5" 
                     : "bg-card/40 border-border/40 hover:border-border/70"
@@ -1207,7 +1207,7 @@ function AspirantFaqSection() {
                   <span className="font-bold text-sm sm:text-base text-foreground tracking-tight">
                     {faq.question}
                   </span>
-                  <div className={`w-7 h-7 rounded-xl bg-card border border-border/40 flex items-center justify-center shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180 text-amber-500" : "text-muted-foreground"}`}>
+                  <div className={`w-7 h-7 rounded-xl bg-card border-2 border-border/40 flex items-center justify-center shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180 text-amber-500" : "text-muted-foreground"}`}>
                     <ChevronDown className="w-4 h-4" />
                   </div>
                 </button>
@@ -1217,7 +1217,7 @@ function AspirantFaqSection() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal border-t border-border/20 mt-1"
+                    className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal border-t-2 border-border/20 mt-1"
                   >
                     <p className="pt-3">{faq.answer}</p>
                   </motion.div>
@@ -1348,7 +1348,7 @@ export default function LandingPage() {
 
       {/* ─── Floating Pill Navbar ─── */}
       <header className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2 z-50 sticky top-0">
-        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border border-border/40 shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
+        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border-2 border-border/40 shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent pointer-events-none" />
           
           <motion.div 
@@ -1377,14 +1377,14 @@ export default function LandingPage() {
             {user ? (
               <Link 
                 href="/dashboard" 
-                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/60 border border-border/40 hover:bg-card text-xs font-semibold transition-all text-foreground"
+                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/60 border-2 border-border/40 hover:bg-card text-xs font-semibold transition-all text-foreground"
               >
                 Dashboard
               </Link>
             ) : (
               <button 
                 onClick={signInWithGoogle}
-                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/60 border border-border/40 hover:bg-card text-xs font-semibold transition-all text-foreground cursor-pointer"
+                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/60 border-2 border-border/40 hover:bg-card text-xs font-semibold transition-all text-foreground cursor-pointer"
               >
                 Sign In
               </button>
@@ -1409,7 +1409,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, scale: 0.9, y: 10 }} 
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ ...SNAPPY_SPRING, delay: 0.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/70 backdrop-blur-md border border-amber-500/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-amber-500/10"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/70 backdrop-blur-md border-2 border-amber-500/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-amber-500/10"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           <span>The Next-Gen SSC Preparation Engine</span>
@@ -1459,7 +1459,7 @@ export default function LandingPage() {
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={SNAPPY_SPRING} className="w-full sm:w-auto">
             <a 
               href="#how-it-works" 
-              className="group flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-card/60 hover:bg-card/90 border border-border/40 hover:border-border/70 text-foreground text-base sm:text-lg font-semibold transition-all w-full sm:w-auto backdrop-blur-md"
+              className="group flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-card/60 hover:bg-card/90 border-2 border-border/40 hover:border-border/70 text-foreground text-base sm:text-lg font-semibold transition-all w-full sm:w-auto backdrop-blur-md"
             >
               See How It Works <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
             </a>
@@ -1478,7 +1478,7 @@ export default function LandingPage() {
             return (
               <div
                 key={exam.id}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-semibold bg-card/60 backdrop-blur-md text-foreground/90 border border-border/40 shadow-xs select-none hover:border-amber-500/30 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-semibold bg-card/60 backdrop-blur-md text-foreground/90 border-2 border-border/40 shadow-xs select-none hover:border-amber-500/30 transition-colors"
               >
                 <Icon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>{exam.label}</span>
@@ -1504,7 +1504,7 @@ export default function LandingPage() {
               key={stat.label}
               whileHover={{ y: -3, scale: 1.02 }}
               transition={SNAPPY_SPRING}
-              className="rounded-2xl p-4 sm:p-5 bg-card/60 backdrop-blur-md border border-border/40 shadow-sm flex flex-col items-center justify-center text-center"
+              className="rounded-2xl p-4 sm:p-5 bg-card/60 backdrop-blur-md border-2 border-border/40 shadow-sm flex flex-col items-center justify-center text-center"
             >
               <stat.icon className={`w-5 h-5 ${stat.color} mb-2`} />
               <div className="text-2xl sm:text-3xl font-black font-mono text-foreground">
@@ -1531,7 +1531,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-16"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <RefreshCw className="w-3 h-3 text-amber-500" /> The PrepPilot Loop
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1633,7 +1633,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-14"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <Crosshair className="w-3 h-3 text-amber-500" /> Built for Serious Aspirants
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1658,7 +1658,7 @@ export default function LandingPage() {
                   className="h-full"
                 >
                   <div 
-                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl border border-border/40 ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full overflow-hidden hover:-translate-y-1`}
+                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl border-2 border-border/40 ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full overflow-hidden hover:-translate-y-1`}
                   >
                     {/* Focused Corner Radial Aura — Desktop Only */}
                     <div 
@@ -1667,10 +1667,10 @@ export default function LandingPage() {
                     />
 
                     <div className="flex items-center justify-between mb-5 relative z-10">
-                      <div className={`w-12 h-12 rounded-2xl ${f.iconBg} ${f.iconText} flex items-center justify-center border border-border/20 group-hover:scale-110 shadow-sm transition-transform duration-300`}>
+                      <div className={`w-12 h-12 rounded-2xl ${f.iconBg} ${f.iconText} flex items-center justify-center border-2 border-border/20 group-hover:scale-110 shadow-sm transition-transform duration-300`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-[10px] font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border border-border/40 shadow-2xs">
+                      <span className="text-[10px] font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border/40 shadow-2xs">
                         {f.badge}
                       </span>
                     </div>
@@ -1682,7 +1682,7 @@ export default function LandingPage() {
                       {f.desc}
                     </p>
 
-                    <div className="text-[11px] font-mono font-semibold text-foreground/85 pt-3.5 border-t border-border/30 flex items-center gap-2 relative z-10">
+                    <div className="text-[11px] font-mono font-semibold text-foreground/85 pt-3.5 border-t-2 border-border/30 flex items-center gap-2 relative z-10">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                       <span>{f.preview}</span>
                     </div>
@@ -1708,7 +1708,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-14"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <Tag className="w-3 h-3 text-amber-500" /> Pricing
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1722,7 +1722,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {/* Free Tier */}
             <TiltCard>
-              <div className="bg-card/50 border border-border/40 rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
+              <div className="bg-card/50 border-2 border-border/40 rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
                 <div className="mb-6">
                   <h3 className="text-2xl font-black text-foreground mb-1">Free Tier</h3>
                   <p className="text-foreground/70 text-xs font-medium">For casual learners exploring the platform.</p>

@@ -178,7 +178,7 @@ export default function FeedbackPage() {
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-2">
         {/* Left Column: Form / Success Card */}
         <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
+          <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
             {/* Ambient Lighting Mesh */}
             <div className="absolute -top-12 -right-12 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -191,10 +191,10 @@ export default function FeedbackPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   className="flex flex-col items-center text-center py-8 relative z-10"
                 >
-                  <div className="w-16 h-16 bg-emerald-500/15 border border-emerald-500/30 rounded-3xl flex items-center justify-center text-emerald-500 mb-6 shadow-lg shadow-emerald-500/10">
+                  <div className="w-16 h-16 bg-emerald-500/15 border-2 border-emerald-500/30 rounded-3xl flex items-center justify-center text-emerald-500 mb-6 shadow-lg shadow-emerald-500/10">
                     <CheckCircle2 className="w-8 h-8 animate-bounce" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 mb-3">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border-2 border-emerald-500/20 mb-3">
                     Feedback Received
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
@@ -207,7 +207,7 @@ export default function FeedbackPage() {
                   <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-md">
                     <Button
                       onClick={() => router.push("/dashboard")}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 active:scale-95 transition-all duration-200 cursor-pointer border-0"
+                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 active:scale-95 transition-all duration-200 cursor-pointer border-0"
                     >
                       Return to Dashboard
                     </Button>
@@ -222,7 +222,7 @@ export default function FeedbackPage() {
                           name: user?.displayName || "",
                         });
                       }}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border border-border/60 hover:bg-card/80 text-foreground cursor-pointer transition-all"
+                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border-2 border-border/60 hover:bg-card/80 text-foreground cursor-pointer transition-all"
                     >
                       Submit Another
                     </Button>
@@ -236,9 +236,9 @@ export default function FeedbackPage() {
                   exit={{ opacity: 0, y: -10 }}
                   className="relative z-10"
                 >
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/40">
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center border border-amber-500/20 shadow-inner">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center border-2 border-amber-500/20 shadow-inner">
                         <MessageSquare className="w-5 h-5" />
                       </div>
                       <div>
@@ -250,7 +250,7 @@ export default function FeedbackPage() {
                         </p>
                       </div>
                     </div>
-                    <span className="hidden sm:inline-flex text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                    <span className="hidden sm:inline-flex text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20">
                       Tier 1 Focused
                     </span>
                   </div>
@@ -270,13 +270,13 @@ export default function FeedbackPage() {
                               key={cat.id}
                               type="button"
                               onClick={() => form.setValue("category", cat.id)}
-                              className={`p-3.5 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex items-start gap-3 relative overflow-hidden ${
+                              className={`p-3.5 rounded-2xl border-2 text-left transition-all duration-200 cursor-pointer flex items-start gap-3 relative overflow-hidden ${
                                 isSelected
                                   ? `${cat.activeColor} shadow-md`
                                   : "border-border/50 bg-card/40 hover:bg-card/70 hover:border-border text-foreground"
                               }`}
                             >
-                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border ${cat.color}`}>
+                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border-2 ${cat.color}`}>
                                 <Icon className="w-4 h-4" />
                               </div>
                               <div className="min-w-0 flex-1">
@@ -308,7 +308,7 @@ export default function FeedbackPage() {
                           {RATING_EMOJIS.find(r => r.value === selectedRating)?.label || "Select rating"}
                         </span>
                       </div>
-                      <div className="grid grid-cols-5 gap-2 p-2 bg-card/40 backdrop-blur-md rounded-2xl border border-border/40">
+                      <div className="grid grid-cols-5 gap-2 p-2 bg-card/40 backdrop-blur-md rounded-2xl border-2 border-border/40">
                         {RATING_EMOJIS.map((rating) => {
                           const isSelected = selectedRating === rating.value;
                           return (
@@ -318,7 +318,7 @@ export default function FeedbackPage() {
                               onClick={() => form.setValue("rating", rating.value)}
                               className={`flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
                                 isSelected 
-                                  ? "bg-amber-500/15 border border-amber-500/30 scale-105 shadow-sm shadow-amber-500/10" 
+                                  ? "bg-amber-500/15 border-2 border-amber-500/30 scale-105 shadow-sm shadow-amber-500/10" 
                                   : "hover:bg-muted/50 opacity-70 hover:opacity-100"
                               }`}
                             >
@@ -349,7 +349,7 @@ export default function FeedbackPage() {
                         placeholder="Tell us exactly what happened, what formula was off, or what feature would supercharge your preparation..."
                         {...form.register("message")}
                         rows={4}
-                        className="w-full rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
+                        className="w-full rounded-2xl border-2 border-border/60 bg-card/40 backdrop-blur-md p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
                       />
                       {form.formState.errors.message && (
                         <p className="text-xs font-medium text-rose-500">
@@ -369,7 +369,7 @@ export default function FeedbackPage() {
                         type="text"
                         placeholder="e.g. Rahul Sharma"
                         {...form.register("name")}
-                        className="h-12 rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all"
+                        className="h-12 rounded-2xl border-2 border-border/60 bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all"
                       />
                       {form.formState.errors.name && (
                         <p className="text-xs font-medium text-rose-500">
@@ -379,7 +379,7 @@ export default function FeedbackPage() {
                     </div>
 
                     {errorMsg && (
-                      <div className="text-xs font-mono font-bold text-rose-500 text-center p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                      <div className="text-xs font-mono font-bold text-rose-500 text-center p-3 rounded-xl bg-rose-500/10 border-2 border-rose-500/20">
                         {errorMsg}
                       </div>
                     )}
@@ -388,7 +388,7 @@ export default function FeedbackPage() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-12 sm:h-13 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
+                      className="w-full h-12 sm:h-13 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
                     >
                       {isSubmitting ? (
                         <>
@@ -412,10 +412,10 @@ export default function FeedbackPage() {
         {/* Right Column: Roadmap & Developer SLA (Desktop Rail) */}
         <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
           {/* Upcoming Roadmap Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-border/40 rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
+          <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
             
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/40">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-border/40">
               <div className="flex items-center gap-2">
                 <Rocket className="w-4 h-4 text-amber-500" />
                 <h3 className="font-extrabold text-sm text-foreground tracking-tight">
@@ -431,14 +431,14 @@ export default function FeedbackPage() {
               {ROADMAP_ITEMS.map((item, idx) => (
                 <div 
                   key={idx}
-                  className="p-3.5 rounded-2xl bg-card/40 border border-border/40 hover:border-amber-500/30 transition-all flex flex-col gap-1.5"
+                  className="p-3.5 rounded-2xl bg-card/40 border-2 border-border/40 hover:border-amber-500/30 transition-all flex flex-col gap-1.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2 font-bold text-xs text-foreground">
                       <item.icon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                       <span>{item.title}</span>
                     </div>
-                    <span className={`text-[8px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border shrink-0 ${item.statusColor}`}>
+                    <span className={`text-[8px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 shrink-0 ${item.statusColor}`}>
                       {item.status}
                     </span>
                   </div>
@@ -451,9 +451,9 @@ export default function FeedbackPage() {
           </div>
 
           {/* Developer Commitment Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 relative overflow-hidden">
+          <div className="bg-card/60 backdrop-blur-2xl border-2 border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 relative overflow-hidden">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/20">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border-2 border-emerald-500/20">
                 <HeartHandshake className="w-4.5 h-4.5" />
               </div>
               <div>

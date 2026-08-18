@@ -115,7 +115,7 @@ const FreestylePage = () => {
         className="flex flex-col items-center w-full transition-all duration-300"
       >
         {/* Control Panel Container */}
-        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border border-border/60 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
+        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-2xl p-2.5 sm:p-3 shadow-xs">
           {/* Header Row: Title + Mode on Left, Quit on Right */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -145,7 +145,7 @@ const FreestylePage = () => {
           {!isError && (
             <>
               <div className="flex flex-row items-center gap-1.5 sm:gap-2 w-full mt-0.5">
-                <TabsList className="flex-1 !h-8 sm:!h-9 bg-muted/60 border border-border/60 p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
+                <TabsList className="flex-1 !h-8 sm:!h-9 bg-muted/60 border-2 border-border/60 p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
                   {TABS.map((tab) => (
                     <TabsTrigger
                       key={tab}
@@ -199,7 +199,7 @@ const FreestylePage = () => {
                     </Button>
                   </SheetTrigger>
                   <SheetContent className="flex flex-col h-full p-6">
-                    <SheetHeader className="text-left border-b border-border/40 pb-4 mb-4">
+                    <SheetHeader className="text-left border-b-2 border-border/40 pb-4 mb-4">
                       <SheetTitle className="text-xl font-bold tracking-tight">
                         Filter Cards
                       </SheetTitle>
@@ -254,7 +254,7 @@ const FreestylePage = () => {
                           </div>
                         ))}
 
-                      <div className="flex items-center justify-between p-4 rounded-lg bg-accent/20 border border-border/30 my-6 shadow-xs">
+                      <div className="flex items-center justify-between p-4 rounded-lg bg-accent/20 border-2 border-border/30 my-6 shadow-xs">
                         <div className="flex flex-col gap-0.5 pr-2">
                           <Label
                             htmlFor="highFrequency"
@@ -280,7 +280,7 @@ const FreestylePage = () => {
                       </div>
                     </div>
 
-                    <SheetFooter className="mt-auto pt-4 border-t border-border/40 flex-row gap-3">
+                    <SheetFooter className="mt-auto pt-4 border-t-2 border-border/40 flex-row gap-3">
                       <Button
                         className="flex-1 h-11 rounded-xl font-semibold hover:cursor-pointer transition-all"
                         variant="outline"
@@ -301,7 +301,7 @@ const FreestylePage = () => {
 
               {/* Progress Bar Container */}
               {totalCards > 0 && (
-                <div className="w-full mt-1.5 flex flex-col gap-0.5 px-0.5">
+                <div className="w-full mt-3 mb-2 flex flex-col gap-1.5 px-1">
                   <div className="w-full flex justify-between items-end mb-0.5">
                     <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none">
                       PROGRESS
@@ -312,8 +312,7 @@ const FreestylePage = () => {
                   </div>
                   <ProgressBar
                     value={(currentCardNumber / totalCards) * 100}
-                    className="h-1 bg-muted border border-border/50"
-                    barClassName="bg-gradient-to-r from-violet-500 to-purple-600 rounded-full"
+                    barClassName="bg-gradient-to-r from-violet-500 to-purple-600"
                   />
                 </div>
               )}
@@ -322,7 +321,7 @@ const FreestylePage = () => {
         </div>
 
         {/* Flashcard Deck Area */}
-        <div className="relative w-full flex-1 flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px] mt-2">
+        <div className="relative w-full flex-1 flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px]">
           {isLoading ? (
             <div className="flex-1 w-full h-full min-h-[45dvh] flex flex-col justify-center items-center py-8">
               <Loader size="lg" text="Loading flashcards..." />
@@ -352,7 +351,7 @@ const FreestylePage = () => {
               {/* Absolute Loading Overlay during fetches */}
               {isFetching && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] flex items-center justify-center pointer-events-none">
-                  <div className="bg-card/95 backdrop-blur-sm px-8 py-5 rounded-3xl shadow-2xl border border-border flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="bg-card/95 backdrop-blur-sm px-8 py-5 rounded-3xl shadow-2xl border-2 border-border flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200">
                     <Loader size="md" />
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1 animate-pulse">
                       Syncing Cards...
@@ -367,8 +366,8 @@ const FreestylePage = () => {
     </TopicPageLayout>
 
     <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-      <AlertDialogContent className="sm:w-full max-w-sm border border-border">
-        <AlertDialogHeader className="pb-3 border-b border-border/40">
+      <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border">
+        <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
           <AlertDialogTitle className="text-xl font-black tracking-tight text-foreground flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
             Quit Flashcards?
@@ -385,7 +384,7 @@ const FreestylePage = () => {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
+            className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border-2 border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
             onClick={() => {
               setShowQuitConfirm(false);
               router.push("/SSC/english/flashcards");

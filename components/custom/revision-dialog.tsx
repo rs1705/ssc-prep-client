@@ -171,7 +171,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
         className="sm:max-w-lg rounded-3xl border-border/60 bg-card/95 backdrop-blur-2xl shadow-2xl p-0 flex flex-col gap-0 max-h-[85vh] overflow-hidden"
       >
         {/* Header */}
-        <DialogHeader className="p-4 sm:p-5 border-b border-border/40 bg-card/80 backdrop-blur-xl flex flex-row items-center justify-between space-y-0 text-left shrink-0">
+        <DialogHeader className="p-4 sm:p-5 border-b-2 border-border/40 bg-card/80 backdrop-blur-xl flex flex-row items-center justify-between space-y-0 text-left shrink-0">
           <DialogTitle className="text-lg sm:text-xl font-black tracking-tight flex items-center gap-2.5 text-foreground">
             {emoji && (
               <span className={`flex items-center justify-center shrink-0 w-8 h-8 rounded-xl select-none ${currentTheme.iconBg}`}>
@@ -190,7 +190,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
               className={`h-8 px-3 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 transition-all cursor-pointer select-none ${
                 selfTest
                   ? currentTheme.activeBtn
-                  : "bg-muted/70 hover:bg-muted text-foreground border border-border/50"
+                  : "bg-muted/70 hover:bg-muted text-foreground border-2 border-border/50"
               }`}
             >
               {selfTest ? (
@@ -223,7 +223,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
             return (
               <div
                 key={group.label}
-                className="rounded-2xl border border-border/50 bg-card/40 hover:border-border/80 overflow-hidden transition-all duration-200 shadow-2xs"
+                className="rounded-2xl border-2 border-border/50 bg-card/40 hover:border-border/80 overflow-hidden transition-all duration-200 shadow-2xs"
               >
                 {/* Section Header Accordion Trigger */}
                 <button
@@ -233,7 +233,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <span
-                      className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border ${
+                      className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border-2 ${
                         group.label === "Easy"
                           ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
                           : group.label === "Medium"
@@ -262,7 +262,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-1.5 p-3.5 pt-2 border-t border-border/30 bg-muted/15">
+                    <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-1.5 p-3.5 pt-2 border-t-2 border-border/30 bg-muted/15">
                       {group.items.map((item) => {
                         const equation = `${item.text} = ${item.value}`;
                         const isRevealed = !selfTest || revealed[item.num];
@@ -272,7 +272,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                           <div
                             key={item.num}
                             onClick={() => handleRowClick(item.num, equation)}
-                            className={`flex items-center justify-between gap-2 h-9 px-3 rounded-xl border transition-all duration-150 cursor-pointer select-none group/row ${
+                            className={`flex items-center justify-between gap-2 h-9 px-3 rounded-xl border-2 transition-all duration-150 cursor-pointer select-none group/row ${
                               selfTest && !isRevealed
                                 ? currentTheme.revealRow
                                 : "border-transparent hover:border-border/50 hover:bg-card/90"
@@ -320,7 +320,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
         </div>
 
         {/* Footer Helper Tip */}
-        <div className="px-4 py-2.5 bg-muted/30 border-t border-border/40 text-[11px] font-medium text-muted-foreground flex items-center justify-between shrink-0">
+        <div className="px-4 py-2.5 bg-muted/30 border-t-2 border-border/40 text-[11px] font-medium text-muted-foreground flex items-center justify-between shrink-0">
           <div className="flex items-center gap-1.5">
             <Sparkles className={`w-3.5 h-3.5 shrink-0 ${currentTheme.sparkle}`} />
             <span>

@@ -118,7 +118,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
             <ArrowRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         ) : (
-          <div className="inline-flex items-center justify-center gap-2.5 bg-muted text-muted-foreground text-xs font-mono font-bold tracking-wider uppercase px-5 py-2.5 rounded-full border border-border/40">
+          <div className="inline-flex items-center justify-center gap-2.5 bg-muted text-muted-foreground text-xs font-mono font-bold tracking-wider uppercase px-5 py-2.5 rounded-full border-2 border-border/40">
             <span>{buttonText}</span>
           </div>
         )}

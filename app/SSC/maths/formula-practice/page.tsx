@@ -183,7 +183,7 @@ export default function FormulaPracticePage() {
       <div className="flex flex-col gap-8 py-2">
         {/* Filter Bar & Search */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
             {[
               { id: "all", label: "All Formulas" },
               { id: "algebra", label: "Algebra" },
@@ -213,7 +213,7 @@ export default function FormulaPracticePage() {
               placeholder="Search formulas & identities..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
+              className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
             />
           </div>
         </div>
@@ -225,11 +225,11 @@ export default function FormulaPracticePage() {
             return (
               <div
                 key={card.id}
-                className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+                className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
               >
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20">
                       {card.tag}
                     </span>
                     <div className="flex items-center gap-1">
@@ -261,7 +261,7 @@ export default function FormulaPracticePage() {
                   </h3>
 
                   {/* Formula Box */}
-                  <div className={`p-4 rounded-2xl border transition-all duration-300 font-mono text-sm sm:text-base font-black ${
+                  <div className={`p-4 rounded-2xl border-2 transition-all duration-300 font-mono text-sm sm:text-base font-black ${
                     isHidden 
                       ? "bg-muted/40 border-border/40 text-muted-foreground/30 blur-sm select-none cursor-pointer" 
                       : "bg-card/80 border-amber-500/30 text-amber-500 shadow-inner"
@@ -275,16 +275,16 @@ export default function FormulaPracticePage() {
                     {card.explanation}
                   </p>
 
-                  <div className="text-[11px] text-muted-foreground bg-card/40 border border-border/30 p-2.5 rounded-xl mt-2 font-mono">
+                  <div className="text-[11px] text-muted-foreground bg-card/40 border-2 border-border/30 p-2.5 rounded-xl mt-2 font-mono">
                     <span className="text-foreground font-bold">Example:</span> {card.example}
                   </div>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-border/40 relative z-10">
+                <div className="pt-4 mt-4 border-t-2 border-border/40 relative z-10">
                   <Link href="/SSC/maths/mental-maths">
                     <Button
                       variant="ghost"
-                      className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border border-amber-500/20"
+                      className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
                     >
                       <Swords className="w-3.5 h-3.5" />
                       Test in Mental Maths Drill

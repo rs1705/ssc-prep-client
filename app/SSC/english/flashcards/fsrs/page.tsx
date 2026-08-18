@@ -58,7 +58,7 @@ const FsrsPage = () => {
     return (
       <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
         <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl bg-card border border-border shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl bg-card border-2 border-border shadow-sm">
             <span className="text-5xl mb-4 select-none animate-pulse">🔒</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">
               Sign In Required
@@ -85,7 +85,7 @@ const FsrsPage = () => {
       <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
       <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border border-border/60 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
+        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
           {/* Row 1: Left is Section Title & Mode, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -113,7 +113,7 @@ const FsrsPage = () => {
 
           {/* Progress Bar Container */}
           {totalCards > 0 && !isLoading && !isError && (
-            <div className="w-full mt-1 flex flex-col gap-0.5 px-0.5">
+            <div className="w-full mt-3 mb-2 flex flex-col gap-1.5 px-1">
               <div className="w-full flex justify-between items-end mb-0.5">
                 <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none">
                   PROGRESS
@@ -124,8 +124,7 @@ const FsrsPage = () => {
               </div>
               <ProgressBar
                 value={(currentCardNumber / totalCards) * 100}
-                className="h-1 bg-muted border border-border/50"
-                barClassName="bg-gradient-to-r from-violet-500 to-purple-600 rounded-full"
+                barClassName="bg-gradient-to-r from-violet-500 to-purple-600"
               />
             </div>
           )}
@@ -161,8 +160,8 @@ const FsrsPage = () => {
     </TopicPageLayout>
     
       <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-        <AlertDialogContent className="sm:w-full max-w-sm border border-border">
-          <AlertDialogHeader className="pb-3 border-b border-border/40">
+        <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border">
+          <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
             <AlertDialogTitle className="text-xl font-black tracking-tight text-foreground flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
               Quit Flashcards?
@@ -179,7 +178,7 @@ const FsrsPage = () => {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
+              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border-2 border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
               onClick={() => {
                 setShowQuitConfirm(false);
                 router.push("/SSC/english/flashcards");

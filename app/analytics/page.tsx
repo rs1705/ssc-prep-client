@@ -9,6 +9,7 @@ import {
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { Button } from "@/components/ui/button";
 import { ProtectedRoute } from "@/components/custom/ProtectedRoute";
+import { ActivityHeatmap } from "@/components/custom/activity-heatmap";
 
 const SUMMARY_METRICS = [
   {
@@ -125,7 +126,7 @@ export default function AnalyticsPage() {
         <div className="flex flex-col gap-8 py-2">
           {/* Time Range Filter Bar */}
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-2 bg-card/60 backdrop-blur-md border border-border/40 p-1.5 rounded-2xl">
+            <div className="flex items-center gap-2 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl">
               {(["7d", "30d", "all"] as const).map((r) => (
                 <button
                   key={r}
@@ -141,7 +142,7 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-3.5 py-1.5 rounded-full border border-border/40">
+            <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-3.5 py-1.5 rounded-full border-2 border-border/40">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Live Telemetry Active
             </div>
@@ -154,13 +155,13 @@ export default function AnalyticsPage() {
               return (
                 <div
                   key={i}
-                  className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-0.5"
+                  className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-0.5"
                 >
                   <div className="flex items-center justify-between mb-4 relative z-10">
                     <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
                       {m.title}
                     </span>
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${m.theme}`}>
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center border-2 ${m.theme}`}>
                       <Icon className="w-4 h-4" />
                     </div>
                   </div>
@@ -180,12 +181,12 @@ export default function AnalyticsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left: Subject Mastery Telemetry */}
             <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
-              <div className="p-6 sm:p-8 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
+              <div className="p-6 sm:p-8 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
                 
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-border/40">
+                <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center border border-amber-500/20">
+                    <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center border-2 border-amber-500/20">
                       <BarChart3 className="w-5 h-5" />
                     </div>
                     <div>
@@ -207,7 +208,7 @@ export default function AnalyticsPage() {
                           <span className="font-extrabold text-foreground tracking-tight text-sm">
                             {s.subject}
                           </span>
-                          <span className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border bg-card/40 ${s.textColor}`}>
+                          <span className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 bg-card/40 ${s.textColor}`}>
                             {s.badge}
                           </span>
                         </div>
@@ -217,7 +218,7 @@ export default function AnalyticsPage() {
                         </div>
                       </div>
 
-                      <div className="h-2.5 bg-muted/60 rounded-full overflow-hidden border border-border/30">
+                      <div className="h-2.5 bg-muted/60 rounded-full overflow-hidden border-2 border-border/30">
                         <div
                           className={`h-full ${s.color} rounded-full shadow-xs transition-all duration-500`}
                           style={{ width: `${s.score}%` }}
@@ -229,7 +230,7 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Weekly Speed Progress Chart Banner */}
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 flex flex-col gap-4">
+              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-amber-500" />
@@ -237,7 +238,7 @@ export default function AnalyticsPage() {
                       Speed Progression (Last 7 Days)
                     </h4>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  <span className="text-[10px] font-mono font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full border-2 border-emerald-500/20">
                     -0.6s Reduction
                   </span>
                 </div>
@@ -247,7 +248,7 @@ export default function AnalyticsPage() {
                     const heights = [60, 65, 55, 75, 80, 85, 95];
                     return (
                       <div key={i} className="flex flex-col items-center gap-2">
-                        <div className="h-28 w-full bg-card/40 rounded-2xl border border-border/40 flex items-end p-1.5 overflow-hidden">
+                        <div className="h-28 w-full bg-card/40 rounded-2xl border-2 border-border/40 flex items-end p-1.5 overflow-hidden">
                           <div 
                             className="w-full bg-gradient-to-t from-amber-500 to-orange-500 rounded-xl shadow-xs transition-all duration-500"
                             style={{ height: `${heights[i]}%` }}
@@ -259,15 +260,18 @@ export default function AnalyticsPage() {
                   })}
                 </div>
               </div>
+
+              {/* GitHub style heatmap */}
+              <ActivityHeatmap />
             </div>
 
             {/* Right: AI Weak Area Radar & Prescriptions */}
             <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-rose-500/25 shadow-xl shadow-rose-500/5 relative overflow-hidden">
+              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-rose-500/25 shadow-xl shadow-rose-500/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
                 
-                <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-border/40">
-                  <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center border border-rose-500/20">
+                <div className="flex items-center gap-2.5 mb-4 pb-3 border-b-2 border-border/40">
+                  <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center border-2 border-rose-500/20">
                     <AlertCircle className="w-4 h-4" />
                   </div>
                   <div>
@@ -282,14 +286,14 @@ export default function AnalyticsPage() {
                   {WEAK_AREAS.map((item, idx) => (
                     <div
                       key={idx}
-                      className="p-4 rounded-2xl bg-card/50 border border-border/40 hover:border-rose-500/30 transition-all flex flex-col gap-2"
+                      className="p-4 rounded-2xl bg-card/50 border-2 border-border/40 hover:border-rose-500/30 transition-all flex flex-col gap-2"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <div className="text-xs font-black text-foreground">{item.topic}</div>
                           <div className="text-[10px] font-mono text-muted-foreground mt-0.5">{item.subject}</div>
                         </div>
-                        <span className="text-[10px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
+                        <span className="text-[10px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full border-2 border-rose-500/20">
                           {item.accuracy}
                         </span>
                       </div>
@@ -299,7 +303,7 @@ export default function AnalyticsPage() {
                       <Link href={item.linkTo} className="mt-1">
                         <Button
                           variant="ghost"
-                          className="w-full h-8 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border border-amber-500/20"
+                          className="w-full h-8 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
                         >
                           <Swords className="w-3 h-3" />
                           Launch Fix Drill
@@ -311,9 +315,9 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Weekly Goal Progress Card */}
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
+              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center border border-amber-500/20">
+                  <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center border-2 border-amber-500/20">
                     <Target className="w-4 h-4" />
                   </div>
                   <div>
@@ -323,7 +327,7 @@ export default function AnalyticsPage() {
                     <p className="text-[10px] font-mono text-amber-500">2,000 Questions</p>
                   </div>
                 </div>
-                <div className="h-2 bg-muted/60 rounded-full overflow-hidden border border-border/30 my-2">
+                <div className="h-2 bg-muted/60 rounded-full overflow-hidden border-2 border-border/30 my-2">
                   <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-[74%]" />
                 </div>
                 <div className="flex justify-between items-center text-[10px] font-mono font-medium text-muted-foreground mt-2">

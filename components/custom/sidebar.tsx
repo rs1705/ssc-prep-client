@@ -95,7 +95,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/40 bg-background/90 backdrop-blur-2xl absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
+      className={`hidden md:flex flex-col border-r-2 border-border/40 bg-background/90 backdrop-blur-2xl absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
     >
       {/* Header Row with Logo */}
       <div
@@ -128,7 +128,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               key={n.to}
               href={n.to}
               title={isCollapsed ? n.label : undefined}
-              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border ${
+              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border-2 ${
                 isCollapsed
                   ? "justify-center w-10 h-10 mx-auto"
                   : "gap-3 px-3 py-2"
@@ -158,7 +158,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               key={n.to}
               href={n.to}
               title={isCollapsed ? n.label : undefined}
-              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border ${
+              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border-2 ${
                 isCollapsed
                   ? "justify-center w-10 h-10 mx-auto"
                   : "gap-3 px-3 py-2"
@@ -178,7 +178,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       {/* Exam D-Day Widget */}
       <div 
         title="Exam D-Day: 142 days remaining"
-        className={`mt-auto mb-3 bg-card/60 backdrop-blur-md border border-amber-500/20 shadow-sm ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
+        className={`mt-auto mb-3 bg-card/60 backdrop-blur-md border-2 border-amber-500/20 shadow-sm ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
           isCollapsed 
             ? "w-10 h-10 mx-auto rounded-xl items-center justify-center shrink-0" 
             : "w-full p-3.5 rounded-2xl"
@@ -195,14 +195,14 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
               Exam D-Day
             </span>
-            <span className="text-[9px] font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+            <span className="text-[9px] font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
               Tier 1
             </span>
           </div>
           <div className="text-xl font-black font-mono tracking-tight whitespace-nowrap text-foreground flex items-baseline gap-1.5">
             142 <span className="text-xs font-mono font-normal text-muted-foreground">days</span>
           </div>
-          <div className="h-1.5 mt-2.5 bg-muted/60 rounded-full overflow-hidden w-full border border-border/30">
+          <div className="h-1.5 mt-2.5 bg-muted/60 rounded-full overflow-hidden w-full border-2 border-border/30">
             <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-1/3 shadow-sm shadow-amber-500/50" />
           </div>
         </div>
@@ -213,7 +213,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
         <button
           onClick={toggleSidebar}
           title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-          className={`flex items-center rounded-xl transition-colors duration-150 border border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer text-muted-foreground hover:text-foreground ${
+          className={`flex items-center rounded-xl transition-colors duration-150 border-2 border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer text-muted-foreground hover:text-foreground ${
             isCollapsed 
               ? "p-2 w-10 h-10 mx-auto justify-center" 
               : "px-3 py-2 w-full gap-3"
@@ -234,7 +234,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           <button
             onClick={toggleTheme}
             title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            className={`flex items-center justify-between rounded-xl transition-colors duration-150 border border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer ${
+            className={`flex items-center justify-between rounded-xl transition-colors duration-150 border-2 border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer ${
               isCollapsed 
                 ? "p-2 w-10 h-10 mx-auto flex-col justify-center" 
                 : "px-3 py-2 w-full"

@@ -114,7 +114,7 @@ export default function BookmarksPage() {
           {/* Filter Tabs & Search Bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Category Tabs */}
-            <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
+            <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
               {(["all", "vocab", "formula", "question"] as const).map((tab) => {
                 const labels = {
                   all: `All (${items.length})`,
@@ -146,7 +146,7 @@ export default function BookmarksPage() {
                 placeholder="Search saved cards..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
+                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
               />
             </div>
           </div>
@@ -169,11 +169,11 @@ export default function BookmarksPage() {
                 return (
                   <div
                     key={item.id}
-                    className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
+                    className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
                   >
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-3">
-                        <span className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${tagTheme[item.category]}`}>
+                        <span className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border-2 ${tagTheme[item.category]}`}>
                           {item.tag}
                         </span>
                         <div className="flex items-center gap-1">
@@ -206,16 +206,16 @@ export default function BookmarksPage() {
                       <div className="text-[11px] font-mono font-semibold text-muted-foreground mt-0.5 mb-3">
                         {item.subtitle}
                       </div>
-                      <p className="text-xs text-foreground/80 leading-relaxed font-medium bg-card/40 backdrop-blur-sm p-3.5 rounded-2xl border border-border/30">
+                      <p className="text-xs text-foreground/80 leading-relaxed font-medium bg-card/40 backdrop-blur-sm p-3.5 rounded-2xl border-2 border-border/30">
                         {item.content}
                       </p>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-border/40 relative z-10 flex items-center justify-between">
+                    <div className="pt-4 mt-4 border-t-2 border-border/40 relative z-10 flex items-center justify-between">
                       <Link href={item.linkTo} className="w-full">
                         <Button
                           variant="ghost"
-                          className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border border-amber-500/20"
+                          className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
                         >
                           <Swords className="w-3.5 h-3.5" />
                           Practice Related Module
@@ -227,7 +227,7 @@ export default function BookmarksPage() {
               })}
             </div>
           ) : (
-            <div className="p-12 rounded-3xl bg-card/60 backdrop-blur-xl border border-border/40 flex flex-col items-center justify-center text-center max-w-md mx-auto my-8">
+            <div className="p-12 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 flex flex-col items-center justify-center text-center max-w-md mx-auto my-8">
               <Bookmark className="w-12 h-12 text-muted-foreground/40 mb-3" />
               <h4 className="text-base font-black text-foreground">No Bookmarks Found</h4>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">

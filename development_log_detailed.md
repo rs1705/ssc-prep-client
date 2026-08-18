@@ -352,3 +352,11 @@ This file tracks the in-depth, step-by-step feature implementations and bug fixe
 - **Mastery Progression in Dashboard Subjects**: Added the dedicated "Mastery" segment with percentage indicators and gradient progress bars across the 4 subject command center tiles.
 - **Refined Subtle Hover Color Fills**: Replaced legacy neon blur glow blobs with gentle, theme-colored fills and borders (`hover:bg-[theme]/[0.03] hover:border-[theme]/50`) across Dashboard subject tiles, SectionCard hubs, and TopicCard grids.
 - **Nested Progress Bar Container**: Today's Target / Quest card now encloses the animated gradient progress bar in its own bordered pill container (`bg-muted/70 border border-border/50 p-0.5`).
+
+---
+
+## 📱 Mobile Sidebar Link Resolution, Active State Styling & Feature Parity
+- **Fixed Dashboard Link Destination**: Corrected `mobileNav` Dashboard route from `"/"` to `"/dashboard"`.
+- **Strict Active Route Matching (`isNavActive`)**: Replaced loose `pathname.startsWith("/")` with strict route checks so only the active page is highlighted in the mobile drawer.
+- **Upgraded Active State Contrast**: Applied the high-contrast amber design system (`bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs`) with `text-amber-500` active icons.
+- **Mobile Feature Parity**: Added the Exam D-Day 142-day countdown widget, interactive Dark/Light Mode switch, and user profile with direct Sign Out / Sign In buttons to the mobile sheet drawer.

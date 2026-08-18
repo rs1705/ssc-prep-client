@@ -153,7 +153,7 @@ export default function Dashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20 flex items-center gap-1.5">
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                 CGL 2026 Focus Mode
               </span>
@@ -175,7 +175,7 @@ export default function Dashboard() {
           {/* Streak / Target Card */}
           <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 shadow-lg shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
             <div className="flex items-center justify-between mb-4 relative z-10">
-              <div className="flex items-center gap-2 text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border border-border/40">
+              <div className="flex items-center gap-2 text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border/40">
                 <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" strokeWidth={2.5} />
                 Streak · {mockStats.streak} days
               </div>
@@ -194,7 +194,7 @@ export default function Dashboard() {
             </div>
 
             {/* Progress bar inside its own container */}
-            <div className="w-full h-3 bg-muted/70 rounded-full overflow-hidden mb-3 border border-border/50 p-0.5 relative z-10">
+            <div className="w-full h-3 bg-muted/70 rounded-full overflow-hidden mb-3 border-2 border-border/50 p-0.5 relative z-10">
               <div
                 className="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-full shadow-xs transition-all duration-500"
                 style={{ width: mockStats.percent }}
@@ -311,7 +311,7 @@ export default function Dashboard() {
                         </div>
 
                         {/* Mastery Progress Bar */}
-                        <div className="mt-4 pt-3 border-t border-border/40">
+                        <div className="mt-4 pt-3 border-t-2 border-border/40">
                           <div className="flex justify-between text-[10px] font-mono font-bold text-muted-foreground mb-1.5">
                             <span>Mastery</span>
                             <span className={colors.text}>{s.progress}%</span>
@@ -441,7 +441,7 @@ export default function Dashboard() {
               {recentSessions.map((session, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-3.5 hover:bg-muted/40 rounded-2xl transition-all cursor-pointer group border border-transparent hover:border-border/40"
+                  className="flex items-center justify-between p-3.5 hover:bg-muted/40 rounded-2xl transition-all cursor-pointer group border-2 border-transparent hover:border-border/40"
                 >
                   <div className="flex items-center gap-3.5">
                     <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center shrink-0 group-hover:bg-card transition-all duration-300 ease-out group-hover:scale-110 shadow-inner ring-1 ring-border/40">
@@ -460,7 +460,7 @@ export default function Dashboard() {
                     <div className="font-mono font-black text-emerald-500 text-sm flex items-center gap-1">
                       {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40" />
                     </div>
-                    <div className="text-[9px] font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                    <div className="text-[9px] font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
                       {session.xp}
                     </div>
                   </div>

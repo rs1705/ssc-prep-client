@@ -277,7 +277,7 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
   const submitUserAnswer = (userAnswer: number | "skip") => {
     if (state.status !== "active") return;
     if (state.currentQuestion === null) return;
-    // Guard: Prevent double-submitting while the border is flashing!
+    // Guard: Prevent double-submitting while the border-2 is flashing!
     if (state.currentAnswerStatus !== "idle") return;
 
     const now = Date.now();
