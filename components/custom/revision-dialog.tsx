@@ -208,9 +208,10 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
             <DialogClose asChild>
               <button
                 aria-label="Close dialog"
-                className="h-8 w-8 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+                title="Close dialog"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0"
               >
-                <X className="h-4 w-4" strokeWidth={2.5} />
+                <X className="w-4 h-4" strokeWidth={2.2} />
               </button>
             </DialogClose>
           </div>

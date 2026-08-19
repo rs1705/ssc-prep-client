@@ -71,19 +71,19 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
         WebkitBackfaceVisibility: "hidden",
         transform: "rotateY(0deg)",
       }}
-      className={`bg-gradient-to-br ${scheme.bg} flex flex-col items-center justify-between gap-2 rounded-3xl shadow-2xl ${scheme.border} text-center p-4 sm:p-6 md:p-7 overflow-hidden`}
+      className={`bg-gradient-to-br ${scheme.bg} flex flex-col items-center justify-between gap-2 rounded-3xl shadow-2xl ${scheme.border} text-center p-4 sm:p-5 md:p-6 overflow-hidden`}
     >
       <div className="flex-1 flex flex-col items-center justify-center w-full relative z-10 my-auto">
         <p
           key={text}
-          className={`text-3xl min-[375px]:text-4xl sm:text-5xl font-black tracking-tight ${scheme.textMain} pb-1 ${animate ? "animate-fadeIn" : ""}`}
+          className={`text-3xl min-[375px]:text-4xl sm:text-4xl md:text-5xl font-black tracking-tight ${scheme.textMain} pb-1 ${animate ? "animate-fadeIn" : ""}`}
         >
           {text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()}
         </p>
         {pronunciation && (
           <div className="mt-1.5">
             <span
-              className={`${scheme.accent} text-xs min-[375px]:text-sm sm:text-base font-bold bg-black/5 dark:bg-white/10 px-3 py-0.5 sm:py-1 rounded-full border-2 border-black/10 dark:border-white/15 backdrop-blur-sm ${animate ? "animate-fadeIn" : ""}`}
+              className={`${scheme.accent} text-xs min-[375px]:text-sm sm:text-sm md:text-base font-bold bg-black/5 dark:bg-white/10 px-3 py-0.5 sm:py-1 rounded-full border-2 border-black/10 dark:border-white/15 backdrop-blur-sm ${animate ? "animate-fadeIn" : ""}`}
               style={{ animationDelay: "150ms" }}
             >
               {pronunciation.hindi}
@@ -128,20 +128,20 @@ const CardBack = ({
         WebkitBackfaceVisibility: "hidden",
         transform: "rotateY(-180deg)",
       }}
-      className={`bg-gradient-to-br ${scheme.bg} ${scheme.textMain} rounded-3xl flex flex-col justify-center gap-3.5 sm:gap-4.5 md:gap-5 shadow-2xl ${scheme.border} text-left p-4 sm:p-6 md:p-7 overflow-hidden`}
+      className={`bg-gradient-to-br ${scheme.bg} ${scheme.textMain} rounded-3xl flex flex-col justify-center gap-2.5 sm:gap-3 md:gap-3.5 shadow-2xl ${scheme.border} text-left p-4 sm:p-5 md:p-5.5 overflow-hidden`}
     >
       {/* 1. Definition Section */}
-      <div id="flashcard_definition" className="space-y-1.5 relative z-10">
+      <div id="flashcard_definition" className="space-y-1 relative z-10">
         <div className="flex items-center gap-2">
-          <span className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
+          <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
             Definition
           </span>
         </div>
-        <p className={`text-base sm:text-lg md:text-xl font-bold leading-snug tracking-tight ${scheme.textMain}`}>
+        <p className={`text-sm sm:text-base md:text-lg font-bold leading-snug tracking-tight ${scheme.textMain}`}>
           {content_eng}
         </p>
         {content_hindi && content_hindi.length > 0 && (
-          <p className={`text-sm sm:text-base font-semibold ${scheme.accent} opacity-95`}>
+          <p className={`text-xs sm:text-sm md:text-base font-semibold ${scheme.accent} opacity-95`}>
             ({content_hindi.join(", ")})
           </p>
         )}
@@ -149,17 +149,17 @@ const CardBack = ({
 
       {/* 2. Synonyms & Antonyms Subcards */}
       {((synonyms && synonyms.length > 0) || (antonyms && antonyms.length > 0)) && (
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 w-full relative z-10">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full relative z-10">
           {synonyms && synonyms.length > 0 && (
-            <div className={`flex flex-col gap-1.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
-              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase text-center w-full">
+            <div className={`flex flex-col gap-1 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
+              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase text-center w-full">
                 Synonyms
               </span>
-              <div className="grid grid-cols-1 gap-1.5 w-full">
+              <div className="grid grid-cols-1 gap-1 w-full">
                 {synonyms.slice(0, 2).map((syn) => (
                   <span
                     key={syn}
-                    className="px-2.5 py-1.5 text-xs sm:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
+                    className="px-2 py-1 text-xs sm:text-xs md:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
                   >
                     {syn.toUpperCase()}
                   </span>
@@ -169,15 +169,15 @@ const CardBack = ({
           )}
 
           {antonyms && antonyms.length > 0 && (
-            <div className={`flex flex-col gap-1.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
-              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase text-center w-full">
+            <div className={`flex flex-col gap-1 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
+              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase text-center w-full">
                 Antonyms
               </span>
-              <div className="grid grid-cols-1 gap-1.5 w-full">
+              <div className="grid grid-cols-1 gap-1 w-full">
                 {antonyms.slice(0, 2).map((ant) => (
                   <span
                     key={ant}
-                    className="px-2.5 py-1.5 text-xs sm:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
+                    className="px-2 py-1 text-xs sm:text-xs md:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
                   >
                     {ant.toUpperCase()}
                   </span>
@@ -190,18 +190,18 @@ const CardBack = ({
 
       {/* 3. Example Subcard */}
       {example_eng && example_eng.length > 0 && (
-        <div id="flashcard_examples" className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md space-y-1.5 relative z-10 shadow-xs`}>
+        <div id="flashcard_examples" className={`p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md space-y-1 relative z-10 shadow-xs`}>
           <div className="flex items-center gap-1.5">
-            <span className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
+            <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
               Example
             </span>
           </div>
           <div>
-            <p className={`text-sm sm:text-base md:text-lg font-semibold italic ${scheme.textMain} leading-relaxed`}>
+            <p className={`text-xs sm:text-sm md:text-base font-semibold italic ${scheme.textMain} leading-relaxed`}>
               &ldquo;{example_eng[0]}&rdquo;
             </p>
             {hindiexample?.[0] && (
-              <p className={`text-sm sm:text-base md:text-lg font-medium ${scheme.textSecondary} mt-1 leading-relaxed`}>
+              <p className={`text-xs sm:text-sm md:text-base font-medium ${scheme.textSecondary} mt-0.5 leading-relaxed`}>
                 {hindiexample[0]}
                 {hindiexample[0] && !hindiexample[0].endsWith("।") && !hindiexample[0].endsWith(".") ? "।" : ""}
               </p>

@@ -135,9 +135,11 @@ const FreestylePage = () => {
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-7 w-7 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0"
+              title="Quit"
+              aria-label="Quit session"
             >
-              <X className="w-3.5 h-3.5" strokeWidth={2.5} />
+              <X className="w-4 h-4" strokeWidth={2.2} />
             </button>
           </div>
 
@@ -366,25 +368,25 @@ const FreestylePage = () => {
     </TopicPageLayout>
 
     <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-      <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border">
+      <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border/60 bg-card/95 backdrop-blur-xl rounded-3xl p-5 shadow-2xl">
         <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
-          <AlertDialogTitle className="text-xl font-black tracking-tight text-foreground flex items-center gap-2">
+          <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
             Quit Flashcards?
           </AlertDialogTitle>
         </AlertDialogHeader>
-        <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed mt-4">
+        <AlertDialogDescription className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-3 font-medium">
           Are you sure you want to quit? You will return to the flashcards menu.
         </AlertDialogDescription>
         <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
           <AlertDialogCancel
-            className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-semibold border-border/85 hover:bg-muted"
+            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase bg-card text-foreground hover:bg-muted/60 border-2 border-border/60 active:scale-95 transition-all cursor-pointer"
             onClick={() => setShowQuitConfirm(false)}
           >
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border-2 border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
+            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
             onClick={() => {
               setShowQuitConfirm(false);
               router.push("/SSC/english/flashcards");

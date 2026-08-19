@@ -34,8 +34,12 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
         className="relative rounded-3xl w-[calc(100%-2rem)] sm:max-w-md border-2 border-border/80 p-6 bg-background/95 backdrop-blur-md shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
       >
         <AlertDialogCancel asChild>
-          <button className="absolute top-4 right-4 h-8 w-8 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none">
-            <X className="w-4 h-4" strokeWidth={2.5} />
+          <button
+            className="absolute top-4 right-4 h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0 z-10"
+            title="Close"
+            aria-label="Close dialog"
+          >
+            <X className="w-4 h-4" strokeWidth={2.2} />
           </button>
         </AlertDialogCancel>
         <AlertDialogHeader className="pb-3 border-b-2 border-border/40 flex flex-col items-start text-left space-y-1">
