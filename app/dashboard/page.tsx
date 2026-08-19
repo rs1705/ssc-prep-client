@@ -149,7 +149,7 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="w-full h-full p-4 lg:p-8 space-y-8 pb-32 overflow-x-hidden max-w-[1600px] mx-auto">
+      <div className="w-full h-full space-y-8 pb-32 overflow-x-hidden max-w-[1400px] mx-auto">
         {/* Hero Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
           <div>

@@ -137,7 +137,7 @@ const CardBack = ({
             Definition
           </span>
         </div>
-        <p className="text-base sm:text-lg md:text-xl font-bold leading-snug tracking-tight text-stone-900 dark:text-zinc-100">
+        <p className={`text-base sm:text-lg md:text-xl font-bold leading-snug tracking-tight ${scheme.textMain}`}>
           {content_eng}
         </p>
         {content_hindi && content_hindi.length > 0 && (
@@ -151,15 +151,15 @@ const CardBack = ({
       {((synonyms && synonyms.length > 0) || (antonyms && antonyms.length > 0)) && (
         <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 w-full relative z-10">
           {synonyms && synonyms.length > 0 && (
-            <div className="flex flex-col gap-1.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10 backdrop-blur-md shadow-xs">
-              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">
+            <div className={`flex flex-col gap-1.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
+              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase text-center w-full">
                 Synonyms
               </span>
               <div className="grid grid-cols-1 gap-1.5 w-full">
                 {synonyms.slice(0, 2).map((syn) => (
                   <span
                     key={syn}
-                    className="px-2.5 py-1.5 text-xs sm:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-white/10 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
+                    className="px-2.5 py-1.5 text-xs sm:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
                   >
                     {syn.toUpperCase()}
                   </span>
@@ -169,15 +169,15 @@ const CardBack = ({
           )}
 
           {antonyms && antonyms.length > 0 && (
-            <div className="flex flex-col gap-1.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10 backdrop-blur-md shadow-xs">
-              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase">
+            <div className={`flex flex-col gap-1.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
+              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase text-center w-full">
                 Antonyms
               </span>
               <div className="grid grid-cols-1 gap-1.5 w-full">
                 {antonyms.slice(0, 2).map((ant) => (
                   <span
                     key={ant}
-                    className="px-2.5 py-1.5 text-xs sm:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-white/10 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
+                    className="px-2.5 py-1.5 text-xs sm:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
                   >
                     {ant.toUpperCase()}
                   </span>
@@ -190,20 +190,20 @@ const CardBack = ({
 
       {/* 3. Example Subcard */}
       {example_eng && example_eng.length > 0 && (
-        <div id="flashcard_examples" className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10 backdrop-blur-md space-y-1 relative z-10 shadow-xs">
+        <div id="flashcard_examples" className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md space-y-1.5 relative z-10 shadow-xs`}>
           <div className="flex items-center gap-1.5">
-            <span className={`text-[10px] sm:text-xs font-mono font-bold ${scheme.accent} tracking-widest uppercase`}>
+            <span className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
               Example
             </span>
           </div>
           <div>
-            <p className="text-sm sm:text-base md:text-lg font-semibold italic text-stone-900 dark:text-zinc-100 leading-relaxed">
+            <p className={`text-sm sm:text-base md:text-lg font-semibold italic ${scheme.textMain} leading-relaxed`}>
               &ldquo;{example_eng[0]}&rdquo;
             </p>
             {hindiexample?.[0] && (
-              <p className={`text-xs sm:text-sm md:text-base font-medium ${scheme.textSecondary} mt-1 leading-normal`}>
+              <p className={`text-sm sm:text-base md:text-lg font-medium ${scheme.textSecondary} mt-1 leading-relaxed`}>
                 {hindiexample[0]}
-                {hindiexample[0] ? "।" : ""}
+                {hindiexample[0] && !hindiexample[0].endsWith("।") && !hindiexample[0].endsWith(".") ? "।" : ""}
               </p>
             )}
           </div>

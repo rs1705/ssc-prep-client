@@ -117,25 +117,25 @@ export const COLOR_SCHEMES = [
 export const BUTTON_ACTIONS = {
   AGAIN: {
     label: "AGAIN",
-    sub: "< 1m",
+    sub: "< 1 min",
     rating: 1,
     color: "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/40 border-b-[4px] border-b-rose-600/70 hover:bg-rose-500/25 hover:border-rose-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   HARD: {
     label: "HARD",
-    sub: "2d",
+    sub: "2 days",
     rating: 2,
     color: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40 border-b-[4px] border-b-amber-600/70 hover:bg-amber-500/25 hover:border-amber-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   GOOD: {
     label: "GOOD",
-    sub: "4d",
+    sub: "4 days",
     rating: 3,
     color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40 border-b-[4px] border-b-emerald-600/70 hover:bg-emerald-500/25 hover:border-emerald-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   EASY: {
     label: "EASY",
-    sub: "7d",
+    sub: "7 days",
     rating: 4,
     color: "bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/40 border-b-[4px] border-b-sky-600/70 hover:bg-sky-500/25 hover:border-sky-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
@@ -353,28 +353,44 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
           </div>
           <div className="w-full">
             <div className="w-full h-12 sm:h-13 mt-4 sm:mt-5 flex items-center">
-              {isFlipped && (
-                <div className="flex primary-buttons gap-2 sm:gap-2.5 w-full animate-in fade-in duration-200 ease-out">
-                  {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
-                    (actionKey) => {
-                      const actionConfig = BUTTON_ACTIONS[actionKey];
-                      return (
-                        <button
-                          key={actionKey}
-                          type="button"
-                          className={`flex-1 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border-2 select-none transition-all duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
-                          onClick={() => onActionClick(actionKey)}
-                        >
-                          <span className="font-bold">{actionConfig.label}</span>
-                          <span className="text-[9px] font-normal opacity-80 font-mono">
-                            {actionConfig.sub}
-                          </span>
-                        </button>
-                      );
-                    },
-                  )}
-                </div>
-              )}
+              <AnimatePresence>
+                {isFlipped && (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex primary-buttons gap-2 sm:gap-2.5 w-full"
+                  >
+                    {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
+                      (actionKey, index) => {
+                        const actionConfig = BUTTON_ACTIONS[actionKey];
+                        return (
+                          <motion.button
+                            key={actionKey}
+                            type="button"
+                            initial={{ opacity: 0, y: 12, scale: 0.92 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 520,
+                              damping: 25,
+                              delay: index * 0.04,
+                            }}
+                            className={`flex-1 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border-2 select-none transition-colors duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
+                            onClick={() => onActionClick(actionKey)}
+                          >
+                            <span className="font-bold">{actionConfig.label}</span>
+                            <span className="text-[9px] font-normal opacity-80 font-mono">
+                              {actionConfig.sub}
+                            </span>
+                          </motion.button>
+                        );
+                      },
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

@@ -64,7 +64,7 @@ export const TopicPageLayout = ({
       {/* Dynamic Breadcrumbs */}
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
         <div
-          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground/80 select-none mb-2 px-4 sm:px-0 shrink-0`}
+          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground/80 select-none mb-3 shrink-0`}
         >
           <Link
             href="/dashboard"
@@ -100,7 +100,7 @@ export const TopicPageLayout = ({
 
       {/* Sub-section Header */}
       {title && (
-        <div className="mb-4 w-full flex flex-col items-start text-left px-4 sm:px-0 shrink-0">
+        <div className="mb-6 w-full flex flex-col items-start text-left shrink-0">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground mb-1">
             {title}
           </h1>
