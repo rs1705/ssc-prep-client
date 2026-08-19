@@ -113,7 +113,7 @@
 :root {
   --radius: 12px;
 
-  /* PrepPilot Elite — Light Mode (Obsidian & Gold) */
+  /* EptSsc Elite — Light Mode (Obsidian & Gold) */
   --background: #fafafa;
   --foreground: #09090b;
   --card: #ffffff;
@@ -153,7 +153,7 @@
 }
 
 .dark {
-  /* PrepPilot Elite — Dark Mode (Obsidian & Gold) */
+  /* EptSsc Elite — Dark Mode (Obsidian & Gold) */
   --background: #18181b;
   --foreground: #fafafa;
   --card: #27272a;

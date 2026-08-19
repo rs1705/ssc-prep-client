@@ -19,6 +19,7 @@ import {
   Moon,
 } from "lucide-react";
 import { useSidebar } from "@/components/custom/sidebar-context";
+import { ProgressBar } from "@/components/custom/ProgressBar";
 import { useAuth } from "@/context/auth";
 
 const nav = [
@@ -103,16 +104,16 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           isCollapsed ? "flex-col gap-3 justify-center" : "justify-between"
         }`}
       >
-        <Link href="/" className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "gap-0" : "gap-3"} group`}>
-          <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform duration-300">
+        <Link href="/" className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "gap-0" : "gap-3"} group cursor-pointer`}>
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
             <Rocket className="w-5 h-5" />
           </div>
           <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
             <div className="text-[9px] font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
-              PrepPilot <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+              EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
             </div>
             <div className="font-extrabold text-sm tracking-tight truncate text-foreground">
-              SSC · CGL Track
+              Elite Prep Training
             </div>
           </div>
         </Link>
@@ -134,7 +135,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
                   : "gap-3 px-3 py-2"
               } ${
                 active
-                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs"
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
               }`}
             >
@@ -164,7 +165,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
                   : "gap-3 px-3 py-2"
               } ${
                 active
-                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs"
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
               }`}
             >
@@ -178,7 +179,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       {/* Exam D-Day Widget */}
       <div 
         title="Exam D-Day: 142 days remaining"
-        className={`mt-auto mb-3 bg-card/60 backdrop-blur-md border-2 border-amber-500/20 shadow-sm ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
+        className={`mt-auto mb-3 bg-card/60 backdrop-blur-md border-2 border-amber-500/20 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
           isCollapsed 
             ? "w-10 h-10 mx-auto rounded-xl items-center justify-center shrink-0" 
             : "w-full p-3.5 rounded-2xl"
@@ -202,9 +203,11 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           <div className="text-xl font-black font-mono tracking-tight whitespace-nowrap text-foreground flex items-baseline gap-1.5">
             142 <span className="text-xs font-mono font-normal text-muted-foreground">days</span>
           </div>
-          <div className="h-1.5 mt-2.5 bg-muted/60 rounded-full overflow-hidden w-full border-2 border-border/30">
-            <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-1/3 shadow-sm shadow-amber-500/50" />
-          </div>
+          <ProgressBar
+            value={33}
+            className="h-1.5 mt-2.5 p-0"
+            barClassName="bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm shadow-amber-500/50"
+          />
         </div>
       </div>
 

@@ -101,7 +101,7 @@ export const TopicCard = ({
 
   return (
     <div
-      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 shadow-sm hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
+      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
       style={{
         animationDelay: `${Math.floor(index / cols) * 80}ms`,
         animationFillMode: "both",
@@ -116,7 +116,7 @@ export const TopicCard = ({
             {emoji}
           </div>
           {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 shadow-2xs select-none">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 select-none">
               {badge}
             </span>
           )}

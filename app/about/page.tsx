@@ -65,7 +65,7 @@ const COMPARISONS = [
 export default function AboutPage() {
   return (
     <TopicPageLayout
-      title="About PrepPilot"
+      title="About EptSsc"
       description="Engineered specifically for SSC CGL & government exam aspirants who value speed, scientific retention, and zero-distraction preparation."
       contentMaxWidthClass="w-full max-w-[1280px]"
     >
@@ -87,7 +87,7 @@ export default function AboutPage() {
               </span>
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground mt-4 leading-relaxed font-medium">
-              Most aspirants fail not because they lack knowledge, but because they run out of time. PrepPilot replaces passive rote memorization with instinctive mental computation and cognitive retention protocols.
+              Most aspirants fail not because they lack knowledge, but because they run out of time. EptSsc (Elite Prep Training) replaces passive rote memorization with instinctive mental computation and cognitive retention protocols.
             </p>
           </div>
 
@@ -133,7 +133,7 @@ export default function AboutPage() {
               Core Principles
             </span>
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground mt-0.5">
-              The Three Pillars of PrepPilot
+              The Three Pillars of EptSsc
             </h2>
           </div>
 
@@ -170,7 +170,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Comparison Section: Traditional vs PrepPilot */}
+        {/* Comparison Section: Traditional vs EptSsc */}
         <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 p-6 sm:p-10 shadow-xl shadow-black/5 flex flex-col gap-6">
           <div>
             <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest">
@@ -200,7 +200,7 @@ export default function AboutPage() {
             <div className="p-5 rounded-2xl bg-amber-500/[0.04] border-2 border-amber-500/30 flex flex-col gap-3 shadow-inner">
               <div className="flex items-center gap-2 text-amber-500 font-bold text-xs font-mono uppercase tracking-wider">
                 <CheckCircle2 className="w-4 h-4" />
-                The PrepPilot Advantage
+                The EptSsc Advantage
               </div>
               <div className="space-y-3">
                 {COMPARISONS.map((comp, idx) => (

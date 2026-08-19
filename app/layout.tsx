@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PrepPilot",
-  description: "Your exam co-pilot",
+  title: "EptSsc · Elite Prep Training",
+  description: "Elite Prep Training & Precision Transformation for SSC CGL Aspirants",
 };
 
 export default function RootLayout({

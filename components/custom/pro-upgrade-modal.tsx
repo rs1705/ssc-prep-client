@@ -66,7 +66,7 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
                   Unlock {featureName}
                 </h2>
                 <p className="text-sm text-foreground/70 font-medium relative z-10">
-                  Target your exact weaknesses and optimize your score with PrepPilot PRO.
+                  Target your exact weaknesses and optimize your score with EptSsc PRO.
                 </p>
               </div>
 

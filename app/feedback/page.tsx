@@ -198,7 +198,7 @@ export default function FeedbackPage() {
                     Feedback Received
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                    Thank You for Shaping PrepPilot!
+                    Thank You for Shaping EptSsc!
                   </h2>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-3 max-w-md leading-relaxed font-medium">
                     We review every community submission to optimize sprint priorities. Your insight directly improves the CGL 2026 prep experience.

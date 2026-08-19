@@ -319,7 +319,7 @@ const SYLLABUS_SECTIONS = [
 const SSC_FAQS = [
   {
     question: "Are these authentic TCS-pattern previous year questions?",
-    answer: "Yes, 100%. Every single question in PrepPilot is extracted directly from official SSC CGL, CHSL, CPO, MTS, and GD shift answer keys (2020 through 2025). We rigorously OCR-scan, verify, taxonomy-tag, and format each question with step-by-step solutions."
+    answer: "Yes, 100%. Every single question in EptSsc is extracted directly from official SSC CGL, CHSL, CPO, MTS, and GD shift answer keys (2020 through 2025). We rigorously OCR-scan, verify, taxonomy-tag, and format each question with step-by-step solutions."
   },
   {
     question: "How does the Mental Maths Arena help me score higher in Quant?",
@@ -330,12 +330,12 @@ const SSC_FAQS = [
     answer: "Instead of rereading static PDF lists, Flashcards use spaced repetition (active recall). When you review high-frequency words, idioms, or polity articles, the algorithm schedules your next review (12 hours, 3 days, or 8 days) based on whether you found the item hard or easy. This cements facts into long-term memory."
   },
   {
-    question: "How does PrepPilot differ from regular test series or PDF compilations?",
-    answer: "PDF compilations are passive and static. Generic test series only tell you your overall score at the end. PrepPilot diagnoses your exact mark-bleed topics in real-time (e.g., 'You lose 2.5 marks on Geometry chords and spend 80s on simple ratio questions') and immediately gives you targeted 5-minute drill sets to fix them."
+    question: "How does EptSsc differ from regular test series or PDF compilations?",
+    answer: "PDF compilations are passive and static. Generic test series only tell you your overall score at the end. EptSsc diagnoses your exact mark-bleed topics in real-time (e.g., 'You lose 2.5 marks on Geometry chords and spend 80s on simple ratio questions') and immediately gives you targeted 5-minute drill sets to fix them."
   },
   {
     question: "Can I practice on mobile phones and tablets?",
-    answer: "Yes! PrepPilot is designed with a zero-lag responsive layout. All drills, speed calculation sprints, flashcards, and PYQ tests run seamlessly on all mobile screens with zero performance drops."
+    answer: "Yes! EptSsc is designed with a zero-lag responsive layout. All drills, speed calculation sprints, flashcards, and PYQ tests run seamlessly on all mobile screens with zero performance drops."
   }
 ];
 
@@ -471,7 +471,7 @@ function InteractiveHeroDashboard() {
               <div className="w-3 h-3 rounded-full bg-amber-500/80" />
               <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
             </div>
-            <span className="text-[11px] font-mono font-semibold text-muted-foreground ml-2 hidden sm:inline">preppilot.live/demo</span>
+            <span className="text-[11px] font-mono font-semibold text-muted-foreground ml-2 hidden sm:inline">eptssc.live/demo</span>
           </div>
 
           {/* Interactive Mode Pills */}
@@ -1016,7 +1016,7 @@ const testimonials = [
   { name: "Priya M.", exam: "CHSL (AIR 42)", text: "Mental maths arena is insanely addictive. I shaved 15 seconds off my average calculation time in just two weeks." },
   { name: "Vikash K.", exam: "CGL Inspector", text: "Finally an app that isn't bloated with ads. The UI is cleaner than most paid platforms. Worth every penny." },
   { name: "Anjali T.", exam: "CPO SI", text: "The spaced repetition for GK actually works. I remember obscure facts that I usually forget after two days." },
-  { name: "Amit D.", exam: "MTS & GD", text: "The honest comparison is real. I deleted all my telegram PDF groups after using PrepPilot." },
+  { name: "Amit D.", exam: "MTS & GD", text: "The honest comparison is real. I deleted all my telegram PDF groups after using EptSsc." },
 ];
 
 function InfiniteTestimonials() {
@@ -1320,7 +1320,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden flex flex-col items-center relative scroll-smooth">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-clip flex flex-col items-center relative scroll-smooth">
       
       {/* ─── Ambient Glow Blobs — Lightweight on mobile, animated on desktop ─── */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10" aria-hidden="true">
@@ -1349,24 +1349,17 @@ export default function LandingPage() {
       {/* ─── Floating Pill Navbar ─── */}
       <header className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2 z-50 sticky top-0">
         <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border-2 border-border/40 shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent pointer-events-none" />
-          
-          <motion.div 
-            initial={{ opacity: 0, x: -15 }} 
-            animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 0.4, ease: SNAPPY_EASE }}
-            className="flex items-center gap-3"
-          >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 hover:rotate-6 transition-transform">
+          <Link href="/" className="flex items-center gap-3 group cursor-pointer">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
               <Rocket className="w-4 h-4" />
             </div>
             <div className="leading-tight">
               <div className="font-bold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
-                PrepPilot
+                EptSsc
                 <span className="text-[9px] font-mono font-bold bg-amber-500/15 text-amber-500 px-1.5 py-0.5 rounded">PRO</span>
               </div>
             </div>
-          </motion.div>
+          </Link>
           
           <motion.nav 
             initial={{ opacity: 0, x: 15 }} 
@@ -1532,7 +1525,7 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
-              <RefreshCw className="w-3 h-3 text-amber-500" /> The PrepPilot Loop
+              <RefreshCw className="w-3 h-3 text-amber-500" /> The EptSsc Loop
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
               Four Steps to Selection
@@ -1765,7 +1758,7 @@ export default function LandingPage() {
                 
                 <div className="mb-6 relative z-10">
                   <h3 className="text-2xl font-black text-white mb-1 flex items-center gap-2">
-                    PrepPilot <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-zinc-950 px-2 py-0.5 rounded text-xs font-mono font-bold shadow-md">PRO</span>
+                    EptSsc <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-zinc-950 px-2 py-0.5 rounded text-xs font-mono font-bold shadow-md">PRO</span>
                   </h3>
                   <p className="text-zinc-400 text-xs font-medium">For serious aspirants aiming for top ranks.</p>
                   <div className="mt-5 flex items-baseline gap-1">
@@ -1843,12 +1836,12 @@ export default function LandingPage() {
         {/* Footer Navigation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 text-left">
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 mb-3 group cursor-pointer w-fit">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
                 <Rocket className="w-3.5 h-3.5" />
               </div>
-              <span className="font-bold text-base tracking-tight">PrepPilot</span>
-            </div>
+              <span className="font-bold text-base tracking-tight text-foreground group-hover:text-amber-500 transition-colors">EptSsc</span>
+            </Link>
             <p className="text-muted-foreground text-xs leading-relaxed max-w-xs">
               AI-driven exam preparation built specifically for SSC CGL, CHSL, CPO, MTS & GD aspirants.
             </p>
@@ -1881,7 +1874,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left relative">
           <div className="absolute top-0 left-4 right-4 sm:left-6 sm:right-6 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
           <div className="text-muted-foreground text-xs font-medium">
-            © {new Date().getFullYear()} PrepPilot. Built for SSC Aspirants.
+            © {new Date().getFullYear()} EptSsc. Built for SSC Aspirants.
           </div>
           <div className="text-xs font-medium text-muted-foreground/70">
             Engineered for students who refuse to settle.

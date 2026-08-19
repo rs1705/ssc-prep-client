@@ -17,6 +17,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ProgressBar } from "@/components/custom/ProgressBar";
 
 export function TopBar() {
   const { theme, setTheme } = useTheme();
@@ -120,7 +121,7 @@ export function TopBar() {
           <SheetTrigger asChild>
             <button
               aria-label="Open menu"
-              className="md:hidden w-10 h-10 rounded-full border-2 border-border/40 shadow-xs bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+              className="md:hidden w-10 h-10 rounded-full border-2 border-border/40 bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted transition-all cursor-pointer"
             >
               <Menu className="w-4 h-4 text-foreground/80" strokeWidth={1.75} />
             </button>
@@ -128,19 +129,19 @@ export function TopBar() {
           <SheetContent side="left" className="w-72 p-5 bg-background/95 backdrop-blur-2xl border-r-2 border-border/40 flex flex-col justify-between h-full overflow-y-auto">
             <div className="flex flex-col">
               {/* Header Logo */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0">
+              <Link href={user ? "/dashboard" : "/"} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 mb-6 group cursor-pointer">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
                   <Rocket className="w-5 h-5" />
                 </div>
                 <div className="leading-tight">
                   <div className="text-[9px] font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
-                    PrepPilot <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+                    EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
                   </div>
-                  <div className="font-extrabold text-sm tracking-tight text-foreground">
-                    SSC · CGL Track
+                  <div className="font-extrabold text-sm tracking-tight text-foreground group-hover:text-amber-500 transition-colors">
+                    Elite Prep Training
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Primary Nav Links */}
               <nav className="flex flex-col gap-1 w-full">
@@ -151,9 +152,10 @@ export function TopBar() {
                     <Link
                       key={n.to}
                       href={n.to}
+                      onClick={() => setMobileOpen(false)}
                       className={`flex items-center w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 border-2 cursor-pointer ${
                         active
-                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs"
+                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
                           : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
                       }`}
                     >
@@ -176,9 +178,10 @@ export function TopBar() {
                     <Link
                       key={n.to}
                       href={n.to}
+                      onClick={() => setMobileOpen(false)}
                       className={`flex items-center w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 border-2 cursor-pointer ${
                         active
-                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold shadow-xs"
+                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
                           : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
                       }`}
                     >
@@ -193,7 +196,7 @@ export function TopBar() {
             {/* Bottom Section: D-Day Widget + Theme Toggle + User Info */}
             <div className="flex flex-col gap-3 pt-4 border-t-2 border-border/40 mt-auto">
               {/* Exam D-Day Widget */}
-              <div className="w-full p-3.5 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-amber-500/20 shadow-sm relative overflow-hidden">
+              <div className="w-full p-3.5 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-amber-500/20 relative overflow-hidden">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
                     Exam D-Day
@@ -205,9 +208,11 @@ export function TopBar() {
                 <div className="text-lg font-black font-mono tracking-tight text-foreground flex items-baseline gap-1.5">
                   142 <span className="text-xs font-mono font-normal text-muted-foreground">days</span>
                 </div>
-                <div className="h-1.5 mt-2 bg-muted/60 rounded-full overflow-hidden w-full border-2 border-border/30">
-                  <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-1/3 shadow-sm shadow-amber-500/50" />
-                </div>
+                <ProgressBar
+                  value={33}
+                  className="h-1.5 mt-2 p-0"
+                  barClassName="bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm shadow-amber-500/50"
+                />
               </div>
 
               {/* Theme Toggle Button */}
@@ -272,7 +277,7 @@ export function TopBar() {
 
         {mounted && (
           <div className="flex items-center gap-2">
-            <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-muted-foreground bg-card/60 backdrop-blur-md px-3 py-1.5 rounded-full border-2 border-border/40 shadow-xs flex items-center gap-2">
+            <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-muted-foreground bg-card/60 backdrop-blur-md px-3 py-1.5 rounded-full border-2 border-border/40 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>{timeLabel}</span>
               <span className="text-border">|</span>
@@ -282,10 +287,10 @@ export function TopBar() {
         )}
       </div>
       <div className="flex items-center gap-2 sm:gap-3">
-        <Link href="/" className="md:hidden">
+        <Link href={user ? "/dashboard" : "/"} className="md:hidden">
           <button
             aria-label="Home"
-            className="w-10 h-10 rounded-full border-2 border-border/40 shadow-xs bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+            className="w-10 h-10 rounded-full border-2 border-border/40 bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted transition-all cursor-pointer"
           >
             <Home className="w-4 h-4 text-foreground/80" strokeWidth={1.75} />
           </button>
@@ -293,7 +298,7 @@ export function TopBar() {
         <button
           aria-label="Toggle theme"
           onClick={toggleTheme}
-          className="md:hidden w-10 h-10 rounded-full border-2 border-border/40 shadow-xs bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted hover:shadow-md transition-all cursor-pointer"
+          className="md:hidden w-10 h-10 rounded-full border-2 border-border/40 bg-card/70 backdrop-blur-md flex items-center justify-center hover:bg-muted transition-all cursor-pointer"
         >
           {mounted && theme === "dark" ? (
             <Sun className="w-4 h-4 text-amber-400" strokeWidth={1.75} />
@@ -305,7 +310,7 @@ export function TopBar() {
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-center rounded-full border-2 border-amber-500/30 shadow-xs hover:border-amber-500/60 hover:shadow-md hover:shadow-amber-500/10 transition-all focus:outline-none ml-1 sm:ml-2 cursor-pointer ring-2 ring-transparent focus:ring-amber-500/20">
+              <button className="flex items-center justify-center rounded-full border-2 border-amber-500/30 hover:border-amber-500/60 transition-all focus:outline-none ml-1 sm:ml-2 cursor-pointer ring-2 ring-transparent focus:ring-amber-500/20">
                 <Avatar className="w-10 h-10 ring-1 ring-background">
                   <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
                   <AvatarFallback className="bg-amber-500/10 text-amber-500 font-bold">U</AvatarFallback>

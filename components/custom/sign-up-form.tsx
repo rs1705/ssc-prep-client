@@ -48,7 +48,7 @@ const SignUpForm = () => {
         </div>
         <h2 className="font-extrabold text-xl sm:text-2xl tracking-tight mb-1 text-foreground">Create an Account</h2>
         <p className="text-muted-foreground text-xs sm:text-sm">
-          Enter your details to get started with PrepPilot
+          Enter your details to get started with EptSsc
         </p>
       </div>
       <Form {...form}>

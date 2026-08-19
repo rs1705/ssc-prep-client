@@ -80,7 +80,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
 
   return (
     <div
-      className={`group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden shadow-lg shadow-black/5 ${
+      className={`group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden ${
         isClickable
           ? `bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1`
           : "bg-card/90 md:bg-card/30 backdrop-blur-none md:backdrop-blur-md border-2 border-border/30 opacity-75"

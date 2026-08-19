@@ -34,7 +34,7 @@ const SignupPage = () => {
         <div className="relative z-10">
           <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full border-2 border-amber-500/20 w-fit mb-3">
             <Sparkles className="w-3 h-3" />
-            Join PrepPilot
+            Join EptSsc
           </div>
           <SignUpForm />
           

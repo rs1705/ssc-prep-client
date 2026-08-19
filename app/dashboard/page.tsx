@@ -19,6 +19,7 @@ import {
   History,
   Gamepad2,
 } from "lucide-react";
+import { ProgressBar } from "@/components/custom/ProgressBar";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -163,7 +164,7 @@ export default function Dashboard() {
             </h1>
           </div>
           <div className="hidden sm:flex items-center gap-2">
-            <div className="px-4 py-2 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/50 text-xs font-mono font-bold text-muted-foreground flex items-center gap-2 shadow-xs">
+            <div className="px-4 py-2 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/50 text-xs font-mono font-bold text-muted-foreground flex items-center gap-2">
               <Target className="w-4 h-4 text-amber-500" />
               <span>Target: Tier 1 Exam</span>
             </div>
@@ -173,7 +174,7 @@ export default function Dashboard() {
         {/* Top Row: Target & Resume */}
         <div className="grid lg:grid-cols-2 gap-5 mb-10">
           {/* Streak / Target Card */}
-          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 shadow-lg shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
+          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
             <div className="flex items-center justify-between mb-4 relative z-10">
               <div className="flex items-center gap-2 text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border/40">
                 <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" strokeWidth={2.5} />
@@ -194,15 +195,14 @@ export default function Dashboard() {
             </div>
 
             {/* Progress bar inside its own container */}
-            <div className="w-full h-3 bg-muted/70 rounded-full overflow-hidden mb-3 border-2 border-border/50 p-0.5 relative z-10">
-              <div
-                className="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-full shadow-xs transition-all duration-500"
-                style={{ width: mockStats.percent }}
-              />
-            </div>
+            <ProgressBar
+              value={parseInt(mockStats.percent)}
+              className="h-3.5 mb-3.5 relative z-10"
+              barClassName="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 transition-all duration-500"
+            />
 
             <div className="flex items-center justify-between relative z-10">
-              <div className="inline-flex items-center gap-2 bg-foreground text-background text-[10px] font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full shadow-sm">
+              <div className="inline-flex items-center gap-2 bg-foreground text-background text-[10px] font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full">
                 <span>
                   {mockStats.solved} / {mockStats.todayGoal} SOLVED
                 </span>
@@ -218,7 +218,7 @@ export default function Dashboard() {
                   <div
                     className={`h-2.5 w-full rounded-full transition-all ${
                       i < 5 
-                        ? "bg-amber-500 shadow-xs shadow-amber-500/30" 
+                        ? "bg-amber-500" 
                         : i === 5 
                         ? "bg-amber-500/40" 
                         : "bg-muted/70"
@@ -316,12 +316,11 @@ export default function Dashboard() {
                             <span>Mastery</span>
                             <span className={colors.text}>{s.progress}%</span>
                           </div>
-                          <div className="w-full h-1.5 rounded-full bg-muted/60 overflow-hidden">
-                            <div 
-                              className={`h-full rounded-full bg-gradient-to-r ${colors.barGrad}`}
-                              style={{ width: `${s.progress}%` }}
-                            />
-                          </div>
+                          <ProgressBar
+                            value={s.progress}
+                            className="h-1.5 p-0"
+                            barClassName={`bg-gradient-to-r ${colors.barGrad}`}
+                          />
                         </div>
                       </div>
                     </Link>
@@ -340,7 +339,7 @@ export default function Dashboard() {
                   <Link
                     key={q.label}
                     href={q.to}
-                    className="rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-4.5 flex items-center gap-4 hover:border-amber-500/40 hover:bg-amber-500/[0.03] hover:shadow-md transition-all shadow-xs cursor-pointer group"
+                    className="rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-4.5 flex items-center gap-4 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
@@ -363,7 +362,7 @@ export default function Dashboard() {
                     <Link
                       key={q.label}
                       href={q.to}
-                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all shadow-xs cursor-pointer justify-center text-center sm:text-left group"
+                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer justify-center text-center sm:text-left group"
                     >
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                         <q.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2} />
@@ -388,7 +387,7 @@ export default function Dashboard() {
                   </Link>
                 </div>
 
-                <div className="bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-3xl p-3 flex flex-col shadow-sm h-full justify-between gap-1">
+                <div className="bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-3xl p-3 flex flex-col h-full justify-between gap-1">
                   {recentSessions.map((session, i) => (
                     <div
                       key={i}
@@ -437,7 +436,7 @@ export default function Dashboard() {
               </Link>
             </div>
 
-            <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/60 rounded-3xl p-3 flex flex-col shadow-xl shadow-black/5 h-full justify-between gap-1.5">
+            <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/60 rounded-3xl p-3 flex flex-col h-full justify-between gap-1.5">
               {recentSessions.map((session, i) => (
                 <div
                   key={i}
@@ -472,7 +471,7 @@ export default function Dashboard() {
 
         {/* Footer */}
         <div className="text-center text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground/60 py-6 flex items-center justify-center gap-2">
-          <ScrollText className="w-3.5 h-3.5 text-amber-500" /> PrepPilot Precision Training Engine · 2026 Tier 1
+          <ScrollText className="w-3.5 h-3.5 text-amber-500" /> EptSsc Precision Training Engine · 2026 Tier 1
         </div>
       </div>
     </ProtectedRoute>

@@ -16,7 +16,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("preppilot_sidebar_collapsed");
+    const saved = localStorage.getItem("eptssc_sidebar_collapsed") ?? localStorage.getItem("preppilot_sidebar_collapsed");
     if (saved !== null) {
       setIsCollapsed(saved === "true");
     }
@@ -29,7 +29,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const handleSetCollapsed = (value: boolean | ((prev: boolean) => boolean)) => {
     setIsCollapsed((prev) => {
       const next = typeof value === "function" ? value(prev) : value;
-      localStorage.setItem("preppilot_sidebar_collapsed", String(next));
+      localStorage.setItem("eptssc_sidebar_collapsed", String(next));
       return next;
     });
   };
