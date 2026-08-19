@@ -13,6 +13,8 @@ import { DIFFICULTY_CONFIGS } from "@/lib/mathGenerator";
 import { ENCOURAGEMENT_MESSAGES } from "@/lib/encouragementMessages";
 import {
   Trophy,
+  Check,
+  Minus,
   CheckCircle2,
   XCircle,
   HelpCircle,
@@ -44,17 +46,34 @@ const COUNTDOWN_MESSAGES = [
   "Lock in...",
   "Stay sharp...",
   "Trust your instincts...",
+  "Speed follows precision...",
+  "Eyes on the numbers...",
+  "Think fast, calculate accurately...",
+  "Precision over rush...",
+  "Breathe in, calculate out...",
+  "Ready to conquer...",
+  "Focus mode activated...",
+  "Every second counts...",
+  "Sharpen your focus...",
+  "Trust your preparation...",
+  "Calculate with confidence...",
+  "Master the mental math...",
+  "Find your rhythm...",
+  "Lightning fast, laser sharp...",
+  "Zero in on the solution...",
+  "Push your limits today...",
+  "Stay calm, stay accurate...",
 ];
 
 const getQuestionFontSize = (text: string | undefined) => {
-  if (!text) return "text-3xl sm:text-4xl md:text-5xl";
+  if (!text) return "text-3xl sm:text-4xl md:text-5xl lg:text-6xl";
   const len = text.length;
-  if (len <= 10) return "text-3xl sm:text-4xl md:text-5xl lg:text-6xl";
-  if (len <= 18) return "text-2xl sm:text-3xl md:text-4xl lg:text-5xl";
-  if (len <= 28) return "text-xl sm:text-2xl md:text-3xl lg:text-4xl";
-  if (len <= 45) return "text-lg sm:text-xl md:text-2xl lg:text-3xl";
-  if (len <= 70) return "text-base sm:text-lg md:text-xl lg:text-2xl";
-  return "text-sm sm:text-base md:text-lg leading-tight";
+  if (len <= 10) return "text-4xl sm:text-5xl md:text-6xl lg:text-7xl";
+  if (len <= 18) return "text-3xl sm:text-4xl md:text-5xl lg:text-6xl";
+  if (len <= 30) return "text-2xl sm:text-3xl md:text-4xl lg:text-5xl";
+  if (len <= 50) return "text-2xl sm:text-2xl md:text-3xl lg:text-4xl leading-snug";
+  if (len <= 80) return "text-xl sm:text-2xl md:text-2xl lg:text-3xl leading-snug";
+  return "text-lg sm:text-xl md:text-xl lg:text-2xl leading-snug";
 };
 
 const renderTopicIcon = (topic: string, className?: string) => {
@@ -258,9 +277,6 @@ export default function MentalMathsPractice() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [animatedAccuracy, setAnimatedAccuracy] = useState<number>(0);
   const [inputLayout, setInputLayout] = useState<"keys" | "mcq">("mcq");
-  const [resultsTab, setResultsTab] = useState<"overview" | "review">(
-    "overview",
-  );
 
   const countdownMsg = React.useMemo(() => {
     if (gameState !== "countdown") return "";
@@ -535,34 +551,27 @@ export default function MentalMathsPractice() {
 
   return (
     <TopicPageLayout
-      contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px] lg:max-w-[500px]"
+      contentMaxWidthClass={
+        gameState === "game_over"
+          ? "w-full max-w-3xl lg:max-w-4xl"
+          : "w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-[560px]"
+      }
       hideBreadcrumbs={true}
-      centerContent={true}
+      centerContent={false}
     >
       <div
-        className="relative w-full flex flex-col bg-card border-2 border-primary/30 rounded-3xl shadow-sm select-none transition-all duration-300 p-3 sm:p-4 md:p-5 flex-1 max-h-[calc(90dvh-4rem)] md:max-h-[calc(90dvh-4.5rem)] overflow-hidden"
+        className="relative w-full flex flex-col bg-card border-2 border-border/60 rounded-3xl select-none transition-all duration-300 p-4 sm:p-5 md:p-6 flex-1 min-h-[540px] md:min-h-[580px] lg:min-h-[600px] max-h-[calc(90dvh-4rem)] md:max-h-[calc(90dvh-4.5rem)] overflow-hidden"
       >
         {gameState === "active" && (
           <div className="flex justify-end w-full shrink-0 -mt-1 -mr-1 sm:-mt-1.5 sm:-mr-1.5 z-50">
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-7 w-7 sm:h-8 sm:w-8 mb-1 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
+              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0"
               title="Quit"
+              aria-label="Quit drill"
             >
-              <X className="w-4 h-4" strokeWidth={2.5} />
-            </button>
-          </div>
-        )}
-        {gameState === "game_over" && (
-          <div className="flex justify-end w-full shrink-0 -mt-1 -mr-1 sm:-mt-1.5 sm:-mr-1.5 z-50">
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="h-7 w-7 sm:h-8 sm:w-8 mb-1 rounded-full flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none"
-              title="Close"
-            >
-              <X className="w-4 h-4" strokeWidth={2.5} />
+              <X className="w-4 h-4" strokeWidth={2.2} />
             </button>
           </div>
         )}
@@ -571,20 +580,21 @@ export default function MentalMathsPractice() {
         <div className="relative w-full flex flex-col flex-1 min-h-0">
           {/* 1. LOBBY CONFIGURATION SCREEN */}
           {gameState === "idle" && (
-            <div className="w-full flex flex-col flex-1 justify-between mx-auto py-0.5 sm:py-1.5 md:py-2 animate-in fade-in slide-in-from-bottom-3 min-h-0">
+            <div className="w-full flex flex-col flex-1 justify-between py-0.5 sm:py-1.5 md:py-2 animate-in fade-in slide-in-from-bottom-3 min-h-0">
               {/* Header: Back & Title in one clean bar */}
               <div className="flex items-center justify-between w-full shrink-0 mb-1 sm:mb-1.5">
                 <button
                   type="button"
                   onClick={() => router.back()}
-                  className="flex items-center gap-1.5 h-7 sm:h-8 px-2 sm:px-2.5 -ml-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all cursor-pointer flex-shrink-0 border-none outline-none text-xs sm:text-sm font-semibold"
+                  className="flex items-center gap-1.5 h-8 px-2.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider"
                   title="Back"
+                  aria-label="Back to topics"
                 >
-                  <ArrowLeft className="w-4 h-4" strokeWidth={2.5} />
+                  <ArrowLeft className="w-4 h-4" strokeWidth={2.2} />
                   <span>Back</span>
                 </button>
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-base sm:text-xl md:text-2xl font-extrabold tracking-tight capitalize text-foreground">
+                  <h2 className="text-base sm:text-xl md:text-2xl font-bold tracking-tight capitalize text-foreground">
                     {topic.replace("-", " ")} Drill
                   </h2>
                 </div>
@@ -867,7 +877,7 @@ export default function MentalMathsPractice() {
                   <div className="flex items-center justify-between w-full pb-1.5 gap-2">
                     {/* Left: Topic Icon + Name & Tags */}
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-primary/10 rounded-2xl text-primary flex items-center justify-center border-2 border-primary/20">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-amber-500/10 rounded-2xl text-amber-500 flex items-center justify-center border-2 border-amber-500/20">
                         {renderTopicIcon(
                           topic,
                           "w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 shrink-0",
@@ -980,9 +990,9 @@ export default function MentalMathsPractice() {
                   {/* Question Box */}
                   <div
                     className={`
-                            my-0.5 sm:my-1.5 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-3 sm:py-4 md:py-5 px-4 sm:px-6 min-h-[110px] sm:min-h-[130px] md:min-h-[145px] overflow-hidden border-2 transition-all duration-200 ease-in-out select-none relative shadow-sm
-                            ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 scale-[1.01]" : ""}
-                            ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500/60 bg-rose-500/15 text-rose-600 dark:text-rose-300 scale-[0.99]" : ""}
+                            my-0.5 sm:my-1.5 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-3 sm:py-4 md:py-6 lg:py-7 px-4 sm:px-6 md:px-8 min-h-[110px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[165px] overflow-hidden border-2 transition-all duration-200 ease-in-out select-none relative
+                            ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : ""}
+                            ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500/60 bg-rose-500/15 text-rose-600 dark:text-rose-300" : ""}
                             ${engine.state.currentAnswerStatus === "skipped" ? "border-amber-500/60 bg-amber-500/15 text-amber-600 dark:text-amber-300" : ""}
                             ${engine.state.currentAnswerStatus === "idle" ? "border-border/40 bg-card/60 backdrop-blur-xl" : ""}
                         `}
@@ -1041,7 +1051,7 @@ export default function MentalMathsPractice() {
                             />
                             <Button
                               type="submit"
-                              className="h-9 sm:h-10 md:h-11 w-20 sm:w-24 md:w-28 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-amber-500/25"
+                              className="h-9 sm:h-10 md:h-11 w-20 sm:w-24 md:w-28 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 border-b-[4px] border-b-amber-600 active:translate-y-[2px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-amber-500/25"
                               onClick={() => handleEnterSubmit(userInput)}
                             >
                               Enter
@@ -1049,7 +1059,7 @@ export default function MentalMathsPractice() {
                             <Button
                               type="button"
                               variant="ghost"
-                              className="h-9 sm:h-10 md:h-11 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card border-2 border-border/50 border-b-[3px] border-b-border active:border-b-[1px] active:translate-y-[2px] transition-all duration-75 cursor-pointer"
+                              className="h-9 sm:h-10 md:h-11 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card border-2 border-border/50 border-b-[3px] border-b-border active:translate-y-[1px] transition-all duration-75 cursor-pointer select-none"
                               onClick={() => handleEnterSubmit("skip")}
                             >
                               Skip
@@ -1057,7 +1067,7 @@ export default function MentalMathsPractice() {
                           </form>
 
                           {/* Tactile 3D Keypad */}
-                          <div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 sm:p-2 md:p-2.5 bg-card/50 backdrop-blur-xl border-2 border-border/40 rounded-2xl sm:rounded-3xl shadow-inner h-full min-h-0">
+                          <div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 sm:p-2 md:p-2.5 bg-card/50 backdrop-blur-xl border-2 border-border/40 rounded-2xl sm:rounded-3xl shadow-inner h-full min-h-0 w-full">
                             {[
                               "1",
                               "2",
@@ -1078,10 +1088,10 @@ export default function MentalMathsPractice() {
                                 onClick={() => handleNumClick(btn)}
                                 className={`w-full h-full font-black rounded-xl sm:rounded-2xl border-2 transition-all duration-75 ease-out outline-none select-none cursor-pointer font-mono ${
                                   btn === "Clear"
-                                    ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-500/25 border-rose-500/40 border-b-[4px] border-b-rose-600/70 active:border-b-[1px] active:translate-y-[3px] text-xs sm:text-sm font-bold uppercase font-mono shadow-xs"
+                                    ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-500/25 border-rose-500/40 border-b-[4px] border-b-rose-600/70 active:translate-y-[2px] text-xs sm:text-sm font-bold uppercase font-mono shadow-xs"
                                     : btn === "⌫"
-                                      ? "bg-muted/60 text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] text-base sm:text-lg md:text-xl font-sans shadow-xs"
-                                      : "bg-card/90 text-foreground hover:bg-card hover:border-amber-400/60 hover:border-b-amber-500 border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] text-lg sm:text-xl md:text-2xl shadow-xs"
+                                      ? "bg-muted/60 text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-base sm:text-lg md:text-xl font-sans shadow-xs"
+                                      : "bg-card/90 text-foreground hover:bg-card hover:border-amber-400/60 hover:border-b-amber-500 border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-lg sm:text-xl md:text-2xl shadow-xs"
                                 }`}
                               >
                                 {btn}
@@ -1096,10 +1106,10 @@ export default function MentalMathsPractice() {
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.12, ease: "easeInOut" }}
-                          className="flex flex-col items-center justify-end flex-1 h-full gap-2.5 sm:gap-3.5 w-full"
+                          className="flex flex-col items-center justify-end flex-1 h-full gap-2 sm:gap-2.5 w-full"
                         >
                           {/* 3D MCQ Options Grid */}
-                          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-3.5 w-full h-full mx-auto min-h-0">
+                          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-3.5 w-full flex-1 min-h-0">
                             {engine?.state?.currentQuestion?.options?.map(
                               (option, idx) => {
                                 const optionLabels = ["A", "B", "C", "D"];
@@ -1120,7 +1130,7 @@ export default function MentalMathsPractice() {
                                   <button
                                     key={idx}
                                     type="button"
-                                    className={`relative w-full h-full font-bold rounded-2xl sm:rounded-3xl border-2 transition-all duration-75 ease-out flex flex-col items-center justify-center p-2 sm:p-2.5 md:p-3 active:border-b-[1px] active:translate-y-[4px] cursor-pointer select-none backdrop-blur-md group ${highlightClass}`}
+                                    className={`relative w-full h-full font-bold rounded-2xl sm:rounded-3xl border-2 transition-all duration-75 ease-out flex flex-col items-center justify-center p-2 sm:p-2.5 md:p-3 active:translate-y-[2px] cursor-pointer select-none backdrop-blur-md group ${highlightClass}`}
                                     onClick={() => {
                                       if (
                                         engine.state.currentAnswerStatus !==
@@ -1143,11 +1153,11 @@ export default function MentalMathsPractice() {
                             )}
                           </div>
                           {/* 3D Skip Button for MCQ */}
-                          <div className="flex justify-center items-center shrink-0">
+                          <div className="flex justify-center items-center shrink-0 h-9 sm:h-9.5">
                             <button
                               type="button"
                               onClick={() => handleEnterSubmit("skip")}
-                              className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card rounded-xl px-5 sm:px-6 py-1.5 sm:py-2 border-2 border-border/50 border-b-[3px] border-b-border active:border-b-[1px] active:translate-y-[2px] transition-all duration-75 cursor-pointer"
+                              className="h-8 sm:h-8.5 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-card/60 hover:bg-card rounded-xl px-6 border-2 border-border/50 border-b-[3px] border-b-border active:translate-y-[1px] transition-all duration-75 cursor-pointer flex items-center justify-center select-none"
                             >
                               Skip
                             </button>
@@ -1168,16 +1178,27 @@ export default function MentalMathsPractice() {
                   const total = correct + wrong + skipped;
                   const accuracy =
                     total > 0 ? Math.floor((correct / total) * 100) : 0;
-                  const radius = 48;
-                  const circumference = 2 * Math.PI * radius;
-                  const strokeDashoffset =
-                    circumference - (circumference * animatedAccuracy) / 100;
+
+                  const validTimes = engine.state.history
+                    .filter((h) => h.timeTaken && h.timeTaken > 0)
+                    .map((h) => (h.timeTaken ?? 0) / 1000);
+                  const fastestTime =
+                    validTimes.length > 0 ? Math.min(...validTimes) : 0;
+                  const avgTime =
+                    engine.state.history.length > 0
+                      ? engine.state.history.reduce(
+                          (acc, curr) => acc + (curr.timeTaken ?? 0),
+                          0,
+                        ) /
+                        Math.max(1, engine.state.history.length) /
+                        1000
+                      : 0;
 
                   const getAccuracyColorClasses = (acc: number) => {
                     if (acc >= 90)
                       return {
                         text: "text-green-600 dark:text-green-400",
-                        stroke: "stroke-green-500",
+                        stroke: "stroke-emerald-500",
                       };
                     if (acc >= 75)
                       return {
@@ -1197,7 +1218,7 @@ export default function MentalMathsPractice() {
                   const accuracyColors = getAccuracyColorClasses(accuracy);
 
                   return (
-                    <div className="w-full h-full flex-1 flex flex-col items-center text-left py-0.5 sm:py-1.5 md:py-2 animate-in fade-in duration-300 relative min-h-0">
+                    <div className="w-full h-full flex-1 flex flex-col text-left py-1 animate-in fade-in duration-300 relative min-h-0">
                       {/* Localized Confetti Canvas */}
                       <canvas
                         ref={confettiCanvasRef}
@@ -1205,121 +1226,67 @@ export default function MentalMathsPractice() {
                       />
 
                       {/* Header */}
-                      <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between pb-2.5 sm:pb-3 md:pb-4 border-b-2 border-foreground/20 gap-2 sm:gap-3 shrink-0">
-                        <div className="flex items-start sm:items-center gap-2.5 sm:gap-3 md:gap-4">
-                          <div className="p-1.5 sm:p-2 md:p-2.5 rounded-full border-2 flex items-center justify-center text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20 shadow-sm shrink-0">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7"
-                            >
-                              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-                              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-                              <path d="M4 22h16"></path>
-                              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
-                              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
-                              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
-                            </svg>
+                      <div className="w-full flex items-center justify-between pb-3 sm:pb-4 border-b-2 border-border/40 gap-3 shrink-0">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
+                            <Trophy className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.2} />
                           </div>
                           <div>
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 md:gap-3">
-                              <h2 className="text-base sm:text-xl md:text-2xl font-black text-foreground tracking-tight leading-tight">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground tracking-tight leading-tight">
                                 Session complete
                               </h2>
-                              <div className="flex items-center gap-1 sm:gap-1.5 select-none">
-                                <span className="px-1.5 sm:px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border-2 border-border/50">
+                              <div className="flex items-center gap-1.5 select-none">
+                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider border-2 border-border/40">
                                   {topic}
                                 </span>
-                                <span className="px-1.5 sm:px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border-2 border-border/50">
+                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider border-2 border-border/40">
                                   {engine.state.mode === "timed"
                                     ? "Timed"
                                     : "Freestyle"}
                                 </span>
-                                <span className="px-1.5 sm:px-2 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] font-bold uppercase tracking-widest border-2 border-border/50">
+                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider border-2 border-border/40">
                                   {engine.state.difficulty}
                                 </span>
                               </div>
                             </div>
-                            <p className="text-muted-foreground text-[11px] sm:text-xs mt-0.5 sm:mt-1 font-medium">
-                              <strong className="text-foreground">
-                                {correct}
-                              </strong>{" "}
-                              of{" "}
-                              <strong className="text-foreground">
+                            <p className="text-muted-foreground text-xs sm:text-sm mt-0.5 font-medium">
+                              <span className="text-foreground font-mono font-bold">{correct}</span> of{" "}
+                              <span className="text-foreground font-mono font-bold">
                                 {engine.state.attemptedQuestionsCount}
-                              </strong>{" "}
+                              </span>{" "}
                               correct · you averaged{" "}
-                              <strong className="text-foreground">
-                                {(
-                                  engine.state.history.reduce(
-                                    (acc, curr) => acc + (curr.timeTaken ?? 0),
-                                    0,
-                                  ) /
-                                  Math.max(1, engine.state.history.length) /
-                                  1000
-                                ).toFixed(1)}
-                                s
-                              </strong>{" "}
-                              against a{" "}
-                              {getTargetTime(topic, engine.state.difficulty)}s
-                              target.
+                              <span className="text-foreground font-mono font-bold">
+                                {avgTime.toFixed(1)}s
+                              </span>{" "}
+                              against a {getTargetTime(topic, engine.state.difficulty)}s target.
                             </p>
                           </div>
                         </div>
-                      </div>
-
-                      {/* View Switcher (Overview vs Review) */}
-                      <div className="w-full flex items-center bg-muted/60 p-0.5 sm:p-1 rounded-2xl border-2 border-border/50 mt-1.5 sm:mt-2 shrink-0">
                         <button
                           type="button"
-                          onClick={() => setResultsTab("overview")}
-                          className={`flex-1 py-1 sm:py-1.5 px-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                            resultsTab === "overview"
-                              ? "bg-card text-foreground shadow-xs border-2 border-border/60 font-black"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
+                          onClick={() => router.back()}
+                          className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 transition-all cursor-pointer shrink-0"
+                          title="Close"
+                          aria-label="Close session"
                         >
-                          <Zap className="w-3.5 h-3.5 text-amber-500" />
-                          <span>Overview</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setResultsTab("review")}
-                          className={`flex-1 py-1 sm:py-1.5 px-2.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                            resultsTab === "review"
-                              ? "bg-card text-foreground shadow-xs border-2 border-border/60 font-black"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                          <span>Review ({engine.state.history.length})</span>
+                          <X className="w-4 h-4" strokeWidth={2.2} />
                         </button>
                       </div>
 
-                      {/* Main Layout Container */}
-                      <div className="w-full flex flex-col flex-1 h-full min-h-0 mt-1.5 sm:mt-2.5">
-                        {/* OVERVIEW PANEL: Stats & Pacing */}
-                        <div
-                          className={`w-full flex-col justify-between gap-3 sm:gap-4 md:gap-5 pt-1.5 sm:pt-2.5 pb-1 overflow-y-auto ${
-                            resultsTab === "overview" ? "flex flex-1 min-h-0" : "hidden"
-                          }`}
-                        >
-                          {/* Top Stats Block */}
-                          <div className="flex items-center gap-3 sm:gap-4 md:gap-5 shrink-0">
-                            {/* Giant Accuracy Gauge */}
-                            <div className="relative flex flex-col items-center justify-center w-[85px] h-[85px] sm:w-[95px] sm:h-[95px] md:w-[105px] md:h-[105px] shrink-0">
+                      {/* Main Dual-Column Layout: Side-by-side on desktop, stacked on mobile */}
+                      <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch my-2 sm:my-3 flex-1 min-h-0">
+                        {/* LEFT COLUMN: Overview Stats & Pacing (5 cols on md/lg) */}
+                        <div className="md:col-span-5 flex flex-col gap-3 sm:gap-4 h-full min-h-0">
+                          {/* Accuracy Gauge & Stacked Counts Box */}
+                          <div className="bg-card border-2 border-border/60 rounded-2xl p-3 sm:p-3.5 md:p-4 flex items-center gap-3.5 sm:gap-4 md:gap-5 shrink-0">
+                            {/* Circular Accuracy Gauge with Responsive Radius */}
+                            <div className="relative flex flex-col items-center justify-center w-[88px] h-[88px] sm:w-[98px] sm:h-[98px] md:w-[116px] md:h-[116px] shrink-0">
                               <svg className="w-full h-full transform -rotate-90 relative z-10">
                                 <circle
                                   cx="50%"
                                   cy="50%"
-                                  r="42%"
+                                  r="40%"
                                   className="stroke-emerald-500/20"
                                   strokeWidth="8"
                                   fill="transparent"
@@ -1327,7 +1294,7 @@ export default function MentalMathsPractice() {
                                 <circle
                                   cx="50%"
                                   cy="50%"
-                                  r="42%"
+                                  r="40%"
                                   className={accuracyColors.stroke}
                                   strokeWidth="8"
                                   fill="transparent"
@@ -1338,346 +1305,316 @@ export default function MentalMathsPractice() {
                                 />
                               </svg>
                               <div className="absolute flex flex-col items-center justify-center z-20">
-                                <span className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-foreground font-mono leading-none mb-0.5">
+                                <span className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground font-mono leading-none mb-0.5">
                                   {animatedAccuracy}%
                                 </span>
-                                <span className="text-[8px] sm:text-[9px] text-muted-foreground font-bold uppercase tracking-widest">
+                                <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono font-bold uppercase tracking-widest">
                                   Accuracy
                                 </span>
                               </div>
                             </div>
 
-                            {/* Stacked Counts */}
-                            <div className="flex flex-col flex-1 gap-1 sm:gap-1.5 md:gap-2">
-                              <div className="flex items-center justify-between px-2 py-1 sm:px-2.5 sm:py-1.5 bg-muted/30 rounded-lg sm:rounded-xl border-2 border-border/50">
-                                <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
+                            {/* Stacked Metric Cards */}
+                            <div className="flex-1 flex flex-col gap-1.5 sm:gap-2">
+                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border/40">
+                                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Correct
                                 </span>
-                                <span className="text-xs sm:text-sm font-black text-emerald-600 dark:text-emerald-400 font-mono">
+                                <span className="text-xs sm:text-sm md:text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono">
                                   {correct}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between px-2 py-1 sm:px-2.5 sm:py-1.5 bg-muted/30 rounded-lg sm:rounded-xl border-2 border-border/50">
-                                <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
-                                  Incorrect
+                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border/40">
+                                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-widest">
+                                  Wrong
                                 </span>
-                                <span className="text-xs sm:text-sm font-black text-rose-600 dark:text-rose-400 font-mono">
+                                <span className="text-xs sm:text-sm md:text-base font-bold text-rose-600 dark:text-rose-400 font-mono">
                                   {wrong}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between px-2 py-1 sm:px-2.5 sm:py-1.5 bg-muted/30 rounded-lg sm:rounded-xl border-2 border-border/50">
-                                <span className="text-[9px] sm:text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
+                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border/40">
+                                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Skipped
                                 </span>
-                                <span className="text-xs sm:text-sm font-black text-amber-600 dark:text-amber-500 font-mono">
+                                <span className="text-xs sm:text-sm md:text-base font-bold text-amber-600 dark:text-amber-500 font-mono">
                                   {skipped}
                                 </span>
                               </div>
                             </div>
                           </div>
 
-                          {/* Pacing Chart */}
-                          {engine.state.history.length > 0 && (
-                            <div className="w-full flex flex-col flex-1 pt-2 sm:pt-3 md:pt-3.5 border-t-2 border-border border-dashed min-h-[115px]">
-                              <div className="flex justify-between items-center mb-1.5 sm:mb-2 md:mb-3 shrink-0">
-                                <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                                  Pace per question
-                                </span>
-                                <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono">
-                                  target{" "}
-                                  {getTargetTime(
-                                    topic,
-                                    engine.state.difficulty,
-                                  )}
-                                  s
-                                </span>
-                              </div>
+                          {/* Pacing Chart Card matching Demo Design */}
+                          {(() => {
+                            const targetTime = getTargetTime(topic, engine.state.difficulty);
+                            const items = engine.state.history.length > 0 ? engine.state.history : [];
+                            const maxPace = Math.max(
+                              ...items.map((h) => (h.timeTaken ?? 0) / 1000),
+                              targetTime,
+                              1
+                            );
+                            // Scale to a clean round top ceiling (e.g. 10s, 15s, 20s, 30s)
+                            const topY = maxPace <= 5 ? 6 : maxPace <= 10 ? 12 : maxPace <= 15 ? 18 : maxPace <= 25 ? 30 : Math.ceil(maxPace / 10) * 10;
+                            const midY = Math.round(topY / 2);
 
-                              <div className="relative flex-1 flex w-full min-h-[85px] sm:min-h-[100px] md:min-h-[115px] pl-6 pb-4 mt-0.5 sm:mt-1">
-                                {/* Y-axis Labels */}
-                                <div className="absolute left-0 top-0 bottom-4 w-5 flex flex-col justify-between text-[8px] sm:text-[9px] text-muted-foreground/60 font-mono text-right pr-1 select-none">
-                                  <span>
-                                    {Math.max(
-                                      ...engine.state.history.map(
-                                        (h) => (h.timeTaken ?? 0) / 1000,
-                                      ),
-                                      getTargetTime(
-                                        topic,
-                                        engine.state.difficulty,
-                                      ),
-                                    ).toFixed(0)}
-                                    s
+                            return (
+                              <div className="bg-card border-2 border-border/60 rounded-2xl p-3 sm:p-3.5 md:p-4 flex flex-col flex-1 min-h-0 justify-between">
+                                {/* Header */}
+                                <div className="flex justify-between items-center mb-2 shrink-0">
+                                  <span className="text-[10px] sm:text-[11px] font-mono font-bold text-muted-foreground tracking-widest uppercase">
+                                    PACE PER QUESTION
                                   </span>
-                                  <span>
-                                    {(
-                                      Math.max(
-                                        ...engine.state.history.map(
-                                          (h) => (h.timeTaken ?? 0) / 1000,
-                                        ),
-                                        getTargetTime(
-                                          topic,
-                                          engine.state.difficulty,
-                                        ),
-                                      ) / 2
-                                    ).toFixed(0)}
-                                    s
+                                  <span className="text-xs font-mono text-muted-foreground lowercase">
+                                    target {targetTime}s
                                   </span>
-                                  <span>0s</span>
                                 </div>
 
-                                {/* Target Line */}
-                                <div
-                                  className="absolute left-6 right-0 border-b-2 border-amber-500/40 border-dashed z-10 pointer-events-none"
-                                  style={{
-                                    bottom: `${Math.min(
-                                      100,
-                                      (getTargetTime(
-                                        topic,
-                                        engine.state.difficulty,
-                                      ) /
-                                        Math.max(
-                                          ...engine.state.history.map(
-                                            (h) => (h.timeTaken ?? 0) / 1000,
-                                          ),
-                                          getTargetTime(
-                                            topic,
-                                            engine.state.difficulty,
-                                          ),
-                                        )) *
-                                        100,
-                                    )}%`,
-                                  }}
-                                />
+                                {/* Main Chart Plot */}
+                                <div className="flex gap-1.5 w-full flex-1 min-h-0 pt-1 items-stretch">
+                                  {/* Y-Axis Coordinates */}
+                                  <div className="flex flex-col justify-between items-end pr-1 text-[9px] sm:text-[10px] md:text-[11px] font-mono font-bold text-muted-foreground/70 select-none py-0.5 shrink-0 w-auto min-w-[18px] sm:min-w-[22px] h-full min-h-[96px] sm:min-h-[110px] md:min-h-[120px]">
+                                    <span>{topY}s</span>
+                                    <span>{midY}s</span>
+                                    <span>0s</span>
+                                  </div>
 
-                                {/* Bars */}
-                                <div className="flex-1 flex items-end gap-1 sm:gap-1.5 h-full z-20">
-                                  {engine.state.history.map((h, idx) => {
-                                    const timeSec = (h.timeTaken ?? 0) / 1000;
-                                    const maxTime = Math.max(
-                                      ...engine.state.history.map(
-                                        (item) => (item.timeTaken ?? 0) / 1000,
-                                      ),
-                                      getTargetTime(
-                                        topic,
-                                        engine.state.difficulty,
-                                      ),
-                                    );
-                                    const heightPct = Math.min(
-                                      100,
-                                      Math.max(8, (timeSec / maxTime) * 100),
-                                    );
-                                    const isTargetMet =
-                                      timeSec <=
-                                      getTargetTime(
-                                        topic,
-                                        engine.state.difficulty,
-                                      );
-
-                                    return (
+                                  {/* Plot Area */}
+                                  <div className="flex-1 flex flex-col min-w-0 h-full min-h-0">
+                                    <div className="relative w-full flex-1 min-h-[96px] sm:min-h-[110px] md:min-h-[120px] border-l border-b border-border/40 flex items-end px-1 pb-1">
+                                      {/* Target Dashed Line with Badge */}
                                       <div
-                                        key={idx}
-                                        className="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer"
+                                        className="absolute left-0 right-0 border-b border-dashed border-amber-500/60 z-10 pointer-events-none flex items-center justify-end"
+                                        style={{
+                                          bottom: `${Math.min(95, Math.max(5, (targetTime / topY) * 100))}%`,
+                                        }}
                                       >
-                                        <div
-                                          className={`w-full rounded-t-md transition-all duration-300 group-hover:brightness-125 ${
-                                            h.status === "correct"
-                                              ? isTargetMet
-                                                ? "bg-emerald-500"
-                                                : "bg-emerald-500/60"
-                                              : h.status === "wrong"
-                                                ? "bg-rose-500"
-                                                : "bg-amber-500/60"
-                                          }`}
-                                          style={{ height: `${heightPct}%` }}
-                                        />
-                                        {/* X-axis Label */}
-                                        {engine.state.history.length <= 15 && (
-                                          <div className="absolute top-full mt-0.5 text-[7px] sm:text-[8px] text-muted-foreground font-mono text-center">
-                                            Q{idx + 1}
-                                          </div>
-                                        )}
-                                        {/* Tooltip */}
-                                        <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border-2 border-border text-popover-foreground text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap z-50">
-                                          Q{idx + 1}: {timeSec.toFixed(1)}s
-                                        </div>
+                                        <span className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase transform -translate-y-1/2 select-none mr-0.5 sm:mr-1">
+                                          TARGET {targetTime}s
+                                        </span>
                                       </div>
-                                    );
-                                  })}
+
+                                      {/* Capsule Bars */}
+                                      <div className="flex-1 flex items-end justify-between gap-[1px] sm:gap-0.5 h-full z-20 px-0.5 min-w-0">
+                                        {items.length === 0 ? (
+                                          <div className="w-full h-full flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-muted-foreground/60 italic">
+                                            No pacing data
+                                          </div>
+                                        ) : (
+                                          items.map((h, idx) => {
+                                            const timeSec = Math.max(0.1, (h.timeTaken ?? 0) / 1000);
+                                            const heightPct = Math.min(
+                                              100,
+                                              Math.max(8, (timeSec / topY) * 100)
+                                            );
+                                            const isCorrect = h.status === "correct";
+                                            const isWrong = h.status === "wrong";
+
+                                            return (
+                                              <div
+                                                key={idx}
+                                                className="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer min-w-[2px] max-w-[16px]"
+                                              >
+                                                <div
+                                                  className={`w-full min-w-[1.5px] rounded-full transition-all duration-200 group-hover:brightness-110 ${
+                                                    isCorrect
+                                                      ? "bg-emerald-400 dark:bg-emerald-500"
+                                                      : isWrong
+                                                      ? "bg-rose-400 dark:bg-rose-500"
+                                                      : "bg-amber-400 dark:bg-amber-500"
+                                                  }`}
+                                                  style={{ height: `${heightPct}%` }}
+                                                />
+                                                {/* Tooltip */}
+                                                <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border-2 border-border text-popover-foreground text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded-lg shadow-lg whitespace-nowrap z-50">
+                                                  Q{idx + 1}: {h.status === "skipped" ? "Skipped (" : ""}{timeSec.toFixed(1)}s{h.status === "skipped" ? ")" : ""}
+                                                </div>
+                                              </div>
+                                            );
+                                          })
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {/* X-Axis Landmark Coordinates */}
+                                    <div className="flex justify-between items-center w-full pt-1 sm:pt-1.5 md:pt-2 px-1 shrink-0 min-w-0">
+                                      {items.map((_, idx) => {
+                                        const qNum = idx + 1;
+                                        const total = items.length;
+                                        const isMilestone =
+                                          qNum === 1 ||
+                                          qNum === total ||
+                                          (total > 40 ? qNum % 15 === 0 : total > 20 ? qNum % 10 === 0 : qNum % 5 === 0) ||
+                                          total <= 8;
+
+                                        return (
+                                          <div key={idx} className="flex-1 flex justify-center min-w-[2px] max-w-[16px]">
+                                            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-muted-foreground/70 select-none">
+                                              {isMilestone ? `Q${qNum}` : ""}
+                                            </span>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Footer */}
+                                <div className="flex justify-between items-center mt-2 pt-1 text-[10px] sm:text-xs md:text-sm font-mono shrink-0">
+                                  <span className="text-muted-foreground font-medium">
+                                    avg <span className="text-foreground font-bold">{avgTime.toFixed(1)}s</span>
+                                  </span>
+                                  <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                                    fastest {fastestTime.toFixed(1)}s
+                                  </span>
                                 </div>
                               </div>
-                            </div>
-                          )}
+                            );
+                          })()}
                         </div>
 
-                        {/* REVIEW PANEL: Review Answers */}
-                        <div
-                          className={`w-full flex-col h-full min-h-0 pt-1.5 sm:pt-2.5 pb-1 ${
-                            resultsTab === "review" ? "flex flex-1 min-h-0" : "hidden"
-                          }`}
-                        >
-                          <div className="flex justify-between items-center mb-1.5 sm:mb-2 md:mb-3 shrink-0">
-                            <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                              Review
-                            </span>
-                            <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono">
-                              {engine.state.history.length} questions
-                            </span>
-                          </div>
-
+                        {/* RIGHT COLUMN: Question Review List (7 cols on md/lg) */}
+                        <div className="md:col-span-7 flex flex-col h-full min-h-0">
                           {engine.state.history.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
-                              <span className="text-xl sm:text-2xl mb-1 sm:mb-2">📋</span>
-                              <p className="text-xs">No questions attempted</p>
+                            <div className="border-2 border-border/60 rounded-2xl bg-card flex-1 flex flex-col items-center justify-center py-12 text-muted-foreground">
+                              <span className="text-2xl mb-2">📋</span>
+                              <p className="text-sm font-medium">No questions attempted</p>
                             </div>
                           ) : (
-                            <div className="relative flex-1 min-h-0 h-full">
-                              <div className="absolute inset-0 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent pr-1 sm:pr-2 md:pr-3">
-                                <div className="flex flex-col divide-y divide-border/80">
-                                  {engine.state.history.map((item, idx) => {
-                                    const isCorrect = item.status === "correct";
-                                    const isWrong = item.status === "wrong";
-                                    const isSkipped = item.status === "skipped";
+                            <div className="border-2 border-border/60 rounded-2xl bg-card flex-1 flex flex-col min-h-0 overflow-hidden">
+                              {/* Internal Card Header - Perfectly aligned with Left Column Accuracy Box */}
+                              <div className="flex justify-between items-center px-3.5 sm:px-4 py-2.5 sm:py-3 border-b-2 border-border/40 shrink-0 bg-muted/40">
+                                <span className="text-[10px] sm:text-[11px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
+                                  Every Answer
+                                </span>
+                                <span className="text-[10px] sm:text-[11px] text-muted-foreground font-mono font-bold uppercase tracking-wider">
+                                  {engine.state.history.length} items
+                                </span>
+                              </div>
 
-                                    return (
-                                      <div
-                                        key={idx}
-                                        className="flex items-start justify-between py-2 sm:py-2.5 md:py-3 px-1 sm:px-1.5 -mx-1 sm:-mx-1.5 rounded-none hover:bg-muted/40 transition-colors group"
-                                      >
-                                        <div className="flex items-start gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0 pr-2 sm:pr-3">
-                                          <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground/50 w-4 sm:w-5 mt-0.5 shrink-0">
-                                            {String(idx + 1).padStart(2, "0")}.
-                                          </span>
-                                          <div className="flex items-center justify-center mt-0.5 shrink-0">
-                                            {isCorrect && (
-                                              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
-                                            )}
-                                            {isWrong && (
-                                              <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-500" />
-                                            )}
-                                            {isSkipped && (
-                                              <MinusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500" />
-                                            )}
-                                          </div>
-                                          <div className="text-xs sm:text-[13px] font-mono font-extrabold text-foreground flex-1 flex flex-wrap gap-x-1.5 sm:gap-x-2 gap-y-0.5 items-baseline min-w-0">
-                                            <span className="text-foreground/90">
-                                              {item.questionText} =
-                                            </span>
-                                            <span className="shrink-0 flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
-                                              {isCorrect || isSkipped ? (
-                                                <span className="font-semibold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
-                                                  {item.correctAnswer}
-                                                </span>
-                                              ) : (
-                                                <span className="font-semibold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
-                                                  {item.correctAnswer}
-                                                  <span className="text-muted-foreground/60 text-[9px] sm:text-[10px] md:text-[11px] ml-1.5 mr-1 font-semibold">
-                                                    You:
-                                                  </span>
-                                                  <span className="line-through text-rose-500 opacity-70">
-                                                    {item.userAnswer}
-                                                  </span>
-                                                </span>
-                                              )}
-                                            </span>
-                                          </div>
+                              {/* Scrollable Answers List */}
+                              <div className="flex-1 overflow-y-auto pr-1 divide-y-2 divide-border/40 p-1.5 sm:p-2 scrollbar-thin">
+                                {engine.state.history.map((item, idx) => {
+                                  const isCorrect = item.status === "correct";
+                                  const isWrong = item.status === "wrong";
+                                  const isSkipped = item.status === "skipped";
+
+                                  return (
+                                    <div
+                                      key={idx}
+                                      className="flex items-center justify-between py-2.5 sm:py-3 px-2.5 sm:px-3 hover:bg-muted/40 transition-colors group rounded-xl"
+                                    >
+                                      {/* Left: Index + Status Circle + Question & Answer Text */}
+                                      <div className="flex items-center gap-2 sm:gap-2.5 flex-1 min-w-0 pr-2 sm:pr-3">
+                                        <span className="text-[10px] sm:text-[11px] font-mono font-bold text-muted-foreground/60 w-4 sm:w-5 shrink-0">
+                                          {String(idx + 1).padStart(2, "0")}
+                                        </span>
+                                        <div className="flex items-center justify-center shrink-0">
+                                          {isCorrect && (
+                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-emerald-500/10 border-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                                              <Check className="w-2.5 h-2.5" strokeWidth={2.5} />
+                                            </div>
+                                          )}
+                                          {isWrong && (
+                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-rose-500/10 border-2 border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                                              <X className="w-2.5 h-2.5" strokeWidth={2.5} />
+                                            </div>
+                                          )}
+                                          {isSkipped && (
+                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-amber-500/10 border-2 border-amber-500/30 text-amber-600 dark:text-amber-500 flex items-center justify-center">
+                                              <Minus className="w-2.5 h-2.5" strokeWidth={2.5} />
+                                            </div>
+                                          )}
                                         </div>
-
-                                        <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 mt-0.5 shrink-0">
-                                          <div className="w-[58px] sm:w-[68px] md:w-[76px]">
-                                            {isCorrect && (
-                                              <div className="w-full text-center py-[1.5px] sm:py-[2px] rounded-full bg-emerald-500/5 text-emerald-600 dark:text-emerald-400 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
-                                                Correct
-                                              </div>
-                                            )}
+                                        <div className="text-xs sm:text-sm font-mono font-bold text-foreground flex-1 flex flex-wrap gap-x-2 gap-y-0.5 items-baseline min-w-0">
+                                          <span className="text-foreground">
+                                            {item.questionText} =
+                                          </span>
+                                          <span className="shrink-0 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+                                            <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                                              {item.correctAnswer}
+                                            </span>
                                             {isWrong && (
-                                              <div className="w-full text-center py-[1.5px] sm:py-[2px] rounded-full bg-rose-500/5 text-rose-600 dark:text-rose-400 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
-                                                Incorrect
-                                              </div>
+                                              <span className="line-through text-rose-500/80 font-bold font-mono">
+                                                {item.userAnswer}
+                                              </span>
                                             )}
-                                            {isSkipped && (
-                                              <div className="w-full text-center py-[1.5px] sm:py-[2px] rounded-full bg-amber-500/5 text-amber-600 dark:text-amber-500 text-[8px] sm:text-[9px] font-semibold tracking-widest uppercase">
-                                                Skipped
-                                              </div>
-                                            )}
-                                          </div>
-
-                                          <div className="w-9 sm:w-11 flex justify-end">
-                                            {!isSkipped && (
-                                              <div className="flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px] md:text-[11px] font-mono text-orange-500/80 shrink-0">
-                                                {(item.timeTaken ?? 0) / 1000 >
-                                                getTargetTime(
-                                                  topic,
-                                                  engine.state.difficulty,
-                                                ) ? (
-                                                  <span className="text-xs">
-                                                    🐢
-                                                  </span>
-                                                ) : (
-                                                  <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current"
-                                                  >
-                                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                                                  </svg>
-                                                )}
-                                                {(
-                                                  (item.timeTaken ?? 0) / 1000
-                                                ).toFixed(1)}
-                                                s
-                                              </div>
-                                            )}
-                                          </div>
+                                          </span>
                                         </div>
                                       </div>
-                                    );
-                                  })}
-                                </div>
+
+                                      {/* Right: Status Pill + Time with Amber Zap - Aligned to straight left column */}
+                                      <div className="flex items-center justify-end gap-1.5 sm:gap-2.5 shrink-0 w-[115px] sm:w-[125px] md:w-[135px]">
+                                        {/* Status Pill Badge - Fixed uniform width for perfect left alignment */}
+                                        <div className="w-[58px] sm:w-[64px] md:w-[68px] shrink-0 flex items-center justify-start">
+                                          {isCorrect && (
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider border border-emerald-500/20">
+                                              Correct
+                                            </span>
+                                          )}
+                                          {isWrong && (
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider border border-rose-500/20">
+                                              Incorrect
+                                            </span>
+                                          )}
+                                          {isSkipped && (
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-500 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider border border-amber-500/20">
+                                              Skipped
+                                            </span>
+                                          )}
+                                        </div>
+
+                                        {/* Pace Time Badge */}
+                                        <div className="w-11 sm:w-13 flex items-center justify-end shrink-0">
+                                          {!isSkipped && (
+                                            <div className="flex items-center gap-1 text-[11px] sm:text-xs font-mono font-bold text-amber-500">
+                                              <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-500 text-amber-500" strokeWidth={2.2} />
+                                              {((item.timeTaken ?? 0) / 1000).toFixed(1)}s
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}
                         </div>
                       </div>
 
-                      {/* Footer Actions */}
-                      <div className="w-full flex gap-2 sm:gap-2.5 md:gap-3 pt-2 sm:pt-2.5 md:pt-3 border-t-2 border-foreground/20 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => router.back()}
-                          className="flex-[3] h-10 sm:h-11 md:h-12 flex items-center justify-center rounded-2xl text-xs font-mono font-bold tracking-widest uppercase bg-card/70 text-foreground hover:bg-card border-2 border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer shadow-xs select-none"
-                        >
-                          Back
-                        </button>
-                        <Button
-                          onClick={engine.resetSession}
-                          className="flex-[7] h-10 sm:h-11 md:h-12 px-3 sm:px-4 py-2 rounded-2xl text-xs sm:text-xs md:text-sm font-mono font-black tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 border-b-[5px] border-b-amber-600 active:border-b-[1px] active:translate-y-[4px] hover:brightness-105 transition-all duration-75 hover:cursor-pointer flex items-center justify-center shadow-lg shadow-amber-500/30 group"
-                        >
-                          <Swords className="w-4 h-4 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
-                          Practice Again
-                        </Button>
-                      </div>
-
-                      {/* Minimalist Guest Auth Prompt */}
-                      {!user && (
-                        <div className="w-full mt-1 sm:mt-1.5 text-center shrink-0 animate-in fade-in duration-700 delay-300">
-                          <p className="text-[9px] sm:text-[10px] text-muted-foreground/80 font-medium tracking-wide">
-                            Playing as a Guest.{" "}
-                            <button 
-                              onClick={signInWithGoogle} 
-                              className="text-foreground hover:text-primary font-bold underline underline-offset-2 transition-colors cursor-pointer"
-                            >
-                              Sign in with Google to save scores
-                            </button>
-                          </p>
+                      {/* Footer Actions: Tactile 3D Buttons & Guest Prompt */}
+                      <div className="w-full flex flex-col gap-2.5 sm:gap-3 pt-2 shrink-0">
+                        <div className="w-full flex gap-3">
+                          <button
+                            type="button"
+                            onClick={() => router.back()}
+                            className="flex-[3] h-11 sm:h-12 flex items-center justify-center rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase bg-card text-foreground hover:bg-muted/60 border-2 border-border/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer select-none"
+                          >
+                            Back
+                          </button>
+                          <Button
+                            onClick={engine.resetSession}
+                            className="flex-[7] h-11 sm:h-12 px-4 sm:px-6 rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center shadow-lg shadow-amber-500/25 group"
+                          >
+                            <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
+                            Practice Again
+                          </Button>
                         </div>
-                      )}
+
+                        {/* Minimalist Guest Auth Prompt */}
+                        {!user && (
+                          <div className="w-full text-center pb-0.5 animate-in fade-in duration-700 delay-300">
+                            <p className="text-[10px] sm:text-[11px] text-muted-foreground font-mono font-medium tracking-wide">
+                              Playing as a Guest.{" "}
+                              <button 
+                                onClick={signInWithGoogle} 
+                                className="text-foreground hover:text-amber-500 font-bold underline underline-offset-2 transition-colors cursor-pointer"
+                              >
+                                Sign in with Google to save scores
+                              </button>
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   );
                 })()}
@@ -1687,28 +1624,28 @@ export default function MentalMathsPractice() {
       </div>
 
       <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-        <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border">
+        <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border/60 bg-card/95 backdrop-blur-xl rounded-3xl p-5 shadow-2xl">
           <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
-            <AlertDialogTitle className="text-xl font-black tracking-tight text-foreground flex items-center gap-2">
+            <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
               Quit Practice Session?
             </AlertDialogTitle>
           </AlertDialogHeader>
-          <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed mt-4">
+          <AlertDialogDescription className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-3 font-medium">
             Your current progress and score of{" "}
-            <strong className="text-foreground">{engine.state.score}</strong>{" "}
+            <span className="text-foreground font-mono font-bold">{engine.state.score}</span>{" "}
             will be reset.
           </AlertDialogDescription>
 
           <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
             <AlertDialogCancel
-              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-semibold border-border/85 hover:bg-muted"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase bg-card text-foreground hover:bg-muted/60 border-2 border-border/60 active:scale-95 transition-all cursor-pointer"
               onClick={() => setShowQuitConfirm(false)}
             >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 sm:flex-none h-11 rounded-2xl text-sm font-bold border-2 border-destructive/40 bg-transparent text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all shadow-sm"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
               onClick={() => {
                 setShowQuitConfirm(false);
                 engine.resetSession();
