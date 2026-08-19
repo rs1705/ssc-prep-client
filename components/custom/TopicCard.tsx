@@ -116,7 +116,7 @@ export const TopicCard = ({
             {emoji}
           </div>
           {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 select-none">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 select-none">
               {badge}
             </span>
           )}
@@ -136,7 +136,7 @@ export const TopicCard = ({
       {/* Bottom Controls Row */}
       <div className="flex items-center justify-between mt-5 pt-3.5 border-t-2 border-border/40 relative z-10 gap-2">
         {/* Left: Stats Pill */}
-        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border-2 border-border/40 truncate max-w-[120px]">
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border-2 border-border/40 truncate max-w-[120px]">
           {stats}
         </span>
 
@@ -161,9 +161,9 @@ export const TopicCard = ({
           )}
           <Button
             onClick={onStartClick}
-            className="px-3.5 py-1.5 h-8 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all hover:cursor-pointer border-0"
+            className="px-3.5 py-1.5 h-8 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-amber-500 to-orange-400 text-white shadow-xs hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
           >
-            <Swords className="w-3.5 h-3.5" />
+            <Swords className="w-3.5 h-3.5 group-hover/btn:rotate-12 group-hover/btn:scale-125 transition-transform duration-300" />
             Practice
           </Button>
         </div>

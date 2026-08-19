@@ -6,8 +6,8 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import {
   Home,
-  Zap,
-  BarChart3,
+  Dumbbell,
+  ChartNoAxesCombined,
   Bookmark,
   Trophy,
   Rocket,
@@ -24,8 +24,8 @@ import { useAuth } from "@/context/auth";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: Home },
-  { to: "/practice", label: "Practice", icon: Zap },
-  { to: "/analytics", label: "Analytics", icon: BarChart3 },
+  { to: "/practice", label: "Practice", icon: Dumbbell },
+  { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
   { to: "/bookmarks", label: "Bookmarks", icon: Bookmark },
   { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
 ];
@@ -109,7 +109,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             <Rocket className="w-5 h-5" />
           </div>
           <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
-            <div className="text-[9px] font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
+            <div className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
               EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
             </div>
             <div className="font-extrabold text-sm tracking-tight truncate text-foreground">
@@ -147,7 +147,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       </nav>
 
       {/* Support Section */}
-      <div className={`mt-5 mb-1 px-3 text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground/60 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-70 h-auto"}`}>
+      <div className={`mt-5 mb-1 px-3 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground/60 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-70 h-auto"}`}>
         Support
       </div>
       <nav className={`flex flex-col gap-1 w-full ${isCollapsed ? "mt-0" : ""}`}>
@@ -186,17 +186,17 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
         }`}
       >
         {/* Compact View (Centered absolute) */}
-        <div className={`font-mono font-bold text-amber-500 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-[10px]" : "opacity-0 scale-50 pointer-events-none"}`}>
+        <div className={`font-mono font-bold text-amber-500 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-xs" : "opacity-0 scale-50 pointer-events-none"}`}>
           142d
         </div>
         
         {/* Expanded View */}
         <div className={`w-full ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-3 left-3" : "opacity-100 relative"}`}>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
+            <span className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
               Exam D-Day
             </span>
-            <span className="text-[9px] font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
+            <span className="text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
               Tier 1
             </span>
           </div>

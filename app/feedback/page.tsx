@@ -177,7 +177,10 @@ export default function FeedbackPage() {
     >
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-2">
         {/* Left Column: Form / Success Card */}
-        <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+        <div 
+          className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+          style={{ animationDelay: "200ms", animationFillMode: "both" }}
+        >
           <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
             {/* Ambient Lighting Mesh */}
             <div className="absolute -top-12 -right-12 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -194,7 +197,7 @@ export default function FeedbackPage() {
                   <div className="w-16 h-16 bg-emerald-500/15 border-2 border-emerald-500/30 rounded-3xl flex items-center justify-center text-emerald-500 mb-6 shadow-lg shadow-emerald-500/10">
                     <CheckCircle2 className="w-8 h-8 animate-bounce" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border-2 border-emerald-500/20 mb-3">
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border-2 border-emerald-500/20 mb-3">
                     Feedback Received
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
@@ -250,7 +253,7 @@ export default function FeedbackPage() {
                         </p>
                       </div>
                     </div>
-                    <span className="hidden sm:inline-flex text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20">
+                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20">
                       Tier 1 Focused
                     </span>
                   </div>
@@ -258,7 +261,7 @@ export default function FeedbackPage() {
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     {/* Category Selection */}
                     <div className="space-y-2.5">
-                      <Label className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
+                      <Label className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                         1. Select Category
                       </Label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -288,7 +291,7 @@ export default function FeedbackPage() {
                                     <Check className="w-3.5 h-3.5 text-amber-500" />
                                   )}
                                 </div>
-                                <p className="text-[11px] text-muted-foreground leading-snug mt-0.5 truncate">
+                                <p className="text-xs text-muted-foreground leading-snug mt-0.5 truncate">
                                   {cat.desc}
                                 </p>
                               </div>
@@ -301,7 +304,7 @@ export default function FeedbackPage() {
                     {/* Rating Selection */}
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
-                        <Label className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
+                        <Label className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                           2. Overall App Experience
                         </Label>
                         <span className="text-xs font-mono font-bold text-amber-500">
@@ -325,7 +328,7 @@ export default function FeedbackPage() {
                               <span className="text-2xl sm:text-3xl select-none transition-transform duration-200">
                                 {rating.emoji}
                               </span>
-                              <span className={`text-[9px] font-mono font-bold uppercase tracking-wider ${isSelected ? "text-amber-500" : "text-muted-foreground"}`}>
+                              <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isSelected ? "text-amber-500" : "text-muted-foreground"}`}>
                                 {rating.desc}
                               </span>
                             </button>
@@ -341,7 +344,7 @@ export default function FeedbackPage() {
 
                     {/* Message / Details */}
                     <div className="space-y-2">
-                      <Label htmlFor="message" className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
+                      <Label htmlFor="message" className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                         3. Details & Explanation
                       </Label>
                       <textarea
@@ -360,7 +363,7 @@ export default function FeedbackPage() {
 
                     {/* Name / Identifier Field */}
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center justify-between">
+                      <Label htmlFor="name" className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center justify-between">
                         <span>4. Aspirant Name</span>
                         <span className="text-muted-foreground/50 normal-case font-normal">(optional)</span>
                       </Label>
@@ -410,7 +413,10 @@ export default function FeedbackPage() {
         </div>
 
         {/* Right Column: Roadmap & Developer SLA (Desktop Rail) */}
-        <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
+        <div 
+          className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+          style={{ animationDelay: "300ms", animationFillMode: "both" }}
+        >
           {/* Upcoming Roadmap Card */}
           <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -422,7 +428,7 @@ export default function FeedbackPage() {
                   Public Engineering Roadmap
                 </h3>
               </div>
-              <span className="text-[9px] font-mono font-bold uppercase text-muted-foreground">
+              <span className="text-xs font-mono font-bold uppercase text-muted-foreground">
                 Sprint 4
               </span>
             </div>
@@ -438,11 +444,11 @@ export default function FeedbackPage() {
                       <item.icon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                       <span>{item.title}</span>
                     </div>
-                    <span className={`text-[8px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 shrink-0 ${item.statusColor}`}>
+                    <span className={`text-xs font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 shrink-0 ${item.statusColor}`}>
                       {item.status}
                     </span>
                   </div>
-                  <p className="text-[11px] text-muted-foreground leading-relaxed pl-5.5">
+                  <p className="text-xs text-muted-foreground leading-relaxed pl-5.5">
                     {item.desc}
                   </p>
                 </div>
@@ -460,7 +466,7 @@ export default function FeedbackPage() {
                 <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-foreground">
                   Our Community Promise
                 </h4>
-                <p className="text-[10px] font-mono text-emerald-500">24-Hour Review SLA</p>
+                <p className="text-xs font-mono text-emerald-500">24-Hour Review SLA</p>
               </div>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed font-medium">

@@ -643,7 +643,7 @@ export default function MentalMathsPractice() {
                     </div>
                     <div className="flex items-start gap-1.5 mt-2.5 text-xs italic text-muted-foreground border-l-2 border-amber-400/60 pl-2">
                       <Zap className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0 mt-0.5" />
-                      <span className="text-[11px] sm:text-xs leading-snug font-medium break-words">
+                      <span className="text-xs sm:text-xs leading-snug font-medium break-words">
                         {getDifficultyDescription(
                           topic,
                           engine.state.difficulty,
@@ -693,7 +693,7 @@ export default function MentalMathsPractice() {
                           <span className={`font-bold font-mono text-xs sm:text-sm ${engine.state.mode === "timed" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}>
                             Timed
                           </span>
-                          <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium mt-0.5">
+                          <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
                             Race the clock
                           </span>
                         </div>
@@ -726,7 +726,7 @@ export default function MentalMathsPractice() {
                           <span className={`font-bold font-mono text-xs sm:text-sm ${engine.state.mode === "freestyle" ? "text-amber-600 dark:text-amber-300" : "text-foreground"}`}>
                             Freestyle
                           </span>
-                          <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium mt-0.5">
+                          <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
                             No pressure
                           </span>
                         </div>
@@ -801,7 +801,7 @@ export default function MentalMathsPractice() {
                       >
                         MCQS
                       </span>
-                      <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium mt-0.5">
+                      <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
                         Pick 1 of 4 options
                       </span>
                     </button>
@@ -820,7 +820,7 @@ export default function MentalMathsPractice() {
                       >
                         NUMPAD
                       </span>
-                      <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium mt-0.5">
+                      <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
                         Type it out fast
                       </span>
                     </button>
@@ -831,7 +831,7 @@ export default function MentalMathsPractice() {
               {/* Start Button */}
               <div className="flex w-full shrink-0 mt-1 sm:mt-1.5">
                 <Button
-                  className="w-full h-11.5 sm:h-12 md:h-12.5 rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center group"
+                  className="w-full h-11.5 sm:h-12 md:h-12.5 rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-400 text-white shadow-md shadow-amber-500/20 border-0 border-b-[4px] border-b-amber-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center group"
                   onClick={handleStartPractice}
                 >
                   <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
@@ -888,7 +888,7 @@ export default function MentalMathsPractice() {
                         <span className="font-black text-xs sm:text-sm md:text-base tracking-tight text-foreground leading-none capitalize truncate">
                           {topic}
                         </span>
-                        <div className="flex items-center gap-1.5 mt-1 min-w-0 text-[9px] font-mono font-bold uppercase tracking-wider select-none">
+                        <div className="flex items-center gap-1.5 mt-1 min-w-0 text-xs font-mono font-bold uppercase tracking-wider select-none">
                           <span className="bg-muted/70 text-foreground/80 px-1.5 py-0.5 rounded">
                             {engine.state.mode === "timed"
                               ? "Timed"
@@ -937,7 +937,7 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Compact Layout Switcher */}
-                      <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border-2 border-border/40 select-none text-[10px] font-bold w-[76px] sm:w-[84px]">
+                      <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border-2 border-border/40 select-none text-xs font-bold w-[76px] sm:w-[84px]">
                         <button
                           type="button"
                           onClick={() => setInputLayout("mcq")}
@@ -970,7 +970,7 @@ export default function MentalMathsPractice() {
                   <div className="w-full flex flex-col gap-1 my-0.5 sm:my-1">
                     {/* Labels Row */}
                     <div className="flex justify-between items-center px-1">
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-muted-foreground select-none">
+                      <span className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground select-none">
                         {engine.state.mode === "timed"
                           ? "Time Remaining"
                           : "Progress"}
@@ -1052,7 +1052,7 @@ export default function MentalMathsPractice() {
                             />
                             <Button
                               type="submit"
-                              className="h-9 sm:h-10 md:h-11 w-20 sm:w-24 md:w-28 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 border-b-[4px] border-b-amber-600 active:translate-y-[2px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-amber-500/25"
+                              className="h-9 sm:h-10 md:h-11 w-20 sm:w-24 md:w-28 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-orange-400 text-white border-0 border-b-[4px] border-b-amber-600 active:translate-y-[2px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-amber-500/25"
                               onClick={() => handleEnterSubmit(userInput)}
                             >
                               Enter
@@ -1142,7 +1142,7 @@ export default function MentalMathsPractice() {
                                       handleEnterSubmit(option);
                                     }}
                                   >
-                                    <span className="absolute top-2 left-2.5 px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-muted-foreground group-hover:text-foreground font-mono text-[9px] sm:text-[10px] md:text-xs font-bold tracking-wider transition-colors">
+                                    <span className="absolute top-2 left-2.5 px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-muted-foreground group-hover:text-foreground font-mono text-xs sm:text-xs md:text-xs font-bold tracking-wider transition-colors">
                                       {optionLabels[idx] || idx + 1}
                                     </span>
                                     <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mt-1">
@@ -1238,15 +1238,15 @@ export default function MentalMathsPractice() {
                                 Session complete
                               </h2>
                               <div className="flex items-center gap-1.5 select-none">
-                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider border-2 border-border/40">
+                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-xs sm:text-xs font-mono font-bold uppercase tracking-wider border-2 border-border/40">
                                   {topic}
                                 </span>
-                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider border-2 border-border/40">
+                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-xs sm:text-xs font-mono font-bold uppercase tracking-wider border-2 border-border/40">
                                   {engine.state.mode === "timed"
                                     ? "Timed"
                                     : "Freestyle"}
                                 </span>
-                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider border-2 border-border/40">
+                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-xs sm:text-xs font-mono font-bold uppercase tracking-wider border-2 border-border/40">
                                   {engine.state.difficulty}
                                 </span>
                               </div>
@@ -1335,7 +1335,7 @@ export default function MentalMathsPractice() {
                                 <span className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground font-mono leading-none mb-0.5">
                                   {animatedAccuracy}%
                                 </span>
-                                <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono font-bold uppercase tracking-widest">
+                                <span className="text-xs sm:text-xs text-muted-foreground font-mono font-bold uppercase tracking-widest">
                                   Accuracy
                                 </span>
                               </div>
@@ -1344,7 +1344,7 @@ export default function MentalMathsPractice() {
                             {/* Stacked Metric Cards */}
                             <div className="flex-1 flex flex-col gap-1.5 sm:gap-2">
                               <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border/40">
-                                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-widest">
+                                <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Correct
                                 </span>
                                 <span className="text-xs sm:text-sm md:text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono">
@@ -1352,7 +1352,7 @@ export default function MentalMathsPractice() {
                                 </span>
                               </div>
                               <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border/40">
-                                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-widest">
+                                <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Wrong
                                 </span>
                                 <span className="text-xs sm:text-sm md:text-base font-bold text-rose-600 dark:text-rose-400 font-mono">
@@ -1360,7 +1360,7 @@ export default function MentalMathsPractice() {
                                 </span>
                               </div>
                               <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border/40">
-                                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono uppercase font-bold text-muted-foreground tracking-widest">
+                                <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Skipped
                                 </span>
                                 <span className="text-xs sm:text-sm md:text-base font-bold text-amber-600 dark:text-amber-500 font-mono">
@@ -1387,7 +1387,7 @@ export default function MentalMathsPractice() {
                               <div className="bg-card border-2 border-border/60 rounded-2xl p-3 sm:p-3.5 md:p-4 flex flex-col flex-1 min-h-0 justify-between">
                                 {/* Header */}
                                 <div className="flex justify-between items-center mb-2 shrink-0">
-                                  <span className="text-[10px] sm:text-[11px] font-mono font-bold text-muted-foreground tracking-widest uppercase">
+                                  <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground tracking-widest uppercase">
                                     PACE PER QUESTION
                                   </span>
                                   <span className="text-xs font-mono text-muted-foreground lowercase">
@@ -1398,7 +1398,7 @@ export default function MentalMathsPractice() {
                                 {/* Main Chart Plot */}
                                 <div className="flex gap-1.5 w-full flex-1 min-h-0 pt-1 items-stretch">
                                   {/* Y-Axis Coordinates */}
-                                  <div className="flex flex-col justify-between items-end pr-1 text-[9px] sm:text-[10px] md:text-[11px] font-mono font-bold text-muted-foreground/70 select-none py-0.5 shrink-0 w-auto min-w-[18px] sm:min-w-[22px] h-full min-h-[96px] sm:min-h-[110px] md:min-h-[120px]">
+                                  <div className="flex flex-col justify-between items-end pr-1 text-xs sm:text-xs md:text-xs font-mono font-bold text-muted-foreground/70 select-none py-0.5 shrink-0 w-auto min-w-[18px] sm:min-w-[22px] h-full min-h-[96px] sm:min-h-[110px] md:min-h-[120px]">
                                     <span>{topY}s</span>
                                     <span>{midY}s</span>
                                     <span>0s</span>
@@ -1414,7 +1414,7 @@ export default function MentalMathsPractice() {
                                           bottom: `${Math.min(95, Math.max(5, (targetTime / topY) * 100))}%`,
                                         }}
                                       >
-                                        <span className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase transform -translate-y-1/2 select-none mr-0.5 sm:mr-1">
+                                        <span className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-xs sm:text-xs md:text-xs font-mono font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase transform -translate-y-1/2 select-none mr-0.5 sm:mr-1">
                                           TARGET {targetTime}s
                                         </span>
                                       </div>
@@ -1422,7 +1422,7 @@ export default function MentalMathsPractice() {
                                       {/* Capsule Bars */}
                                       <div className="flex-1 flex items-end justify-between gap-[1px] sm:gap-0.5 h-full z-20 px-0.5 min-w-0">
                                         {items.length === 0 ? (
-                                          <div className="w-full h-full flex items-center justify-center text-[9px] sm:text-[10px] font-mono text-muted-foreground/60 italic">
+                                          <div className="w-full h-full flex items-center justify-center text-xs sm:text-xs font-mono text-muted-foreground/60 italic">
                                             No pacing data
                                           </div>
                                         ) : (
@@ -1451,7 +1451,7 @@ export default function MentalMathsPractice() {
                                                   style={{ height: `${heightPct}%` }}
                                                 />
                                                 {/* Tooltip */}
-                                                <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border-2 border-border text-popover-foreground text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded-lg shadow-lg whitespace-nowrap z-50">
+                                                <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border-2 border-border text-popover-foreground text-xs sm:text-xs font-mono px-1.5 py-0.5 rounded-lg shadow-lg whitespace-nowrap z-50">
                                                   Q{idx + 1}: {h.status === "skipped" ? "Skipped (" : ""}{timeSec.toFixed(1)}s{h.status === "skipped" ? ")" : ""}
                                                 </div>
                                               </div>
@@ -1474,7 +1474,7 @@ export default function MentalMathsPractice() {
 
                                         return (
                                           <div key={idx} className="flex-1 flex justify-center min-w-[2px] max-w-[16px]">
-                                            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-muted-foreground/70 select-none">
+                                            <span className="text-xs sm:text-xs md:text-xs font-mono font-bold text-muted-foreground/70 select-none">
                                               {isMilestone ? `Q${qNum}` : ""}
                                             </span>
                                           </div>
@@ -1485,7 +1485,7 @@ export default function MentalMathsPractice() {
                                 </div>
 
                                 {/* Footer */}
-                                <div className="flex justify-between items-center mt-2 pt-1 text-[10px] sm:text-xs md:text-sm font-mono shrink-0">
+                                <div className="flex justify-between items-center mt-2 pt-1 text-xs sm:text-xs md:text-sm font-mono shrink-0">
                                   <span className="text-muted-foreground font-medium">
                                     avg <span className="text-foreground font-bold">{avgTime.toFixed(1)}s</span>
                                   </span>
@@ -1509,10 +1509,10 @@ export default function MentalMathsPractice() {
                             <div className="border-2 border-border/60 rounded-2xl bg-card flex-1 flex flex-col min-h-0 overflow-hidden">
                               {/* Internal Card Header - Perfectly aligned with Left Column Accuracy Box */}
                               <div className="flex justify-between items-center px-3.5 sm:px-4 py-2.5 sm:py-3 border-b-2 border-border/40 shrink-0 bg-muted/40">
-                                <span className="text-[10px] sm:text-[11px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
+                                <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                                   Every Answer
                                 </span>
-                                <span className="text-[10px] sm:text-[11px] text-muted-foreground font-mono font-bold uppercase tracking-wider">
+                                <span className="text-xs sm:text-xs text-muted-foreground font-mono font-bold uppercase tracking-wider">
                                   {engine.state.history.length} items
                                 </span>
                               </div>
@@ -1531,7 +1531,7 @@ export default function MentalMathsPractice() {
                                     >
                                       {/* Left: Index + Status Circle + Question & Answer Text */}
                                       <div className="flex items-center gap-2 sm:gap-2.5 flex-1 min-w-0 pr-2 sm:pr-3">
-                                        <span className="text-[10px] sm:text-[11px] font-mono font-bold text-muted-foreground/60 w-4 sm:w-5 shrink-0">
+                                        <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground/60 w-4 sm:w-5 shrink-0">
                                           {String(idx + 1).padStart(2, "0")}
                                         </span>
                                         <div className="flex items-center justify-center shrink-0">
@@ -1573,17 +1573,17 @@ export default function MentalMathsPractice() {
                                         {/* Status Pill Badge - Fixed uniform width for perfect left alignment */}
                                         <div className="w-[58px] sm:w-[64px] md:w-[68px] shrink-0 flex items-center justify-start">
                                           {isCorrect && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider border border-emerald-500/20">
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
                                               Correct
                                             </span>
                                           )}
                                           {isWrong && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider border border-rose-500/20">
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-rose-500/20">
                                               Incorrect
                                             </span>
                                           )}
                                           {isSkipped && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-500 font-mono text-[8px] sm:text-[9px] font-bold uppercase tracking-wider border border-amber-500/20">
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-500 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-amber-500/20">
                                               Skipped
                                             </span>
                                           )}
@@ -1592,7 +1592,7 @@ export default function MentalMathsPractice() {
                                         {/* Pace Time Badge */}
                                         <div className="w-11 sm:w-13 flex items-center justify-end shrink-0">
                                           {!isSkipped && (
-                                            <div className="flex items-center gap-1 text-[11px] sm:text-xs font-mono font-bold text-amber-500">
+                                            <div className="flex items-center gap-1 text-xs sm:text-xs font-mono font-bold text-amber-500">
                                               <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-500 text-amber-500" strokeWidth={2.2} />
                                               {((item.timeTaken ?? 0) / 1000).toFixed(1)}s
                                             </div>
@@ -1630,7 +1630,7 @@ export default function MentalMathsPractice() {
                         {/* Minimalist Guest Auth Prompt */}
                         {!user && (
                           <div className="w-full text-center pb-0.5 animate-in fade-in duration-700 delay-300">
-                            <p className="text-[10px] sm:text-[11px] text-muted-foreground font-mono font-medium tracking-wide">
+                            <p className="text-xs sm:text-xs text-muted-foreground font-mono font-medium tracking-wide">
                               Playing as a Guest.{" "}
                               <button 
                                 onClick={signInWithGoogle} 

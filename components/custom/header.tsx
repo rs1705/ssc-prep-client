@@ -239,7 +239,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Skull className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
                                     Hangman{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -248,7 +248,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Shuffle className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
                                     Word Shuffle{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -257,7 +257,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
                                     Crossword{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -292,7 +292,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Lightbulb className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
                                     Formulas &amp; Tricks{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -301,7 +301,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Target className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
                                     Topic wise Pyqs{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -310,7 +310,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <ClipboardList className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
                                     Mock Tests{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -334,7 +334,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Puzzle className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                                     Logic Puzzles{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -343,7 +343,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Brain className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                                     Analytical Reasoning{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -352,7 +352,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Layers3 className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                                     Spatial &amp; Non-Verbal{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -361,7 +361,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <ClipboardList className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                                     Mock Tests{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -385,7 +385,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Newspaper className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                                     Current Affairs{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -394,7 +394,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <Landmark className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                                     History &amp; Polity{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -403,7 +403,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <FlaskConical className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                                     General Science{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -412,7 +412,7 @@ const Header = () => {
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
                                     <ClipboardList className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                                     Mock Tests{" "}
-                                    <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                                    <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
                                     </span>
                                   </span>
@@ -651,21 +651,21 @@ const Header = () => {
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Skull className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
                             Hangman{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Shuffle className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
                             Word Shuffle{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
                             Crossword{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
@@ -715,21 +715,21 @@ const Header = () => {
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Lightbulb className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
                             Formulas & Tricks{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Target className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
                             Topic wise Pyqs{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <ClipboardList className="w-3.5 h-3.5 shrink-0 text-emerald-300/50" />
                             Mock Tests{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
@@ -775,28 +775,28 @@ const Header = () => {
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Puzzle className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                             Logic Puzzles{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Brain className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                             Analytical Reasoning{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Layers3 className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                             Spatial & Non-Verbal{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <ClipboardList className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
                             Mock Tests{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
@@ -840,28 +840,28 @@ const Header = () => {
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Newspaper className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                             Current Affairs{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <Landmark className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                             History &amp; Polity{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <FlaskConical className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                             General Science{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
                             <ClipboardList className="w-3.5 h-3.5 shrink-0 text-rose-300/50" />
                             Mock Tests{" "}
-                            <span className="text-[10px] font-bold text-muted-foreground/30 uppercase ml-auto">
+                            <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>

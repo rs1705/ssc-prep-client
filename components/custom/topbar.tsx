@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Moon, Sun, SlidersHorizontal, LogOut, User as UserIcon, Menu, Home, Zap, ClipboardList, BarChart3, Bookmark, Trophy, Info, MessageSquare, Rocket, PanelLeftOpen, PanelLeftClose } from "lucide-react";
+import { Moon, Sun, SlidersHorizontal, LogOut, User as UserIcon, Menu, Home, Dumbbell, ClipboardList, ChartNoAxesCombined, Bookmark, Trophy, Info, MessageSquare, Rocket, PanelLeftOpen, PanelLeftClose } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/context/auth";
 import { useSidebar } from "@/components/custom/sidebar-context";
@@ -102,8 +102,8 @@ export function TopBar() {
 
   const mobileNav = [
     { to: "/dashboard", label: "Dashboard", icon: Home },
-    { to: "/practice", label: "Practice", icon: Zap },
-    { to: "/analytics", label: "Analytics", icon: BarChart3 },
+    { to: "/practice", label: "Practice", icon: Dumbbell },
+    { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
     { to: "/bookmarks", label: "Bookmarks", icon: Bookmark },
     { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
   ];
@@ -134,7 +134,7 @@ export function TopBar() {
                   <Rocket className="w-5 h-5" />
                 </div>
                 <div className="leading-tight">
-                  <div className="text-[9px] font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
+                  <div className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
                     EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
                   </div>
                   <div className="font-extrabold text-sm tracking-tight text-foreground group-hover:text-amber-500 transition-colors">
@@ -167,7 +167,7 @@ export function TopBar() {
               </nav>
 
               {/* Support Section */}
-              <div className="mt-5 mb-1 px-3 text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground/60">
+              <div className="mt-5 mb-1 px-3 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground/60">
                 Support
               </div>
               <nav className="flex flex-col gap-1 w-full">
@@ -198,10 +198,10 @@ export function TopBar() {
               {/* Exam D-Day Widget */}
               <div className="w-full p-3.5 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-amber-500/20 relative overflow-hidden">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
+                  <span className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
                     Exam D-Day
                   </span>
-                  <span className="text-[9px] font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
+                  <span className="text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
                     Tier 1
                   </span>
                 </div>
@@ -250,7 +250,7 @@ export function TopBar() {
                       <div className="font-bold text-xs text-foreground truncate">
                         {user.displayName || "User"}
                       </div>
-                      <div className="text-[10px] font-mono text-muted-foreground truncate">
+                      <div className="text-xs font-mono text-muted-foreground truncate">
                         {user.email}
                       </div>
                     </div>
@@ -266,7 +266,7 @@ export function TopBar() {
               ) : mounted ? (
                 <button
                   onClick={signInWithGoogle}
-                  className="w-full py-2.5 text-[10px] font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg rounded-xl cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-2.5 text-xs font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg rounded-xl cursor-pointer flex items-center justify-center gap-2"
                 >
                   Sign in
                 </button>
@@ -277,7 +277,7 @@ export function TopBar() {
 
         {mounted && (
           <div className="flex items-center gap-2">
-            <div className="text-[10px] font-mono font-bold tracking-wider uppercase text-muted-foreground bg-card/60 backdrop-blur-md px-3 py-1.5 rounded-full border-2 border-border/40 flex items-center gap-2">
+            <div className="text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground bg-card/60 backdrop-blur-md px-3 py-1.5 rounded-full border-2 border-border/40 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>{timeLabel}</span>
               <span className="text-border">|</span>
@@ -330,7 +330,7 @@ export function TopBar() {
           <div className="flex items-center gap-2 ml-1 sm:ml-2">
             <button 
               onClick={signInWithGoogle}
-              className="h-10 px-5 text-[10px] font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center gap-2"
+              className="h-10 px-5 text-xs font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center gap-2"
             >
               Sign in
             </button>

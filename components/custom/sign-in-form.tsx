@@ -61,7 +61,7 @@ const SignInForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-1.5">
-                <FormLabel className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">Email Address</FormLabel>
+                <FormLabel className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">Email Address</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -82,7 +82,7 @@ const SignInForm = () => {
             render={({ field }) => (
               <FormItem className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider">Password</FormLabel>
+                  <FormLabel className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">Password</FormLabel>
                   <Link href="#" className="text-xs font-mono font-semibold text-amber-500 hover:text-amber-400 transition-colors">
                     Forgot password?
                   </Link>
@@ -102,7 +102,7 @@ const SignInForm = () => {
             )}
           />
           <div className="pt-2">
-            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-[11px] font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
+            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
               <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
               Sign In
             </Button>

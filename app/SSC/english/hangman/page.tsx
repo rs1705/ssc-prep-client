@@ -53,14 +53,14 @@ export default function HangmanDemoPage() {
             <span className="text-xs sm:text-sm font-extrabold text-foreground truncate uppercase tracking-wider">
               Hangman Sprint
             </span>
-            <span className="text-[9px] sm:text-[10px] font-mono font-semibold text-violet-500 truncate">
+            <span className="text-xs sm:text-xs font-mono font-semibold text-violet-500 truncate">
               High-Frequency Vocabulary
             </span>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <div className="bg-card/60 backdrop-blur-md px-2.5 py-1 rounded-full border-2 border-violet-500/30 flex items-center gap-1.5 shadow-2xs">
-            <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-wider">
+            <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">
               Score
             </span>
             <span className="text-xs sm:text-sm font-black font-mono text-violet-600 dark:text-violet-400">
@@ -87,7 +87,7 @@ export default function HangmanDemoPage() {
                 </div>
               ))}
             </div>
-            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2.5 py-0.5 rounded-full border-2 border-border/40">
+            <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2.5 py-0.5 rounded-full border-2 border-border/40">
               Word 4 of 10
             </span>
           </div>
@@ -104,7 +104,7 @@ export default function HangmanDemoPage() {
             <span className="text-3xl sm:text-4xl text-foreground font-black drop-shadow-xs">
               {wrongGuesses > 0 ? "😰" : "🤔"}
             </span>
-            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-widest border-2 border-rose-500/20">
+            <span className="text-xs sm:text-xs font-mono font-bold text-rose-500 bg-rose-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-widest border-2 border-rose-500/20">
               {wrongGuesses} / {totalLives} Strikes
             </span>
           </div>

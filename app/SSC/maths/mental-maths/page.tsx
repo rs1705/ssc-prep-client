@@ -431,7 +431,7 @@ const MentalMaths = () => {
                   <h3 className="text-lg sm:text-xl font-black tracking-tight text-foreground flex items-center gap-2">
                     {section.label}
                     {section.badge && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 shadow-xs uppercase tracking-wider">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 shadow-xs uppercase tracking-wider">
                         {section.badge}
                       </span>
                     )}
@@ -486,7 +486,7 @@ const MentalMaths = () => {
         <div className="hidden xl:flex w-80 flex-col gap-6 shrink-0 animate-in fade-in slide-in-from-right-4 duration-500">
           {/* Streak Card */}
           <div className="bg-card/60 backdrop-blur-2xl border-2 border-amber-500/25 shadow-xl shadow-amber-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
-            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <span className="text-amber-500 text-base">🔥</span> Current Streak
             </h3>
             <div className="flex items-end gap-2">
@@ -500,7 +500,7 @@ const MentalMaths = () => {
 
           {/* Global Stats Card */}
           <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
-            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">
               Performance Telemetry
             </h3>
             <div className="flex flex-col gap-4 z-10">
@@ -521,13 +521,13 @@ const MentalMaths = () => {
 
           {/* Daily Warm-up Pro-Tip Banner */}
           <div className="bg-card/60 backdrop-blur-2xl border-2 border-emerald-500/25 shadow-xl shadow-emerald-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
-            <h3 className="text-[10px] font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <span className="text-emerald-500 text-base">💡</span> Pro Tip
             </h3>
             <div className="space-y-2 z-10">
               <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
                 Daily Warm-Up
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-mono font-bold tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 uppercase border-2 border-emerald-500/20">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-bold tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 uppercase border-2 border-emerald-500/20">
                   10 Mins
                 </span>
               </h4>

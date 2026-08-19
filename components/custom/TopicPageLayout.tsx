@@ -100,7 +100,7 @@ export const TopicPageLayout = ({
 
       {/* Sub-section Header */}
       {title && (
-        <div className="mb-6 w-full flex flex-col items-start text-left shrink-0">
+        <div className={`mb-6 w-full flex flex-col items-start text-left shrink-0 ${contentMaxWidthClass}`}>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground mb-1">
             {title}
           </h1>
@@ -113,7 +113,7 @@ export const TopicPageLayout = ({
       )}
 
       {/* Actual Content Wrapper */}
-      <div className={`flex flex-col items-center w-full flex-1 ${centerContent ? 'justify-center' : ''} ${contentMaxWidthClass}`}>
+      <div className={`flex flex-col w-full flex-1 min-w-0 ${centerContent ? 'justify-center items-center' : ''} ${contentMaxWidthClass}`}>
         {children}
       </div>
     </div>

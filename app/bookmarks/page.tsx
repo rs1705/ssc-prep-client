@@ -108,13 +108,15 @@ export default function BookmarksPage() {
       <TopicPageLayout
         title="Saved Knowledge Vault"
         description="Your curated repository of difficult vocabulary words, mental math shortcuts, and tricky PYQ concepts for fast revision."
-        contentMaxWidthClass="w-full max-w-[1280px]"
       >
         <div className="flex flex-col gap-6 py-2">
           {/* Filter Tabs & Search Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div 
+            className="flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "100ms", animationFillMode: "both" }}
+          >
             {/* Category Tabs */}
-            <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
+            <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl w-full max-w-full sm:w-auto overflow-x-auto scrollbar-none">
               {(["all", "vocab", "formula", "question"] as const).map((tab) => {
                 const labels = {
                   all: `All (${items.length})`,
@@ -153,7 +155,10 @@ export default function BookmarksPage() {
 
           {/* Bookmarks Grid */}
           {filteredItems.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+              style={{ animationDelay: "200ms", animationFillMode: "both" }}
+            >
               {filteredItems.map((item) => {
                 const glowMap = {
                   vocab: "bg-violet-500/10",
@@ -173,7 +178,7 @@ export default function BookmarksPage() {
                   >
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-3">
-                        <span className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border-2 ${tagTheme[item.category]}`}>
+                        <span className={`text-xs font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border-2 ${tagTheme[item.category]}`}>
                           {item.tag}
                         </span>
                         <div className="flex items-center gap-1">
@@ -203,7 +208,7 @@ export default function BookmarksPage() {
                       <h3 className="text-base sm:text-lg font-black tracking-tight text-foreground">
                         {item.title}
                       </h3>
-                      <div className="text-[11px] font-mono font-semibold text-muted-foreground mt-0.5 mb-3">
+                      <div className="text-xs font-mono font-semibold text-muted-foreground mt-0.5 mb-3">
                         {item.subtitle}
                       </div>
                       <p className="text-xs text-foreground/80 leading-relaxed font-medium bg-card/40 backdrop-blur-sm p-3.5 rounded-2xl border-2 border-border/30">
@@ -215,7 +220,7 @@ export default function BookmarksPage() {
                       <Link href={item.linkTo} className="w-full">
                         <Button
                           variant="ghost"
-                          className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
+                          className="w-full h-9 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
                         >
                           <Swords className="w-3.5 h-3.5" />
                           Practice Related Module

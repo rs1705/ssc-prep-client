@@ -128,7 +128,7 @@ const FreestylePage = () => {
                 Flashcards
               </span>
               <span className="text-muted-foreground/40 font-normal text-xs">•</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
                 {activeTab}
               </span>
             </div>
@@ -152,7 +152,7 @@ const FreestylePage = () => {
                     <TabsTrigger
                       key={tab}
                       value={tab}
-                      className="flex-1 h-full hover:cursor-pointer hover:text-foreground data-[state=active]:bg-background data-[state=active]:shadow-2xs rounded-md sm:rounded-lg transition-all duration-200 font-bold uppercase text-[9px] sm:text-xs text-muted-foreground data-[state=active]:text-foreground"
+                      className="flex-1 h-full hover:cursor-pointer hover:text-foreground data-[state=active]:bg-background data-[state=active]:shadow-2xs rounded-md sm:rounded-lg transition-all duration-200 font-bold uppercase text-xs sm:text-xs text-muted-foreground data-[state=active]:text-foreground"
                     >
                       {tab}
                     </TabsTrigger>
@@ -195,7 +195,7 @@ const FreestylePage = () => {
                       className="h-8 sm:h-9 hover:cursor-pointer border-border shadow-2xs hover:bg-muted/50 transition-all rounded-lg sm:rounded-xl px-2 sm:px-2.5 flex items-center gap-1"
                     >
                       <SlidersVertical className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                      <span className="font-semibold text-[9px] sm:text-xs text-foreground hidden min-[400px]:inline">
+                      <span className="font-semibold text-xs sm:text-xs text-foreground hidden min-[400px]:inline">
                         Filters
                       </span>
                     </Button>
@@ -264,7 +264,7 @@ const FreestylePage = () => {
                           >
                             High Frequency Cards
                           </Label>
-                          <span className="text-[11px] text-muted-foreground leading-normal">
+                          <span className="text-xs text-muted-foreground leading-normal">
                             Only show words frequently asked in SSC exams.
                           </span>
                         </div>
@@ -305,10 +305,10 @@ const FreestylePage = () => {
               {totalCards > 0 && (
                 <div className="w-full mt-3 mb-2 flex flex-col gap-1.5 px-1">
                   <div className="w-full flex justify-between items-end mb-0.5">
-                    <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none">
+                    <span className="text-xs font-bold tracking-wider text-muted-foreground select-none">
                       PROGRESS
                     </span>
-                    <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none font-mono">
+                    <span className="text-xs font-bold tracking-wider text-muted-foreground select-none font-mono">
                       {currentCardNumber} / {totalCards}
                     </span>
                   </div>

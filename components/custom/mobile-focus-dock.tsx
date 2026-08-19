@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Zap, BarChart3, Trophy } from "lucide-react";
+import { Home, Dumbbell, ChartNoAxesCombined, Trophy } from "lucide-react";
 
 const dockItems = [
   { to: "/", label: "Dashboard", icon: Home },
-  { to: "/practice", label: "Practice", icon: Zap },
-  { to: "/analytics", label: "Analytics", icon: BarChart3 },
+  { to: "/practice", label: "Practice", icon: Dumbbell },
+  { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
   { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
 ];
 

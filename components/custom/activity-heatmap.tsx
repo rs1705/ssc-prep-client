@@ -87,7 +87,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
             <h4 className="text-base sm:text-lg font-black text-foreground tracking-tight">
               Activity Heatmap
             </h4>
-            <p className="text-[10px] sm:text-xs font-mono font-medium text-muted-foreground mt-0.5">
+            <p className="text-xs sm:text-xs font-mono font-medium text-muted-foreground mt-0.5">
               Tracking consistency over 168 days
             </p>
           </div>
@@ -96,12 +96,12 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
         {/* Quick Stats */}
         <div className="flex items-center gap-3 sm:gap-6 bg-background/50 px-4 sm:px-5 py-2.5 rounded-2xl border-2 border-border/40 w-fit shrink-0">
           <div className="flex flex-col">
-            <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-widest">Total</span>
+            <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">Total</span>
             <span className="text-sm font-black text-foreground">94 Days</span>
           </div>
           <div className="w-0.5 h-6 bg-border/50" />
           <div className="flex flex-col">
-            <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+            <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
               Streak <Trophy className="w-2.5 h-2.5 text-amber-500" />
             </span>
             <span className="text-sm font-black text-amber-500">12 Days</span>
@@ -118,7 +118,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
             {monthLabels.map((m, i) => (
               <span 
                 key={i} 
-                className="absolute text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest -translate-x-1/2"
+                className="absolute text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest -translate-x-1/2"
                 style={{ left: `${(m.index / weeks.length) * 100}%` }}
               >
                 {m.name}
@@ -129,9 +129,9 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
           <div className="flex gap-2 relative">
             {/* Day Labels */}
             <div className="flex flex-col gap-[10px] justify-between py-1 pr-2 w-8 shrink-0">
-              <span className="text-[9px] leading-none font-mono font-bold text-muted-foreground uppercase">Mon</span>
-              <span className="text-[9px] leading-none font-mono font-bold text-muted-foreground uppercase">Wed</span>
-              <span className="text-[9px] leading-none font-mono font-bold text-muted-foreground uppercase">Fri</span>
+              <span className="text-xs leading-none font-mono font-bold text-muted-foreground uppercase">Mon</span>
+              <span className="text-xs leading-none font-mono font-bold text-muted-foreground uppercase">Wed</span>
+              <span className="text-xs leading-none font-mono font-bold text-muted-foreground uppercase">Fri</span>
             </div>
             
             {/* The Grid */}
@@ -171,7 +171,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
             <span className="font-black text-amber-400">
               {hoveredCell.count === 0 ? 'No activity' : `${hoveredCell.count} questions`}
             </span>
-            <span className="font-mono text-[9px] font-bold opacity-80 whitespace-nowrap mt-0.5">
+            <span className="font-mono text-xs font-bold opacity-80 whitespace-nowrap mt-0.5">
               {hoveredCell.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
             {/* Tooltip Arrow */}
@@ -182,7 +182,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
       )}
 
       {/* Legend */}
-      <div className="flex items-center justify-end gap-2 text-[9px] font-mono font-bold text-muted-foreground uppercase tracking-widest mt-2 pt-4 border-t-2 border-border/40">
+      <div className="flex items-center justify-end gap-2 text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest mt-2 pt-4 border-t-2 border-border/40">
         <span>Less</span>
         <div className="flex gap-1.5 mx-1">
           <div className="w-3.5 h-3.5 rounded-[4px] bg-card/40 border-2 border-border/20" />

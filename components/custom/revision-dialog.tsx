@@ -234,7 +234,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <span
-                      className={`text-[9px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border-2 ${
+                      className={`text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border-2 ${
                         group.label === "Easy"
                           ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
                           : group.label === "Medium"
@@ -244,7 +244,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                     >
                       {group.label}
                     </span>
-                    <span className="text-[10px] font-mono font-bold text-muted-foreground/80 tracking-wider">
+                    <span className="text-xs font-mono font-bold text-muted-foreground/80 tracking-wider">
                       Range: {group.range}
                     </span>
                   </div>
@@ -283,7 +283,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                               <span className="text-xs font-bold text-muted-foreground min-w-[55px] w-[55px] text-left font-mono tracking-tight">
                                 {item.text}
                               </span>
-                              <span className="text-[11px] text-muted-foreground/40 font-black font-mono">
+                              <span className="text-xs text-muted-foreground/40 font-black font-mono">
                                 =
                               </span>
                             </div>
@@ -295,7 +295,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                                   Copied!
                                 </span>
                               ) : selfTest && !isRevealed ? (
-                                <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md group-hover/row:scale-105 transition-all ${currentTheme.revealPill}`}>
+                                <span className={`text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md group-hover/row:scale-105 transition-all ${currentTheme.revealPill}`}>
                                   Reveal
                                 </span>
                               ) : (
@@ -321,7 +321,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
         </div>
 
         {/* Footer Helper Tip */}
-        <div className="px-4 py-2.5 bg-muted/30 border-t-2 border-border/40 text-[11px] font-medium text-muted-foreground flex items-center justify-between shrink-0">
+        <div className="px-4 py-2.5 bg-muted/30 border-t-2 border-border/40 text-xs font-medium text-muted-foreground flex items-center justify-between shrink-0">
           <div className="flex items-center gap-1.5">
             <Sparkles className={`w-3.5 h-3.5 shrink-0 ${currentTheme.sparkle}`} />
             <span>

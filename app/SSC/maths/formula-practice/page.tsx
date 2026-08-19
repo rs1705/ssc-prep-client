@@ -229,7 +229,7 @@ export default function FormulaPracticePage() {
               >
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20">
                       {card.tag}
                     </span>
                     <div className="flex items-center gap-1">
@@ -275,7 +275,7 @@ export default function FormulaPracticePage() {
                     {card.explanation}
                   </p>
 
-                  <div className="text-[11px] text-muted-foreground bg-card/40 border-2 border-border/30 p-2.5 rounded-xl mt-2 font-mono">
+                  <div className="text-xs text-muted-foreground bg-card/40 border-2 border-border/30 p-2.5 rounded-xl mt-2 font-mono">
                     <span className="text-foreground font-bold">Example:</span> {card.example}
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export default function FormulaPracticePage() {
                   <Link href="/SSC/maths/mental-maths">
                     <Button
                       variant="ghost"
-                      className="w-full h-9 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
+                      className="w-full h-9 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
                     >
                       <Swords className="w-3.5 h-3.5" />
                       Test in Mental Maths Drill

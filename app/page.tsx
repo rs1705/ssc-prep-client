@@ -471,7 +471,7 @@ function InteractiveHeroDashboard() {
               <div className="w-3 h-3 rounded-full bg-amber-500/80" />
               <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
             </div>
-            <span className="text-[11px] font-mono font-semibold text-muted-foreground ml-2 hidden sm:inline">eptssc.live/demo</span>
+            <span className="text-xs font-mono font-semibold text-muted-foreground ml-2 hidden sm:inline">eptssc.live/demo</span>
           </div>
 
           {/* Interactive Mode Pills */}
@@ -500,7 +500,7 @@ function InteractiveHeroDashboard() {
             })}
           </div>
 
-          <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border-2 border-emerald-500/20 px-2.5 py-1 rounded-full">
+          <div className="hidden lg:flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border-2 border-emerald-500/20 px-2.5 py-1 rounded-full">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             LIVE SIMULATION
           </div>
@@ -523,10 +523,10 @@ function InteractiveHeroDashboard() {
                 {/* Column 1: Sectional Split */}
                 <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-[10px] font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
+                    <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <BarChart3 className="w-3.5 h-3.5 text-amber-500" /> Sectional Accuracy
                     </span>
-                    <span className="text-[9px] font-mono bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-bold">Today</span>
+                    <span className="text-xs font-mono bg-amber-500/10 text-amber-500 px-1.5 py-0.5 rounded font-bold">Today</span>
                   </div>
                   <div className="flex flex-col gap-3">
                     {[
@@ -536,7 +536,7 @@ function InteractiveHeroDashboard() {
                       { label: "General Awareness", val: 64, color: "bg-rose-500" }
                     ].map((s, i) => (
                       <div key={s.label}>
-                        <div className="flex justify-between text-[10px] font-mono font-bold mb-1">
+                        <div className="flex justify-between text-xs font-mono font-bold mb-1">
                           <span className="text-foreground/70">{s.label}</span>
                           <span className="text-foreground">{s.val}%</span>
                         </div>
@@ -556,10 +556,10 @@ function InteractiveHeroDashboard() {
                 {/* Column 2: Accuracy Trend */}
                 <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-[10px] font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
+                    <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <Activity className="w-3.5 h-3.5 text-amber-500" /> 7-Shift Mastery Curve
                     </span>
-                    <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded font-bold">+32% Net Trajectory</span>
+                    <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded font-bold">+32% Net Trajectory</span>
                   </div>
 
                   <div className="w-full h-32 relative mt-1 select-none">
@@ -669,7 +669,7 @@ function InteractiveHeroDashboard() {
                       })}
                     </svg>
                   </div>
-                  <div className="flex justify-between text-[8px] font-mono text-muted-foreground mt-1 px-1">
+                  <div className="flex justify-between text-xs font-mono text-muted-foreground mt-1 px-1">
                     <span>Shift 1 (62%)</span>
                     <span className="text-rose-400 font-semibold">Shift 3 (68% Dip)</span>
                     <span className="text-rose-400 font-semibold">Shift 5 (78%)</span>
@@ -679,7 +679,7 @@ function InteractiveHeroDashboard() {
 
                 {/* Column 3: Overall Rank Metric */}
                 <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col items-center justify-center text-center">
-                  <span className="text-[10px] font-mono font-bold uppercase text-muted-foreground mb-3 flex items-center gap-1">
+                  <span className="text-xs font-mono font-bold uppercase text-muted-foreground mb-3 flex items-center gap-1">
                     <Target className="w-3.5 h-3.5 text-amber-500" /> Overall Accuracy
                   </span>
                   <div className="relative w-24 h-24 rounded-full bg-muted/40 flex items-center justify-center mb-3">
@@ -737,7 +737,7 @@ function InteractiveHeroDashboard() {
                           setSelectedMathAnswer(null);
                           setMathSolved(false);
                         }}
-                        className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg text-[10px] font-mono font-bold flex items-center justify-center transition-all ${
+                        className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center transition-all ${
                           currentSprintIndex === idx
                             ? "bg-amber-500 text-zinc-950 font-black shadow-xs"
                             : "text-muted-foreground hover:text-foreground hover:bg-card/40"
@@ -804,19 +804,19 @@ function InteractiveHeroDashboard() {
                       <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
                       <div>
                         <div>Correct! +15 Elo points gained.</div>
-                        <div className="text-[10px] text-muted-foreground font-normal">{currentQ.tip}</div>
+                        <div className="text-xs text-muted-foreground font-normal">{currentQ.tip}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={resetMathDemo} 
-                        className="px-2 py-1 rounded bg-background/60 text-foreground hover:text-amber-400 flex items-center gap-1 text-[11px]"
+                        className="px-2 py-1 rounded bg-background/60 text-foreground hover:text-amber-400 flex items-center gap-1 text-xs"
                       >
                         <RotateCw className="w-3 h-3" /> Retry
                       </button>
                       <button 
                         onClick={nextSprintQuestion} 
-                        className="px-3 py-1 rounded bg-amber-500 text-zinc-950 font-bold hover:bg-amber-400 flex items-center gap-1 text-[11px] shadow-sm"
+                        className="px-3 py-1 rounded bg-amber-500 text-zinc-950 font-bold hover:bg-amber-400 flex items-center gap-1 text-xs shadow-sm"
                       >
                         Next Drill <ArrowRight className="w-3 h-3" />
                       </button>
@@ -824,7 +824,7 @@ function InteractiveHeroDashboard() {
                   </motion.div>
                 )}
                 {!mathSolved && (
-                  <p className="text-[11px] text-muted-foreground mt-3 font-mono">
+                  <p className="text-xs text-muted-foreground mt-3 font-mono">
                     💡 Click the correct answer to experience the instant feedback loop. (Question {currentSprintIndex + 1} of {SPRINT_QUESTIONS.length})
                   </p>
                 )}
@@ -847,7 +847,7 @@ function InteractiveHeroDashboard() {
                     <span className="text-xs font-mono font-bold uppercase tracking-wider text-violet-400 bg-violet-500/10 px-2.5 py-1 rounded-full border-2 border-violet-500/20 flex items-center gap-1.5">
                       <Brain className="w-3.5 h-3.5" /> Spaced Recall
                     </span>
-                    <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline">
+                    <span className="text-xs font-mono text-muted-foreground hidden sm:inline">
                       {currentCard.category}
                     </span>
                   </div>
@@ -862,7 +862,7 @@ function InteractiveHeroDashboard() {
                           setCardFlipped(false);
                           setRatedInterval(null);
                         }}
-                        className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[10px] font-mono font-bold transition-all ${
+                        className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-mono font-bold transition-all ${
                           currentCardIndex === idx
                             ? "bg-violet-500 text-white font-black shadow-xs"
                             : "text-muted-foreground hover:text-foreground hover:bg-card/40"
@@ -879,12 +879,12 @@ function InteractiveHeroDashboard() {
                   onClick={() => setCardFlipped(!cardFlipped)}
                   className="w-full min-h-[190px] sm:min-h-[200px] rounded-2xl bg-background/80 border-2 border-violet-500/30 p-5 sm:p-6 flex flex-col justify-between cursor-pointer hover:border-violet-500/60 transition-all shadow-xl shadow-violet-500/10 relative group select-none"
                 >
-                  <div className="flex justify-between items-center text-[10px] font-mono text-muted-foreground">
+                  <div className="flex justify-between items-center text-xs font-mono text-muted-foreground">
                     <div className="flex items-center gap-1.5">
                       <span className="bg-violet-500/10 text-violet-400 px-2 py-0.5 rounded font-bold">
                         {currentCard.subtag}
                       </span>
-                      <span className="text-[9px] text-amber-500/90 hidden sm:inline">
+                      <span className="text-xs text-amber-500/90 hidden sm:inline">
                         • {currentCard.examReference}
                       </span>
                     </div>
@@ -908,13 +908,13 @@ function InteractiveHeroDashboard() {
                         <div className="text-xs sm:text-sm font-bold text-emerald-400 leading-relaxed mb-2">
                           {currentCard.definition}
                         </div>
-                        <div className="text-[11px] text-foreground/80 italic mb-2.5">
+                        <div className="text-xs text-foreground/80 italic mb-2.5">
                           {currentCard.example}
                         </div>
 
                         {/* Subject-Specific Metadata Box */}
                         {currentCard.type === "vocab" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div>
                               <span className="text-emerald-400 font-bold">Synonyms: </span>
                               <span className="text-muted-foreground">{currentCard.synonyms.join(", ")}</span>
@@ -927,7 +927,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "idiom" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div>
                               <span className="text-amber-400 font-bold">Related: </span>
                               <span className="text-muted-foreground">{currentCard.related.join(", ")}</span>
@@ -940,7 +940,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "polity" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div className="sm:col-span-2">
                               <span className="text-amber-400 font-bold">Key Note: </span>
                               <span className="text-muted-foreground">{currentCard.landmarkNote}</span>
@@ -949,7 +949,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "history" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[10px] font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
                             <div>
                               <span className="text-amber-400 font-bold">Impact: </span>
                               <span className="text-muted-foreground">{currentCard.impact}</span>
@@ -964,7 +964,7 @@ function InteractiveHeroDashboard() {
                     )}
                   </div>
 
-                  <div className="text-[9px] font-mono text-center text-muted-foreground/60">
+                  <div className="text-xs font-mono text-center text-muted-foreground/60">
                     {cardFlipped ? "Rate your recall ease below to adjust review schedule" : "Tap anywhere on card to reveal definition & exam notes"}
                   </div>
                 </div>
@@ -987,8 +987,8 @@ function InteractiveHeroDashboard() {
                         onClick={() => handleRating(b.label)}
                         className={`p-2 rounded-xl border-2 flex flex-col items-center justify-center transition-all hover:scale-102 cursor-pointer ${b.color}`}
                       >
-                        <span className="text-[11px] font-bold font-mono">{b.label}</span>
-                        <span className="text-[8px] opacity-75 font-mono">{b.time}</span>
+                        <span className="text-xs font-bold font-mono">{b.label}</span>
+                        <span className="text-xs opacity-75 font-mono">{b.time}</span>
                       </button>
                     ))}
                   </motion.div>
@@ -1024,7 +1024,7 @@ function InfiniteTestimonials() {
     <section className="w-full py-20 relative z-10 overflow-hidden bg-background">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
           <Heart className="w-3 h-3 text-amber-500" /> Wall of Love
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">Trusted by Top SSC Rankers</h2>
@@ -1070,7 +1070,7 @@ function SyllabusMatrixSection() {
     <section className="w-full py-16 sm:py-24 relative z-10 bg-background/50 border-t-2 border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
             <Layers className="w-3.5 h-3.5 text-amber-500" /> Complete Exam Blueprint
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1099,7 +1099,7 @@ function SyllabusMatrixSection() {
               >
                 <SIcon className="w-4 h-4" />
                 <span>{sec.title.split(" ")[0]}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-sans ${isSelected ? "bg-zinc-950/20 text-zinc-950 font-bold" : "bg-muted text-muted-foreground"}`}>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-sans ${isSelected ? "bg-zinc-950/20 text-zinc-950 font-bold" : "bg-muted text-muted-foreground"}`}>
                   {sec.badge}
                 </span>
               </button>
@@ -1147,9 +1147,9 @@ function SyllabusMatrixSection() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0 font-mono">
-                  <span className="text-[10px] text-muted-foreground font-medium">{t.pyqs}</span>
+                  <span className="text-xs text-muted-foreground font-medium">{t.pyqs}</span>
                   <span
-                    className={`text-[9px] font-bold px-2 py-0.5 rounded-full border-2 ${
+                    className={`text-xs font-bold px-2 py-0.5 rounded-full border-2 ${
                       t.weight === "High"
                         ? "bg-rose-500/10 text-rose-500 border-rose-500/20"
                         : "bg-blue-500/10 text-blue-500 border-blue-500/20"
@@ -1176,7 +1176,7 @@ function AspirantFaqSection() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
             <HelpCircle className="w-3.5 h-3.5 text-amber-500" /> Aspirant Knowledge Base
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1356,7 +1356,7 @@ export default function LandingPage() {
             <div className="leading-tight">
               <div className="font-bold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
                 EptSsc
-                <span className="text-[9px] font-mono font-bold bg-amber-500/15 text-amber-500 px-1.5 py-0.5 rounded">PRO</span>
+                <span className="text-xs font-mono font-bold bg-amber-500/15 text-amber-500 px-1.5 py-0.5 rounded">PRO</span>
               </div>
             </div>
           </Link>
@@ -1402,7 +1402,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, scale: 0.9, y: 10 }} 
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ ...SNAPPY_SPRING, delay: 0.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/70 backdrop-blur-md border-2 border-amber-500/30 text-[10px] sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-amber-500/10"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/70 backdrop-blur-md border-2 border-amber-500/30 text-xs sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-amber-500/10"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           <span>The Next-Gen SSC Preparation Engine</span>
@@ -1524,7 +1524,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-16"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <RefreshCw className="w-3 h-3 text-amber-500" /> The EptSsc Loop
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1545,7 +1545,7 @@ export default function LandingPage() {
                 className="flex flex-row md:flex-row gap-4 md:gap-12 items-start md:items-center group"
               >
                 <div className="hidden md:block md:w-1/2 md:text-right">
-                  <div className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 1</div>
+                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 1</div>
                   <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Take a Diagnostic PYQ</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Attempt a full Previous Year Paper under timed conditions. Our engine analyzes all 100 questions to map baseline accuracy, pace, and section strengths.</p>
                 </div>
@@ -1553,7 +1553,7 @@ export default function LandingPage() {
                   <Activity className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
-                  <div className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 1</div>
+                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 1</div>
                   <h3 className="text-lg font-bold mb-1 tracking-tight">Take a Diagnostic PYQ</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Attempt a full Previous Year Paper under timed conditions. Our engine analyzes all 100 questions to map baseline accuracy, pace, and section strengths.</p>
                 </div>
@@ -1570,7 +1570,7 @@ export default function LandingPage() {
                   <Map className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2">
-                  <div className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 2</div>
+                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 2</div>
                   <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2 tracking-tight">Get Your AI Weakness Roadmap</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">The engine identifies your mark-bleed topics — where you lose marks or waste time — and serves targeted drill recommendations.</p>
                 </div>
@@ -1582,7 +1582,7 @@ export default function LandingPage() {
                 className="flex flex-row md:flex-row gap-4 md:gap-12 items-start md:items-center group"
               >
                 <div className="hidden md:block md:w-1/2 md:text-right">
-                  <div className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 3</div>
+                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 3</div>
                   <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Execute Daily Micro-Drills</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">20 targeted PYQs, 5 minutes of Mental Maths sprints, and Smart Flashcards every day. Small inputs that compound rapidly.</p>
                 </div>
@@ -1590,7 +1590,7 @@ export default function LandingPage() {
                   <Dumbbell className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
-                  <div className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 3</div>
+                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 3</div>
                   <h3 className="text-lg font-bold mb-1 tracking-tight">Execute Daily Micro-Drills</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">20 targeted PYQs, 5 minutes of Mental Maths sprints, and Smart Flashcards every day. Small inputs that compound rapidly.</p>
                 </div>
@@ -1607,7 +1607,7 @@ export default function LandingPage() {
                   <Trophy className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2">
-                  <div className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 4</div>
+                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 4</div>
                   <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2 tracking-tight">Track &amp; Dominate</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Watch your accuracy climb and calculation times drop on the analytics dashboard. Re-test with a fresh PYQ every weekend to close the loop.</p>
                 </div>
@@ -1626,7 +1626,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-14"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <Crosshair className="w-3 h-3 text-amber-500" /> Built for Serious Aspirants
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1663,7 +1663,7 @@ export default function LandingPage() {
                       <div className={`w-12 h-12 rounded-2xl ${f.iconBg} ${f.iconText} flex items-center justify-center border-2 border-border/20 group-hover:scale-110 shadow-sm transition-transform duration-300`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-[10px] font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border/40 shadow-2xs">
+                      <span className="text-xs font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border/40 shadow-2xs">
                         {f.badge}
                       </span>
                     </div>
@@ -1675,7 +1675,7 @@ export default function LandingPage() {
                       {f.desc}
                     </p>
 
-                    <div className="text-[11px] font-mono font-semibold text-foreground/85 pt-3.5 border-t-2 border-border/30 flex items-center gap-2 relative z-10">
+                    <div className="text-xs font-mono font-semibold text-foreground/85 pt-3.5 border-t-2 border-border/30 flex items-center gap-2 relative z-10">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                       <span>{f.preview}</span>
                     </div>
@@ -1701,7 +1701,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-14"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-[9px] sm:text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <Tag className="w-3 h-3 text-amber-500" /> Pricing
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1752,7 +1752,7 @@ export default function LandingPage() {
             {/* Pro Tier */}
             <TiltCard>
               <div className="bg-gradient-to-br from-zinc-950 to-zinc-900 border-2 border-amber-500/40 rounded-3xl p-7 sm:p-8 flex flex-col relative overflow-hidden text-white h-full shadow-xl shadow-amber-500/10 hover:border-amber-500/70 transition-all">
-                <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-bl-xl shadow-lg z-10 font-mono">
+                <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 text-xs font-black uppercase tracking-widest px-3.5 py-1.5 rounded-bl-xl shadow-lg z-10 font-mono">
                   Most Popular
                 </div>
                 

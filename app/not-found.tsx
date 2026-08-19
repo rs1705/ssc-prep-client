@@ -19,7 +19,7 @@ export default function NotFoundComponent() {
         <div className="mt-8 flex items-center justify-center">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-[11px] font-bold tracking-widest uppercase text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
+            className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-xs font-bold tracking-widest uppercase text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] shadow-sm"
           >
             <MoveLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
             Go back Home

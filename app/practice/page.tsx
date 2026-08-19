@@ -58,7 +58,6 @@ export default function PracticeHomePage() {
     <TopicPageLayout
       title="Practice Hub"
       description="Your central command for all subjects. Jump straight into drills, flashcards, and mock tests."
-      hideBreadcrumbs={true}
     >
       <div className="w-full mt-2 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
         <Tabs defaultValue="maths" value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col gap-8">

@@ -23,7 +23,7 @@ import { ProgressBar } from "@/components/custom/ProgressBar";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  
+
   const [greeting, setGreeting] = useState("Good morning");
 
   useEffect(() => {
@@ -110,36 +110,39 @@ export default function Dashboard() {
     },
   ];
 
-  const themeClasses: Record<string, { 
-    bg: string; 
-    text: string; 
-    hoverBorder: string; 
-    hoverBg: string;
-    barGrad: string;
-  }> = {
-    emerald: { 
-      bg: "bg-emerald-500/10 dark:bg-emerald-500/15", 
+  const themeClasses: Record<
+    string,
+    {
+      bg: string;
+      text: string;
+      hoverBorder: string;
+      hoverBg: string;
+      barGrad: string;
+    }
+  > = {
+    emerald: {
+      bg: "bg-emerald-500/10 dark:bg-emerald-500/15",
       text: "text-emerald-600 dark:text-emerald-400",
       hoverBorder: "hover:border-emerald-500/50",
       hoverBg: "hover:bg-emerald-500/[0.03]",
       barGrad: "from-emerald-400 to-emerald-600",
     },
-    amber: { 
-      bg: "bg-amber-500/10 dark:bg-amber-500/15", 
+    amber: {
+      bg: "bg-amber-500/10 dark:bg-amber-500/15",
       text: "text-amber-600 dark:text-amber-400",
       hoverBorder: "hover:border-amber-500/50",
       hoverBg: "hover:bg-amber-500/[0.03]",
       barGrad: "from-amber-400 to-orange-500",
     },
-    violet: { 
-      bg: "bg-violet-500/10 dark:bg-violet-500/15", 
+    violet: {
+      bg: "bg-violet-500/10 dark:bg-violet-500/15",
       text: "text-violet-600 dark:text-violet-400",
       hoverBorder: "hover:border-violet-500/50",
       hoverBg: "hover:bg-violet-500/[0.03]",
       barGrad: "from-violet-400 to-purple-600",
     },
-    rose: { 
-      bg: "bg-rose-500/10 dark:bg-rose-500/15", 
+    rose: {
+      bg: "bg-rose-500/10 dark:bg-rose-500/15",
       text: "text-rose-600 dark:text-rose-400",
       hoverBorder: "hover:border-rose-500/50",
       hoverBg: "hover:bg-rose-500/[0.03]",
@@ -149,39 +152,39 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="w-full h-full space-y-8 pb-32 overflow-x-hidden max-w-[1400px] mx-auto">
+      <div className="w-full h-full space-y-8 pb-4 overflow-x-hidden max-w-[1400px] mx-auto">
         {/* Hero Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationFillMode: "both" }}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                CGL 2026 Focus Mode
+            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground mb-1">
+              {greeting},{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground">
+                {user?.displayName?.split(" ")[0] || "Champ"}
               </span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
-              {greeting}, <span className="bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground">{user?.displayName?.split(" ")[0] || "Champ"}</span>
             </h1>
-          </div>
-          <div className="hidden sm:flex items-center gap-2">
-            <div className="px-4 py-2 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/50 text-xs font-mono font-bold text-muted-foreground flex items-center gap-2">
-              <Target className="w-4 h-4 text-amber-500" />
-              <span>Target: Tier 1 Exam</span>
-            </div>
+            <p className="text-muted-foreground text-sm max-w-2xl font-medium">
+              Consistency builds champions. Let's crush today's target.
+            </p>
           </div>
         </div>
 
         {/* Top Row: Target & Resume */}
         <div className="grid lg:grid-cols-2 gap-5 mb-10">
           {/* Streak / Target Card */}
-          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "100ms", animationFillMode: "both" }}>
+          <div
+            className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "100ms", animationFillMode: "both" }}
+          >
             <div className="flex items-center justify-between mb-4 relative z-10">
-              <div className="flex items-center gap-2 text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border/40">
-                <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" strokeWidth={2.5} />
+              <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border/40">
+                <Flame
+                  className="w-3.5 h-3.5 text-amber-500 animate-pulse"
+                  strokeWidth={2.5}
+                />
                 Streak · {mockStats.streak} days
               </div>
               <div className="text-right">
-                <div className="text-[9px] font-mono font-bold tracking-widest uppercase text-muted-foreground">
+                <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
                   XP EARNED
                 </div>
                 <div className="text-lg font-black font-mono text-amber-500">
@@ -191,7 +194,11 @@ export default function Dashboard() {
             </div>
 
             <div className="text-xl sm:text-2xl font-black tracking-tight mb-4 text-foreground relative z-10">
-              Today's Target · <span className="font-mono text-amber-500">{mockStats.todayGoal}</span> Qs
+              Today's Target ·{" "}
+              <span className="font-mono text-amber-500">
+                {mockStats.todayGoal}
+              </span>{" "}
+              Qs
             </div>
 
             {/* Progress bar inside its own container */}
@@ -202,13 +209,15 @@ export default function Dashboard() {
             />
 
             <div className="flex items-center justify-between relative z-10">
-              <div className="inline-flex items-center gap-2 bg-foreground text-background text-[10px] font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full">
+              <div className="inline-flex items-center gap-2 bg-foreground text-background text-xs font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full">
                 <span>
                   {mockStats.solved} / {mockStats.todayGoal} SOLVED
                 </span>
                 <span className="text-amber-400">({mockStats.percent})</span>
               </div>
-              <span className="text-xs font-mono font-semibold text-muted-foreground">18 Qs to daily goal</span>
+              <span className="text-xs font-mono font-semibold text-muted-foreground">
+                18 Qs to daily goal
+              </span>
             </div>
 
             {/* Week tracker pills */}
@@ -217,14 +226,16 @@ export default function Dashboard() {
                 <div key={i} className="flex flex-col items-center gap-1">
                   <div
                     className={`h-2.5 w-full rounded-full transition-all ${
-                      i < 5 
-                        ? "bg-amber-500" 
-                        : i === 5 
-                        ? "bg-amber-500/40" 
-                        : "bg-muted/70"
+                      i < 5
+                        ? "bg-amber-500"
+                        : i === 5
+                          ? "bg-amber-500/40"
+                          : "bg-muted/70"
                     }`}
                   />
-                  <span className="text-[8px] font-mono font-bold text-muted-foreground">{day}</span>
+                  <span className="text-xs font-mono font-bold text-muted-foreground">
+                    {day}
+                  </span>
                 </div>
               ))}
             </div>
@@ -233,12 +244,12 @@ export default function Dashboard() {
           {/* Quick Resume Card with 2px Outer Border */}
           <Link
             href="/SSC/maths/mental-maths"
-            className="group rounded-3xl bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer border-2 border-amber-600/70 dark:border-amber-400/40 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
+            className="group rounded-3xl bg-gradient-to-r from-amber-500 to-orange-400 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer border-2 border-amber-500/50 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
             style={{ animationDelay: "150ms", animationFillMode: "both" }}
           >
             <div className="flex items-start justify-between relative z-10">
               <div>
-                <div className="inline-flex items-center gap-1 text-[10px] font-mono font-bold tracking-widest uppercase bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white mb-2">
+                <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest uppercase bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white mb-2">
                   <Zap className="w-3 h-3" /> Quick Resume
                 </div>
                 <div className="text-2xl sm:text-3xl font-black tracking-tight text-white mt-1">
@@ -257,7 +268,7 @@ export default function Dashboard() {
               <div className="h-2 rounded-full bg-black/20 overflow-hidden mb-2">
                 <div className="h-full bg-white rounded-full w-[32%] shadow-sm" />
               </div>
-              <div className="flex items-center justify-between text-[10px] font-mono font-bold uppercase tracking-wider text-white/90">
+              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-white/90">
                 <span>Q 8 / 25 SOLVED</span>
                 <span>~ 8 MIN REMAINING</span>
               </div>
@@ -267,20 +278,21 @@ export default function Dashboard() {
 
         {/* Main Bottom Section */}
         <div className="flex flex-col xl:flex-row gap-8 xl:gap-10 mb-10 items-stretch">
-          
           {/* Left Column (Main Content) */}
           <div className="flex-1 flex flex-col gap-10 min-w-0">
-            
             {/* Subjects Row with 2px borders, Mastery progress bars, and subtle hover color fill */}
-            <div className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "200ms", animationFillMode: "both" }}>
+            <div
+              className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+              style={{ animationDelay: "200ms", animationFillMode: "both" }}
+            >
               <div className="flex items-center justify-between mb-4">
-                <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-2">
+                <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-2">
                   <span>Subject Command Centers</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 </div>
                 <Link
                   href="/SSC"
-                  className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
+                  className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
                 >
                   All 4 Tracks <ArrowUpRight className="w-3 h-3" />
                 </Link>
@@ -296,12 +308,17 @@ export default function Dashboard() {
                       className={`group rounded-3xl bg-card/70 backdrop-blur-xl border-2 border-border/60 p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
                     >
                       <div className="flex items-start justify-between mb-4 relative z-10">
-                        <div className={`w-12 h-12 rounded-2xl ${colors.bg} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40`}>
-                          <s.icon className={`w-5 h-5 ${colors.text}`} strokeWidth={2.2} />
+                        <div
+                          className={`w-12 h-12 rounded-2xl ${colors.bg} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40`}
+                        >
+                          <s.icon
+                            className={`w-5 h-5 ${colors.text}`}
+                            strokeWidth={2.2}
+                          />
                         </div>
                         <ArrowUpRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                       </div>
-                      
+
                       <div className="relative z-10">
                         <div className="font-extrabold text-lg tracking-tight text-foreground group-hover:text-amber-500 transition-colors">
                           {s.name}
@@ -312,7 +329,7 @@ export default function Dashboard() {
 
                         {/* Mastery Progress Bar */}
                         <div className="mt-4 pt-3 border-t-2 border-border/40">
-                          <div className="flex justify-between text-[10px] font-mono font-bold text-muted-foreground mb-1.5">
+                          <div className="flex justify-between text-xs font-mono font-bold text-muted-foreground mb-1.5">
                             <span>Mastery</span>
                             <span className={colors.text}>{s.progress}%</span>
                           </div>
@@ -330,8 +347,11 @@ export default function Dashboard() {
             </div>
 
             {/* Quick Actions (Wide Screen Only) */}
-            <div className="hidden xl:block animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "300ms", animationFillMode: "both" }}>
-              <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground mb-4">
+            <div
+              className="hidden xl:block animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+              style={{ animationDelay: "300ms", animationFillMode: "both" }}
+            >
+              <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground mb-4">
                 Fast Drills & Tools
               </div>
               <div className="grid grid-cols-3 gap-4">
@@ -344,7 +364,9 @@ export default function Dashboard() {
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
                     </div>
-                    <div className="font-bold text-sm text-foreground group-hover:text-amber-500 transition-colors">{q.label}</div>
+                    <div className="font-bold text-sm text-foreground group-hover:text-amber-500 transition-colors">
+                      {q.label}
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -353,8 +375,11 @@ export default function Dashboard() {
             {/* Second Row for Medium Screens */}
             <div className="xl:hidden flex flex-col gap-8">
               {/* Quick Actions */}
-              <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
-                <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground mb-3">
+              <div
+                className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+                style={{ animationDelay: "400ms", animationFillMode: "both" }}
+              >
+                <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground mb-3">
                   Fast Drills & Tools
                 </div>
                 <div className="grid grid-cols-3 gap-2.5 sm:gap-4 h-full">
@@ -365,52 +390,60 @@ export default function Dashboard() {
                       className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer justify-center text-center sm:text-left group"
                     >
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
-                        <q.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2} />
+                        <q.icon
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+                          strokeWidth={2}
+                        />
                       </div>
-                      <div className="font-bold text-foreground text-[10px] sm:text-xs leading-tight">{q.label}</div>
+                      <div className="font-bold text-foreground text-xs sm:text-xs leading-tight">
+                        {q.label}
+                      </div>
                     </Link>
                   ))}
                 </div>
               </div>
 
               {/* Recent Sessions */}
-              <div className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "500ms", animationFillMode: "both" }}>
+              <div
+                className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+                style={{ animationDelay: "500ms", animationFillMode: "both" }}
+              >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground">
+                  <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
                     Recent Drill Feed
                   </div>
                   <Link
                     href="/history"
-                    className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1"
+                    className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1"
                   >
                     History <ChevronRight className="w-3 h-3" />
                   </Link>
                 </div>
 
-                <div className="bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-3xl p-3 flex flex-col h-full justify-between gap-1">
+                <div className="bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
                   {recentSessions.map((session, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between p-3 sm:p-3.5 hover:bg-muted/40 rounded-2xl transition-colors cursor-pointer group"
+                      className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-amber-500/20 hover:shadow-sm"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center shrink-0 group-hover:bg-background transition-all duration-300 ease-out group-hover:scale-110 shadow-inner ring-1 ring-border/40">
-                          <session.icon className="w-4 h-4 text-foreground/80" />
+                        <div className="w-10 h-10 rounded-xl bg-background border-2 border-border/50 flex items-center justify-center shrink-0 group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
+                          <session.icon className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
                         </div>
                         <div>
                           <div className="font-bold text-xs sm:text-sm text-foreground group-hover:text-amber-500 transition-colors">
                             {session.name}
                           </div>
-                          <div className="text-[10px] font-mono text-muted-foreground mt-0.5">
+                          <div className="text-xs font-mono text-muted-foreground mt-0.5">
                             {session.date}
                           </div>
                         </div>
                       </div>
-                      <div className="text-right flex flex-col items-end gap-0.5">
-                        <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm flex items-center gap-1">
-                          {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50" />
+                      <div className="text-right flex flex-col items-end gap-1">
+                        <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm flex items-center">
+                          {session.score}
                         </div>
-                        <div className="text-[9px] font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.2 rounded">
+                        <div className="text-[10px] leading-none font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
                           {session.xp}
                         </div>
                       </div>
@@ -422,44 +455,47 @@ export default function Dashboard() {
           </div>
 
           {/* Right Column: Recent Sessions (Wide Screen Only) */}
-          <div className="hidden xl:flex w-[280px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700" style={{ animationDelay: "400ms", animationFillMode: "both" }}>
+          <div
+            className="hidden xl:flex w-[280px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "400ms", animationFillMode: "both" }}
+          >
             <div className="flex items-center justify-between mb-4">
-              <div className="text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1.5">
+              <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1.5">
                 <History className="w-3.5 h-3.5 text-amber-500" />
                 Recent Drill Feed
               </div>
               <Link
                 href="/history"
-                className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
+                className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
               >
                 History <ChevronRight className="w-3 h-3" />
               </Link>
             </div>
 
-            <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/60 rounded-3xl p-3 flex flex-col h-full justify-between gap-1.5">
+            <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/60 rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
               {recentSessions.map((session, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-3.5 hover:bg-muted/40 rounded-2xl transition-all cursor-pointer group border-2 border-transparent hover:border-border/40"
+                  className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-amber-500/20 hover:shadow-sm"
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-muted/60 flex items-center justify-center shrink-0 group-hover:bg-card transition-all duration-300 ease-out group-hover:scale-110 shadow-inner ring-1 ring-border/40">
-                      <session.icon className="w-4 h-4 text-foreground/80" />
+                    <div className="w-10 h-10 rounded-xl bg-background border-2 border-border/50 flex items-center justify-center shrink-0 group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
+                      <session.icon className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
                     </div>
                     <div>
                       <div className="font-bold text-sm text-foreground group-hover:text-amber-500 transition-colors">
                         {session.name}
                       </div>
-                      <div className="text-[10px] font-mono text-muted-foreground mt-0.5">
+                      <div className="text-xs font-mono text-muted-foreground mt-0.5">
                         {session.date}
                       </div>
                     </div>
                   </div>
-                  <div className="text-right flex flex-col items-end gap-0.5">
-                    <div className="font-mono font-black text-emerald-500 text-sm flex items-center gap-1">
-                      {session.score} <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/40" />
+                  <div className="text-right flex flex-col items-end gap-1">
+                    <div className="font-mono font-black text-emerald-500 text-sm flex items-center">
+                      {session.score}
                     </div>
-                    <div className="text-[9px] font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
+                    <div className="text-[10px] leading-none font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
                       {session.xp}
                     </div>
                   </div>
@@ -467,11 +503,6 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center text-[10px] font-mono font-bold tracking-widest uppercase text-muted-foreground/60 py-6 flex items-center justify-center gap-2">
-          <ScrollText className="w-3.5 h-3.5 text-amber-500" /> EptSsc Precision Training Engine · 2026 Tier 1
         </div>
       </div>
     </ProtectedRoute>

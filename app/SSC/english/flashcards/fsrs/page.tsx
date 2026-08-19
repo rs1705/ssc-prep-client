@@ -98,7 +98,7 @@ const FsrsPage = () => {
                 Flashcards
               </span>
               <span className="text-muted-foreground/40 font-normal text-xs">•</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
                 Daily Review
               </span>
             </div>
@@ -117,10 +117,10 @@ const FsrsPage = () => {
           {totalCards > 0 && !isLoading && !isError && (
             <div className="w-full mt-3 mb-2 flex flex-col gap-1.5 px-1">
               <div className="w-full flex justify-between items-end mb-0.5">
-                <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none">
+                <span className="text-xs font-bold tracking-wider text-muted-foreground select-none">
                   PROGRESS
                 </span>
-                <span className="text-[9px] font-bold tracking-wider text-muted-foreground select-none font-mono">
+                <span className="text-xs font-bold tracking-wider text-muted-foreground select-none font-mono">
                   {currentCardNumber} / {totalCards}
                 </span>
               </div>

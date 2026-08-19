@@ -167,28 +167,28 @@ export default function FeedbackDialog() {
                   <span>🚀</span> App Roadmap & Upcoming Features
                 </h4>
                 <ul className="space-y-2 text-left">
-                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                  <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-emerald-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">Speed Math Modules:</span> Timed drills for Addition, Subtraction, Multiplication, Division, Percentage, Ratios, Simplification, etc. <span className="inline-block text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">In Active Development</span>
+                      <span className="font-semibold text-foreground">Speed Math Modules:</span> Timed drills for Addition, Subtraction, Multiplication, Division, Percentage, Ratios, Simplification, etc. <span className="inline-block text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">In Active Development</span>
                     </div>
                   </li>
-                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                  <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-sky-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">Sectional Pyqs & Topic wise Pyqs:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-[9px] bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">Sectional Pyqs & Topic wise Pyqs:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-xs bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
-                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                  <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-violet-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-[9px] bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-xs bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
-                  <li className="flex items-start gap-2 text-[11px] leading-relaxed text-muted-foreground">
+                  <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-rose-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">GK & Static Quiz:</span> Daily static general knowledge cards and topic checks. <span className="inline-block text-[9px] bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">GK & Static Quiz:</span> Daily static general knowledge cards and topic checks. <span className="inline-block text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
                 </ul>
@@ -242,7 +242,7 @@ export default function FeedbackDialog() {
                           {rating.emoji}
                         </span>
                         <span
-                          className={`text-[9px] font-bold transition-all ${
+                          className={`text-xs font-bold transition-all ${
                             isSelected ? "text-primary" : "text-muted-foreground/60"
                           }`}
                         >
@@ -281,7 +281,7 @@ export default function FeedbackDialog() {
               {/* Name field */}
               <div className="space-y-1.5">
                 <Label htmlFor="name" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  Your Name <span className="text-[10px] text-muted-foreground/50 lowercase font-medium">(optional)</span>
+                  Your Name <span className="text-xs text-muted-foreground/50 lowercase font-medium">(optional)</span>
                 </Label>
                 <Input
                   id="name"

@@ -128,11 +128,13 @@ export default function LeaderboardPage() {
       <TopicPageLayout
         title="Aspirant Stadium & Leaderboards"
         description="Compete in weekly Tier 1 sprint leagues. Speed, accuracy, and daily consistency earn promotion into the Diamond League."
-        contentMaxWidthClass="w-full max-w-[1280px]"
       >
         <div className="flex flex-col gap-8 py-2">
           {/* League Promotion Header Banner */}
-          <div className="rounded-3xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-amber-500/5 relative overflow-hidden">
+          <div 
+            className="rounded-3xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "100ms", animationFillMode: "both" }}
+          >
             <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="flex items-center gap-4 text-center md:text-left">
@@ -140,7 +142,7 @@ export default function LeaderboardPage() {
                 <Crown className="w-7 h-7 animate-bounce" />
               </div>
               <div>
-                <div className="inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 mb-1">
+                <div className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 mb-1">
                   Weekly Sprint League · Round 4
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
@@ -154,7 +156,7 @@ export default function LeaderboardPage() {
 
             <div className="flex items-center gap-3 bg-card/60 backdrop-blur-md px-5 py-3 rounded-2xl border-2 border-border/40 shrink-0">
               <div className="flex flex-col text-right">
-                <span className="text-[9px] font-mono font-bold text-muted-foreground uppercase">Your Standings</span>
+                <span className="text-xs font-mono font-bold text-muted-foreground uppercase">Your Standings</span>
                 <span className="text-lg font-black font-mono text-amber-500">Rank #7</span>
               </div>
               <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border-2 border-emerald-500/20 font-mono text-xs font-black">
@@ -164,7 +166,10 @@ export default function LeaderboardPage() {
           </div>
 
           {/* Top 3 Podium Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
+          <div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 items-end animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "200ms", animationFillMode: "both" }}
+          >
             {/* Rank 2 (Silver) */}
             <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-slate-400/30 shadow-xl shadow-black/5 flex flex-col items-center text-center relative order-2 md:order-1">
               <div className="absolute -top-6 w-12 h-12 rounded-2xl bg-slate-300/20 text-slate-300 border-2 border-slate-300/40 flex items-center justify-center font-black font-mono shadow-md backdrop-blur-md">
@@ -175,7 +180,7 @@ export default function LeaderboardPage() {
               </div>
               <h3 className="font-extrabold text-base text-foreground">{TOP_THREE[1].name}</h3>
               <div className="text-xl font-black font-mono text-amber-500 mt-1">{TOP_THREE[1].xp} XP</div>
-              <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground mt-2">
+              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mt-2">
                 <span>{TOP_THREE[1].accuracy} Acc</span>
                 <span>•</span>
                 <span>{TOP_THREE[1].speed} / Q</span>
@@ -190,7 +195,7 @@ export default function LeaderboardPage() {
               <div className="w-20 h-20 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-2xl border-2 border-amber-500 mt-5 mb-3 shadow-inner">
                 {TOP_THREE[0].avatarText}
               </div>
-              <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 mb-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 mb-1">
                 Gold Champion
               </span>
               <h3 className="font-extrabold text-lg text-foreground">{TOP_THREE[0].name}</h3>
@@ -212,7 +217,7 @@ export default function LeaderboardPage() {
               </div>
               <h3 className="font-extrabold text-base text-foreground">{TOP_THREE[2].name}</h3>
               <div className="text-xl font-black font-mono text-amber-500 mt-1">{TOP_THREE[2].xp} XP</div>
-              <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground mt-2">
+              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mt-2">
                 <span>{TOP_THREE[2].accuracy} Acc</span>
                 <span>•</span>
                 <span>{TOP_THREE[2].speed} / Q</span>
@@ -221,12 +226,15 @@ export default function LeaderboardPage() {
           </div>
 
           {/* Full Standings Table */}
-          <div className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 overflow-hidden">
+          <div 
+            className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "300ms", animationFillMode: "both" }}
+          >
             <div className="p-5 sm:p-6 border-b-2 border-border/40 flex items-center justify-between flex-wrap gap-4">
               <h3 className="text-base font-black text-foreground tracking-tight">
                 Full League Standings (Top 10)
               </h3>
-              <div className="flex items-center gap-1.5 bg-card/60 p-1 rounded-xl border-2 border-border/40">
+              <div className="flex items-center gap-1.5 bg-card/60 p-1 rounded-xl border-2 border-border/40 w-full max-w-full sm:w-auto overflow-x-auto scrollbar-none">
                 {(["gold", "speed", "all-india"] as const).map((tab) => (
                   <button
                     key={tab}
@@ -266,12 +274,12 @@ export default function LeaderboardPage() {
                       <div className="font-extrabold text-sm text-foreground truncate flex items-center gap-2">
                         {row.name}
                         {row.isCurrentUser && (
-                          <span className="text-[9px] font-mono font-bold text-amber-500 bg-amber-500/15 px-2 py-0.5 rounded-full border-2 border-amber-500/20">
+                          <span className="text-xs font-mono font-bold text-amber-500 bg-amber-500/15 px-2 py-0.5 rounded-full border-2 border-amber-500/20">
                             YOU
                           </span>
                         )}
                       </div>
-                      <div className="text-[10px] font-mono text-muted-foreground flex items-center gap-2 mt-0.5">
+                      <div className="text-xs font-mono text-muted-foreground flex items-center gap-2 mt-0.5">
                         <span className="flex items-center gap-1 text-orange-500">
                           <Flame className="w-3 h-3" /> {row.streak}d streak
                         </span>
@@ -284,9 +292,9 @@ export default function LeaderboardPage() {
                   <div className="flex items-center gap-6 shrink-0">
                     <div className="text-right">
                       <div className="font-black font-mono text-sm sm:text-base text-foreground">
-                        {row.xp} <span className="text-[10px] text-muted-foreground font-normal">XP</span>
+                        {row.xp} <span className="text-xs text-muted-foreground font-normal">XP</span>
                       </div>
-                      <div className="text-[10px] font-mono text-emerald-500">{row.speed} / Q</div>
+                      <div className="text-xs font-mono text-emerald-500">{row.speed} / Q</div>
                     </div>
                   </div>
                 </div>

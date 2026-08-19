@@ -94,7 +94,7 @@ const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPr
       <div className="pb-1 h-7 flex items-center justify-center relative z-10">
         {showHint && (
           <div
-            className={`${scheme.textSecondary} text-[9px] sm:text-[10px] font-mono font-semibold tracking-wider uppercase select-none flex items-center justify-center opacity-80 bg-black/5 dark:bg-white/10 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border-2 border-black/10 dark:border-white/15`}
+            className={`${scheme.textSecondary} text-xs sm:text-xs font-mono font-semibold tracking-wider uppercase select-none flex items-center justify-center opacity-80 bg-black/5 dark:bg-white/10 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border-2 border-black/10 dark:border-white/15`}
           >
             <span>Tap to flip · Swipe to next</span>
           </div>
@@ -133,7 +133,7 @@ const CardBack = ({
       {/* 1. Definition Section */}
       <div id="flashcard_definition" className="space-y-1 relative z-10">
         <div className="flex items-center gap-2">
-          <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
+          <span className={`px-2 py-0.5 rounded-full text-xs sm:text-xs md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
             Definition
           </span>
         </div>
@@ -152,7 +152,7 @@ const CardBack = ({
         <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full relative z-10">
           {synonyms && synonyms.length > 0 && (
             <div className={`flex flex-col gap-1 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase text-center w-full">
+              <span className="text-xs sm:text-xs md:text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase text-center w-full">
                 Synonyms
               </span>
               <div className="grid grid-cols-1 gap-1 w-full">
@@ -170,7 +170,7 @@ const CardBack = ({
 
           {antonyms && antonyms.length > 0 && (
             <div className={`flex flex-col gap-1 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase text-center w-full">
+              <span className="text-xs sm:text-xs md:text-xs font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase text-center w-full">
                 Antonyms
               </span>
               <div className="grid grid-cols-1 gap-1 w-full">
@@ -192,7 +192,7 @@ const CardBack = ({
       {example_eng && example_eng.length > 0 && (
         <div id="flashcard_examples" className={`p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md space-y-1 relative z-10 shadow-xs`}>
           <div className="flex items-center gap-1.5">
-            <span className={`px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
+            <span className={`px-2 py-0.5 rounded-full text-xs sm:text-xs md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
               Example
             </span>
           </div>

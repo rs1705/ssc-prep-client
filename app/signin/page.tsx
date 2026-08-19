@@ -32,7 +32,7 @@ const SigninPage = () => {
 
       <div className="w-full max-w-[460px] bg-card/60 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border-2 border-border/40 shadow-2xl shadow-black/10 flex flex-col gap-4 relative overflow-hidden">
         <div className="relative z-10">
-          <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full border-2 border-amber-500/20 w-fit mb-3">
+          <div className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full border-2 border-amber-500/20 w-fit mb-3">
             <Sparkles className="w-3 h-3" />
             Tier 1 Precision
           </div>

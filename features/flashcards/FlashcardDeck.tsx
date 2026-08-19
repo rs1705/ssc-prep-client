@@ -158,7 +158,7 @@ export type ActionType = keyof typeof BUTTON_ACTIONS;
   Progress Bar (FlashcardDeck.tsx):
   - Container class: "relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border-2 border-slate-600/50 shadow-inner"
   - Progress fill class: "absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transition-all duration-300"
-  - Text class: "absolute inset-0 flex items-center justify-center text-[10px] font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
+  - Text class: "absolute inset-0 flex items-center justify-center text-xs font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
 */
 
 const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: FlashcardDeckProps) => {
@@ -381,7 +381,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                             onClick={() => onActionClick(actionKey)}
                           >
                             <span className="font-bold">{actionConfig.label}</span>
-                            <span className="text-[9px] font-normal opacity-80 font-mono">
+                            <span className="text-xs font-normal opacity-80 font-mono">
                               {actionConfig.sub}
                             </span>
                           </motion.button>

@@ -121,11 +121,13 @@ export default function AnalyticsPage() {
       <TopicPageLayout
         title="Performance Analytics"
         description="Comprehensive telemetry on calculation speed, retention accuracy, and AI-identified score leakages for SSC CGL 2026."
-        contentMaxWidthClass="w-full max-w-[1340px]"
       >
         <div className="flex flex-col gap-8 py-2">
           {/* Time Range Filter Bar */}
-          <div className="flex items-center justify-between flex-wrap gap-4">
+          <div 
+            className="flex items-center justify-between flex-wrap gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "100ms", animationFillMode: "both" }}
+          >
             <div className="flex items-center gap-2 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl">
               {(["7d", "30d", "all"] as const).map((r) => (
                 <button
@@ -142,14 +144,17 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-3.5 py-1.5 rounded-full border-2 border-border/40">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-3.5 py-1.5 rounded-full border-2 border-border/40">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Live Telemetry Active
             </div>
           </div>
 
           {/* Top 4 Summary Bento Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "200ms", animationFillMode: "both" }}
+          >
             {SUMMARY_METRICS.map((m, i) => {
               const Icon = m.icon;
               return (
@@ -158,7 +163,7 @@ export default function AnalyticsPage() {
                   className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-0.5"
                 >
                   <div className="flex items-center justify-between mb-4 relative z-10">
-                    <span className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-widest">
+                    <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                       {m.title}
                     </span>
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center border-2 ${m.theme}`}>
@@ -178,7 +183,10 @@ export default function AnalyticsPage() {
           </div>
 
           {/* Subject Breakdown & AI Weakness Radar */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div 
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            style={{ animationDelay: "300ms", animationFillMode: "both" }}
+          >
             {/* Left: Subject Mastery Telemetry */}
             <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
               <div className="p-6 sm:p-8 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 relative overflow-hidden">
@@ -208,7 +216,7 @@ export default function AnalyticsPage() {
                           <span className="font-extrabold text-foreground tracking-tight text-sm">
                             {s.subject}
                           </span>
-                          <span className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 bg-card/40 ${s.textColor}`}>
+                          <span className={`text-xs font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 bg-card/40 ${s.textColor}`}>
                             {s.badge}
                           </span>
                         </div>
@@ -238,7 +246,7 @@ export default function AnalyticsPage() {
                       Speed Progression (Last 7 Days)
                     </h4>
                   </div>
-                  <span className="text-[10px] font-mono font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full border-2 border-emerald-500/20">
+                  <span className="text-xs font-mono font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full border-2 border-emerald-500/20">
                     -0.6s Reduction
                   </span>
                 </div>
@@ -254,7 +262,7 @@ export default function AnalyticsPage() {
                             style={{ height: `${heights[i]}%` }}
                           />
                         </div>
-                        <span className="text-[9px] font-mono font-bold text-muted-foreground">{day}</span>
+                        <span className="text-xs font-mono font-bold text-muted-foreground">{day}</span>
                       </div>
                     );
                   })}
@@ -278,7 +286,7 @@ export default function AnalyticsPage() {
                     <h4 className="text-sm font-extrabold text-foreground tracking-tight">
                       AI Weakness Radar
                     </h4>
-                    <p className="text-[10px] font-mono text-muted-foreground">3 Precision Leaks Detected</p>
+                    <p className="text-xs font-mono text-muted-foreground">3 Precision Leaks Detected</p>
                   </div>
                 </div>
 
@@ -291,19 +299,19 @@ export default function AnalyticsPage() {
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <div className="text-xs font-black text-foreground">{item.topic}</div>
-                          <div className="text-[10px] font-mono text-muted-foreground mt-0.5">{item.subject}</div>
+                          <div className="text-xs font-mono text-muted-foreground mt-0.5">{item.subject}</div>
                         </div>
-                        <span className="text-[10px] font-mono font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full border-2 border-rose-500/20">
+                        <span className="text-xs font-mono font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full border-2 border-rose-500/20">
                           {item.accuracy}
                         </span>
                       </div>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         {item.recommendation}
                       </p>
                       <Link href={item.linkTo} className="mt-1">
                         <Button
                           variant="ghost"
-                          className="w-full h-8 rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider gap-1 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
+                          className="w-full h-8 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
                         >
                           <Swords className="w-3 h-3" />
                           Launch Fix Drill
@@ -324,13 +332,13 @@ export default function AnalyticsPage() {
                     <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-foreground">
                       Weekly Sprint Goal
                     </h4>
-                    <p className="text-[10px] font-mono text-amber-500">2,000 Questions</p>
+                    <p className="text-xs font-mono text-amber-500">2,000 Questions</p>
                   </div>
                 </div>
                 <div className="h-2 bg-muted/60 rounded-full overflow-hidden border-2 border-border/30 my-2">
                   <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-[74%]" />
                 </div>
-                <div className="flex justify-between items-center text-[10px] font-mono font-medium text-muted-foreground mt-2">
+                <div className="flex justify-between items-center text-xs font-mono font-medium text-muted-foreground mt-2">
                   <span>1,480 Completed</span>
                   <span className="font-bold text-foreground">74% of Target</span>
                 </div>
