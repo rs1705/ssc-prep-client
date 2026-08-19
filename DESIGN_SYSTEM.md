@@ -190,6 +190,13 @@ EptSsc is built on a **4px geometric grid** ($4px, 8px, 12px, 16px, 24px, 32px, 
 - **`lg` (1024px)**: 3-column bento grids, dual-column revision splits.
 - **`xl` (1280px)**: Expanded analytics HUD, full subject overview grids.
 
+### 5.3 Universal Below-TopBar Spacing Standard
+Every page rendered within `<AppLayout>` adheres to a single responsive vertical rhythm directly below the TopBar:
+- **Mobile (`< 640px`)**: `pt-4 px-4` (16px top buffer between TopBar border and first element: Hero Header / Breadcrumbs).
+- **Tablet (`sm:` 640px - 768px)**: `sm:pt-6 sm:px-6` (24px top buffer).
+- **Desktop (`md:` 768px - 1024px, `lg:` 1024px+)**: `md:pt-8 md:px-8` (32px top buffer).
+- **Practice / Focus Mode**: `pt-2 sm:pt-3 md:pt-4` (compact buffer adhering to the 100dvh Zero-Scroll guarantee).
+
 ---
 
 ## 6. Surface, Border, & Elevation Physics

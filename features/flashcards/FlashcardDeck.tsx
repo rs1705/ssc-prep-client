@@ -352,14 +352,14 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             </button>
           </div>
           <div className="w-full">
-            <div className="w-full h-12 sm:h-13 mt-4 sm:mt-5 flex items-center">
+            <div className="w-full h-14 sm:h-14 mt-4 sm:mt-5 flex items-center">
               <AnimatePresence>
                 {isFlipped && (
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex primary-buttons gap-2 sm:gap-2.5 w-full"
+                    className="flex primary-buttons gap-2 sm:gap-2.5 w-full h-full"
                   >
                     {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
                       (actionKey, index) => {
@@ -377,7 +377,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
                               damping: 25,
                               delay: index * 0.04,
                             }}
-                            className={`flex-1 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 h-auto text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border-2 select-none transition-colors duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
+                            className={`flex-1 h-full rounded-xl sm:rounded-2xl py-1.5 sm:py-2 text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border-2 select-none transition-colors duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
                             onClick={() => onActionClick(actionKey)}
                           >
                             <span className="font-bold">{actionConfig.label}</span>
