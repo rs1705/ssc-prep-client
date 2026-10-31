@@ -23,3 +23,24 @@ export interface FlashCardBackProps {
   synonyms?: [string];
   antonyms?: [string];
 }
+
+export interface DashboardStats {
+  streak: number;
+  xp: number;
+  dailyGoal: number;
+  solvedToday: number;
+  /** Seven entries Mon..Sun; true when the user practised that day. */
+  activeDays: boolean[];
+}
+
+export interface RecentSession {
+  id: string;
+  title: string;
+  subject: "maths" | "english" | "reasoning" | "gk";
+  /** e.g. "22/25" */
+  result: string;
+  /** 0-100 */
+  accuracy: number;
+  xpEarned: number;
+  completedAt: string;
+}

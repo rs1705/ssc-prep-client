@@ -40,7 +40,6 @@ const SignInForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Login details:", values);
     router.push("/dashboard");
   };
   return (
@@ -55,7 +54,7 @@ const SignInForm = () => {
         </p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           <FormField
             control={form.control}
             name="email"
@@ -66,11 +65,11 @@ const SignInForm = () => {
                   <Input
                     type="text"
                     placeholder="Enter your email"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-rose-500 font-medium">
+                <p className="text-left text-xs text-rose-600 dark:text-rose-400 font-medium min-h-4">
                   {form.formState.errors.email?.message}
                 </p>
               </FormItem>
@@ -83,7 +82,7 @@ const SignInForm = () => {
               <FormItem className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <FormLabel className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">Password</FormLabel>
-                  <Link href="#" className="text-xs font-mono font-semibold text-amber-500 hover:text-amber-400 transition-colors">
+                  <Link href="#" className="inline-flex items-center py-2 text-xs font-mono font-semibold text-amber-700 dark:text-amber-400 hover:underline transition-colors">
                     Forgot password?
                   </Link>
                 </div>
@@ -91,11 +90,11 @@ const SignInForm = () => {
                   <Input
                     type="password"
                     placeholder="Enter your password"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-rose-500 font-medium">
+                <p className="text-left text-xs text-rose-600 dark:text-rose-400 font-medium min-h-4">
                   {form.formState.errors.password?.message}
                 </p>
               </FormItem>

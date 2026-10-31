@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { HUE_THEME, type Hue } from "@/lib/subject-theme";
 
 export interface SectionCardProps {
   title: string;
@@ -10,10 +11,10 @@ export interface SectionCardProps {
   buttonText: string;
   knowMoreText?: string;
   className?: string;
-  icon?: any;
+  icon?: React.ReactNode;
   index?: number;
   cols?: number;
-  colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
+  colorTheme?: Hue;
 }
 
 const SectionCard: React.FC<SectionCardProps> = ({
@@ -21,108 +22,64 @@ const SectionCard: React.FC<SectionCardProps> = ({
   description,
   linkTo,
   buttonText,
-  knowMoreText,
   icon,
   index = 0,
-  cols = 2,
   colorTheme = "indigo",
 }: SectionCardProps) => {
   const isClickable = linkTo !== "#";
-  const theme = colorTheme || "indigo";
-
-  const themeMap: Record<
-    string,
-    {
-      iconWrapper: string;
-      hoverBorder: string;
-      hoverBg: string;
-    }
-  > = {
-    sky: {
-      iconWrapper:
-        "bg-sky-500/10 text-sky-600 dark:text-sky-400 shadow-[0_2px_8px_rgba(14,165,233,0.05)]",
-      hoverBorder: "hover:border-sky-500/50",
-      hoverBg: "hover:bg-sky-500/[0.03]",
-    },
-    emerald: {
-      iconWrapper:
-        "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
-      hoverBorder: "hover:border-emerald-500/50",
-      hoverBg: "hover:bg-emerald-500/[0.03]",
-    },
-    rose: {
-      iconWrapper:
-        "bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
-      hoverBorder: "hover:border-rose-500/50",
-      hoverBg: "hover:bg-rose-500/[0.03]",
-    },
-    amber: {
-      iconWrapper:
-        "bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_2px_8px_rgba(245,158,11,0.05)]",
-      hoverBorder: "hover:border-amber-500/50",
-      hoverBg: "hover:bg-amber-500/[0.03]",
-    },
-    violet: {
-      iconWrapper:
-        "bg-violet-500/10 text-violet-600 dark:text-violet-400 shadow-[0_2px_8px_rgba(139,92,246,0.05)]",
-      hoverBorder: "hover:border-violet-500/50",
-      hoverBg: "hover:bg-violet-500/[0.03]",
-    },
-    indigo: {
-      iconWrapper:
-        "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
-      hoverBorder: "hover:border-indigo-500/50",
-      hoverBg: "hover:bg-indigo-500/[0.03]",
-    },
-  };
-
-  const currentTheme = themeMap[theme] || themeMap.indigo;
+  const theme = HUE_THEME[colorTheme] ?? HUE_THEME.indigo;
 
   return (
     <div
-      className={`group rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 relative overflow-hidden ${
+      className={`group h-full rounded-3xl p-5 sm:p-6 flex flex-col gap-5 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 relative overflow-hidden ${
         isClickable
-          ? `bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1`
-          : "bg-card/90 md:bg-card/30 backdrop-blur-none md:backdrop-blur-md border-2 border-border/30 opacity-75"
+          ? `bg-card md:bg-card/70 md:backdrop-blur-xl border-2 border-border ${theme.hoverBorder} ${theme.hoverBg} hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1`
+          : "surface-card border-dashed"
       }`}
       style={{
-        animationDelay: `${index * 100}ms`,
+        animationDelay: `${index * 80}ms`,
         animationFillMode: "both",
       }}
     >
-      <div className="relative z-10">
+      <div className="flex flex-col gap-4 flex-1">
         <div
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40 ${
+          className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center transition-transform duration-300 ease-out group-hover:scale-110 ring-1 ring-border/60 ${
             isClickable
-              ? currentTheme.iconWrapper
+              ? theme.iconWrap
               : "bg-muted text-muted-foreground"
           }`}
         >
           {icon}
         </div>
-        <h3 className="text-lg sm:text-xl font-extrabold tracking-tight mb-2 text-foreground group-hover:text-amber-500 transition-colors">
-          {title}
-        </h3>
-        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6 font-medium">
-          {description}
-        </p>
+        <div className="flex flex-col gap-1.5">
+          <h3
+            className={`text-lg font-extrabold tracking-tight transition-colors ${
+              isClickable
+                ? "text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400"
+                : "text-muted-foreground"
+            }`}
+          >
+            {title}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {description}
+          </p>
+        </div>
       </div>
 
-      <div>
-        {isClickable ? (
-          <Link
-            href={linkTo}
-            className="inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-mono font-bold tracking-wider uppercase px-5 py-2.5 rounded-full hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200"
-          >
-            <span>{buttonText}</span>
-            <ArrowRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        ) : (
-          <div className="inline-flex items-center justify-center gap-2.5 bg-muted text-muted-foreground text-xs font-mono font-bold tracking-wider uppercase px-5 py-2.5 rounded-full border-2 border-border/40">
-            <span>{buttonText}</span>
-          </div>
-        )}
-      </div>
+      {isClickable ? (
+        <Link
+          href={linkTo}
+          className="inline-flex h-10 w-fit items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-mono font-bold tracking-wider uppercase px-5 rounded-full hover:shadow-md hover:shadow-amber-500/25 active:scale-95 transition-all duration-200"
+        >
+          <span>{buttonText}</span>
+          <ArrowRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      ) : (
+        <div className="inline-flex h-10 w-fit items-center justify-center bg-muted text-muted-foreground text-xs font-mono font-bold tracking-wider uppercase px-5 rounded-full border-2 border-border">
+          {buttonText}
+        </div>
+      )}
     </div>
   );
 };

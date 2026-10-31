@@ -13,13 +13,92 @@ import {
   Newspaper,
   Zap,
   Target,
-  Bookmark,
-  ScrollText,
   ChevronRight,
   History,
   Gamepad2,
 } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
+import type { DashboardStats, RecentSession } from "@/lib/types";
+import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
+
+const EMPTY_STATS: DashboardStats = {
+  streak: 0,
+  xp: 0,
+  dailyGoal: 30,
+  solvedToday: 0,
+  activeDays: [false, false, false, false, false, false, false],
+};
+
+const SUBJECT_ICONS = {
+  maths: Calculator,
+  english: Languages,
+  reasoning: Sigma,
+  gk: Newspaper,
+} as const;
+
+function RecentSessionsList({
+  sessions,
+  compact = false,
+}: {
+  sessions: RecentSession[];
+  compact?: boolean;
+}) {
+  if (sessions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center gap-3 p-6 h-full min-h-[180px]">
+        <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center ring-1 ring-border/40">
+          <History className="w-4 h-4" />
+        </div>
+        <div className="text-sm font-bold text-foreground">No drills yet</div>
+        <p className="text-xs text-muted-foreground max-w-[200px]">
+          Finish a drill and it will show up here with your score and XP.
+        </p>
+        <Link
+          href="/SSC/maths/mental-maths"
+          className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 flex items-center gap-1 transition-colors"
+        >
+          Start a drill <ChevronRight className="w-3 h-3" />
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {sessions.map((session) => {
+        const Icon = SUBJECT_ICONS[session.subject];
+        return (
+          <div
+            key={session.id}
+            className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 group border-2 border-transparent hover:border-amber-500/20 hover:shadow-sm"
+          >
+            <div className={`flex items-center ${compact ? "gap-3" : "gap-3.5"}`}>
+              <div className="w-10 h-10 rounded-xl bg-background border-2 border-border flex items-center justify-center shrink-0 group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
+                <Icon className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
+              </div>
+              <div>
+                <div className="font-bold text-xs sm:text-sm text-foreground group-hover:text-amber-500 transition-colors">
+                  {session.title}
+                </div>
+                <div className="text-xs font-mono text-muted-foreground mt-0.5">
+                  {session.result}
+                </div>
+              </div>
+            </div>
+            <div className="text-right flex flex-col items-end gap-1">
+              <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm">
+                {Math.round(session.accuracy)}%
+              </div>
+              <div className="text-xs leading-none font-mono font-bold tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+                +{session.xpEarned} XP
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+}
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -33,46 +112,49 @@ export default function Dashboard() {
     else setGreeting("Good evening");
   }, []);
 
-  const mockStats = {
-    streak: 12,
-    xp: "2,480",
-    todayGoal: 30,
-    solved: 12,
-    percent: "40%",
-  };
+  // No data source is wired up yet: render honest empty states instead of fake numbers.
+  // Swap these two for fetched data when the stats/sessions endpoints exist.
+  const stats: DashboardStats = EMPTY_STATS;
+  const recentSessions: RecentSession[] = [];
+  const goalPercent = Math.min(
+    100,
+    Math.round((stats.solvedToday / stats.dailyGoal) * 100),
+  );
+  const questionsLeft = Math.max(0, stats.dailyGoal - stats.solvedToday);
+
 
   const subjects = [
     {
       icon: Calculator,
       name: "Quant",
-      qs: "1,240 QS",
+      status: "Speed Math live",
+      live: true,
       to: "/SSC/maths",
-      progress: 68,
-      theme: "emerald",
+      subject: "maths" as SubjectKey,
     },
     {
       icon: Sigma,
       name: "Reasoning",
-      qs: "890 QS",
+      status: "Coming soon",
+      live: false,
       to: "/SSC/reasoning",
-      progress: 54,
-      theme: "amber",
+      subject: "reasoning" as SubjectKey,
     },
     {
       icon: Languages,
       name: "English",
-      qs: "720 QS",
+      status: "Flashcards & Hangman live",
+      live: true,
       to: "/SSC/english",
-      progress: 42,
-      theme: "violet",
+      subject: "english" as SubjectKey,
     },
     {
       icon: Newspaper,
       name: "GK / GS",
-      qs: "1,580 QS",
+      status: "Coming soon",
+      live: false,
       to: "/SSC/gk",
-      progress: 35,
-      theme: "rose",
+      subject: "gk" as SubjectKey,
     },
   ];
 
@@ -85,70 +167,6 @@ export default function Dashboard() {
     },
     { icon: Gamepad2, label: "Hangman Sprint", to: "/SSC/english/hangman" },
   ];
-
-  const recentSessions = [
-    {
-      name: "Ratio & Proportion",
-      date: "22/25 · 12:40",
-      score: "88%",
-      xp: "+45 XP",
-      icon: Calculator,
-    },
-    {
-      name: "Reading Comp.",
-      date: "18/20 · 09:12",
-      score: "90%",
-      xp: "+30 XP",
-      icon: Languages,
-    },
-    {
-      name: "Static GK — History",
-      date: "14/20 · 14:20",
-      score: "70%",
-      xp: "+18 XP",
-      icon: Newspaper,
-    },
-  ];
-
-  const themeClasses: Record<
-    string,
-    {
-      bg: string;
-      text: string;
-      hoverBorder: string;
-      hoverBg: string;
-      barGrad: string;
-    }
-  > = {
-    emerald: {
-      bg: "bg-emerald-500/10 dark:bg-emerald-500/15",
-      text: "text-emerald-600 dark:text-emerald-400",
-      hoverBorder: "hover:border-emerald-500/50",
-      hoverBg: "hover:bg-emerald-500/[0.03]",
-      barGrad: "from-emerald-400 to-emerald-600",
-    },
-    amber: {
-      bg: "bg-amber-500/10 dark:bg-amber-500/15",
-      text: "text-amber-600 dark:text-amber-400",
-      hoverBorder: "hover:border-amber-500/50",
-      hoverBg: "hover:bg-amber-500/[0.03]",
-      barGrad: "from-amber-400 to-orange-500",
-    },
-    violet: {
-      bg: "bg-violet-500/10 dark:bg-violet-500/15",
-      text: "text-violet-600 dark:text-violet-400",
-      hoverBorder: "hover:border-violet-500/50",
-      hoverBg: "hover:bg-violet-500/[0.03]",
-      barGrad: "from-violet-400 to-purple-600",
-    },
-    rose: {
-      bg: "bg-rose-500/10 dark:bg-rose-500/15",
-      text: "text-rose-600 dark:text-rose-400",
-      hoverBorder: "hover:border-rose-500/50",
-      hoverBg: "hover:bg-rose-500/[0.03]",
-      barGrad: "from-rose-400 to-rose-600",
-    },
-  };
 
   return (
     <ProtectedRoute>
@@ -163,7 +181,7 @@ export default function Dashboard() {
               </span>
             </h1>
             <p className="text-muted-foreground text-sm max-w-2xl font-medium">
-              Consistency builds champions. Let's crush today's target.
+              Consistency builds champions. Let&apos;s crush today&apos;s target.
             </p>
           </div>
         </div>
@@ -176,47 +194,49 @@ export default function Dashboard() {
             style={{ animationDelay: "100ms", animationFillMode: "both" }}
           >
             <div className="flex items-center justify-between mb-4 relative z-10">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border/40">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border">
                 <Flame
-                  className="w-3.5 h-3.5 text-amber-500 animate-pulse"
+                  className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 animate-pulse"
                   strokeWidth={2.5}
                 />
-                Streak · {mockStats.streak} days
+                Streak · {stats.streak} {stats.streak === 1 ? "day" : "days"}
               </div>
               <div className="text-right">
                 <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
                   XP EARNED
                 </div>
-                <div className="text-lg font-black font-mono text-amber-500">
-                  {mockStats.xp}
+                <div className="text-lg font-black font-mono text-amber-700 dark:text-amber-400">
+                  {stats.xp.toLocaleString()}
                 </div>
               </div>
             </div>
 
             <div className="text-xl sm:text-2xl font-black tracking-tight mb-4 text-foreground relative z-10">
-              Today's Target ·{" "}
-              <span className="font-mono text-amber-500">
-                {mockStats.todayGoal}
+              Today&apos;s Target ·{" "}
+              <span className="font-mono text-amber-700 dark:text-amber-400">
+                {stats.dailyGoal}
               </span>{" "}
               Qs
             </div>
 
             {/* Progress bar inside its own container */}
             <ProgressBar
-              value={parseInt(mockStats.percent)}
+              value={goalPercent}
               className="h-3.5 mb-3.5 relative z-10"
               barClassName="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 transition-all duration-500"
             />
 
-            <div className="flex items-center justify-between relative z-10">
-              <div className="inline-flex items-center gap-2 bg-foreground text-background text-xs font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 relative z-10">
+              <div className="inline-flex items-center gap-2 whitespace-nowrap bg-foreground text-background text-xs font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full">
                 <span>
-                  {mockStats.solved} / {mockStats.todayGoal} SOLVED
+                  {stats.solvedToday} / {stats.dailyGoal} SOLVED
                 </span>
-                <span className="text-amber-400">({mockStats.percent})</span>
+                <span className="text-amber-500">({goalPercent}%)</span>
               </div>
               <span className="text-xs font-mono font-semibold text-muted-foreground">
-                18 Qs to daily goal
+                {questionsLeft === 0
+                  ? "Daily goal reached"
+                  : `${questionsLeft} Qs to daily goal`}
               </span>
             </div>
 
@@ -226,11 +246,7 @@ export default function Dashboard() {
                 <div key={i} className="flex flex-col items-center gap-1">
                   <div
                     className={`h-2.5 w-full rounded-full transition-all ${
-                      i < 5
-                        ? "bg-amber-500"
-                        : i === 5
-                          ? "bg-amber-500/40"
-                          : "bg-muted/70"
+                      stats.activeDays[i] ? "bg-amber-500" : "bg-muted/70"
                     }`}
                   />
                   <span className="text-xs font-mono font-bold text-muted-foreground">
@@ -250,13 +266,13 @@ export default function Dashboard() {
             <div className="flex items-start justify-between relative z-10">
               <div>
                 <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest uppercase bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white mb-2">
-                  <Zap className="w-3 h-3" /> Quick Resume
+                  <Zap className="w-3 h-3" /> Quick Start
                 </div>
                 <div className="text-2xl sm:text-3xl font-black tracking-tight text-white mt-1">
-                  Speed Math — Percentages
+                  Speed Math
                 </div>
                 <div className="text-white/80 text-xs sm:text-sm font-medium mt-1">
-                  Mathematics · Core Sprint Module
+                  Mathematics · Mental Maths drills
                 </div>
               </div>
               <div className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-105 transition-all duration-300 shadow-sm shrink-0">
@@ -264,14 +280,8 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="relative z-10 mt-6">
-              <div className="h-2 rounded-full bg-black/20 overflow-hidden mb-2">
-                <div className="h-full bg-white rounded-full w-[32%] shadow-sm" />
-              </div>
-              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase tracking-wider text-white/90">
-                <span>Q 8 / 25 SOLVED</span>
-                <span>~ 8 MIN REMAINING</span>
-              </div>
+            <div className="relative z-10 mt-6 text-xs font-mono font-bold uppercase tracking-wider text-white/90">
+              Pick a topic and start your first drill
             </div>
           </Link>
         </div>
@@ -291,25 +301,25 @@ export default function Dashboard() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 </div>
                 <Link
-                  href="/SSC"
-                  className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
+                  href="/practice"
+                  className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 flex items-center gap-1 transition-colors"
                 >
-                  All 4 Tracks <ArrowUpRight className="w-3 h-3" />
+                  All Practice <ArrowUpRight className="w-3 h-3" />
                 </Link>
               </div>
 
               <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
                 {subjects.map((s) => {
-                  const colors = themeClasses[s.theme];
+                  const colors = subjectTheme(s.subject);
                   return (
                     <Link
                       key={s.name}
                       href={s.to}
-                      className={`group rounded-3xl bg-card/70 backdrop-blur-xl border-2 border-border/60 p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
+                      className={`group rounded-3xl bg-card/70 backdrop-blur-xl border-2 border-border p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
                     >
                       <div className="flex items-start justify-between mb-4 relative z-10">
                         <div
-                          className={`w-12 h-12 rounded-2xl ${colors.bg} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40`}
+                          className={`w-12 h-12 rounded-2xl ${colors.iconWrap} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40`}
                         >
                           <s.icon
                             className={`w-5 h-5 ${colors.text}`}
@@ -324,20 +334,20 @@ export default function Dashboard() {
                           {s.name}
                         </div>
                         <div className="text-xs font-mono font-semibold text-muted-foreground mt-0.5">
-                          {s.qs}
+                          {s.status}
                         </div>
 
-                        {/* Mastery Progress Bar */}
-                        <div className="mt-4 pt-3 border-t-2 border-border/40">
-                          <div className="flex justify-between text-xs font-mono font-bold text-muted-foreground mb-1.5">
-                            <span>Mastery</span>
-                            <span className={colors.text}>{s.progress}%</span>
-                          </div>
-                          <ProgressBar
-                            value={s.progress}
-                            className="h-1.5 p-0"
-                            barClassName={`bg-gradient-to-r ${colors.barGrad}`}
-                          />
+                        <div className="mt-4 pt-3 border-t-2 border-border flex items-center justify-between gap-2 whitespace-nowrap text-xs font-mono font-bold">
+                          <span className="text-muted-foreground">
+                            Mastery
+                          </span>
+                          <span
+                            className={
+                              s.live ? colors.text : "text-muted-foreground/60"
+                            }
+                          >
+                            {s.live ? "Soon" : "—"}
+                          </span>
                         </div>
                       </div>
                     </Link>
@@ -359,7 +369,7 @@ export default function Dashboard() {
                   <Link
                     key={q.label}
                     href={q.to}
-                    className="rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-4.5 flex items-center gap-4 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer group"
+                    className="rounded-2xl surface-card p-4.5 flex items-center gap-4 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer group"
                   >
                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
@@ -387,7 +397,7 @@ export default function Dashboard() {
                     <Link
                       key={q.label}
                       href={q.to}
-                      className="flex-1 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer justify-center text-center sm:text-left group"
+                      className="flex-1 rounded-2xl surface-card p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer justify-center text-center sm:text-left group"
                     >
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                         <q.icon
@@ -412,43 +422,10 @@ export default function Dashboard() {
                   <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
                     Recent Drill Feed
                   </div>
-                  <Link
-                    href="/history"
-                    className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1"
-                  >
-                    History <ChevronRight className="w-3 h-3" />
-                  </Link>
                 </div>
 
-                <div className="bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
-                  {recentSessions.map((session, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-amber-500/20 hover:shadow-sm"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-background border-2 border-border/50 flex items-center justify-center shrink-0 group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
-                          <session.icon className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-xs sm:text-sm text-foreground group-hover:text-amber-500 transition-colors">
-                            {session.name}
-                          </div>
-                          <div className="text-xs font-mono text-muted-foreground mt-0.5">
-                            {session.date}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right flex flex-col items-end gap-1">
-                        <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm flex items-center">
-                          {session.score}
-                        </div>
-                        <div className="text-[10px] leading-none font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
-                          {session.xp}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                <div className="surface-card rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
+                  <RecentSessionsList sessions={recentSessions} compact />
                 </div>
               </div>
             </div>
@@ -461,46 +438,13 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1.5">
-                <History className="w-3.5 h-3.5 text-amber-500" />
+                <History className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
                 Recent Drill Feed
               </div>
-              <Link
-                href="/history"
-                className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
-              >
-                History <ChevronRight className="w-3 h-3" />
-              </Link>
             </div>
 
-            <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/60 rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
-              {recentSessions.map((session, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 cursor-pointer group border-2 border-transparent hover:border-amber-500/20 hover:shadow-sm"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-background border-2 border-border/50 flex items-center justify-center shrink-0 group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
-                      <session.icon className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-sm text-foreground group-hover:text-amber-500 transition-colors">
-                        {session.name}
-                      </div>
-                      <div className="text-xs font-mono text-muted-foreground mt-0.5">
-                        {session.date}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right flex flex-col items-end gap-1">
-                    <div className="font-mono font-black text-emerald-500 text-sm flex items-center">
-                      {session.score}
-                    </div>
-                    <div className="text-[10px] leading-none font-mono font-bold tracking-wider text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
-                      {session.xp}
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="surface-card rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
+              <RecentSessionsList sessions={recentSessions} />
             </div>
           </div>
         </div>

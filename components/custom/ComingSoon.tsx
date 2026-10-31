@@ -46,7 +46,7 @@ export default function ComingSoon({
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           className="w-20 h-20 rounded-2xl bg-amber-500/10 border-2 border-amber-500/20 flex items-center justify-center mb-6 relative shadow-inner"
         >
-          <Construction className="w-10 h-10 text-amber-500" />
+          <Construction className="w-10 h-10 text-amber-700 dark:text-amber-400" />
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 6, repeat: Infinity, ease: "linear" }}

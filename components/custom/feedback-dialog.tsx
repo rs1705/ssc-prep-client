@@ -162,7 +162,7 @@ export default function FeedbackDialog() {
             </DialogHeader>
 
             {showRoadmap && (
-              <div className="bg-muted/50 rounded-2xl p-4 border-2 border-border/80 animate-in slide-in-from-top-2 duration-300 space-y-3">
+              <div className="bg-muted/50 rounded-2xl p-4 border-2 border-border animate-in slide-in-from-top-2 duration-300 space-y-3">
                 <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
                   <span>🚀</span> App Roadmap & Upcoming Features
                 </h4>

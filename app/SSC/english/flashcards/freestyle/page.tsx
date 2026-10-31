@@ -115,7 +115,7 @@ const FreestylePage = () => {
         className="flex flex-col items-center w-full transition-all duration-300"
       >
         {/* Control Panel Container */}
-        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-2xl p-2.5 sm:p-3 shadow-xs">
+        <div className="flex flex-col gap-1 w-full surface-card rounded-2xl p-2.5 sm:p-3 shadow-xs">
           {/* Header Row: Title + Mode on Left, Quit on Right */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -135,7 +135,7 @@ const FreestylePage = () => {
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0"
+              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0"
               title="Quit"
               aria-label="Quit session"
             >
@@ -147,7 +147,7 @@ const FreestylePage = () => {
           {!isError && (
             <>
               <div className="flex flex-row items-center gap-1.5 sm:gap-2 w-full mt-0.5">
-                <TabsList className="flex-1 !h-8 sm:!h-9 bg-muted/60 border-2 border-border/60 p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
+                <TabsList className="flex-1 !h-8 sm:!h-9 bg-muted/60 border-2 border-border p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
                   {TABS.map((tab) => (
                     <TabsTrigger
                       key={tab}
@@ -256,7 +256,7 @@ const FreestylePage = () => {
                           </div>
                         ))}
 
-                      <div className="flex items-center justify-between p-4 rounded-lg bg-accent/20 border-2 border-border/30 my-6 shadow-xs">
+                      <div className="flex items-center justify-between p-4 rounded-lg bg-accent/20 border-2 border-border my-6 shadow-xs">
                         <div className="flex flex-col gap-0.5 pr-2">
                           <Label
                             htmlFor="highFrequency"
@@ -353,7 +353,7 @@ const FreestylePage = () => {
               {/* Absolute Loading Overlay during fetches */}
               {isFetching && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] flex items-center justify-center pointer-events-none">
-                  <div className="bg-card/95 backdrop-blur-sm px-8 py-5 rounded-3xl shadow-2xl border-2 border-border flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="surface-card px-8 py-5 rounded-3xl shadow-2xl flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200">
                     <Loader size="md" />
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1 animate-pulse">
                       Syncing Cards...
@@ -368,7 +368,7 @@ const FreestylePage = () => {
     </TopicPageLayout>
 
     <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-      <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border/60 bg-card/95 backdrop-blur-xl rounded-3xl p-5 shadow-2xl">
+      <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl p-5 shadow-2xl">
         <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
           <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
@@ -380,7 +380,7 @@ const FreestylePage = () => {
         </AlertDialogDescription>
         <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
           <AlertDialogCancel
-            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase bg-card text-foreground hover:bg-muted/60 border-2 border-border/60 active:scale-95 transition-all cursor-pointer"
+            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-muted/60 active:scale-95 transition-all cursor-pointer"
             onClick={() => setShowQuitConfirm(false)}
           >
             Cancel

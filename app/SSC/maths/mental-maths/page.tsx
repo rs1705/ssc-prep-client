@@ -376,7 +376,7 @@ const MentalMaths = () => {
 
   return (
     <TopicPageLayout
-      title="Speed Maths"
+      title="Speed Math"
       description="Spend 10 minutes daily here to build instinctive calculation speed so you can attempt every question before the sectional timer expires."
       contentMaxWidthClass="w-full"
     >
@@ -385,10 +385,10 @@ const MentalMaths = () => {
         <div className="flex-1 flex flex-col gap-6 w-full min-w-0">
 
         {/* Filter Chips */}
-        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-1.5 bg-card/50 backdrop-blur-xl p-1.5 rounded-2xl border-2 border-border/40">
+        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-1.5 surface-card p-1.5 rounded-2xl">
           <button
             onClick={() => setActiveFilter("all")}
-            className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
+            className={`flex-shrink-0 min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
               activeFilter === "all"
                 ? "bg-foreground text-background shadow-sm"
                 : "text-muted-foreground hover:text-foreground hover:bg-card/60"
@@ -400,7 +400,7 @@ const MentalMaths = () => {
             <button
               key={section.id}
               onClick={() => setActiveFilter(section.id)}
-              className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
+              className={`flex-shrink-0 min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeFilter === section.id
                   ? "bg-foreground text-background shadow-sm"
                   : "text-muted-foreground hover:text-foreground hover:bg-card/60"
@@ -487,10 +487,10 @@ const MentalMaths = () => {
           {/* Streak Card */}
           <div className="bg-card/60 backdrop-blur-2xl border-2 border-amber-500/25 shadow-xl shadow-amber-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
             <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <span className="text-amber-500 text-base">🔥</span> Current Streak
+              <span className="text-amber-700 dark:text-amber-400 text-base">🔥</span> Current Streak
             </h3>
             <div className="flex items-end gap-2">
-              <span className="text-5xl font-black font-mono leading-none tracking-tighter text-amber-500">12</span>
+              <span className="text-5xl font-black font-mono leading-none tracking-tighter text-amber-700 dark:text-amber-400">12</span>
               <span className="text-xs font-mono font-bold text-muted-foreground mb-1 uppercase tracking-widest">Days Locked</span>
             </div>
             <p className="text-xs text-muted-foreground font-medium leading-relaxed z-10">
@@ -499,7 +499,7 @@ const MentalMaths = () => {
           </div>
 
           {/* Global Stats Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
+          <div className="surface-card shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
             <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">
               Performance Telemetry
             </h3>

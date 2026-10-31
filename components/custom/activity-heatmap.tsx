@@ -54,7 +54,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
       case 2: return "bg-amber-500/60 border-2 border-amber-500/40";
       case 3: return "bg-amber-500 border-2 border-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.4)]";
       case 4: return "bg-orange-500 border-2 border-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.6)]";
-      default: return "bg-card/40 border-2 border-border/20";
+      default: return "surface-card";
     }
   };
 
@@ -76,12 +76,12 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
   });
 
   return (
-    <div className={cn("p-5 sm:p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-border/40 shadow-xl shadow-black/5 flex flex-col gap-4 relative", className)}>
+    <div className={cn("p-5 sm:p-6 rounded-3xl surface-card shadow-xl shadow-black/5 flex flex-col gap-4 relative", className)}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-amber-500/10 flex items-center justify-center border-2 border-amber-500/20">
-            <Flame className="w-5 h-5 text-amber-500" />
+            <Flame className="w-5 h-5 text-amber-700 dark:text-amber-400" />
           </div>
           <div>
             <h4 className="text-base sm:text-lg font-black text-foreground tracking-tight">
@@ -94,7 +94,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
         </div>
         
         {/* Quick Stats */}
-        <div className="flex items-center gap-3 sm:gap-6 bg-background/50 px-4 sm:px-5 py-2.5 rounded-2xl border-2 border-border/40 w-fit shrink-0">
+        <div className="flex items-center gap-3 sm:gap-6 bg-background/50 px-4 sm:px-5 py-2.5 rounded-2xl border-2 border-border w-fit shrink-0">
           <div className="flex flex-col">
             <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">Total</span>
             <span className="text-sm font-black text-foreground">94 Days</span>
@@ -102,9 +102,9 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
           <div className="w-0.5 h-6 bg-border/50" />
           <div className="flex flex-col">
             <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
-              Streak <Trophy className="w-2.5 h-2.5 text-amber-500" />
+              Streak <Trophy className="w-2.5 h-2.5 text-amber-700 dark:text-amber-400" />
             </span>
-            <span className="text-sm font-black text-amber-500">12 Days</span>
+            <span className="text-sm font-black text-amber-700 dark:text-amber-400">12 Days</span>
           </div>
         </div>
       </div>
@@ -185,7 +185,7 @@ export const ActivityHeatmap = ({ className }: { className?: string }) => {
       <div className="flex items-center justify-end gap-2 text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest mt-2 pt-4 border-t-2 border-border/40">
         <span>Less</span>
         <div className="flex gap-1.5 mx-1">
-          <div className="w-3.5 h-3.5 rounded-[4px] bg-card/40 border-2 border-border/20" />
+          <div className="w-3.5 h-3.5 rounded-[4px] surface-card" />
           <div className="w-3.5 h-3.5 rounded-[4px] bg-amber-500/30 border-2 border-amber-500/20" />
           <div className="w-3.5 h-3.5 rounded-[4px] bg-amber-500/60 border-2 border-amber-500/40" />
           <div className="w-3.5 h-3.5 rounded-[4px] bg-amber-500 border-2 border-amber-400" />

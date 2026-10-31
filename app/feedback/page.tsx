@@ -47,8 +47,8 @@ const CATEGORIES = [
     desc: "New tool, drill, or trick idea",
     icon: Lightbulb, 
     badge: "Idea",
-    color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-    activeColor: "border-amber-500/50 bg-amber-500/10 text-amber-500 shadow-amber-500/10"
+    color: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
+    activeColor: "border-amber-500/50 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-amber-500/10"
   },
   { 
     id: "content", 
@@ -181,7 +181,7 @@ export default function FeedbackPage() {
           className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
           style={{ animationDelay: "200ms", animationFillMode: "both" }}
         >
-          <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
+          <div className="surface-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
             {/* Ambient Lighting Mesh */}
             <div className="absolute -top-12 -right-12 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -225,7 +225,7 @@ export default function FeedbackPage() {
                           name: user?.displayName || "",
                         });
                       }}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border-2 border-border/60 hover:bg-card/80 text-foreground cursor-pointer transition-all"
+                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border-2 border-border hover:bg-card/80 text-foreground cursor-pointer transition-all"
                     >
                       Submit Another
                     </Button>
@@ -241,7 +241,7 @@ export default function FeedbackPage() {
                 >
                   <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center border-2 border-amber-500/20 shadow-inner">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center border-2 border-amber-500/20 shadow-inner">
                         <MessageSquare className="w-5 h-5" />
                       </div>
                       <div>
@@ -253,7 +253,7 @@ export default function FeedbackPage() {
                         </p>
                       </div>
                     </div>
-                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20">
+                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20">
                       Tier 1 Focused
                     </span>
                   </div>
@@ -288,7 +288,7 @@ export default function FeedbackPage() {
                                     {cat.label}
                                   </span>
                                   {isSelected && (
-                                    <Check className="w-3.5 h-3.5 text-amber-500" />
+                                    <Check className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
                                   )}
                                 </div>
                                 <p className="text-xs text-muted-foreground leading-snug mt-0.5 truncate">
@@ -307,11 +307,11 @@ export default function FeedbackPage() {
                         <Label className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                           2. Overall App Experience
                         </Label>
-                        <span className="text-xs font-mono font-bold text-amber-500">
+                        <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400">
                           {RATING_EMOJIS.find(r => r.value === selectedRating)?.label || "Select rating"}
                         </span>
                       </div>
-                      <div className="grid grid-cols-5 gap-2 p-2 bg-card/40 backdrop-blur-md rounded-2xl border-2 border-border/40">
+                      <div className="grid grid-cols-5 gap-2 p-2 surface-card rounded-2xl">
                         {RATING_EMOJIS.map((rating) => {
                           const isSelected = selectedRating === rating.value;
                           return (
@@ -328,7 +328,7 @@ export default function FeedbackPage() {
                               <span className="text-2xl sm:text-3xl select-none transition-transform duration-200">
                                 {rating.emoji}
                               </span>
-                              <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isSelected ? "text-amber-500" : "text-muted-foreground"}`}>
+                              <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isSelected ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"}`}>
                                 {rating.desc}
                               </span>
                             </button>
@@ -352,7 +352,7 @@ export default function FeedbackPage() {
                         placeholder="Tell us exactly what happened, what formula was off, or what feature would supercharge your preparation..."
                         {...form.register("message")}
                         rows={4}
-                        className="w-full rounded-2xl border-2 border-border/60 bg-card/40 backdrop-blur-md p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
+                        className="w-full rounded-2xl surface-card p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
                       />
                       {form.formState.errors.message && (
                         <p className="text-xs font-medium text-rose-500">
@@ -372,7 +372,7 @@ export default function FeedbackPage() {
                         type="text"
                         placeholder="e.g. Rahul Sharma"
                         {...form.register("name")}
-                        className="h-12 rounded-2xl border-2 border-border/60 bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all"
+                        className="h-12 rounded-2xl border-2 border-border bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all"
                       />
                       {form.formState.errors.name && (
                         <p className="text-xs font-medium text-rose-500">
@@ -418,12 +418,12 @@ export default function FeedbackPage() {
           style={{ animationDelay: "300ms", animationFillMode: "both" }}
         >
           {/* Upcoming Roadmap Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border-2 border-border/40 rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
+          <div className="surface-card rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-border/40">
               <div className="flex items-center gap-2">
-                <Rocket className="w-4 h-4 text-amber-500" />
+                <Rocket className="w-4 h-4 text-amber-700 dark:text-amber-400" />
                 <h3 className="font-extrabold text-sm text-foreground tracking-tight">
                   Public Engineering Roadmap
                 </h3>
@@ -437,11 +437,11 @@ export default function FeedbackPage() {
               {ROADMAP_ITEMS.map((item, idx) => (
                 <div 
                   key={idx}
-                  className="p-3.5 rounded-2xl bg-card/40 border-2 border-border/40 hover:border-amber-500/30 transition-all flex flex-col gap-1.5"
+                  className="p-3.5 rounded-2xl surface-card hover:border-amber-500/30 transition-all flex flex-col gap-1.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2 font-bold text-xs text-foreground">
-                      <item.icon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <item.icon className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
                       <span>{item.title}</span>
                     </div>
                     <span className={`text-xs font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 shrink-0 ${item.statusColor}`}>

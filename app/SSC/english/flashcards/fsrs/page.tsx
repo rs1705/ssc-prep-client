@@ -58,7 +58,7 @@ const FsrsPage = () => {
     return (
       <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
         <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl bg-card border-2 border-border shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl surface-card shadow-sm">
             <span className="text-5xl mb-4 select-none animate-pulse">🔒</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">
               Sign In Required
@@ -85,7 +85,7 @@ const FsrsPage = () => {
       <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
       <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
-        <div className="flex flex-col gap-1 w-full bg-card/95 md:bg-card/60 backdrop-blur-xl border-2 border-border/60 rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
+        <div className="flex flex-col gap-1 w-full surface-card rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">
           {/* Row 1: Left is Section Title & Mode, Right is Quit Button */}
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -105,7 +105,7 @@ const FsrsPage = () => {
             <button
               type="button"
               onClick={() => setShowQuitConfirm(true)}
-              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0"
+              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0"
               title="Quit"
               aria-label="Quit session"
             >
@@ -162,7 +162,7 @@ const FsrsPage = () => {
     </TopicPageLayout>
     
       <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-        <AlertDialogContent className="sm:w-full max-w-sm border-2 border-border/60 bg-card/95 backdrop-blur-xl rounded-3xl p-5 shadow-2xl">
+        <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl p-5 shadow-2xl">
           <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
             <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
@@ -174,7 +174,7 @@ const FsrsPage = () => {
           </AlertDialogDescription>
           <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
             <AlertDialogCancel
-              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase bg-card text-foreground hover:bg-muted/60 border-2 border-border/60 active:scale-95 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-muted/60 active:scale-95 transition-all cursor-pointer"
               onClick={() => setShowQuitConfirm(false)}
             >
               Cancel

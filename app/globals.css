@@ -113,83 +113,92 @@
 :root {
   --radius: 12px;
 
-  /* EptSsc Elite — Light Mode (Obsidian & Gold) */
-  --background: #fafafa;
-  --foreground: #09090b;
+  /* EptSsc — Light: warm porcelain paper, ink text, gold accent */
+  --background: #f7f6f2;
+  --foreground: #14131a;
   --card: #ffffff;
-  --card-foreground: #09090b;
+  --card-foreground: #14131a;
   --popover: #ffffff;
-  --popover-foreground: #09090b;
-  --primary: #09090b;
+  --popover-foreground: #14131a;
+  --primary: #14131a;
   --primary-foreground: #ffffff;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #09090b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --secondary: #eeece6;
+  --secondary-foreground: #14131a;
+  --muted: #eeece6;
+  --muted-foreground: #615e6b;
   --accent: #f59e0b;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --accent-foreground: #14131a;
+  --destructive: #e11d48;
   --destructive-foreground: #ffffff;
-  --success: #10b981;
+  --success: #059669;
   --success-foreground: #ffffff;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #09090b;
+  --border: #e2dfd6;
+  --input: #e2dfd6;
+  --ring: #14131a;
 
-  --chart-1: #09090b;
+  --chart-1: #14131a;
   --chart-2: #f59e0b;
-  --chart-3: #10b981;
-  --chart-4: #f4f4f5;
-  --chart-5: #3f3f46;
+  --chart-3: #059669;
+  --chart-4: #eeece6;
+  --chart-5: #46434f;
 
-  --sidebar: #fafafa;
-  --sidebar-foreground: #09090b;
-  --sidebar-primary: #09090b;
+  --sidebar: #f2f0ea;
+  --sidebar-foreground: #14131a;
+  --sidebar-primary: #14131a;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f5;
-  --sidebar-accent-foreground: #09090b;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #09090b;
+  --sidebar-accent: #eeece6;
+  --sidebar-accent-foreground: #14131a;
+  --sidebar-border: #e2dfd6;
+  --sidebar-ring: #14131a;
 }
 
 .dark {
-  /* EptSsc Elite — Dark Mode (Obsidian & Gold) */
-  --background: #18181b;
-  --foreground: #fafafa;
-  --card: #27272a;
-  --card-foreground: #fafafa;
-  --popover: #27272a;
-  --popover-foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #18181b;
-  --secondary: #3f3f46;
-  --secondary-foreground: #fafafa;
-  --muted: #3f3f46;
-  --muted-foreground: #a1a1aa;
+  /* EptSsc — Dark: deep ink-blue surfaces, soft off-white text, gold accent */
+  --background: #0f1117;
+  --foreground: #f3f4f7;
+  --card: #171a22;
+  --card-foreground: #f3f4f7;
+  --popover: #171a22;
+  --popover-foreground: #f3f4f7;
+  --primary: #f3f4f7;
+  --primary-foreground: #0f1117;
+  --secondary: #222632;
+  --secondary-foreground: #f3f4f7;
+  --muted: #222632;
+  --muted-foreground: #9aa1b2;
   --accent: #fbbf24;
-  --accent-foreground: #18181b;
-  --destructive: #ef4444;
+  --accent-foreground: #0f1117;
+  --destructive: #f43f5e;
   --destructive-foreground: #ffffff;
   --success: #10b981;
-  --success-foreground: #18181b;
-  --border: #3f3f46;
-  --input: #3f3f46;
-  --ring: #fafafa;
+  --success-foreground: #0f1117;
+  --border: #2a2f3d;
+  --input: #2a2f3d;
+  --ring: #e6e8ee;
 
-  --chart-1: #fafafa;
+  --chart-1: #f3f4f7;
   --chart-2: #fbbf24;
   --chart-3: #10b981;
-  --chart-4: #3f3f46;
-  --chart-5: #a1a1aa;
+  --chart-4: #2a2f3d;
+  --chart-5: #9aa1b2;
 
-  --sidebar: #18181b;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #fafafa;
-  --sidebar-primary-foreground: #18181b;
-  --sidebar-accent: #3f3f46;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #3f3f46;
-  --sidebar-ring: #fafafa;
+  --sidebar: #0b0d12;
+  --sidebar-foreground: #f3f4f7;
+  --sidebar-primary: #f3f4f7;
+  --sidebar-primary-foreground: #0f1117;
+  --sidebar-accent: #222632;
+  --sidebar-accent-foreground: #f3f4f7;
+  --sidebar-border: #2a2f3d;
+  --sidebar-ring: #e6e8ee;
+}
+
+/* The one card surface used app-wide: solid fill, 2px structural border.
+   Variants (hover:, focus-visible:) can still override the border colour. */
+@utility surface-card {
+  background-color: var(--card);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border);
 }
 
 @layer base {
@@ -200,6 +209,13 @@
   html {
     scroll-behavior: smooth;
     overscroll-behavior-y: contain;
+  }
+  html,
+  body {
+    overflow-x: clip;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
   }
   body {
     @apply bg-background text-foreground font-sans;
@@ -215,6 +231,16 @@
 }
 
 @layer utilities {
+  /* Small uppercase mono label used above sections, stats and groups. */
+  .section-label {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
   .scrollbar-none {
     -ms-overflow-style: none;
     scrollbar-width: none;

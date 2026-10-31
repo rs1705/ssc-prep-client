@@ -44,7 +44,7 @@ export default function HangmanDemoPage() {
             <Button
               variant="ghost"
               size="icon"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-card/60 shrink-0 border-2 border-border/40"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-card/60 shrink-0 border-2 border-border"
             >
               <ChevronLeft className="w-4 h-4 text-muted-foreground" />
             </Button>
@@ -87,7 +87,7 @@ export default function HangmanDemoPage() {
                 </div>
               ))}
             </div>
-            <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest bg-card/60 px-2.5 py-0.5 rounded-full border-2 border-border/40">
+            <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest surface-card px-2.5 py-0.5 rounded-full">
               Word 4 of 10
             </span>
           </div>
@@ -110,16 +110,16 @@ export default function HangmanDemoPage() {
           </div>
 
           {/* Hidden Word Display */}
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+          <div className="flex w-full justify-center gap-1 sm:gap-2">
             {mockWord.split("").map((letter, i) => {
               const isRevealed = guessedLetters.has(letter);
               return (
                 <div
                   key={i}
-                  className={`w-8 h-10 sm:w-10 sm:h-12 md:w-11 md:h-13 flex items-center justify-center rounded-xl sm:rounded-2xl border-2 text-base sm:text-lg md:text-xl font-black font-mono uppercase transition-all duration-300 shadow-2xs ${
+                  className={`h-10 sm:h-12 min-w-0 flex-1 max-w-11 flex items-center justify-center rounded-xl sm:rounded-2xl border-2 text-sm sm:text-lg md:text-xl font-black font-mono uppercase transition-all duration-300 shadow-2xs ${
                     isRevealed
                       ? "bg-violet-500/15 border-violet-500/40 text-violet-600 dark:text-violet-300 shadow-violet-500/10 scale-105"
-                      : "bg-card/40 backdrop-blur-sm border-border/60 text-transparent"
+                      : "bg-card border-border text-transparent"
                   }`}
                 >
                   {isRevealed ? letter : ""}
@@ -129,7 +129,7 @@ export default function HangmanDemoPage() {
           </div>
 
           {/* Definition Hint */}
-          <div className="bg-card/60 backdrop-blur-xl border-2 border-violet-500/25 rounded-2xl p-3 sm:p-4 w-full text-center shadow-md shadow-black/5 relative overflow-hidden">
+          <div className="bg-card border-2 border-violet-500/25 rounded-2xl p-3 sm:p-4 w-full text-center shadow-md shadow-black/5 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-indigo-500"></div>
             <div className="flex items-start justify-center gap-2">
               <HelpCircle className="w-3.5 h-3.5 text-violet-500 shrink-0 mt-0.5" />
@@ -153,7 +153,7 @@ export default function HangmanDemoPage() {
                 const isWrong = isGuessed && !mockWord.includes(key);
 
                 let keyClasses =
-                  "bg-card/60 backdrop-blur-md border-border/50 text-foreground hover:bg-card hover:border-border active:scale-[0.95] shadow-2xs";
+                  "bg-card border-border text-foreground hover:bg-muted active:scale-[0.95] shadow-2xs";
                 
                 if (isCorrect) {
                   keyClasses = "bg-emerald-500/20 border-emerald-500/40 text-emerald-600 dark:text-emerald-300 opacity-60 cursor-default";

@@ -101,7 +101,7 @@ export const TopicCard = ({
 
   return (
     <div
-      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border/60 hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
+      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
       style={{
         animationDelay: `${Math.floor(index / cols) * 80}ms`,
         animationFillMode: "both",
@@ -136,7 +136,7 @@ export const TopicCard = ({
       {/* Bottom Controls Row */}
       <div className="flex items-center justify-between mt-5 pt-3.5 border-t-2 border-border/40 relative z-10 gap-2">
         {/* Left: Stats Pill */}
-        <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border-2 border-border/40 truncate max-w-[120px]">
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border-2 border-border truncate max-w-[120px]">
           {stats}
         </span>
 
@@ -151,7 +151,7 @@ export const TopicCard = ({
               trigger={
                 <Button
                   variant="ghost"
-                  className="px-3 py-1.5 h-8 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border-2 border-border/50 active:scale-95 transition-all cursor-pointer"
+                  className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   Revise
@@ -161,7 +161,7 @@ export const TopicCard = ({
           )}
           <Button
             onClick={onStartClick}
-            className="px-3.5 py-1.5 h-8 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-amber-500 to-orange-400 text-white shadow-xs hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
+            className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-amber-500 to-orange-400 text-white shadow-xs hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
           >
             <Swords className="w-3.5 h-3.5 group-hover/btn:rotate-12 group-hover/btn:scale-125 transition-transform duration-300" />
             Practice

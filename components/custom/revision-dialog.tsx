@@ -72,10 +72,10 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
     amber: {
       iconBg: "bg-amber-500/10 shadow-inner ring-1 ring-border/40 text-amber-600 dark:text-amber-400",
       activeBtn: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm border-0",
-      modeIcon: "text-amber-500",
+      modeIcon: "text-amber-700 dark:text-amber-400",
       revealRow: "bg-amber-500/5 hover:bg-amber-500/10 border-amber-500/25 text-amber-600 dark:text-amber-400",
       revealPill: "text-amber-600 dark:text-amber-400 bg-amber-500/15 border-amber-500/30",
-      sparkle: "text-amber-500",
+      sparkle: "text-amber-700 dark:text-amber-400",
     },
     indigo: {
       iconBg: "bg-indigo-500/10 shadow-inner ring-1 ring-border/40 text-indigo-600 dark:text-indigo-400",
@@ -190,7 +190,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
               className={`h-8 px-3 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 transition-all cursor-pointer select-none ${
                 selfTest
                   ? currentTheme.activeBtn
-                  : "bg-muted/70 hover:bg-muted text-foreground border-2 border-border/50"
+                  : "bg-muted/70 hover:bg-muted text-foreground border-2 border-border"
               }`}
             >
               {selfTest ? (
@@ -209,7 +209,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
               <button
                 aria-label="Close dialog"
                 title="Close dialog"
-                className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer shrink-0"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0"
               >
                 <X className="w-4 h-4" strokeWidth={2.2} />
               </button>
@@ -224,7 +224,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
             return (
               <div
                 key={group.label}
-                className="rounded-2xl border-2 border-border/50 bg-card/40 hover:border-border/80 overflow-hidden transition-all duration-200 shadow-2xs"
+                className="rounded-2xl surface-card hover:border-border/80 overflow-hidden transition-all duration-200 shadow-2xs"
               >
                 {/* Section Header Accordion Trigger */}
                 <button

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
+import { useThemeToggle } from "@/hooks/useThemeToggle";
 
 import { usePathname } from "next/navigation";
 
@@ -52,7 +52,7 @@ import { Logo } from "./logo";
 
 const Header = () => {
   const { user, logout } = useAuth();
-  const { theme, setTheme } = useTheme();
+  const { toggleTheme } = useThemeToggle();
   const pathname = usePathname();
 
   const [hoveredSubject, setHoveredSubject] = useState<
@@ -73,50 +73,6 @@ const Header = () => {
       document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
-
-  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const isDark = theme === "dark";
-    const doc = document as unknown as {
-      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
-    };
-
-    if (
-      typeof document === "undefined" ||
-      !doc.startViewTransition ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setTheme(isDark ? "light" : "dark");
-      return;
-    }
-
-    const x = event.clientX;
-    const y = event.clientY;
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y),
-    );
-
-    const transition = doc.startViewTransition(() => {
-      setTheme(isDark ? "light" : "dark");
-    });
-
-    transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ];
-      document.documentElement.animate(
-        {
-          clipPath: clipPath,
-        },
-        {
-          duration: 500,
-          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-          pseudoElement: "::view-transition-new(root)",
-        },
-      );
-    });
-  };
 
   return (
     <nav className="w-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-md border-b-2 border-border/40 sticky top-0 z-50">
@@ -191,7 +147,7 @@ const Header = () => {
                                 : "hover:bg-accent/40 text-muted-foreground font-medium"
                             }`}
                           >
-                            <BrainCircuit className="w-4 h-4 shrink-0 text-amber-500 dark:text-amber-400" />
+                            <BrainCircuit className="w-4 h-4 shrink-0 text-amber-700 " />
                             <span className="text-sm">Reasoning</span>
                           </div>
 
@@ -471,7 +427,7 @@ const Header = () => {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="h-11 px-3 pr-5 hover:cursor-pointer flex-row items-center font-semibold bg-accent/30 rounded-full hover:bg-accent border-2 border-border shadow-sm">
                       <div className="flex items-center gap-3">
-                        <Avatar className="w-8 h-8 border-2 border-border/50">
+                        <Avatar className="w-8 h-8 border-2 border-border">
                           <AvatarImage
                             src={
                               user.photoURL ||
@@ -543,7 +499,7 @@ const Header = () => {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="flex items-center justify-center rounded-full hover:opacity-85 transition-opacity focus:outline-none focus:ring-0 mr-1"
               >
-                <Avatar className="w-8 h-8 border-2 border-border/50 shadow-sm">
+                <Avatar className="w-8 h-8 border-2 border-border shadow-sm">
                   <AvatarImage
                     src={user.photoURL || "https://github.com/evilrabbit.png"}
                   />
@@ -602,7 +558,7 @@ const Header = () => {
                     Home
                   </Link>
 
-                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl mx-4 my-1 border-2 border-border/40 max-h-[380px] overflow-y-auto">
+                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl mx-4 my-1 border-2 border-border max-h-[380px] overflow-y-auto">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 px-3">
                       Subjects
                     </p>
@@ -619,7 +575,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "english"
-                            ? "bg-background shadow-sm border-2 border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -683,7 +639,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "maths"
-                            ? "bg-background shadow-sm border-2 border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -749,12 +705,12 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "reasoning"
-                            ? "bg-background shadow-sm border-2 border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <BrainCircuit className="w-4 h-4 shrink-0 text-amber-500 dark:text-amber-400" />
+                          <BrainCircuit className="w-4 h-4 shrink-0 text-amber-700 " />
                           <span className="text-sm font-semibold">
                             Reasoning
                           </span>
@@ -814,7 +770,7 @@ const Header = () => {
                         }
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "gk"
-                            ? "bg-background shadow-sm border-2 border-border/50"
+                            ? "bg-background shadow-sm border-2 border-border"
                             : "hover:bg-background/50 hover:text-foreground"
                         }`}
                       >
@@ -903,12 +859,12 @@ const Header = () => {
                   <div className="mt-8 border-t-2 border-border/40 pt-6">
                     {user ? (
                       <div className="flex flex-col gap-2 px-8">
-                        <div className="p-4 rounded-2xl bg-accent/30 border-2 border-border/50 flex flex-col gap-3 mb-2">
+                        <div className="p-4 rounded-2xl bg-accent/30 border-2 border-border flex flex-col gap-3 mb-2">
                           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                             My Account
                           </p>
                           <div className="flex items-center gap-3">
-                            <Avatar className="w-8 h-8 border-2 border-border/50 shadow-sm">
+                            <Avatar className="w-8 h-8 border-2 border-border shadow-sm">
                               <AvatarImage
                                 src={
                                   user.photoURL ||

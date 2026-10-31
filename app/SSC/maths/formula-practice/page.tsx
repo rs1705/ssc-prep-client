@@ -183,7 +183,7 @@ export default function FormulaPracticePage() {
       <div className="flex flex-col gap-8 py-2">
         {/* Filter Bar & Search */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1.5 surface-card p-1.5 rounded-2xl w-full sm:w-auto overflow-x-auto scrollbar-none">
             {[
               { id: "all", label: "All Formulas" },
               { id: "algebra", label: "Algebra" },
@@ -195,7 +195,7 @@ export default function FormulaPracticePage() {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
+                className={`min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
                   activeCategory === cat.id
                     ? "bg-foreground text-background shadow-xs"
                     : "text-muted-foreground hover:text-foreground hover:bg-card/80"
@@ -213,7 +213,7 @@ export default function FormulaPracticePage() {
               placeholder="Search formulas & identities..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
+              className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
             />
           </div>
         </div>
@@ -225,11 +225,11 @@ export default function FormulaPracticePage() {
             return (
               <div
                 key={card.id}
-                className="p-6 sm:p-7 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+                className="p-6 sm:p-7 rounded-3xl surface-card shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
               >
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-500 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20">
                       {card.tag}
                     </span>
                     <div className="flex items-center gap-1">
@@ -239,7 +239,7 @@ export default function FormulaPracticePage() {
                         title={isHidden ? "Reveal formula" : "Hide formula to test yourself"}
                         className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors cursor-pointer"
                       >
-                        {isHidden ? <Eye className="w-3.5 h-3.5 text-amber-500" /> : <EyeOff className="w-3.5 h-3.5" />}
+                        {isHidden ? <Eye className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" /> : <EyeOff className="w-3.5 h-3.5" />}
                       </button>
                       <button
                         type="button"
@@ -264,7 +264,7 @@ export default function FormulaPracticePage() {
                   <div className={`p-4 rounded-2xl border-2 transition-all duration-300 font-mono text-sm sm:text-base font-black ${
                     isHidden 
                       ? "bg-muted/40 border-border/40 text-muted-foreground/30 blur-sm select-none cursor-pointer" 
-                      : "bg-card/80 border-amber-500/30 text-amber-500 shadow-inner"
+                      : "bg-card/80 border-amber-500/30 text-amber-700 dark:text-amber-400 shadow-inner"
                   }`}
                   onClick={() => isHidden && toggleHide(card.id)}
                   >
@@ -275,7 +275,7 @@ export default function FormulaPracticePage() {
                     {card.explanation}
                   </p>
 
-                  <div className="text-xs text-muted-foreground bg-card/40 border-2 border-border/30 p-2.5 rounded-xl mt-2 font-mono">
+                  <div className="text-xs text-muted-foreground surface-card p-2.5 rounded-xl mt-2 font-mono">
                     <span className="text-foreground font-bold">Example:</span> {card.example}
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export default function FormulaPracticePage() {
                   <Link href="/SSC/maths/mental-maths">
                     <Button
                       variant="ghost"
-                      className="w-full h-9 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
+                      className="w-full h-9 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-500/10 border-2 border-amber-500/20"
                     >
                       <Swords className="w-3.5 h-3.5" />
                       Test in Mental Maths Drill

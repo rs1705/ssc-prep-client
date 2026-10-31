@@ -396,7 +396,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
         </div>
       ) : (
         <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-6 sm:p-8 min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] rounded-3xl bg-card border-2 border-border shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center p-6 sm:p-8 min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] rounded-3xl surface-card shadow-sm">
             <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">
               No Cards Found

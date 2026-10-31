@@ -38,7 +38,6 @@ const SignUpForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
   };
   return (
     <div className="w-full">
@@ -52,7 +51,7 @@ const SignUpForm = () => {
         </p>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           <FormField
             control={form.control}
             name="username"
@@ -63,11 +62,11 @@ const SignUpForm = () => {
                   <Input
                     type="text"
                     placeholder="Enter your name"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-rose-500 font-medium">
+                <p className="text-left text-xs text-rose-600 dark:text-rose-400 font-medium min-h-4">
                   {form.formState.errors.username?.message}
                 </p>
               </FormItem>
@@ -84,11 +83,11 @@ const SignUpForm = () => {
                   <Input
                     type="text"
                     placeholder="Enter your email"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-rose-500 font-medium">
+                <p className="text-left text-xs text-rose-600 dark:text-rose-400 font-medium min-h-4">
                   {form.formState.errors.email?.message}
                 </p>
               </FormItem>
@@ -104,11 +103,11 @@ const SignUpForm = () => {
                   <Input
                     type="password"
                     placeholder="Enter your password"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/60 hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
-                <p className="text-left text-xs text-rose-500 font-medium">
+                <p className="text-left text-xs text-rose-600 dark:text-rose-400 font-medium min-h-4">
                   {form.formState.errors.password?.message}
                 </p>
               </FormItem>

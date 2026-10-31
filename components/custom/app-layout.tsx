@@ -3,11 +3,14 @@
 import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/custom/sidebar";
 import { TopBar } from "@/components/custom/topbar";
+import { MobileTabBar } from "@/components/custom/mobile-tab-bar";
+import { useAuth } from "@/context/auth";
 import { SidebarProvider, useSidebar } from "@/components/custom/sidebar-context";
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted } = useSidebar();
+  const { user } = useAuth();
 
   if (pathname === "/") {
     return <>{children}</>;
@@ -27,6 +30,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   const isFocusMode = isGameRoute(pathname);
+  const isAuthRoute = pathname.startsWith("/signin") || pathname.startsWith("/signup");
   const isDashboard = pathname === "/dashboard";
   const sidebarWidthClass = isCollapsed
     ? "md:w-[72px]"
@@ -52,13 +56,14 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
             className={`flex-1 flex flex-col animate-in fade-in duration-500 fill-mode-forwards min-h-0 ${
               isFocusMode 
                 ? "px-3 pt-2 pb-2 sm:px-4 sm:pt-3 sm:pb-3 md:px-6 md:pt-4 md:pb-4 items-center justify-start overflow-hidden" 
-                : "pt-4 sm:pt-6 md:pt-8 px-4 sm:px-6 md:px-8 pb-16"
+                : "pt-4 sm:pt-6 md:pt-8 px-4 sm:px-6 md:px-8 pb-28 md:pb-16"
             }`}
           >
             {children}
           </main>
         </div>
       </div>
+      {user && !isFocusMode && !isAuthRoute && <MobileTabBar />}
     </div>
   );
 }

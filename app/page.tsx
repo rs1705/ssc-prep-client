@@ -475,7 +475,7 @@ function InteractiveHeroDashboard() {
           </div>
 
           {/* Interactive Mode Pills */}
-          <div className="flex items-center gap-1 bg-background/80 p-1 rounded-xl border-2 border-border/40 shadow-inner">
+          <div className="flex items-center gap-1 bg-background/80 p-1 rounded-xl border-2 border-border shadow-inner">
             {[
               { id: "analytics", label: "AI Analytics", icon: BarChart3 },
               { id: "maths", label: "Maths Sprint", icon: Zap },
@@ -521,7 +521,7 @@ function InteractiveHeroDashboard() {
                 className="grid grid-cols-1 md:grid-cols-3 gap-4"
               >
                 {/* Column 1: Sectional Split */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col justify-between">
+                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <BarChart3 className="w-3.5 h-3.5 text-amber-500" /> Sectional Accuracy
@@ -554,7 +554,7 @@ function InteractiveHeroDashboard() {
                 </div>
 
                 {/* Column 2: Accuracy Trend */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col justify-between">
+                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <Activity className="w-3.5 h-3.5 text-amber-500" /> 7-Shift Mastery Curve
@@ -583,7 +583,7 @@ function InteractiveHeroDashboard() {
                           <text 
                             x="2" 
                             y={grid.y + 3} 
-                            className="fill-muted-foreground/60 text-[7px] font-mono font-bold"
+                            className="fill-muted-foreground/60 text-[10px] font-mono font-bold"
                           >
                             {grid.label}
                           </text>
@@ -678,7 +678,7 @@ function InteractiveHeroDashboard() {
                 </div>
 
                 {/* Column 3: Overall Rank Metric */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border/40 p-4 flex flex-col items-center justify-center text-center">
+                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border p-4 flex flex-col items-center justify-center text-center">
                   <span className="text-xs font-mono font-bold uppercase text-muted-foreground mb-3 flex items-center gap-1">
                     <Target className="w-3.5 h-3.5 text-amber-500" /> Overall Accuracy
                   </span>
@@ -695,13 +695,13 @@ function InteractiveHeroDashboard() {
                     <span className="text-2xl font-black font-mono text-foreground">86%</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 w-full">
-                    <div className="bg-card/60 rounded p-1.5 border-2 border-border/30">
+                    <div className="surface-card rounded p-1.5">
                       <div className="text-xs font-black font-mono text-foreground">164.5</div>
-                      <div className="text-[7px] font-mono uppercase text-muted-foreground">Proj. Score</div>
+                      <div className="text-[10px] font-mono uppercase text-muted-foreground">Proj. Score</div>
                     </div>
-                    <div className="bg-card/60 rounded p-1.5 border-2 border-border/30">
+                    <div className="surface-card rounded p-1.5">
                       <div className="text-xs font-black font-mono text-amber-500">42s</div>
-                      <div className="text-[7px] font-mono uppercase text-muted-foreground">Avg / Q</div>
+                      <div className="text-[10px] font-mono uppercase text-muted-foreground">Avg / Q</div>
                     </div>
                   </div>
                 </div>
@@ -728,7 +728,7 @@ function InteractiveHeroDashboard() {
                   </div>
 
                   {/* Question Pills */}
-                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border/30">
+                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border">
                     {SPRINT_QUESTIONS.map((q, idx) => (
                       <button
                         key={idx}
@@ -853,7 +853,7 @@ function InteractiveHeroDashboard() {
                   </div>
 
                   {/* 4 Card Selector Pills */}
-                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border/30">
+                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border">
                     {FLASHCARD_DEMOS.map((card, idx) => (
                       <button
                         key={idx}
@@ -914,7 +914,7 @@ function InteractiveHeroDashboard() {
 
                         {/* Subject-Specific Metadata Box */}
                         {currentCard.type === "vocab" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
                             <div>
                               <span className="text-emerald-400 font-bold">Synonyms: </span>
                               <span className="text-muted-foreground">{currentCard.synonyms.join(", ")}</span>
@@ -927,7 +927,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "idiom" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
                             <div>
                               <span className="text-amber-400 font-bold">Related: </span>
                               <span className="text-muted-foreground">{currentCard.related.join(", ")}</span>
@@ -940,7 +940,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "polity" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
                             <div className="sm:col-span-2">
                               <span className="text-amber-400 font-bold">Key Note: </span>
                               <span className="text-muted-foreground">{currentCard.landmarkNote}</span>
@@ -949,7 +949,7 @@ function InteractiveHeroDashboard() {
                         )}
 
                         {currentCard.type === "history" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono bg-card/60 p-2.5 rounded-xl border-2 border-border/30">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
                             <div>
                               <span className="text-amber-400 font-bold">Impact: </span>
                               <span className="text-muted-foreground">{currentCard.impact}</span>
@@ -1024,7 +1024,7 @@ function InfiniteTestimonials() {
     <section className="w-full py-20 relative z-10 overflow-hidden bg-background">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
           <Heart className="w-3 h-3 text-amber-500" /> Wall of Love
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">Trusted by Top SSC Rankers</h2>
@@ -1038,7 +1038,7 @@ function InfiniteTestimonials() {
         <div className="flex animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap will-change-transform">
           {[...testimonials, ...testimonials].map((t, i) => (
             <div key={i} className="inline-block w-[300px] sm:w-[380px] whitespace-normal mx-3">
-              <div className="bg-card/95 md:bg-card/40 backdrop-blur-none md:backdrop-blur-md border-2 border-border/40 rounded-2xl p-6 h-full flex flex-col relative hover:border-amber-500/30 transition-colors">
+              <div className="surface-card rounded-2xl p-6 h-full flex flex-col relative hover:border-amber-500/30 transition-colors">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-md">
                     {t.name.charAt(0)}
@@ -1070,7 +1070,7 @@ function SyllabusMatrixSection() {
     <section className="w-full py-16 sm:py-24 relative z-10 bg-background/50 border-t-2 border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
             <Layers className="w-3.5 h-3.5 text-amber-500" /> Complete Exam Blueprint
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1108,7 +1108,7 @@ function SyllabusMatrixSection() {
         </div>
 
         {/* Selected Section Header & Topics Grid */}
-        <div className="bg-card/60 backdrop-blur-xl border-2 border-border/40 rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5">
+        <div className="surface-card rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b-2 border-border/40">
             <div className="flex items-center gap-3.5">
               <div className="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center border-2 border-amber-500/20 shadow-inner">
@@ -1138,7 +1138,7 @@ function SyllabusMatrixSection() {
             {section.topics.map((t, idx) => (
               <div
                 key={idx}
-                className="p-3.5 sm:p-4 rounded-2xl bg-card/50 border-2 border-border/40 hover:border-amber-500/30 transition-all flex items-center justify-between gap-3 group"
+                className="p-3.5 sm:p-4 rounded-2xl surface-card hover:border-amber-500/30 transition-all flex items-center justify-between gap-3 group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
@@ -1176,7 +1176,7 @@ function AspirantFaqSection() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
             <HelpCircle className="w-3.5 h-3.5 text-amber-500" /> Aspirant Knowledge Base
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1348,7 +1348,7 @@ export default function LandingPage() {
 
       {/* ─── Floating Pill Navbar ─── */}
       <header className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2 z-50 sticky top-0">
-        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border-2 border-border/40 shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
+        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border-2 border-border shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
           <Link href="/" className="flex items-center gap-3 group cursor-pointer">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
               <Rocket className="w-4 h-4" />
@@ -1370,14 +1370,14 @@ export default function LandingPage() {
             {user ? (
               <Link 
                 href="/dashboard" 
-                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/60 border-2 border-border/40 hover:bg-card text-xs font-semibold transition-all text-foreground"
+                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full surface-card hover:bg-card text-xs font-semibold transition-all text-foreground"
               >
                 Dashboard
               </Link>
             ) : (
               <button 
                 onClick={signInWithGoogle}
-                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/60 border-2 border-border/40 hover:bg-card text-xs font-semibold transition-all text-foreground cursor-pointer"
+                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full surface-card hover:bg-card text-xs font-semibold transition-all text-foreground cursor-pointer"
               >
                 Sign In
               </button>
@@ -1385,7 +1385,7 @@ export default function LandingPage() {
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} transition={SNAPPY_SPRING}>
               <Link 
                 href="/practice" 
-                className="group flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-amber-500/25 transition-all"
+                className="group flex h-10 items-center gap-1.5 px-5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-amber-500/25 transition-all"
               >
                 Enter App <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
@@ -1452,7 +1452,7 @@ export default function LandingPage() {
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={SNAPPY_SPRING} className="w-full sm:w-auto">
             <a 
               href="#how-it-works" 
-              className="group flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-card/60 hover:bg-card/90 border-2 border-border/40 hover:border-border/70 text-foreground text-base sm:text-lg font-semibold transition-all w-full sm:w-auto backdrop-blur-md"
+              className="group flex items-center justify-center gap-2 px-6 py-3.5 rounded-full surface-card hover:bg-card/90 hover:border-border/70 text-foreground text-base sm:text-lg font-semibold transition-all w-full sm:w-auto"
             >
               See How It Works <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
             </a>
@@ -1471,7 +1471,7 @@ export default function LandingPage() {
             return (
               <div
                 key={exam.id}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-semibold bg-card/60 backdrop-blur-md text-foreground/90 border-2 border-border/40 shadow-xs select-none hover:border-amber-500/30 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-semibold surface-card text-foreground/90 shadow-xs select-none hover:border-amber-500/30 transition-colors"
               >
                 <Icon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                 <span>{exam.label}</span>
@@ -1497,7 +1497,7 @@ export default function LandingPage() {
               key={stat.label}
               whileHover={{ y: -3, scale: 1.02 }}
               transition={SNAPPY_SPRING}
-              className="rounded-2xl p-4 sm:p-5 bg-card/60 backdrop-blur-md border-2 border-border/40 shadow-sm flex flex-col items-center justify-center text-center"
+              className="rounded-2xl p-4 sm:p-5 surface-card shadow-sm flex flex-col items-center justify-center text-center"
             >
               <stat.icon className={`w-5 h-5 ${stat.color} mb-2`} />
               <div className="text-2xl sm:text-3xl font-black font-mono text-foreground">
@@ -1524,7 +1524,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-16"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <RefreshCw className="w-3 h-3 text-amber-500" /> The EptSsc Loop
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1626,7 +1626,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-14"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <Crosshair className="w-3 h-3 text-amber-500" /> Built for Serious Aspirants
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1651,7 +1651,7 @@ export default function LandingPage() {
                   className="h-full"
                 >
                   <div 
-                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl border-2 border-border/40 ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full overflow-hidden hover:-translate-y-1`}
+                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl border-2 border-border ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full overflow-hidden hover:-translate-y-1`}
                   >
                     {/* Focused Corner Radial Aura — Desktop Only */}
                     <div 
@@ -1663,7 +1663,7 @@ export default function LandingPage() {
                       <div className={`w-12 h-12 rounded-2xl ${f.iconBg} ${f.iconText} flex items-center justify-center border-2 border-border/20 group-hover:scale-110 shadow-sm transition-transform duration-300`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border/40 shadow-2xs">
+                      <span className="text-xs font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border shadow-2xs">
                         {f.badge}
                       </span>
                     </div>
@@ -1701,7 +1701,7 @@ export default function LandingPage() {
             variants={containerVariants}
             className="text-center mb-14"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card/60 backdrop-blur-sm border-2 border-border/30 text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
               <Tag className="w-3 h-3 text-amber-500" /> Pricing
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
@@ -1715,7 +1715,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {/* Free Tier */}
             <TiltCard>
-              <div className="bg-card/50 border-2 border-border/40 rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
+              <div className="bg-card/50 border-2 border-border rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
                 <div className="mb-6">
                   <h3 className="text-2xl font-black text-foreground mb-1">Free Tier</h3>
                   <p className="text-foreground/70 text-xs font-medium">For casual learners exploring the platform.</p>
@@ -1849,24 +1849,24 @@ export default function LandingPage() {
 
           <div className="flex flex-col gap-2">
             <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Product</h4>
-            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Dashboard</Link>
-            <Link href="/SSC/maths/mental-maths" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Mental Maths Arena</Link>
-            <Link href="/practice" className="text-muted-foreground hover:text-foreground transition-colors text-xs">PYQ Vault</Link>
-            <Link href="/analytics" className="text-muted-foreground hover:text-foreground transition-colors text-xs">AI Analytics</Link>
+            <Link href="/dashboard" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Dashboard</Link>
+            <Link href="/SSC/maths/mental-maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Mental Maths Arena</Link>
+            <Link href="/practice" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">PYQ Vault</Link>
+            <Link href="/analytics" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">AI Analytics</Link>
           </div>
 
           <div className="flex flex-col gap-2">
             <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Resources</h4>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors text-xs">SSC CGL Syllabus</Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Cutoff Predictor</Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Study Strategy</Link>
+            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">SSC CGL Syllabus</Link>
+            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Cutoff Predictor</Link>
+            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Study Strategy</Link>
           </div>
 
           <div className="flex flex-col gap-2">
             <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Support</h4>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Help Center</Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Privacy Policy</Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors text-xs">Terms of Service</Link>
+            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Help Center</Link>
+            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Privacy Policy</Link>
+            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Terms of Service</Link>
           </div>
         </div>
 

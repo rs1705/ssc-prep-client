@@ -138,10 +138,15 @@ Each subject track possesses an exclusive primary-to-secondary gradient and tele
 
 | Subject Track | Primary Accent | Accent Gradient | Chip / Badge Classes | Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **Mathematics / Quant** | Amber Gold | `from-amber-500 via-orange-500 to-amber-600` | `bg-amber-500/10 text-amber-500 border-amber-500/20` | Speed calculation, mental arithmetic, arithmetic sprints |
-| **English / Verbal** | Sky Blue | `from-sky-400 via-blue-500 to-indigo-600` | `bg-sky-500/10 text-sky-500 border-sky-500/20` | Vocab flashcards, grammar rules, idioms, comprehension |
-| **General Knowledge** | Emerald Green | `from-emerald-400 via-teal-500 to-emerald-600` | `bg-emerald-500/10 text-emerald-500 border-emerald-500/20` | Active recall, polity articles, history timelines, static facts |
-| **Reasoning / Logic** | Rose Quartz | `from-rose-400 via-pink-500 to-rose-600` | `bg-rose-500/10 text-rose-500 border-rose-500/20` | Pattern recognition, syllogisms, series, spatial puzzles |
+| **Mathematics / Quant** | Sky | `from-sky-400 to-blue-600` | `bg-sky-500/10 text-sky-600 border-sky-500/25` | Speed calculation, mental arithmetic, formulas |
+| **English / Verbal** | Violet | `from-violet-400 to-purple-600` | `bg-violet-500/10 text-violet-600 border-violet-500/25` | Vocab flashcards, grammar, idioms, comprehension |
+| **General Knowledge** | Teal | `from-teal-400 to-cyan-600` | `bg-teal-500/10 text-teal-600 border-teal-500/25` | Active recall, polity, history, static facts |
+| **Reasoning / Logic** | Fuchsia | `from-fuchsia-400 to-pink-600` | `bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/25` | Patterns, syllogisms, series, spatial puzzles |
+
+
+> **Palette update (current).** Amber/gold is the *brand* colour only (primary actions, active states). Emerald = correct, rose = wrong, so subjects deliberately avoid both. Each subject's hue is defined once in `lib/subject-theme.ts` (`SUBJECT_HUE` / `HUE_THEME`) and must be consumed from there, never re-declared per page. Surfaces: light is warm porcelain (`#f7f6f2`), dark is deep ink-blue (`#0f1117`); see `app/globals.css` for the live token values.
+>
+> **One card, one button scale.** Cards use the `surface-card` utility (solid `--card` fill, 2px `--border`). Buttons use 36 / 40 / 48px (`sm` / default / `lg`); nothing interactive on touch is shorter than 40px. Page headings come from `TopicPageLayout` (`text-2xl md:text-3xl font-extrabold`); small uppercase labels use `.section-label`.
 
 ### 3.3 Status & Telemetry Indicators
 - **Success / Authenticated**: `#10b981` (`emerald-500`) — Valid answers, completed streaks, authenticated questions.

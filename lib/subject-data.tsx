@@ -6,7 +6,8 @@ import {
   Layers,
   Skull,
 } from "lucide-react";
-import { SectionCardProps } from "@/components/custom/section-card/section-card";
+import type { SectionCardProps } from "@/components/custom/section-card/section-card";
+import { SUBJECT_HUE } from "@/lib/subject-theme";
 
 export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
   maths: [
@@ -16,7 +17,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Zap className="w-5 h-5" strokeWidth={2} />,
       buttonText: "START",
       linkTo: "/SSC/maths/mental-maths",
-      colorTheme: "emerald",
+      colorTheme: SUBJECT_HUE.maths,
     },
     {
       title: "Formulas & Tricks",
@@ -24,7 +25,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Lightbulb className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "emerald",
+      colorTheme: SUBJECT_HUE.maths,
     },
     {
       title: "Topic wise Pyqs",
@@ -32,7 +33,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "emerald",
+      colorTheme: SUBJECT_HUE.maths,
     },
     {
       title: "Sectional Pyqs",
@@ -41,7 +42,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "emerald",
+      colorTheme: SUBJECT_HUE.maths,
     },
   ],
   english: [
@@ -51,7 +52,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Layers className="w-5 h-5" strokeWidth={2} />,
       buttonText: "START",
       linkTo: "/SSC/english/flashcards",
-      colorTheme: "violet",
+      colorTheme: SUBJECT_HUE.english,
     },
     {
       title: "Topic wise Pyqs",
@@ -59,7 +60,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "violet",
+      colorTheme: SUBJECT_HUE.english,
     },
     {
       title: "Sectional Pyqs",
@@ -68,7 +69,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "violet",
+      colorTheme: SUBJECT_HUE.english,
     },
     {
       title: "Games",
@@ -77,7 +78,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Skull className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "violet",
+      colorTheme: SUBJECT_HUE.english,
     },
   ],
   gk: [
@@ -87,7 +88,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "rose",
+      colorTheme: SUBJECT_HUE.gk,
     },
     {
       title: "Sectional Pyqs",
@@ -96,7 +97,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "rose",
+      colorTheme: SUBJECT_HUE.gk,
     },
   ],
   reasoning: [
@@ -106,7 +107,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <Target className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "amber",
+      colorTheme: SUBJECT_HUE.reasoning,
     },
     {
       title: "Sectional Pyqs",
@@ -115,7 +116,7 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       icon: <ClipboardList className="w-5 h-5" strokeWidth={2} />,
       buttonText: "COMING SOON",
       linkTo: "#",
-      colorTheme: "amber",
+      colorTheme: SUBJECT_HUE.reasoning,
     },
   ],
 };

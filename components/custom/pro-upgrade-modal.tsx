@@ -49,7 +49,7 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border/40 active:scale-95 transition-all cursor-pointer z-10"
+                className="absolute top-4 right-4 h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer z-10"
                 title="Close"
                 aria-label="Close modal"
               >

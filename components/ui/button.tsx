@@ -22,10 +22,12 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        // One scale across the app: 36 / 40 / 48px tall. 40px is the default
+        // so every primary tap target clears the 40px comfort minimum on touch.
+        sm: "h-9 gap-1.5 px-4 text-xs has-[>svg]:px-3",
+        default: "h-10 px-5 py-2 has-[>svg]:px-4",
+        lg: "h-12 px-7 text-base has-[>svg]:px-5",
+        icon: "size-10",
       },
     },
     defaultVariants: {

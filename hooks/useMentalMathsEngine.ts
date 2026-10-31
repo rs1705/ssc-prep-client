@@ -224,6 +224,20 @@ export function useMentalMathsEngine(topic: string, isPaused: boolean = false) {
     }
   }, [state.status, state.currentQuestion]);
 
+  // Shift the question's start time forward by however long the game was paused,
+  // so pausing never inflates the recorded time-per-question.
+  const pausedAtRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (isPaused) {
+      pausedAtRef.current = Date.now();
+      return;
+    }
+    if (pausedAtRef.current !== null && questionStartTimeRef.current !== null) {
+      questionStartTimeRef.current += Date.now() - pausedAtRef.current;
+    }
+    pausedAtRef.current = null;
+  }, [isPaused]);
+
   useEffect(() => {
     const needsTimer =
       !isPaused &&

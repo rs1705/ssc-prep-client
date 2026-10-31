@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
+import { useThemeToggle } from "@/hooks/useThemeToggle";
 import { usePathname } from "next/navigation";
 import {
   Home,
@@ -22,7 +22,7 @@ import { useSidebar } from "@/components/custom/sidebar-context";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { useAuth } from "@/context/auth";
 
-const nav = [
+export const PRIMARY_NAV = [
   { to: "/dashboard", label: "Dashboard", icon: Home },
   { to: "/practice", label: "Practice", icon: Dumbbell },
   { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
@@ -38,57 +38,13 @@ const secondaryNav = [
 export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted, toggleSidebar } = useSidebar();
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeToggle();
   const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const isDark = theme === "dark";
-    const doc = document as unknown as {
-      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
-    };
-
-    if (
-      typeof document === "undefined" ||
-      !doc.startViewTransition ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setTheme(isDark ? "light" : "dark");
-      return;
-    }
-
-    const x = event.clientX;
-    const y = event.clientY;
-    const endRadius = Math.hypot(
-      Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y),
-    );
-
-    const transition = doc.startViewTransition(() => {
-      setTheme(isDark ? "light" : "dark");
-    });
-
-    transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ];
-      document.documentElement.animate(
-        {
-          clipPath: clipPath,
-        },
-        {
-          duration: 500,
-          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-          pseudoElement: "::view-transition-new(root)",
-        },
-      );
-    });
-  };
 
   const overlayClass = isCollapsed
     ? "w-[72px] px-3 py-5 items-center"
@@ -109,7 +65,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             <Rocket className="w-5 h-5" />
           </div>
           <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
-            <div className="text-xs font-mono font-bold tracking-widest uppercase text-amber-500 flex items-center gap-1">
+            <div className="text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 flex items-center gap-1">
               EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
             </div>
             <div className="font-extrabold text-sm tracking-tight truncate text-foreground">
@@ -121,7 +77,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
 
       {/* Primary Nav Items */}
       <nav className="flex flex-col gap-1 w-full">
-        {(user ? nav : nav.filter(n => n.to === "/practice")).map((n) => {
+        {(user ? PRIMARY_NAV : PRIMARY_NAV.filter(n => n.to === "/practice")).map((n) => {
           const active = n.to === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(n.to);
           const Icon = n.icon;
           return (
@@ -139,7 +95,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
               }`}
             >
-              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-500" : "text-muted-foreground group-hover:text-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
+              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground group-hover:text-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
               <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
@@ -169,7 +125,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
               }`}
             >
-              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-500" : "text-muted-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
+              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
               <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
             </Link>
           );
@@ -186,7 +142,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
         }`}
       >
         {/* Compact View (Centered absolute) */}
-        <div className={`font-mono font-bold text-amber-500 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-xs" : "opacity-0 scale-50 pointer-events-none"}`}>
+        <div className={`font-mono font-bold text-amber-700 dark:text-amber-400 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-xs" : "opacity-0 scale-50 pointer-events-none"}`}>
           142d
         </div>
         
@@ -196,7 +152,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             <span className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
               Exam D-Day
             </span>
-            <span className="text-xs font-mono font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
+            <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
               Tier 1
             </span>
           </div>
@@ -247,7 +203,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             theme === "dark" ? (
               <Moon className="w-4 h-4 shrink-0 text-amber-400" strokeWidth={1.75} />
             ) : (
-              <Sun className="w-4 h-4 shrink-0 text-amber-500" strokeWidth={1.75} />
+              <Sun className="w-4 h-4 shrink-0 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
             )
           ) : (
             <>
@@ -255,7 +211,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
                 {theme === "dark" ? (
                   <Moon className="w-4 h-4 shrink-0 text-amber-400" strokeWidth={1.75} />
                 ) : (
-                  <Sun className="w-4 h-4 shrink-0 text-amber-500" strokeWidth={1.75} />
+                  <Sun className="w-4 h-4 shrink-0 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
                 )}
                 <span className="text-xs sm:text-sm font-medium">Dark Mode</span>
               </div>

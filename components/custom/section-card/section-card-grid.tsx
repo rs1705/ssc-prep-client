@@ -1,36 +1,12 @@
+import SectionCard, { type SectionCardProps } from "./section-card";
 
-import SectionCard from "./section-card";
-
-export interface SectionCardProps {
-  title: string;
-  description: string;
-  linkTo: string;
-  buttonText: string;
-  knowMoreText?: string;
-  className?: string;
-  icon?: any;
-  index?: number;
-  cols?: number;
-  colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
-}
+export type { SectionCardProps };
 
 const SectionCardGrid = ({ sections }: { sections: SectionCardProps[] }) => {
   return (
-    <div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full"
-    >
-      {sections.map((item: SectionCardProps, index: number) => (
-        <SectionCard
-          key={index}
-          index={index}
-          icon={item.icon}
-          title={item.title}
-          description={item.description}
-          linkTo={item.linkTo}
-          buttonText={item.buttonText}
-          knowMoreText={item.knowMoreText}
-          colorTheme={item.colorTheme}
-        />
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 auto-rows-fr gap-4 sm:gap-5 w-full">
+      {sections.map((item, index) => (
+        <SectionCard key={item.title} {...item} index={index} />
       ))}
     </div>
   );

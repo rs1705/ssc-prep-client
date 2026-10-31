@@ -116,7 +116,7 @@ export default function BookmarksPage() {
             style={{ animationDelay: "100ms", animationFillMode: "both" }}
           >
             {/* Category Tabs */}
-            <div className="flex items-center gap-1.5 bg-card/60 backdrop-blur-md border-2 border-border/40 p-1.5 rounded-2xl w-full max-w-full sm:w-auto overflow-x-auto scrollbar-none">
+            <div className="flex items-center gap-1.5 surface-card p-1.5 rounded-2xl w-full max-w-full sm:w-auto overflow-x-auto scrollbar-none">
               {(["all", "vocab", "formula", "question"] as const).map((tab) => {
                 const labels = {
                   all: `All (${items.length})`,
@@ -128,7 +128,7 @@ export default function BookmarksPage() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
+                    className={`min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
                       activeTab === tab
                         ? "bg-foreground text-background shadow-xs"
                         : "text-muted-foreground hover:text-foreground hover:bg-card/80"
@@ -148,7 +148,7 @@ export default function BookmarksPage() {
                 placeholder="Search saved cards..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border/40 text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
+                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
               />
             </div>
           </div>
@@ -168,13 +168,13 @@ export default function BookmarksPage() {
                 const tagTheme = {
                   vocab: "text-violet-500 bg-violet-500/10 border-violet-500/20",
                   formula: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-                  question: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+                  question: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
                 };
 
                 return (
                   <div
                     key={item.id}
-                    className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
+                    className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
                   >
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-3">
@@ -186,7 +186,7 @@ export default function BookmarksPage() {
                             type="button"
                             onClick={() => handleCopy(item.id, `${item.title}: ${item.content}`)}
                             title="Copy to clipboard"
-                            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors cursor-pointer"
+                            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors cursor-pointer"
                           >
                             {copiedId === item.id ? (
                               <Check className="w-3.5 h-3.5 text-emerald-500" />
@@ -198,7 +198,7 @@ export default function BookmarksPage() {
                             type="button"
                             onClick={() => handleDelete(item.id)}
                             title="Remove bookmark"
-                            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -211,28 +211,29 @@ export default function BookmarksPage() {
                       <div className="text-xs font-mono font-semibold text-muted-foreground mt-0.5 mb-3">
                         {item.subtitle}
                       </div>
-                      <p className="text-xs text-foreground/80 leading-relaxed font-medium bg-card/40 backdrop-blur-sm p-3.5 rounded-2xl border-2 border-border/30">
+                      <p className="text-xs text-foreground/80 leading-relaxed font-medium surface-card p-3.5 rounded-2xl">
                         {item.content}
                       </p>
                     </div>
 
                     <div className="pt-4 mt-4 border-t-2 border-border/40 relative z-10 flex items-center justify-between">
-                      <Link href={item.linkTo} className="w-full">
-                        <Button
-                          variant="ghost"
-                          className="w-full h-9 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 border-2 border-amber-500/20"
-                        >
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-500/10 border-2 border-amber-500/25"
+                      >
+                        <Link href={item.linkTo}>
                           <Swords className="w-3.5 h-3.5" />
                           Practice Related Module
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                     </div>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div className="p-12 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-border/40 flex flex-col items-center justify-center text-center max-w-md mx-auto my-8">
+            <div className="p-12 rounded-3xl surface-card flex flex-col items-center justify-center text-center max-w-md mx-auto my-8">
               <Bookmark className="w-12 h-12 text-muted-foreground/40 mb-3" />
               <h4 className="text-base font-black text-foreground">No Bookmarks Found</h4>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
