@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Moon, Sun, SlidersHorizontal, LogOut, User as UserIcon, Menu, Home, Dumbbell, ClipboardList, ChartNoAxesCombined, Bookmark, Trophy, Info, MessageSquare, Rocket, PanelLeftOpen, PanelLeftClose } from "lucide-react";
-import { useThemeToggle } from "@/hooks/useThemeToggle";
-import { useAuth } from "@/context/auth";
-import { useSidebar } from "@/components/custom/sidebar-context";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { CalendarDays, Home, LogOut, Menu, Moon, Rocket, Sun } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -14,217 +13,185 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ProgressBar } from "@/components/custom/ProgressBar";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ExamCountdown } from "@/components/custom/exam-countdown";
+import { useAuth } from "@/context/auth";
+import { useThemeToggle } from "@/hooks/useThemeToggle";
+import { activeNavPath, navGroups } from "@/lib/nav";
+import { subjectTheme } from "@/lib/subject-theme";
+
+const ICON_BUTTON =
+  "flex h-10 w-10 items-center justify-center rounded-full border-2 border-border bg-card text-foreground/80 transition-colors hover:bg-muted";
+const SIGN_IN_BUTTON =
+  "flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-5 text-sm font-bold text-white shadow-md shadow-amber-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/30 active:scale-95";
+
+function initialsOf(name?: string | null): string {
+  if (!name) return "U";
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+}
 
 export function TopBar() {
   const { theme, toggleTheme } = useThemeToggle();
   const { user, logout, signInWithGoogle } = useAuth();
-  const { isCollapsed, toggleSidebar } = useSidebar();
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
-  const [clock, setClock] = useState<{ time: string; day: string } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [today, setToday] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const update = () => {
-      const now = new Date();
-      setClock({
-        time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false }),
-        day: now.toLocaleDateString([], { weekday: "short" }).toUpperCase(),
-      });
-    };
-    update();
-    const id = setInterval(update, 30_000);
-    return () => clearInterval(id);
+    setToday(
+      new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        day: "numeric",
+        month: "short",
+      }),
+    );
   }, []);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  const timeLabel = clock?.time ?? "--:--";
-  const dayLabel = clock?.day ?? "";
-
-  const isNavActive = (targetPath: string) => {
-    if (targetPath === "/dashboard") {
-      return pathname === "/dashboard";
-    }
-    return pathname.startsWith(targetPath);
-  };
-
-  const mobileNav = [
-    { to: "/dashboard", label: "Dashboard", icon: Home },
-    { to: "/practice", label: "Practice", icon: Dumbbell },
-    { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
-    { to: "/bookmarks", label: "Bookmarks", icon: Bookmark },
-    { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
-  ];
-
-  const secondaryNav = [
-    { to: "/feedback", label: "Feedback", icon: MessageSquare },
-    { to: "/about", label: "About", icon: Info },
-  ];
+  const groups = navGroups(!!user);
+  const activePath = activeNavPath(pathname);
+  const isDark = mounted && theme === "dark";
 
   return (
-    <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-3.5 shrink-0">
-      <div className="flex items-center gap-3">
-        {/* Hamburger for mobile */}
+    <header className="flex shrink-0 items-center justify-between gap-3 px-4 py-3 sm:px-6 md:px-8">
+      <div className="flex min-w-0 items-center gap-3">
+        {/* Mobile menu */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
-            <button
-              aria-label="Open menu"
-              className="md:hidden w-10 h-10 rounded-full surface-card flex items-center justify-center hover:bg-muted transition-all cursor-pointer"
-            >
-              <Menu className="w-4 h-4 text-foreground/80" strokeWidth={1.75} />
+            <button type="button" aria-label="Open menu" className={`${ICON_BUTTON} md:hidden`}>
+              <Menu className="h-4 w-4" strokeWidth={1.75} />
             </button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-72 p-5 bg-background/95 backdrop-blur-2xl border-r-2 border-border/40 flex flex-col justify-between h-full overflow-y-auto">
-            <div className="flex flex-col">
-              {/* Header Logo */}
-              <Link href={user ? "/dashboard" : "/"} onClick={() => setMobileOpen(false)} className="flex items-center gap-3 mb-6 group cursor-pointer">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
-                  <Rocket className="w-5 h-5" />
-                </div>
-                <div className="leading-tight">
-                  <div className="text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 flex items-center gap-1">
-                    EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-                  </div>
-                  <div className="font-extrabold text-sm tracking-tight text-foreground group-hover:text-amber-500 transition-colors">
-                    Elite Prep Training
-                  </div>
-                </div>
-              </Link>
+          <SheetContent
+            side="left"
+            className="flex h-full w-72 flex-col overflow-y-auto border-r-2 border-sidebar-border bg-sidebar p-5"
+          >
+            <SheetTitle className="sr-only">Menu</SheetTitle>
 
-              {/* Primary Nav Links */}
-              <nav className="flex flex-col gap-1 w-full">
-                {(user ? mobileNav : mobileNav.filter(n => n.to === "/practice")).map((n) => {
-                  const active = isNavActive(n.to);
-                  const Icon = n.icon;
-                  return (
-                    <Link
-                      key={n.to}
-                      href={n.to}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 border-2 cursor-pointer ${
-                        active
-                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
-                          : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
-                      }`}
-                    >
-                      <Icon className={`w-4 h-4 shrink-0 transition-colors ${active ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
-                      <span className="truncate">{n.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              {/* Support Section */}
-              <div className="mt-5 mb-1 px-3 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground/60">
-                Support
+            <Link
+              href={user ? "/dashboard" : "/"}
+              onClick={() => setMobileOpen(false)}
+              className="mb-6 flex items-center gap-3"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25">
+                <Rocket className="h-5 w-5" />
               </div>
-              <nav className="flex flex-col gap-1 w-full">
-                {secondaryNav.map((n) => {
-                  const active = isNavActive(n.to);
-                  const Icon = n.icon;
-                  return (
-                    <Link
-                      key={n.to}
-                      href={n.to}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center w-full gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 border-2 cursor-pointer ${
-                        active
-                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
-                          : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
-                      }`}
-                    >
-                      <Icon className={`w-4 h-4 shrink-0 transition-colors ${active ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
-                      <span className="truncate">{n.label}</span>
-                    </Link>
-                  );
-                })}
-              </nav>
-            </div>
-
-            {/* Bottom Section: D-Day Widget + Theme Toggle + User Info */}
-            <div className="flex flex-col gap-3 pt-4 border-t-2 border-border/40 mt-auto">
-              {/* Exam D-Day Widget */}
-              <div className="w-full p-3.5 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-amber-500/20 relative overflow-hidden">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
-                    Exam D-Day
-                  </span>
-                  <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
-                    Tier 1
-                  </span>
+              <div className="leading-tight">
+                <div className="font-display text-base font-extrabold tracking-tight text-foreground">
+                  Ept<span className="text-amber-600 dark:text-amber-400">Ssc</span>
                 </div>
-                <div className="text-lg font-black font-mono tracking-tight text-foreground flex items-baseline gap-1.5">
-                  142 <span className="text-xs font-mono font-normal text-muted-foreground">days</span>
-                </div>
-                <ProgressBar
-                  value={33}
-                  className="h-1.5 mt-2 p-0"
-                  barClassName="bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm shadow-amber-500/50"
-                />
+                <div className="text-xs font-medium text-muted-foreground">Elite Prep Training</div>
               </div>
+            </Link>
 
-              {/* Theme Toggle Button */}
+            <nav aria-label="Main" className="flex flex-col">
+              {groups.map((group, index) => (
+                <div key={group.label ?? "main"} className={index === 0 ? "" : "mt-5"}>
+                  {group.label && <div className="section-label mb-1.5 px-3 opacity-80">{group.label}</div>}
+                  <div className="flex flex-col gap-0.5">
+                    {group.items.map((item) => {
+                      const active = activePath === item.to;
+                      const Icon = item.icon;
+                      const iconColour = active
+                        ? "text-amber-700 dark:text-amber-400"
+                        : item.subject
+                          ? subjectTheme(item.subject).text
+                          : "text-muted-foreground";
+                      return (
+                        <Link
+                          key={item.to}
+                          href={item.to}
+                          onClick={() => setMobileOpen(false)}
+                          aria-current={active ? "page" : undefined}
+                          className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors ${
+                            active
+                              ? "bg-amber-500/10 font-bold text-amber-800 dark:text-amber-300"
+                              : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                          }`}
+                        >
+                          <Icon className={`h-4 w-4 shrink-0 ${iconColour}`} strokeWidth={active ? 2.25 : 1.75} />
+                          <span className="truncate">{item.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </nav>
+
+            <div className="mt-auto flex flex-col gap-3 pt-6">
+              <ExamCountdown />
+
               {mounted && (
                 <button
                   type="button"
                   onClick={toggleTheme}
-                  className="flex items-center justify-between px-3 py-2 rounded-xl border-2 border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
+                  role="switch"
+                  aria-checked={isDark}
+                  aria-label="Dark mode"
+                  className="flex min-h-11 items-center justify-between rounded-xl px-3 text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
                 >
-                  <div className="flex items-center gap-3">
-                    {theme === "dark" ? (
-                      <Moon className="w-4 h-4 text-amber-400 shrink-0" strokeWidth={1.75} />
+                  <span className="flex items-center gap-3">
+                    {isDark ? (
+                      <Moon className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.75} />
                     ) : (
-                      <Sun className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" strokeWidth={1.75} />
+                      <Sun className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.75} />
                     )}
-                    <span className="text-xs sm:text-sm font-medium">
-                      {theme === "dark" ? "Dark Mode" : "Light Mode"}
-                    </span>
-                  </div>
-                  <div className={`relative w-8 h-4.5 rounded-full transition-colors duration-300 ease-in-out shrink-0 ${theme === "dark" ? "bg-amber-500 shadow-inner" : "bg-muted-foreground/30"}`}>
-                    <div className={`absolute top-[2px] left-[2px] bg-white w-3.5 h-3.5 rounded-full shadow-sm transition-transform duration-300 ease-in-out flex items-center justify-center ${theme === "dark" ? "translate-x-3.5" : "translate-x-0"}`} />
-                  </div>
+                    <span className="text-sm font-medium">Dark mode</span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={`relative h-4.5 w-8 shrink-0 rounded-full transition-colors duration-300 ${
+                      isDark ? "bg-amber-500" : "bg-muted-foreground/30"
+                    }`}
+                  >
+                    <span
+                      className={`absolute left-[2px] top-[2px] h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 ${
+                        isDark ? "translate-x-3.5" : "translate-x-0"
+                      }`}
+                    />
+                  </span>
                 </button>
               )}
 
-              {/* User Account / Sign Out / Sign In */}
               {user ? (
-                <div className="flex items-center justify-between p-2.5 rounded-2xl surface-card">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <Avatar className="w-8 h-8 ring-1 ring-amber-500/30 shrink-0">
-                      <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
-                      <AvatarFallback className="bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold text-xs">U</AvatarFallback>
+                <div className="flex items-center justify-between gap-2 rounded-2xl border-2 border-border bg-card p-2.5">
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <Avatar className="h-8 w-8 shrink-0">
+                      {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
+                      <AvatarFallback className="bg-amber-500/15 text-xs font-bold text-amber-700 dark:text-amber-400">
+                        {initialsOf(user.displayName)}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="min-w-0">
-                      <div className="font-bold text-xs text-foreground truncate">
-                        {user.displayName || "User"}
+                      <div className="truncate text-xs font-bold text-foreground">
+                        {user.displayName || "Aspirant"}
                       </div>
-                      <div className="text-xs font-mono text-muted-foreground truncate">
-                        {user.email}
-                      </div>
+                      <div className="truncate text-xs text-muted-foreground">{user.email}</div>
                     </div>
                   </div>
                   <button
+                    type="button"
                     onClick={logout}
-                    title="Sign Out"
-                    className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                    aria-label="Sign out"
+                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="h-4 w-4" />
                   </button>
                 </div>
               ) : mounted ? (
-                <button
-                  onClick={signInWithGoogle}
-                  className="w-full py-2.5 text-xs font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg rounded-xl cursor-pointer flex items-center justify-center gap-2"
-                >
+                <button type="button" onClick={signInWithGoogle} className={`${SIGN_IN_BUTTON} w-full`}>
                   Sign in
                 </button>
               ) : null}
@@ -232,65 +199,62 @@ export function TopBar() {
           </SheetContent>
         </Sheet>
 
-        {mounted && (
-          <div className="flex items-center gap-2">
-            <div className="hidden min-[440px]:flex text-xs font-mono font-bold tracking-wider uppercase text-muted-foreground surface-card px-3 py-1.5 rounded-full items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>{timeLabel}</span>
-              <span className="text-border">|</span>
-              <span className="text-foreground/80">{dayLabel}</span>
-            </div>
+        {/* Today */}
+        {today && (
+          <div className="hidden items-center gap-2 rounded-full border-2 border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-muted-foreground min-[440px]:flex">
+            <CalendarDays className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+            {today}
           </div>
         )}
       </div>
+
       <div className="flex items-center gap-2 sm:gap-3">
-        <Link
-          href={user ? "/dashboard" : "/"}
-          aria-label="Home"
-          className="md:hidden w-10 h-10 rounded-full surface-card flex items-center justify-center hover:bg-muted transition-all cursor-pointer"
-        >
-          <Home className="w-4 h-4 text-foreground/80" strokeWidth={1.75} />
+        <Link href={user ? "/dashboard" : "/"} aria-label="Home" className={`${ICON_BUTTON} md:hidden`}>
+          <Home className="h-4 w-4" strokeWidth={1.75} />
         </Link>
-        <button
-          aria-label="Toggle theme"
-          onClick={toggleTheme}
-          className="md:hidden w-10 h-10 rounded-full surface-card flex items-center justify-center hover:bg-muted transition-all cursor-pointer"
-        >
-          {mounted && theme === "dark" ? (
-            <Sun className="w-4 h-4 text-amber-400" strokeWidth={1.75} />
+        <button type="button" aria-label="Toggle theme" onClick={toggleTheme} className={`${ICON_BUTTON} md:hidden`}>
+          {isDark ? (
+            <Sun className="h-4 w-4 text-amber-400" strokeWidth={1.75} />
           ) : (
-            <Moon className="w-4 h-4 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
+            <Moon className="h-4 w-4 text-amber-600" strokeWidth={1.75} />
           )}
         </button>
 
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-center rounded-full border-2 border-amber-500/30 hover:border-amber-500/60 transition-all focus:outline-none ml-1 sm:ml-2 cursor-pointer ring-2 ring-transparent focus:ring-amber-500/20">
-                <Avatar className="w-10 h-10 ring-1 ring-background">
-                  <AvatarImage src={user.photoURL || "https://github.com/evilrabbit.png"} />
-                  <AvatarFallback className="bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">U</AvatarFallback>
+              <button
+                type="button"
+                aria-label="Account menu"
+                className="ml-1 flex items-center justify-center rounded-full border-2 border-amber-500/40 transition-colors hover:border-amber-500"
+              >
+                <Avatar className="h-9 w-9">
+                  {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
+                  <AvatarFallback className="bg-amber-500/15 text-sm font-bold text-amber-700 dark:text-amber-400">
+                    {initialsOf(user.displayName)}
+                  </AvatarFallback>
                 </Avatar>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52 rounded-2xl surface-card shadow-2xl p-2">
-              <DropdownMenuLabel className="px-3 py-2 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator className="bg-border/40 my-1" />
-              <DropdownMenuItem className="text-destructive font-medium focus:text-destructive focus:bg-destructive/10 rounded-xl px-3 py-2 cursor-pointer transition-colors" onClick={logout}>
-                <LogOut className="mr-2.5 w-4 h-4" />
+            <DropdownMenuContent align="end" className="w-56 rounded-2xl border-2 border-border bg-popover p-2 shadow-xl">
+              <DropdownMenuLabel className="px-3 py-2">
+                <div className="truncate text-sm font-bold text-foreground">{user.displayName || "Aspirant"}</div>
+                <div className="truncate text-xs font-normal text-muted-foreground">{user.email}</div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="my-1 bg-border" />
+              <DropdownMenuItem
+                className="cursor-pointer rounded-xl px-3 py-2 font-medium text-destructive focus:bg-destructive/10 focus:text-destructive"
+                onClick={logout}
+              >
+                <LogOut className="mr-2.5 h-4 w-4" />
                 Sign out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : mounted && !isAuthPage ? (
-          <div className="flex items-center gap-2 ml-1 sm:ml-2">
-            <button 
-              onClick={signInWithGoogle}
-              className="h-10 px-4 sm:px-5 whitespace-nowrap shrink-0 text-xs font-mono font-extrabold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-95 transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center gap-2"
-            >
-              Sign in
-            </button>
-          </div>
+          <button type="button" onClick={signInWithGoogle} className={`${SIGN_IN_BUTTON} ml-1`}>
+            Sign in
+          </button>
         ) : null}
       </div>
     </header>

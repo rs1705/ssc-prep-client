@@ -484,43 +484,52 @@ const MentalMaths = () => {
 
         {/* Right Rail - Stats & Streak Panel (Desktop Only) */}
         <div className="hidden xl:flex w-80 flex-col gap-6 shrink-0 animate-in fade-in slide-in-from-right-4 duration-500">
-          {/* Streak Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border-2 border-amber-500/25 shadow-xl shadow-amber-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <span className="text-amber-700 dark:text-amber-400 text-base">🔥</span> Current Streak
-            </h3>
-            <div className="flex items-end gap-2">
-              <span className="text-5xl font-black font-mono leading-none tracking-tighter text-amber-700 dark:text-amber-400">12</span>
-              <span className="text-xs font-mono font-bold text-muted-foreground mb-1 uppercase tracking-widest">Days Locked</span>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium leading-relaxed z-10">
-              You're in the <span className="text-foreground font-bold font-mono">top 5%</span> of aspirants. Daily consistency compounds rapid speed!
+          {/* Quant on the real paper */}
+          <div className="surface-card rounded-3xl p-6 flex flex-col gap-4">
+            <h3 className="section-label">Quant in SSC CGL Tier 1</h3>
+            <dl className="grid grid-cols-3 gap-2 text-center">
+              {[
+                { value: "25", label: "Questions" },
+                { value: "50", label: "Marks" },
+                { value: "−0.50", label: "Per wrong" },
+              ].map((fact) => (
+                <div key={fact.label} className="rounded-2xl bg-muted/70 px-2 py-3">
+                  <dd className="font-mono text-lg font-black tabular-nums leading-none text-foreground">
+                    {fact.value}
+                  </dd>
+                  <dt className="mt-1 text-xs font-medium text-muted-foreground">{fact.label}</dt>
+                </div>
+              ))}
+            </dl>
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              All four sections share one 60-minute clock, so every second saved on
+              calculation is a second for another question.
             </p>
           </div>
 
-          {/* Global Stats Card */}
-          <div className="surface-card shadow-xl shadow-black/5 rounded-3xl p-6 flex flex-col gap-5 relative overflow-hidden group">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground">
-              Performance Telemetry
-            </h3>
-            <div className="flex flex-col gap-4 z-10">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-semibold text-muted-foreground">Questions Solved</span>
-                <span className="text-sm font-black font-mono tracking-tight text-foreground">1,248</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-semibold text-muted-foreground">Average Speed</span>
-                <span className="text-sm font-black font-mono tracking-tight text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">4.2s / Q</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-semibold text-muted-foreground">Overall Accuracy</span>
-                <span className="text-sm font-black font-mono tracking-tight text-foreground">92%</span>
-              </div>
-            </div>
+          {/* How drills work */}
+          <div className="surface-card rounded-3xl p-6 flex flex-col gap-4">
+            <h3 className="section-label">How drills work</h3>
+            <ul className="flex flex-col gap-3 text-sm text-foreground">
+              {[
+                { title: "Timed", text: "Race a 30, 60 or 90 second clock." },
+                { title: "Freestyle", text: "A fixed set of questions, no clock." },
+                { title: "Three levels", text: "Easy, Medium and Hard, or mix them all." },
+                { title: "Review", text: "Every attempt is listed after the drill." },
+              ].map((row) => (
+                <li key={row.title} className="flex gap-3">
+                  <span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+                  <span>
+                    <span className="font-bold">{row.title}.</span>{" "}
+                    <span className="text-muted-foreground">{row.text}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Daily Warm-up Pro-Tip Banner */}
-          <div className="bg-card/60 backdrop-blur-2xl border-2 border-emerald-500/25 shadow-xl shadow-emerald-500/5 rounded-3xl p-6 flex flex-col gap-4 relative overflow-hidden group">
+          <div className="rounded-3xl border-2 border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 flex flex-col gap-4">
             <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <span className="text-emerald-500 text-base">💡</span> Pro Tip
             </h3>

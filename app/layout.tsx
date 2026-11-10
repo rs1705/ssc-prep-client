@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/auth";
 import { Providers } from "./provider";
@@ -21,6 +21,14 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+// Headings only (h1-h4 and `font-display`); body text stays on Geist.
+const displayFont = Plus_Jakarta_Sans({
+  variable: "--font-display-face",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "EptSsc · Elite Prep Training",
   description: "Elite Prep Training & Precision Transformation for SSC CGL Aspirants",
@@ -36,7 +44,7 @@ export default function RootLayout({
       <Providers>
         <PostHogProvider>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+            className={`${geistSans.variable} ${geistMono.variable} ${displayFont.variable} font-sans antialiased`}
           >
             <Toaster position="top-center" />
             <ThemeProvider

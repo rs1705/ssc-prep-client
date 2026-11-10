@@ -63,6 +63,7 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-display-face), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --animate-shimmer: shimmer 5s linear infinite;
   --animate-marquee: marquee 35s linear infinite;
@@ -113,83 +114,88 @@
 :root {
   --radius: 12px;
 
-  /* EptSsc — Light: warm porcelain paper, ink text, gold accent */
-  --background: #f7f6f2;
-  --foreground: #14131a;
+  /* EptSsc — Light: cool exam-paper white, deep navy ink, saffron accent */
+  --background: #f4f6fb;
+  --foreground: #0e1630;
   --card: #ffffff;
-  --card-foreground: #14131a;
+  --card-foreground: #0e1630;
   --popover: #ffffff;
-  --popover-foreground: #14131a;
-  --primary: #14131a;
+  --popover-foreground: #0e1630;
+  --primary: #16224f;
   --primary-foreground: #ffffff;
-  --secondary: #eeece6;
-  --secondary-foreground: #14131a;
-  --muted: #eeece6;
-  --muted-foreground: #615e6b;
+  --secondary: #e9edf6;
+  --secondary-foreground: #0e1630;
+  --muted: #e9edf6;
+  --muted-foreground: #56617d;
   --accent: #f59e0b;
-  --accent-foreground: #14131a;
+  --accent-foreground: #0e1630;
   --destructive: #e11d48;
   --destructive-foreground: #ffffff;
   --success: #059669;
   --success-foreground: #ffffff;
-  --border: #e2dfd6;
-  --input: #e2dfd6;
-  --ring: #14131a;
+  --border: #dbe1ee;
+  --input: #dbe1ee;
+  --ring: #16224f;
 
-  --chart-1: #14131a;
+  --chart-1: #16224f;
   --chart-2: #f59e0b;
   --chart-3: #059669;
-  --chart-4: #eeece6;
-  --chart-5: #46434f;
+  --chart-4: #e9edf6;
+  --chart-5: #56617d;
 
-  --sidebar: #f2f0ea;
-  --sidebar-foreground: #14131a;
-  --sidebar-primary: #14131a;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0e1630;
+  --sidebar-primary: #16224f;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eeece6;
-  --sidebar-accent-foreground: #14131a;
-  --sidebar-border: #e2dfd6;
-  --sidebar-ring: #14131a;
+  --sidebar-accent: #e9edf6;
+  --sidebar-accent-foreground: #0e1630;
+  --sidebar-border: #dbe1ee;
+  --sidebar-ring: #16224f;
+
+  /* Card elevation */
+  --shadow-card: 0 1px 2px rgb(14 22 48 / 0.05), 0 6px 16px -8px rgb(14 22 48 / 0.1);
 }
 
 .dark {
-  /* EptSsc — Dark: deep ink-blue surfaces, soft off-white text, gold accent */
-  --background: #0f1117;
-  --foreground: #f3f4f7;
-  --card: #171a22;
-  --card-foreground: #f3f4f7;
-  --popover: #171a22;
-  --popover-foreground: #f3f4f7;
-  --primary: #f3f4f7;
-  --primary-foreground: #0f1117;
-  --secondary: #222632;
-  --secondary-foreground: #f3f4f7;
-  --muted: #222632;
-  --muted-foreground: #9aa1b2;
+  /* EptSsc — Dark: midnight navy surfaces, soft white ink, saffron accent */
+  --background: #0b1020;
+  --foreground: #eef1f8;
+  --card: #131a30;
+  --card-foreground: #eef1f8;
+  --popover: #131a30;
+  --popover-foreground: #eef1f8;
+  --primary: #eef1f8;
+  --primary-foreground: #0b1020;
+  --secondary: #1c2542;
+  --secondary-foreground: #eef1f8;
+  --muted: #1c2542;
+  --muted-foreground: #9aa6c6;
   --accent: #fbbf24;
-  --accent-foreground: #0f1117;
+  --accent-foreground: #0b1020;
   --destructive: #f43f5e;
   --destructive-foreground: #ffffff;
   --success: #10b981;
-  --success-foreground: #0f1117;
-  --border: #2a2f3d;
-  --input: #2a2f3d;
-  --ring: #e6e8ee;
+  --success-foreground: #0b1020;
+  --border: #252f52;
+  --input: #252f52;
+  --ring: #c7d0ea;
 
-  --chart-1: #f3f4f7;
+  --chart-1: #eef1f8;
   --chart-2: #fbbf24;
   --chart-3: #10b981;
-  --chart-4: #2a2f3d;
-  --chart-5: #9aa1b2;
+  --chart-4: #252f52;
+  --chart-5: #9aa6c6;
 
-  --sidebar: #0b0d12;
-  --sidebar-foreground: #f3f4f7;
-  --sidebar-primary: #f3f4f7;
-  --sidebar-primary-foreground: #0f1117;
-  --sidebar-accent: #222632;
-  --sidebar-accent-foreground: #f3f4f7;
-  --sidebar-border: #2a2f3d;
-  --sidebar-ring: #e6e8ee;
+  --sidebar: #090d1a;
+  --sidebar-foreground: #eef1f8;
+  --sidebar-primary: #eef1f8;
+  --sidebar-primary-foreground: #0b1020;
+  --sidebar-accent: #1c2542;
+  --sidebar-accent-foreground: #eef1f8;
+  --sidebar-border: #252f52;
+  --sidebar-ring: #c7d0ea;
+
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 8px 24px -12px rgb(0 0 0 / 0.6);
 }
 
 /* The one card surface used app-wide: solid fill, 2px structural border.
@@ -199,6 +205,18 @@
   border-width: 2px;
   border-style: solid;
   border-color: var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+/* Page backdrop for the signed-in shell: faint ruled-paper dots plus a soft
+   saffron glow at the top, so white cards have something to sit on. */
+@utility app-canvas {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(56rem 24rem at 78% -8%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
+    radial-gradient(40rem 20rem at 0% 0%, color-mix(in srgb, var(--primary) 5%, transparent), transparent 70%),
+    radial-gradient(circle, color-mix(in srgb, var(--foreground) 9%, transparent) 1px, transparent 1.5px);
+  background-size: auto, auto, 24px 24px;
 }
 
 @layer base {
@@ -216,6 +234,17 @@
   }
   h1, h2, h3 {
     text-wrap: balance;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display-face), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
   body {
     @apply bg-background text-foreground font-sans;

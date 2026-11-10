@@ -148,6 +148,14 @@ Each subject track possesses an exclusive primary-to-secondary gradient and tele
 >
 > **One card, one button scale.** Cards use the `surface-card` utility (solid `--card` fill, 2px `--border`). Buttons use 36 / 40 / 48px (`sm` / default / `lg`); nothing interactive on touch is shorter than 40px. Page headings come from `TopicPageLayout` (`text-2xl md:text-3xl font-extrabold`); small uppercase labels use `.section-label`.
 
+> **Theme v3 (current).** Identity is **navy + saffron**: light = cool exam-paper white (`#f4f6fb`) with deep navy ink (`#0e1630`, primary `#16224f`); dark = midnight navy (`#0b1020`, cards `#131a30`); saffron/amber stays the single brand accent. Live values are in `app/globals.css`.
+>
+> - **Type**: headings (`h1`-`h4`, `font-display`) use Plus Jakarta Sans; body stays Geist; Geist Mono is for numbers and small `.section-label` captions only.
+> - **Depth**: `surface-card` = solid card + 2px border + `--shadow-card`. The app shell sits on `app-canvas` (dot grid + soft saffron glow).
+> - **Navigation**: one config in `lib/nav.ts` (main, Subjects, Play, Support) renders the sidebar and the mobile sheet; the active item is the longest matching path.
+> - **Subject pages**: `SubjectHome` = `ExamPatternStrip` + practice-mode cards + `SyllabusMap` (data in `lib/exam-pattern.ts`).
+> - **No invented numbers**: widgets show real exam facts or the student's own data (e.g. `ExamCountdown` uses a date the student sets), never placeholders.
+
 ### 3.3 Status & Telemetry Indicators
 - **Success / Authenticated**: `#10b981` (`emerald-500`) — Valid answers, completed streaks, authenticated questions.
 - **Warning / Time Critical**: `#f59e0b` (`amber-500`) — Timer countdown under 5s, D-Day milestones.

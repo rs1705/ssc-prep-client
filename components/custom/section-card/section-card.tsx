@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Lock } from "lucide-react";
 import { HUE_THEME, type Hue } from "@/lib/subject-theme";
 
 export interface SectionCardProps {
@@ -9,6 +9,8 @@ export interface SectionCardProps {
   description: string;
   linkTo: string;
   buttonText: string;
+  /** Short factual line under the description, e.g. "12 drill topics · 3 levels". */
+  meta?: string;
   knowMoreText?: string;
   className?: string;
   icon?: React.ReactNode;
@@ -22,65 +24,94 @@ const SectionCard: React.FC<SectionCardProps> = ({
   description,
   linkTo,
   buttonText,
+  meta,
   icon,
   index = 0,
   colorTheme = "indigo",
 }: SectionCardProps) => {
-  const isClickable = linkTo !== "#";
+  const isLive = linkTo !== "#";
   const theme = HUE_THEME[colorTheme] ?? HUE_THEME.indigo;
+  const style = { animationDelay: `${index * 70}ms`, animationFillMode: "both" as const };
 
-  return (
-    <div
-      className={`group h-full rounded-3xl p-5 sm:p-6 flex flex-col gap-5 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 relative overflow-hidden ${
-        isClickable
-          ? `bg-card md:bg-card/70 md:backdrop-blur-xl border-2 border-border ${theme.hoverBorder} ${theme.hoverBg} hover:shadow-xl hover:shadow-black/10 hover:-translate-y-1`
-          : "surface-card border-dashed"
-      }`}
-      style={{
-        animationDelay: `${index * 80}ms`,
-        animationFillMode: "both",
-      }}
-    >
-      <div className="flex flex-col gap-4 flex-1">
+  const body = (
+    <>
+      <div className="flex items-start justify-between gap-3">
         <div
-          className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center transition-transform duration-300 ease-out group-hover:scale-110 ring-1 ring-border/60 ${
-            isClickable
-              ? theme.iconWrap
-              : "bg-muted text-muted-foreground"
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ring-1 ring-border/60 transition-transform duration-300 ease-out ${
+            isLive ? `${theme.iconWrap} group-hover:scale-110` : "bg-muted text-muted-foreground"
           }`}
         >
           {icon}
         </div>
-        <div className="flex flex-col gap-1.5">
-          <h3
-            className={`text-lg font-extrabold tracking-tight transition-colors ${
-              isClickable
-                ? "text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400"
-                : "text-muted-foreground"
-            }`}
-          >
-            {title}
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {description}
-          </p>
-        </div>
+        {isLive ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+            Live
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-border bg-muted px-2.5 py-0.5 text-xs font-bold text-muted-foreground">
+            <Lock className="h-3 w-3" aria-hidden="true" />
+            Soon
+          </span>
+        )}
       </div>
 
-      {isClickable ? (
-        <Link
-          href={linkTo}
-          className="inline-flex h-10 w-fit items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-mono font-bold tracking-wider uppercase px-5 rounded-full hover:shadow-md hover:shadow-amber-500/25 active:scale-95 transition-all duration-200"
+      <div className="flex flex-1 flex-col gap-1.5">
+        <h3
+          className={`text-lg font-extrabold ${
+            isLive ? "text-foreground" : "text-muted-foreground"
+          }`}
         >
-          <span>{buttonText}</span>
-          <ArrowRight className="w-3.5 h-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
-        </Link>
-      ) : (
-        <div className="inline-flex h-10 w-fit items-center justify-center bg-muted text-muted-foreground text-xs font-mono font-bold tracking-wider uppercase px-5 rounded-full border-2 border-border">
-          {buttonText}
-        </div>
-      )}
-    </div>
+          {title}
+        </h3>
+        <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2.5 border-t-2 border-border/70 pt-3.5">
+        <span className="text-xs font-semibold text-muted-foreground">
+          {meta ?? (isLive ? "Ready to practise" : "In development")}
+        </span>
+        {isLive && (
+          <span className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-4 text-xs font-bold uppercase tracking-wider text-white shadow-sm shadow-amber-500/30 transition-shadow group-hover:shadow-md group-hover:shadow-amber-500/40">
+            {buttonText}
+            <ArrowRight
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </span>
+        )}
+      </div>
+    </>
+  );
+
+  const shared =
+    "group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl p-5 animate-in fade-in slide-in-from-bottom-4";
+
+  if (!isLive) {
+    return (
+      <div
+        aria-disabled="true"
+        className={`${shared} border-2 border-dashed border-border bg-card/50`}
+        style={style}
+      >
+        {body}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={linkTo}
+      className={`${shared} surface-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10 ${theme.hoverBorder}`}
+      style={style}
+    >
+      {/* Subject-coloured accent along the top edge */}
+      <span
+        aria-hidden="true"
+        className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${theme.bar} opacity-80`}
+      />
+      {body}
+    </Link>
   );
 };
 

@@ -1,21 +1,12 @@
-import { SectionCardProps } from "@/components/custom/section-card/section-card";
-import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
-import React from "react";
-import { Newspaper, Landmark, FlaskConical, ClipboardList } from "lucide-react";
+"use client";
 
-import { SUBJECT_SECTIONS } from "@/lib/subject-data";
+import { SubjectHome } from "@/components/custom/subject-home";
 
-const GKHomePage = () => {
-  const sections = SUBJECT_SECTIONS.gk;
+export default function GKHomePage() {
   return (
-    <TopicPageLayout
-      title="General Knowledge"
-      description="Conquer current affairs and static facts across history, polity, and science with active quizzes."
-    >
-      <SectionCardGrid sections={sections} />
-    </TopicPageLayout>
+    <SubjectHome
+      subject="gk"
+      description="History, polity, science and current affairs for the General Awareness section."
+    />
   );
-};
-
-export default GKHomePage;
+}

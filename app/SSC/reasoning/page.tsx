@@ -1,19 +1,12 @@
-import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
+"use client";
 
+import { SubjectHome } from "@/components/custom/subject-home";
 
-import { SUBJECT_SECTIONS } from "@/lib/subject-data";
-
-const ReasoningHomePage = () => {
-  const sections = SUBJECT_SECTIONS.reasoning;
+export default function ReasoningHomePage() {
   return (
-    <TopicPageLayout
-      title="Reasoning"
-      description="Improve deducing speed and shape recognition with chapter practice and analytical tests."
-    >
-      <SectionCardGrid sections={sections} />
-    </TopicPageLayout>
+    <SubjectHome
+      subject="reasoning"
+      description="Pattern recognition and logic drills for the General Intelligence & Reasoning section."
+    />
   );
-};
-
-export default ReasoningHomePage;
+}

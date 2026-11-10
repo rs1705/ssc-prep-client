@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PRIMARY_NAV } from "@/components/custom/sidebar";
+import { PRIMARY_NAV } from "@/lib/nav";
 
 /**
  * Thumb-reachable primary navigation for phones. The desktop sidebar is hidden

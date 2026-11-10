@@ -48,8 +48,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       </div>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
-        <div className="sticky top-0 z-30 w-full bg-background/95 border-b-2 border-border/20 md:backdrop-blur-xl shrink-0">
+      <div className="app-canvas flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
+        <div className="sticky top-0 z-30 w-full bg-background/85 border-b-2 border-border/60 backdrop-blur-md shrink-0">
           <div className="mx-auto w-full max-w-[1400px]">
             <TopBar />
           </div>

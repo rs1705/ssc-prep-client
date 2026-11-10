@@ -12,7 +12,8 @@ const sections: SectionCardProps[] = [
     linkTo: "/SSC/english/flashcards/freestyle",
     knowMoreText:
       "1. Learn Your Way: No time limits, no deadlines. Flip through vocabulary flashcards whenever you have a few minutes.\n\n2. Focus on What Matters: Pick specific categories like Idioms, Vocabulary, or One Word Substitutions to study exactly what you need.\n\n3. Zero Pressure: Review words as many times as you want until you feel comfortable and they stick naturally.\n\nBest For:\n\n ▪️ Quick, last-minute revisions before exams ⚡\n\n    ▪️ Short, casual daily practice sessions on the go 📅\n\n    ▪️ Stress-free learning without score tracking 😌",
-    buttonText: "Start Freestyle",
+    buttonText: "Start",
+    meta: "Browse A to Z · no sign-in",
     colorTheme: "violet",
   },
   {
@@ -23,7 +24,8 @@ const sections: SectionCardProps[] = [
     linkTo: "/SSC/english/flashcards/fsrs",
     knowMoreText:
       "1. Smart Memory Assistant: The app checks how well you know each word and automatically schedules when you need to see it next.\n\n2. Focus on Weak Words: Words you struggle to remember are shown frequently, while words you already know are hidden until you actually need to refresh them.\n\n3. Memorize 3x Faster: Instead of wasting hours reviewing words you already master, you focus 100% of your energy on your weak spots.\n\nBest For:\n\n ▪️ Locking vocabulary into your long-term memory 🧠\n\n    ▪️ High-efficiency, highly-focused study sessions ⏱️\n\n    ▪️ Watching your weak spots disappear day by day ✅",
-    buttonText: "Start Study Mode",
+    buttonText: "Start",
+    meta: "30 cards a day · sign-in",
     colorTheme: "violet",
   },
 ];

@@ -2,39 +2,73 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useThemeToggle } from "@/hooks/useThemeToggle";
 import { usePathname } from "next/navigation";
-import {
-  Home,
-  Dumbbell,
-  ChartNoAxesCombined,
-  Bookmark,
-  Trophy,
-  Rocket,
-  Info,
-  MessageSquare,
-  PanelLeftClose,
-  PanelLeftOpen,
-  Sun,
-  Moon,
-} from "lucide-react";
+import { Moon, PanelLeftClose, PanelLeftOpen, Rocket, Sun } from "lucide-react";
 import { useSidebar } from "@/components/custom/sidebar-context";
-import { ProgressBar } from "@/components/custom/ProgressBar";
+import { ExamCountdown } from "@/components/custom/exam-countdown";
 import { useAuth } from "@/context/auth";
+import { useThemeToggle } from "@/hooks/useThemeToggle";
+import { activeNavPath, navGroups, type NavItem } from "@/lib/nav";
+import { subjectTheme } from "@/lib/subject-theme";
 
-export const PRIMARY_NAV = [
-  { to: "/dashboard", label: "Dashboard", icon: Home },
-  { to: "/practice", label: "Practice", icon: Dumbbell },
-  { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
-  { to: "/bookmarks", label: "Bookmarks", icon: Bookmark },
-  { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
-];
+// Re-exported for existing imports (mobile tab bar).
+export { PRIMARY_NAV } from "@/lib/nav";
 
-const secondaryNav = [
-  { to: "/feedback", label: "Feedback", icon: MessageSquare },
-  { to: "/about", label: "About", icon: Info },
-];
+const EASE = "transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]";
 
+function SidebarLink({
+  item,
+  active,
+  collapsed,
+  animate,
+}: {
+  item: NavItem;
+  active: boolean;
+  collapsed: boolean;
+  animate: boolean;
+}) {
+  const Icon = item.icon;
+  const iconColour = active
+    ? "text-amber-700 dark:text-amber-400"
+    : item.subject
+      ? subjectTheme(item.subject).text
+      : "text-muted-foreground group-hover:text-foreground";
+
+  return (
+    <Link
+      href={item.to}
+      title={collapsed ? item.label : undefined}
+      aria-current={active ? "page" : undefined}
+      className={`group relative flex items-center rounded-xl text-sm font-medium transition-colors duration-150 ${
+        collapsed ? "mx-auto h-10 w-10 justify-center" : "gap-3 px-3 py-2"
+      } ${
+        active
+          ? "bg-amber-500/10 font-bold text-amber-800 dark:text-amber-300"
+          : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+      }`}
+    >
+      {active && !collapsed && (
+        <span
+          aria-hidden="true"
+          className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-amber-500"
+        />
+      )}
+      <Icon
+        className={`h-4 w-4 shrink-0 transition-colors duration-150 ${iconColour}`}
+        strokeWidth={active ? 2.25 : 1.75}
+      />
+      <span
+        className={`truncate ${animate ? EASE : ""} ${
+          collapsed ? "max-w-0 overflow-hidden opacity-0" : "max-w-[200px] opacity-100"
+        }`}
+      >
+        {item.label}
+      </span>
+    </Link>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept for the layout's existing call signature
 export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted, toggleSidebar } = useSidebar();
@@ -46,183 +80,138 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
     setMounted(true);
   }, []);
 
-  const overlayClass = isCollapsed
-    ? "w-[72px] px-3 py-5 items-center"
-    : "w-56 lg:w-64 p-5";
+  const groups = navGroups(!!user);
+  const activePath = activeNavPath(pathname);
+  const ease = isMounted ? EASE : "";
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r-2 border-border/40 bg-background/90 backdrop-blur-2xl absolute top-0 left-0 h-[100dvh] z-50 overflow-y-auto scrollbar-none ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${overlayClass}`}
+      className={`absolute left-0 top-0 z-50 hidden h-[100dvh] flex-col overflow-y-auto border-r-2 border-sidebar-border bg-sidebar scrollbar-none md:flex ${ease} ${
+        isCollapsed ? "w-[72px] items-center px-3 py-5" : "w-56 p-5 lg:w-64"
+      }`}
     >
-      {/* Header Row with Logo */}
-      <div
-        className={`flex items-center mb-6 w-full ${
-          isCollapsed ? "flex-col gap-3 justify-center" : "justify-between"
-        }`}
+      {/* Brand */}
+      <Link
+        href="/"
+        className={`group mb-6 flex min-w-0 items-center ${ease} ${isCollapsed ? "gap-0" : "gap-3"}`}
       >
-        <Link href="/" className={`flex items-center min-w-0 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "gap-0" : "gap-3"} group cursor-pointer`}>
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600 shadow-md shadow-amber-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
-            <Rocket className="w-5 h-5" />
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
+          <Rocket className="h-5 w-5" />
+        </div>
+        <div
+          className={`truncate leading-tight ${ease} ${
+            isCollapsed ? "max-w-0 overflow-hidden opacity-0" : "max-w-[200px] opacity-100"
+          }`}
+        >
+          <div className="font-display text-base font-extrabold tracking-tight text-foreground">
+            Ept<span className="text-amber-600 dark:text-amber-400">Ssc</span>
           </div>
-          <div className={`leading-tight truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>
-            <div className="text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 flex items-center gap-1">
-              EptSsc <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-            </div>
-            <div className="font-extrabold text-sm tracking-tight truncate text-foreground">
-              Elite Prep Training
-            </div>
+          <div className="truncate text-xs font-medium text-muted-foreground">
+            Elite Prep Training
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
 
-      {/* Primary Nav Items */}
-      <nav className="flex flex-col gap-1 w-full">
-        {(user ? PRIMARY_NAV : PRIMARY_NAV.filter(n => n.to === "/practice")).map((n) => {
-          const active = n.to === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(n.to);
-          const Icon = n.icon;
-          return (
-            <Link
-              key={n.to}
-              href={n.to}
-              title={isCollapsed ? n.label : undefined}
-              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border-2 ${
-                isCollapsed
-                  ? "justify-center w-10 h-10 mx-auto"
-                  : "gap-3 px-3 py-2"
-              } ${
-                active
-                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
-              }`}
-            >
-              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground group-hover:text-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
-              <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
-            </Link>
-          );
-        })}
+      {/* Navigation groups */}
+      <nav aria-label="Main" className="flex w-full flex-col">
+        {groups.map((group, index) => (
+          <div key={group.label ?? "main"} className={index === 0 ? "" : isCollapsed ? "mt-3" : "mt-5"}>
+            {group.label && (
+              <div
+                className={`section-label px-3 ${ease} ${
+                  isCollapsed ? "mb-0 h-0 overflow-hidden opacity-0" : "mb-1.5 h-auto opacity-80"
+                }`}
+              >
+                {group.label}
+              </div>
+            )}
+            {isCollapsed && group.label && (
+              <div aria-hidden="true" className="mx-auto mb-3 h-px w-6 bg-border" />
+            )}
+            <div className="flex flex-col gap-0.5">
+              {group.items.map((item) => (
+                <SidebarLink
+                  key={item.to}
+                  item={item}
+                  active={activePath === item.to}
+                  collapsed={isCollapsed}
+                  animate={isMounted}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </nav>
 
-      {/* Support Section */}
-      <div className={`mt-5 mb-1 px-3 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground/60 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden h-0 mb-0 mt-4" : "max-w-[200px] opacity-70 h-auto"}`}>
-        Support
-      </div>
-      <nav className={`flex flex-col gap-1 w-full ${isCollapsed ? "mt-0" : ""}`}>
-        {secondaryNav.map((n) => {
-          const active = pathname.startsWith(n.to);
-          const Icon = n.icon;
-          return (
-            <Link
-              key={n.to}
-              href={n.to}
-              title={isCollapsed ? n.label : undefined}
-              className={`flex items-center rounded-xl text-xs sm:text-sm font-medium transition-colors duration-150 border-2 ${
-                isCollapsed
-                  ? "justify-center w-10 h-10 mx-auto"
-                  : "gap-3 px-3 py-2"
-              } ${
-                active
-                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25 font-bold"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40 hover:border-border/30"
-              }`}
-            >
-              <Icon className={`w-4 h-4 shrink-0 transition-colors duration-150 ${active ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"}`} strokeWidth={active ? 2.25 : 1.75} />
-              <span className={`truncate ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "max-w-0 opacity-0 overflow-hidden" : "max-w-[200px] opacity-100"}`}>{n.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* Exam D-Day Widget */}
-      <div 
-        title="Exam D-Day: 142 days remaining"
-        className={`mt-auto mb-3 bg-card/60 backdrop-blur-md border-2 border-amber-500/20 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} relative overflow-hidden flex flex-col ${
-          isCollapsed 
-            ? "w-10 h-10 mx-auto rounded-xl items-center justify-center shrink-0" 
-            : "w-full p-3.5 rounded-2xl"
-        }`}
-      >
-        {/* Compact View (Centered absolute) */}
-        <div className={`font-mono font-bold text-amber-700 dark:text-amber-400 ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} absolute ${isCollapsed ? "opacity-100 text-xs" : "opacity-0 scale-50 pointer-events-none"}`}>
-          142d
-        </div>
-        
-        {/* Expanded View */}
-        <div className={`w-full ${isMounted ? 'transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]' : ''} ${isCollapsed ? "opacity-0 invisible absolute top-3 left-3" : "opacity-100 relative"}`}>
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground whitespace-nowrap">
-              Exam D-Day
-            </span>
-            <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border-2 border-amber-500/20">
-              Tier 1
-            </span>
-          </div>
-          <div className="text-xl font-black font-mono tracking-tight whitespace-nowrap text-foreground flex items-baseline gap-1.5">
-            142 <span className="text-xs font-mono font-normal text-muted-foreground">days</span>
-          </div>
-          <ProgressBar
-            value={33}
-            className="h-1.5 mt-2.5 p-0"
-            barClassName="bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm shadow-amber-500/50"
-          />
-        </div>
+      {/* Exam countdown */}
+      <div className={`mb-3 mt-auto pt-5 ${isCollapsed ? "" : "w-full"}`}>
+        <ExamCountdown compact={isCollapsed} />
       </div>
 
-      {/* Bottom Controls Group */}
-      <div className="flex flex-col gap-1">
+      {/* Bottom controls */}
+      <div className={`flex flex-col gap-0.5 ${isCollapsed ? "" : "w-full"}`}>
         <button
+          type="button"
           onClick={toggleSidebar}
-          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-          className={`flex items-center rounded-xl transition-colors duration-150 border-2 border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer text-muted-foreground hover:text-foreground ${
-            isCollapsed 
-              ? "p-2 w-10 h-10 mx-auto justify-center" 
-              : "px-3 py-2 w-full gap-3"
+          title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          className={`flex items-center rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-muted/70 hover:text-foreground ${
+            isCollapsed ? "mx-auto h-10 w-10 justify-center" : "w-full gap-3 px-3 py-2"
           }`}
         >
           {isCollapsed ? (
-            <PanelLeftOpen className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+            <PanelLeftOpen className="h-4 w-4 shrink-0" strokeWidth={1.75} />
           ) : (
             <>
-              <PanelLeftClose className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-              <span className="text-xs sm:text-sm font-medium">Collapse Sidebar</span>
+              <PanelLeftClose className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+              <span className="text-sm font-medium">Collapse</span>
             </>
           )}
         </button>
 
-        {/* Theme Toggle Widget */}
         {mounted && (
           <button
+            type="button"
             onClick={toggleTheme}
-            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            className={`flex items-center justify-between rounded-xl transition-colors duration-150 border-2 border-transparent hover:bg-muted/40 hover:border-border/30 cursor-pointer ${
-              isCollapsed 
-                ? "p-2 w-10 h-10 mx-auto flex-col justify-center" 
-                : "px-3 py-2 w-full"
+            role="switch"
+            aria-checked={theme === "dark"}
+            aria-label="Dark mode"
+            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            className={`flex items-center justify-between rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-muted/70 hover:text-foreground ${
+              isCollapsed ? "mx-auto h-10 w-10 justify-center" : "w-full px-3 py-2"
             }`}
           >
-          {isCollapsed ? (
-            theme === "dark" ? (
-              <Moon className="w-4 h-4 shrink-0 text-amber-400" strokeWidth={1.75} />
+            {isCollapsed ? (
+              theme === "dark" ? (
+                <Moon className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.75} />
+              ) : (
+                <Sun className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.75} />
+              )
             ) : (
-              <Sun className="w-4 h-4 shrink-0 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
-            )
-          ) : (
-            <>
-              <div className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground">
-                {theme === "dark" ? (
-                  <Moon className="w-4 h-4 shrink-0 text-amber-400" strokeWidth={1.75} />
-                ) : (
-                  <Sun className="w-4 h-4 shrink-0 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
-                )}
-                <span className="text-xs sm:text-sm font-medium">Dark Mode</span>
-              </div>
-              
-              {/* iOS Style Toggle Switch */}
-              <div className={`relative w-8 h-4.5 rounded-full transition-colors duration-300 ease-in-out shrink-0 ${theme === "dark" ? "bg-amber-500 shadow-inner" : "bg-muted-foreground/30"}`}>
-                <div className={`absolute top-[2px] left-[2px] bg-white w-3.5 h-3.5 rounded-full shadow-sm transition-transform duration-300 ease-in-out flex items-center justify-center ${theme === "dark" ? "translate-x-3.5" : "translate-x-0"}`} />
-              </div>
-            </>
-          )}
-        </button>
+              <>
+                <span className="flex items-center gap-3">
+                  {theme === "dark" ? (
+                    <Moon className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.75} />
+                  ) : (
+                    <Sun className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.75} />
+                  )}
+                  <span className="text-sm font-medium">Dark mode</span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={`relative h-4.5 w-8 shrink-0 rounded-full transition-colors duration-300 ${
+                    theme === "dark" ? "bg-amber-500" : "bg-muted-foreground/30"
+                  }`}
+                >
+                  <span
+                    className={`absolute left-[2px] top-[2px] h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 ${
+                      theme === "dark" ? "translate-x-3.5" : "translate-x-0"
+                    }`}
+                  />
+                </span>
+              </>
+            )}
+          </button>
         )}
       </div>
     </aside>
