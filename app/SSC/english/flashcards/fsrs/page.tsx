@@ -36,7 +36,7 @@ const FsrsPage = () => {
   const [showQuitConfirm, setShowQuitConfirm] = useState(false);
   
   const { currentCardId } = useSelector((state: RootState) => state.session);
-  const currentIndex = data ? data.findIndex((card: any) => card._id === currentCardId) : -1;
+  const currentIndex = data ? data.findIndex((card) => card._id === currentCardId) : -1;
   const currentCardNumber = currentIndex >= 0 ? currentIndex + 1 : 1;
   const totalCards = data ? data.length : 0;
   const router = useRouter();
@@ -148,7 +148,7 @@ const FsrsPage = () => {
                 onRetry={refetch}
               />
             </div>
-          ) : data?.length > 0 ? (
+          ) : data && data.length > 0 ? (
             <FlashcardDeck deck={data} isLinear={false} mode="study" />
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center min-h-[220px] p-6 text-center">

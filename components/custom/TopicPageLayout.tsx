@@ -45,6 +45,8 @@ const ROUTE_NAMES: Record<string, string> = {
   dashboard: "Dashboard",
   hangman: "Hangman",
   games: "Games",
+  "topic-pyqs": "Topic-wise PYQs",
+  "sectional-pyqs": "Sectional PYQs",
   "odd-link": "Odd Link",
   "word-of-the-day": "Word of the Day",
   "spelling-sprint": "Spelling Sprint",

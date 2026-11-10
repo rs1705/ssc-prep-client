@@ -1,5 +1,9 @@
 export interface FlashCardInterface {
   _id: string;
+  /** Same value as `_id`; the Nest API returns both. */
+  id?: string;
+  exam?: string;
+  year?: string;
   type: string;
   difficulty: string;
   subject: string;

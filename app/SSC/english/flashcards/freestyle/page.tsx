@@ -102,7 +102,7 @@ const FreestylePage = () => {
   }, []);
 
   const { currentCardId } = useSelector((state: RootState) => state.session);
-  const currentIndex = data ? data.findIndex((card: any) => card._id === currentCardId) : -1;
+  const currentIndex = data ? data.findIndex((card) => card._id === currentCardId) : -1;
   const currentCardNumber = currentIndex >= 0 ? currentIndex + 1 : 1;
   const totalCards = data ? data.length : 0;
 
@@ -342,7 +342,7 @@ const FreestylePage = () => {
                 className={`transition-all duration-300 w-full ${isFetching ? "opacity-40 pointer-events-none grayscale-[0.2]" : "opacity-100"}`}
               >
                 <FlashcardDeck
-                  deck={data}
+                  deck={data ?? []}
                   deckId={activeTab}
                   isLinear={true}
                   mode="freestyle"

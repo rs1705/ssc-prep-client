@@ -3,17 +3,14 @@
 import Link from "next/link";
 import { 
   ArrowRight, Brain, Zap, BookOpen, Target, Gamepad2, BarChart3, Rocket, 
-  XCircle, CheckCircle2, Check, Flame, Activity, Map, Dumbbell, Trophy, 
-  ChevronDown, Heart, Scale, RefreshCw, Crosshair, Tag, ScrollText, 
-  LayoutDashboard, BrainCircuit, Sparkles, Timer, RotateCw, CheckCircle,
-  Award, TrendingUp, Compass, ChevronRight, HelpCircle, Layers, FileText,
-  Lightbulb, ShieldCheck
+  CheckCircle2, Check, Flame, Activity, Map, Dumbbell, Trophy, 
+  ChevronDown, RefreshCw, Crosshair, Tag, ScrollText, 
+  BrainCircuit, Sparkles, Timer, RotateCw, CheckCircle,
+  TrendingUp, HelpCircle, Layers, Calculator, Languages, Globe2
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import { 
-  motion, useMotionValue, useTransform, animate, useInView, useSpring, 
-  useMotionTemplate, Variants, useScroll, AnimatePresence 
+  motion, useMotionValue, useTransform, animate, useInView, Variants, useScroll, AnimatePresence 
 } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useAuth } from "@/context/auth";
@@ -102,12 +99,11 @@ function AnimatedCounter({
 }
 
 /* ─── Exam Categories Selector ─── */
-const EXAM_OPTIONS = [
-  { id: "cgl", label: "SSC CGL", icon: Trophy },
-  { id: "chsl", label: "SSC CHSL", icon: Target },
-  { id: "cpo", label: "SSC CPO", icon: Compass },
-  { id: "mts", label: "SSC MTS", icon: Dumbbell },
-  { id: "gd", label: "SSC GD", icon: Award },
+const SUBJECT_LINKS = [
+  { id: "maths", label: "Mathematics", icon: Calculator, href: "/SSC/maths", tone: "text-sky-600 dark:text-sky-400" },
+  { id: "english", label: "English", icon: Languages, href: "/SSC/english", tone: "text-violet-600 dark:text-violet-400" },
+  { id: "reasoning", label: "Reasoning", icon: Brain, href: "/SSC/reasoning", tone: "text-fuchsia-600 dark:text-fuchsia-400" },
+  { id: "gk", label: "General Knowledge", icon: Globe2, href: "/SSC/gk", tone: "text-teal-600 dark:text-teal-400" },
 ];
 
 /* ─── Speed Sprint Demo Questions (7 Varied Categories) ─── */
@@ -318,24 +314,24 @@ const SYLLABUS_SECTIONS = [
 /* ─── Aspirant FAQs ─── */
 const SSC_FAQS = [
   {
-    question: "Are these authentic TCS-pattern previous year questions?",
-    answer: "Yes, 100%. Every single question in EptSsc is extracted directly from official SSC CGL, CHSL, CPO, MTS, and GD shift answer keys (2020 through 2025). We rigorously OCR-scan, verify, taxonomy-tag, and format each question with step-by-step solutions."
+    question: "Are these real previous year questions?",
+    answer: "Yes. The questions come from official SSC CGL Tier 1 papers (currently shifts from 2024 and 2025). Each one is tagged by topic and comes with a step-by-step explanation. Questions that need a figure are left out for now, and more papers are being added."
   },
   {
     question: "How does the Mental Maths Arena help me score higher in Quant?",
     answer: "SSC Tier 1 requires solving 25 Quant questions in roughly 15–18 minutes. Writing manual scratch work for basic calculations (like 65², 15% of 240, or 74 × 11) bleeds 3–5 seconds per question. Our timed calculation arena builds instant calculation reflex so you finish the Quant section with minutes to spare."
   },
   {
-    question: "How do Smart Flashcards work for English Vocab and Static GK?",
-    answer: "Instead of rereading static PDF lists, Flashcards use spaced repetition (active recall). When you review high-frequency words, idioms, or polity articles, the algorithm schedules your next review (12 hours, 3 days, or 8 days) based on whether you found the item hard or easy. This cements facts into long-term memory."
+    question: "How do Smart Flashcards work for English vocabulary?",
+    answer: "Instead of rereading static PDF lists, flashcards use spaced repetition. After each card you rate how well you knew it, and the algorithm brings hard cards back sooner and easy ones later. That is what moves words, idioms and one-word substitutions into long-term memory."
   },
   {
     question: "How does EptSsc differ from regular test series or PDF compilations?",
-    answer: "PDF compilations are passive and static. Generic test series only tell you your overall score at the end. EptSsc diagnoses your exact mark-bleed topics in real-time (e.g., 'You lose 2.5 marks on Geometry chords and spend 80s on simple ratio questions') and immediately gives you targeted 5-minute drill sets to fix them."
+    answer: "PDF compilations are passive, and a generic test series only gives you a score at the end. EptSsc is built for active practice: timed speed drills, real PYQs with an explanation after every answer, and spaced repetition, so you find and fix weak spots while you practise."
   },
   {
     question: "Can I practice on mobile phones and tablets?",
-    answer: "Yes! EptSsc is designed with a zero-lag responsive layout. All drills, speed calculation sprints, flashcards, and PYQ tests run seamlessly on all mobile screens with zero performance drops."
+    answer: "Yes. Every drill, flashcard deck, game and PYQ test is built mobile-first and works on phones, tablets and desktops."
   }
 ];
 
@@ -486,7 +482,7 @@ function InteractiveHeroDashboard() {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
                   className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition-all ${
                     isActive 
                       ? "bg-amber-500 text-zinc-950 shadow-md shadow-amber-500/20" 
@@ -1010,56 +1006,6 @@ function InteractiveHeroDashboard() {
   );
 }
 
-/* ─── Infinite Testimonials Marquee ─── */
-const testimonials = [
-  { name: "Rahul S.", exam: "CGL Tier 1 (168/200)", text: "The accuracy analytics completely changed how I prep. I stopped doing random mocks and focused on my weak areas." },
-  { name: "Priya M.", exam: "CHSL (AIR 42)", text: "Mental maths arena is insanely addictive. I shaved 15 seconds off my average calculation time in just two weeks." },
-  { name: "Vikash K.", exam: "CGL Inspector", text: "Finally an app that isn't bloated with ads. The UI is cleaner than most paid platforms. Worth every penny." },
-  { name: "Anjali T.", exam: "CPO SI", text: "The spaced repetition for GK actually works. I remember obscure facts that I usually forget after two days." },
-  { name: "Amit D.", exam: "MTS & GD", text: "The honest comparison is real. I deleted all my telegram PDF groups after using EptSsc." },
-];
-
-function InfiniteTestimonials() {
-  return (
-    <section className="w-full py-20 relative z-10 overflow-hidden bg-background">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
-          <Heart className="w-3 h-3 text-amber-500" /> Wall of Love
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">Trusted by Top SSC Rankers</h2>
-      </div>
-
-      {/* Marquee Container */}
-      <div className="relative flex overflow-x-hidden group">
-        <div className="absolute top-0 left-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-        
-        <div className="flex animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] whitespace-nowrap will-change-transform">
-          {[...testimonials, ...testimonials].map((t, i) => (
-            <div key={i} className="inline-block w-[300px] sm:w-[380px] whitespace-normal mx-3">
-              <div className="surface-card rounded-2xl p-6 h-full flex flex-col relative hover:border-amber-500/30 transition-colors">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold shadow-md">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-bold text-foreground text-sm flex items-center gap-1.5">
-                      {t.name} <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                    </div>
-                    <div className="text-xs text-muted-foreground font-mono">{t.exam}</div>
-                  </div>
-                </div>
-                <p className="text-foreground/80 text-sm leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ─── Comprehensive SSC Syllabus Matrix Section ─── */
 function SyllabusMatrixSection() {
   const [selectedSection, setSelectedSection] = useState("quant");
@@ -1172,7 +1118,7 @@ function AspirantFaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="w-full py-16 sm:py-24 relative z-10 bg-background">
+    <section id="faq" className="w-full py-16 sm:py-24 relative z-10 bg-background scroll-mt-24">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
@@ -1233,7 +1179,6 @@ function AspirantFaqSection() {
 
 /* ─── Main Landing Page ─── */
 export default function LandingPage() {
-  const [selectedExam, setSelectedExam] = useState("all");
   const { user, signInWithGoogle } = useAuth();
 
   const containerVariants: Variants = {
@@ -1251,71 +1196,77 @@ export default function LandingPage() {
 
   /* ─── Features Arsenal with Live Mini Micro-Simulations ─── */
   const features = [
-    { 
-      icon: BookOpen, 
-      title: "Authentic PYQ Vault", 
-      desc: "Every single shift from CGL, CHSL, CPO, MTS & GD — OCR-extracted, taxonomy-tagged, and ready for drill-mode practice.",
-      badge: "10,000+ Questions",
-      iconBg: "bg-emerald-500/15", 
-      iconText: "text-emerald-500 dark:text-emerald-400", 
-      auraBg: "from-emerald-500/25 via-emerald-500/10 to-transparent",
-      borderHover: "hover:border-emerald-500/40",
-      preview: "OCR-scanned authentic papers"
-    },
-    { 
-      icon: BarChart3, 
-      title: "AI-Powered Analytics", 
-      desc: "Pinpoint your exact weak subtopics, track accuracy trends over time, and get a personalized study roadmap — no guesswork.",
-      badge: "Subtopic Heatmap",
-      iconBg: "bg-cyan-500/15", 
-      iconText: "text-cyan-500 dark:text-cyan-400", 
-      auraBg: "from-cyan-500/25 via-cyan-500/10 to-transparent",
-      borderHover: "hover:border-cyan-500/40",
-      preview: "Target accuracy: 92%+"
-    },
-    { 
-      icon: Target, 
-      title: "Surgical Topic Drills", 
-      desc: "Zero in on specific subtopics like Trigonometry or Cloze Tests. Our engine serves questions weighted by your weakest areas.",
-      badge: "Adaptive Engine",
-      iconBg: "bg-blue-500/15", 
-      iconText: "text-blue-500 dark:text-blue-400", 
-      auraBg: "from-blue-500/25 via-blue-500/10 to-transparent",
-      borderHover: "hover:border-blue-500/40",
-      preview: "Focuses on mark-bleed areas"
-    },
-    { 
-      icon: Zap, 
-      title: "Mental Maths Arena", 
-      desc: "Timed calculation sprints with adaptive difficulty. Shave seconds off your per-question time — the difference between selection and waitlist.",
-      badge: "Speed Training",
-      iconBg: "bg-amber-500/15", 
-      iconText: "text-amber-500 dark:text-amber-400", 
+    {
+      icon: Zap,
+      title: "Speed Math Drills",
+      desc: "Timed calculation sprints, from tables and squares to percentages and ratios, at three difficulty levels.",
+      badge: "12 drills",
+      href: "/SSC/maths/mental-maths",
+      iconBg: "bg-amber-500/15",
+      iconText: "text-amber-600 dark:text-amber-400",
       auraBg: "from-amber-500/25 via-amber-500/10 to-transparent",
       borderHover: "hover:border-amber-500/40",
-      preview: "Reduces per-question pace"
+      preview: "Timed or freestyle"
     },
-    { 
-      icon: Brain, 
-      title: "Smart Flashcards", 
-      desc: "Spaced-repetition memory system applied to GK facts, idioms, and high-frequency vocabulary you keep forgetting.",
-      badge: "Active Recall",
-      iconBg: "bg-violet-500/15", 
-      iconText: "text-violet-500 dark:text-violet-400", 
+    {
+      icon: BookOpen,
+      title: "Topic-wise PYQs",
+      desc: "Real SSC CGL questions grouped by topic. Answer, see if you were right, and read the explanation straight away.",
+      badge: "Real papers",
+      href: "/SSC/maths/topic-pyqs",
+      iconBg: "bg-emerald-500/15",
+      iconText: "text-emerald-600 dark:text-emerald-400",
+      auraBg: "from-emerald-500/25 via-emerald-500/10 to-transparent",
+      borderHover: "hover:border-emerald-500/40",
+      preview: "Explanation for every question"
+    },
+    {
+      icon: Timer,
+      title: "Sectional Tests",
+      desc: "Sit one section of a past paper against the clock with exam marking, then review every answer.",
+      badge: "+2 / −0.5",
+      href: "/SSC/english/sectional-pyqs",
+      iconBg: "bg-blue-500/15",
+      iconText: "text-blue-600 dark:text-blue-400",
+      auraBg: "from-blue-500/25 via-blue-500/10 to-transparent",
+      borderHover: "hover:border-blue-500/40",
+      preview: "Submits itself when time is up"
+    },
+    {
+      icon: Brain,
+      title: "Smart Flashcards",
+      desc: "High-frequency words, idioms and one-word substitutions with Hindi meanings, scheduled by spaced repetition.",
+      badge: "637 cards",
+      href: "/SSC/english/flashcards",
+      iconBg: "bg-violet-500/15",
+      iconText: "text-violet-600 dark:text-violet-400",
       auraBg: "from-violet-500/25 via-violet-500/10 to-transparent",
       borderHover: "hover:border-violet-500/40",
-      preview: "Retention rate > 94%"
+      preview: "Browse free, sign in to track"
     },
-    { 
-      icon: Gamepad2, 
-      title: "Gamified Retention", 
-      desc: "Crosswords, word-hunts, and contextual games that make static GK and vocabulary stick — without the burnout of rote memorization.",
-      badge: "Streak Badges",
-      iconBg: "bg-rose-500/15", 
-      iconText: "text-rose-500 dark:text-rose-400", 
+    {
+      icon: Gamepad2,
+      title: "Word Games",
+      desc: "Hangman Sprint, Odd Link, Word of the Day and Spelling Sprint. Two-minute games that make vocabulary stick.",
+      badge: "4 games",
+      href: "/SSC/english/games",
+      iconBg: "bg-rose-500/15",
+      iconText: "text-rose-600 dark:text-rose-400",
       auraBg: "from-rose-500/25 via-rose-500/10 to-transparent",
       borderHover: "hover:border-rose-500/40",
-      preview: "Zero rote memorization"
+      preview: "No sign-in needed"
+    },
+    {
+      icon: Map,
+      title: "Syllabus Map",
+      desc: "Each section laid out as on the paper: questions, marks, negative marking and the topics you can practise today.",
+      badge: "4 subjects",
+      href: "/practice",
+      iconBg: "bg-cyan-500/15",
+      iconText: "text-cyan-600 dark:text-cyan-400",
+      auraBg: "from-cyan-500/25 via-cyan-500/10 to-transparent",
+      borderHover: "hover:border-cyan-500/40",
+      preview: "Exam pattern at a glance"
     },
   ];
 
@@ -1355,8 +1306,7 @@ export default function LandingPage() {
             </div>
             <div className="leading-tight">
               <div className="font-bold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
-                EptSsc
-                <span className="text-xs font-mono font-bold bg-amber-500/15 text-amber-500 px-1.5 py-0.5 rounded">PRO</span>
+                <span>Ept<span className="text-amber-600 dark:text-amber-400">Ssc</span></span>
               </div>
             </div>
           </Link>
@@ -1367,6 +1317,11 @@ export default function LandingPage() {
             transition={{ duration: 0.4, ease: SNAPPY_EASE }}
             className="flex items-center gap-2 sm:gap-3"
           >
+            <div className="hidden lg:flex items-center gap-1 mr-2 text-sm font-semibold text-muted-foreground">
+              <a href="#features" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-muted/70 transition-colors">Features</a>
+              <a href="#how-it-works" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-muted/70 transition-colors">How it works</a>
+              <a href="#faq" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-muted/70 transition-colors">FAQ</a>
+            </div>
             {user ? (
               <Link 
                 href="/dashboard" 
@@ -1405,7 +1360,7 @@ export default function LandingPage() {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/70 backdrop-blur-md border-2 border-amber-500/30 text-xs sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-amber-500/10"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-          <span>The Next-Gen SSC Preparation Engine</span>
+          <span>Built around the SSC CGL Tier 1 paper</span>
         </motion.div>
 
         {/* Headline with Dynamic Word Cycler */}
@@ -1430,7 +1385,7 @@ export default function LandingPage() {
           transition={{ duration: 0.5, ease: SNAPPY_EASE, delay: 0.2 }}
           className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mb-8 font-normal leading-relaxed px-2 sm:px-0"
         >
-          Combine 10,000+ verified PYQs, AI-powered weakness diagnosis, and spaced repetition — so every hour you study translates directly into marks.
+          Real past-paper questions with explanations, speed-maths drills, spaced-repetition flashcards and two-minute word games. Free to start, no sign-up needed to try.
         </motion.p>
 
         {/* CTAs with Snappy Physics */}
@@ -1466,16 +1421,17 @@ export default function LandingPage() {
           transition={{ duration: 0.45, ease: SNAPPY_EASE, delay: 0.4 }}
           className="flex flex-wrap justify-center items-center gap-2 sm:gap-2.5 max-w-3xl mb-12"
         >
-          {EXAM_OPTIONS.map((exam) => {
-            const Icon = exam.icon;
+          {SUBJECT_LINKS.map((subject) => {
+            const Icon = subject.icon;
             return (
-              <div
-                key={exam.id}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-semibold surface-card text-foreground/90 shadow-xs select-none hover:border-amber-500/30 transition-colors"
+              <Link
+                key={subject.id}
+                href={subject.href}
+                className="flex min-h-10 items-center gap-2 px-4 rounded-full text-sm font-semibold surface-card text-foreground/90 hover:-translate-y-0.5 hover:border-amber-500/40 transition-all"
               >
-                <Icon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                <span>{exam.label}</span>
-              </div>
+                <Icon className={`w-4 h-4 shrink-0 ${subject.tone}`} />
+                <span>{subject.label}</span>
+              </Link>
             );
           })}
         </motion.div>
@@ -1488,10 +1444,10 @@ export default function LandingPage() {
           className="w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 py-4 mb-10"
         >
           {[
-            { value: 10, suffix: "k+", label: "Authentic PYQs", icon: ScrollText, color: "text-amber-500" },
-            { value: 5, suffix: "+", label: "SSC Exams Covered", icon: Trophy, color: "text-emerald-500" },
-            { value: 4, suffix: "", label: "Complete Sections", icon: LayoutDashboard, color: "text-blue-500" },
-            { value: 24, suffix: "/7", label: "AI-Driven Insights", icon: BrainCircuit, color: "text-violet-500" },
+            { value: 200, suffix: "", label: "Real PYQs, explained", icon: ScrollText, color: "text-amber-500" },
+            { value: 637, suffix: "", label: "Vocabulary flashcards", icon: Brain, color: "text-violet-500" },
+            { value: 12, suffix: "", label: "Speed-maths drills", icon: Zap, color: "text-sky-500" },
+            { value: 4, suffix: "", label: "Word games", icon: Gamepad2, color: "text-emerald-500" },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -1528,10 +1484,10 @@ export default function LandingPage() {
               <RefreshCw className="w-3 h-3 text-amber-500" /> The EptSsc Loop
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
-              Four Steps to Selection
+              A Simple Loop That Works
             </motion.h2>
             <motion.p variants={itemVariants} className="text-foreground/70 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
-              A feedback-driven cycle that ensures every hour you study is an hour spent on what actually moves your score.
+              Test yourself on real questions, learn from every answer, drill the gaps, repeat.
             </motion.p>
           </motion.div>
 
@@ -1546,16 +1502,16 @@ export default function LandingPage() {
               >
                 <div className="hidden md:block md:w-1/2 md:text-right">
                   <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 1</div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Take a Diagnostic PYQ</h3>
-                  <p className="text-foreground/70 leading-relaxed text-sm">Attempt a full Previous Year Paper under timed conditions. Our engine analyzes all 100 questions to map baseline accuracy, pace, and section strengths.</p>
+                  <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Sit a Real Section</h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm">Pick a section from a past SSC CGL Tier 1 paper and attempt it against the clock, with the real +2 / −0.5 marking.</p>
                 </div>
                 <TimelineIcon baseClass="ring-blue-500/20 text-blue-500" activeClass="scale-110 bg-blue-500 text-white shadow-lg shadow-blue-500/20">
                   <Activity className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
                   <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 1</div>
-                  <h3 className="text-lg font-bold mb-1 tracking-tight">Take a Diagnostic PYQ</h3>
-                  <p className="text-foreground/70 leading-relaxed text-sm">Attempt a full Previous Year Paper under timed conditions. Our engine analyzes all 100 questions to map baseline accuracy, pace, and section strengths.</p>
+                  <h3 className="text-lg font-bold mb-1 tracking-tight">Sit a Real Section</h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm">Pick a section from a past SSC CGL Tier 1 paper and attempt it against the clock, with the real +2 / −0.5 marking.</p>
                 </div>
                 <div className="hidden md:block md:w-1/2" />
               </motion.div>
@@ -1571,8 +1527,8 @@ export default function LandingPage() {
                 </TimelineIcon>
                 <div className="md:w-1/2">
                   <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 2</div>
-                  <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2 tracking-tight">Get Your AI Weakness Roadmap</h3>
-                  <p className="text-foreground/70 leading-relaxed text-sm">The engine identifies your mark-bleed topics — where you lose marks or waste time — and serves targeted drill recommendations.</p>
+                  <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2 tracking-tight">Review Every Answer</h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm">See what you got right, wrong or skipped, with a step-by-step explanation for every single question.</p>
                 </div>
               </motion.div>
 
@@ -1583,16 +1539,16 @@ export default function LandingPage() {
               >
                 <div className="hidden md:block md:w-1/2 md:text-right">
                   <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 3</div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Execute Daily Micro-Drills</h3>
-                  <p className="text-foreground/70 leading-relaxed text-sm">20 targeted PYQs, 5 minutes of Mental Maths sprints, and Smart Flashcards every day. Small inputs that compound rapidly.</p>
+                  <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Drill Daily in Minutes</h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm">Speed Math sprints, topic-wise PYQ sets, flashcards and word games. Short sessions that fit into any day.</p>
                 </div>
                 <TimelineIcon baseClass="ring-emerald-500/20 text-emerald-500" activeClass="scale-110 bg-emerald-500 text-white shadow-lg shadow-emerald-500/20">
                   <Dumbbell className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
                   <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 3</div>
-                  <h3 className="text-lg font-bold mb-1 tracking-tight">Execute Daily Micro-Drills</h3>
-                  <p className="text-foreground/70 leading-relaxed text-sm">20 targeted PYQs, 5 minutes of Mental Maths sprints, and Smart Flashcards every day. Small inputs that compound rapidly.</p>
+                  <h3 className="text-lg font-bold mb-1 tracking-tight">Drill Daily in Minutes</h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm">Speed Math sprints, topic-wise PYQ sets, flashcards and word games. Short sessions that fit into any day.</p>
                 </div>
                 <div className="hidden md:block md:w-1/2" />
               </motion.div>
@@ -1608,8 +1564,8 @@ export default function LandingPage() {
                 </TimelineIcon>
                 <div className="md:w-1/2">
                   <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1 font-mono">Step 4</div>
-                  <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2 tracking-tight">Track &amp; Dominate</h3>
-                  <p className="text-foreground/70 leading-relaxed text-sm">Watch your accuracy climb and calculation times drop on the analytics dashboard. Re-test with a fresh PYQ every weekend to close the loop.</p>
+                  <h3 className="text-lg md:text-2xl font-bold mb-1 md:mb-2 tracking-tight">Retest and Compare</h3>
+                  <p className="text-foreground/70 leading-relaxed text-sm">Retake the section or try another paper, and see your marks and accuracy move.</p>
                 </div>
               </motion.div>
             </div>
@@ -1618,7 +1574,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Features Arsenal ─── */}
-      <section className="w-full py-16 sm:py-24 relative z-10">
+      <section id="features" className="w-full py-16 sm:py-24 relative z-10 scroll-mt-24">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <motion.div 
@@ -1630,10 +1586,10 @@ export default function LandingPage() {
               <Crosshair className="w-3 h-3 text-amber-500" /> Built for Serious Aspirants
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
-              Your Complete Arsenal
+              Everything You Can Practise Today
             </motion.h2>
             <motion.p variants={itemVariants} className="text-foreground/70 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
-              Six deeply engineered tools — each one designed to move a specific needle on exam day.
+              Six tools, all live. Tap any card to try it, no account needed.
             </motion.p>
           </motion.div>
 
@@ -1678,7 +1634,9 @@ export default function LandingPage() {
                     <div className="text-xs font-mono font-semibold text-foreground/85 pt-3.5 border-t-2 border-border/30 flex items-center gap-2 relative z-10">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
                       <span>{f.preview}</span>
+                      <ArrowRight className="ml-auto w-4 h-4 text-amber-600 dark:text-amber-400 transition-transform group-hover:translate-x-1" />
                     </div>
+                    <Link href={f.href} aria-label={`Open ${f.title}`} className="absolute inset-0 z-20 rounded-3xl" />
                   </div>
                 </motion.div>
               );
@@ -1690,7 +1648,6 @@ export default function LandingPage() {
       {/* ─── Comprehensive SSC Syllabus Matrix ─── */}
       <SyllabusMatrixSection />
 
-      <InfiniteTestimonials />
 
       {/* ─── Pricing / Subscription Section ─── */}
       <section className="w-full py-20 sm:py-24 relative z-10 bg-background">
@@ -1708,7 +1665,7 @@ export default function LandingPage() {
               Simple, Transparent Pricing
             </motion.h2>
             <motion.p variants={itemVariants} className="text-foreground/70 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
-              Start for free, upgrade when you are ready to dominate the leaderboard.
+              Everything live today is free. A Pro plan is planned for later.
             </motion.p>
           </motion.div>
 
@@ -1718,7 +1675,7 @@ export default function LandingPage() {
               <div className="bg-card/50 border-2 border-border rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
                 <div className="mb-6">
                   <h3 className="text-2xl font-black text-foreground mb-1">Free Tier</h3>
-                  <p className="text-foreground/70 text-xs font-medium">For casual learners exploring the platform.</p>
+                  <p className="text-foreground/70 text-xs font-medium">Everything that is live today.</p>
                   <div className="mt-5 flex items-baseline gap-1">
                     <span className="text-4xl font-black font-mono text-foreground">₹0</span>
                     <span className="text-muted-foreground font-mono text-xs">/forever</span>
@@ -1728,15 +1685,15 @@ export default function LandingPage() {
                 <ul className="flex flex-col gap-3 text-foreground/80 text-sm font-medium mb-8 flex-1">
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" /> 
-                    <span><strong className="text-foreground">Limited PYQ Vault:</strong> Access to recent sample shifts</span>
+                    <span><strong className="text-foreground">Real PYQs:</strong> Topic sets and timed sectional tests</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" /> 
-                    <span><strong className="text-foreground">Daily Sprints:</strong> 5-minute mixed calculation drills</span>
+                    <span><strong className="text-foreground">Speed Math:</strong> All 12 drills, every difficulty</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" /> 
-                    <span><strong className="text-foreground">Basic Flashcards:</strong> Standard vocabulary sets</span>
+                    <span><strong className="text-foreground">Flashcards &amp; games:</strong> 637 cards and 4 word games</span>
                   </li>
                 </ul>
                 
@@ -1751,16 +1708,16 @@ export default function LandingPage() {
 
             {/* Pro Tier */}
             <TiltCard>
-              <div className="bg-gradient-to-br from-zinc-950 to-zinc-900 border-2 border-amber-500/40 rounded-3xl p-7 sm:p-8 flex flex-col relative overflow-hidden text-white h-full shadow-xl shadow-amber-500/10 hover:border-amber-500/70 transition-all">
+              <div className="bg-gradient-to-br from-[#0b1020] to-[#16224f] border-2 border-amber-500/40 rounded-3xl p-7 sm:p-8 flex flex-col relative overflow-hidden text-white h-full shadow-xl shadow-amber-500/10 hover:border-amber-500/70 transition-all">
                 <div className="absolute top-0 right-0 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 text-xs font-black uppercase tracking-widest px-3.5 py-1.5 rounded-bl-xl shadow-lg z-10 font-mono">
-                  Most Popular
+                  Coming soon
                 </div>
                 
                 <div className="mb-6 relative z-10">
                   <h3 className="text-2xl font-black text-white mb-1 flex items-center gap-2">
                     EptSsc <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-zinc-950 px-2 py-0.5 rounded text-xs font-mono font-bold shadow-md">PRO</span>
                   </h3>
-                  <p className="text-zinc-400 text-xs font-medium">For serious aspirants aiming for top ranks.</p>
+                  <p className="text-zinc-400 text-xs font-medium">Planned: more papers, deeper analytics and custom tests.</p>
                   <div className="mt-5 flex items-baseline gap-1">
                     <span className="text-4xl font-black font-mono text-white">₹99</span>
                     <span className="text-zinc-500 font-mono text-xs">/month</span>
@@ -1791,7 +1748,7 @@ export default function LandingPage() {
                     href="/practice" 
                     className="w-full block py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold hover:opacity-95 transition-all text-center shadow-lg shadow-amber-500/25 relative z-10 text-sm font-mono"
                   >
-                    Upgrade to Pro
+                    Coming soon
                   </Link>
                 </motion.div>
               </div>
@@ -1820,7 +1777,7 @@ export default function LandingPage() {
             </span>
           </h2>
           <p className="text-foreground/70 text-sm sm:text-base mb-8 max-w-lg mx-auto">
-            Join thousands of aspirants who stopped hoping and started preparing with precision.
+            Open a drill, a deck or a real past paper. It takes less than a minute to start.
           </p>
           <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }} transition={SNAPPY_SPRING}>
             <Link 
@@ -1843,30 +1800,28 @@ export default function LandingPage() {
               <span className="font-bold text-base tracking-tight text-foreground group-hover:text-amber-500 transition-colors">EptSsc</span>
             </Link>
             <p className="text-muted-foreground text-xs leading-relaxed max-w-xs">
-              AI-driven exam preparation built specifically for SSC CGL, CHSL, CPO, MTS & GD aspirants.
+              Exam preparation built around the SSC CGL Tier 1 paper: real questions, speed drills, flashcards and games.
             </p>
           </div>
 
           <div className="flex flex-col gap-2">
-            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Product</h4>
-            <Link href="/dashboard" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Dashboard</Link>
-            <Link href="/SSC/maths/mental-maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Mental Maths Arena</Link>
-            <Link href="/practice" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">PYQ Vault</Link>
-            <Link href="/analytics" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">AI Analytics</Link>
+            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Practise</h4>
+            <Link href="/practice" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Practice Hub</Link>
+            <Link href="/SSC/maths/mental-maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Speed Math</Link>
+            <Link href="/SSC/english/flashcards" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Flashcards</Link>
+            <Link href="/SSC/english/games" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Word Games</Link>
           </div>
-
           <div className="flex flex-col gap-2">
-            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Resources</h4>
-            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">SSC CGL Syllabus</Link>
-            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Cutoff Predictor</Link>
-            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Study Strategy</Link>
+            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Subjects</h4>
+            <Link href="/SSC/maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Mathematics</Link>
+            <Link href="/SSC/english" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">English</Link>
+            <Link href="/SSC/reasoning" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Reasoning</Link>
+            <Link href="/SSC/gk" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">General Knowledge</Link>
           </div>
-
           <div className="flex flex-col gap-2">
-            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Support</h4>
-            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Help Center</Link>
-            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Privacy Policy</Link>
-            <Link href="#" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Terms of Service</Link>
+            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Company</h4>
+            <Link href="/about" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">About</Link>
+            <Link href="/feedback" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Feedback &amp; roadmap</Link>
           </div>
         </div>
 

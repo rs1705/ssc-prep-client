@@ -38,6 +38,8 @@ export interface HueTheme {
   dot: string;
   /** Progress bar gradient. */
   bar: string;
+  /** Filled state for a selected tab or pill (white text on the hue). */
+  solid: string;
 }
 
 export const HUE_THEME: Record<Hue, HueTheme> = {
@@ -50,6 +52,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-sky-500/10 to-sky-500/[0.03] border-sky-500/25",
     dot: "bg-sky-500",
     bar: "from-sky-400 to-blue-600",
+    solid: "border-sky-600 bg-sky-600 text-white shadow-md shadow-sky-600/25",
   },
   violet: {
     iconWrap: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
@@ -60,6 +63,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-violet-500/10 to-violet-500/[0.03] border-violet-500/25",
     dot: "bg-violet-500",
     bar: "from-violet-400 to-purple-600",
+    solid: "border-violet-600 bg-violet-600 text-white shadow-md shadow-violet-600/25",
   },
   fuchsia: {
     iconWrap: "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400",
@@ -70,6 +74,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-fuchsia-500/10 to-fuchsia-500/[0.03] border-fuchsia-500/25",
     dot: "bg-fuchsia-500",
     bar: "from-fuchsia-400 to-pink-600",
+    solid: "border-fuchsia-600 bg-fuchsia-600 text-white shadow-md shadow-fuchsia-600/25",
   },
   teal: {
     iconWrap: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
@@ -80,6 +85,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-teal-500/10 to-teal-500/[0.03] border-teal-500/25",
     dot: "bg-teal-500",
     bar: "from-teal-400 to-cyan-600",
+    solid: "border-teal-600 bg-teal-600 text-white shadow-md shadow-teal-600/25",
   },
   amber: {
     iconWrap: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
@@ -90,6 +96,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-amber-500/10 to-amber-500/[0.03] border-amber-500/25",
     dot: "bg-amber-500",
     bar: "from-amber-400 to-orange-500",
+    solid: "border-amber-600 bg-amber-600 text-white shadow-md shadow-amber-600/25",
   },
   emerald: {
     iconWrap: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
@@ -100,6 +107,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-emerald-500/10 to-emerald-500/[0.03] border-emerald-500/25",
     dot: "bg-emerald-500",
     bar: "from-emerald-400 to-emerald-600",
+    solid: "border-emerald-600 bg-emerald-600 text-white shadow-md shadow-emerald-600/25",
   },
   rose: {
     iconWrap: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
@@ -110,6 +118,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-rose-500/10 to-rose-500/[0.03] border-rose-500/25",
     dot: "bg-rose-500",
     bar: "from-rose-400 to-rose-600",
+    solid: "border-rose-600 bg-rose-600 text-white shadow-md shadow-rose-600/25",
   },
   indigo: {
     iconWrap: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
@@ -120,6 +129,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     banner: "from-indigo-500/10 to-indigo-500/[0.03] border-indigo-500/25",
     dot: "bg-indigo-500",
     bar: "from-indigo-400 to-indigo-600",
+    solid: "border-indigo-600 bg-indigo-600 text-white shadow-md shadow-indigo-600/25",
   },
 };
 
