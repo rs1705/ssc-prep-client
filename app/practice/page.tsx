@@ -98,7 +98,7 @@ export default function PracticeHomePage() {
               <h2 className="text-lg font-extrabold text-foreground">Practice modes</h2>
               <Link
                 href={`/SSC/${activeTab}`}
-                className="inline-flex items-center gap-1 py-1 text-sm font-semibold text-amber-700 hover:underline dark:text-amber-400"
+                className="inline-flex items-center gap-1 py-1 text-sm font-semibold text-brand-700 hover:underline dark:text-brand-400"
               >
                 {live} live · see the full syllabus
                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />

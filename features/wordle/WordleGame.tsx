@@ -40,13 +40,13 @@ const KEY_ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"].map((r) => r.split(""));
 
 const TILE_CLASS: Record<TileState, string> = {
   correct: "border-emerald-600 bg-emerald-600 text-white",
-  present: "border-amber-500 bg-amber-500 text-white",
+  present: "border-brand-500 bg-brand-500 text-white",
   absent: "border-slate-500 bg-slate-500 text-white dark:border-slate-600 dark:bg-slate-600",
 };
 
 const KEY_CLASS: Record<TileState, string> = {
   correct: "border-emerald-600 bg-emerald-600 text-white",
-  present: "border-amber-500 bg-amber-500 text-white",
+  present: "border-brand-500 bg-brand-500 text-white",
   absent: "border-border bg-muted text-muted-foreground/40",
 };
 
@@ -221,7 +221,7 @@ export function WordleGame() {
             Guess {Math.min(state.guesses.length + (state.status === "playing" ? 1 : 0), MAX_GUESSES)} of {MAX_GUESSES}
           </span>
           {stats.streak > 0 && (
-            <span className="flex items-center gap-1 rounded-full border-2 border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-xs font-mono font-black text-amber-700 dark:text-amber-400">
+            <span className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-2.5 py-0.5 text-xs font-mono font-black text-brand-700 dark:text-brand-400">
               <Flame className="h-3.5 w-3.5" aria-hidden="true" />
               {stats.streak} day streak
             </span>
@@ -297,7 +297,7 @@ export function WordleGame() {
           {message ||
             (showHint ? (
               <>
-                <span className="text-violet-700 dark:text-violet-300">Hint:</span> {state.answer.meaning}
+                <span className="text-fuchsia-800 dark:text-fuchsia-300">Hint:</span> {state.answer.meaning}
               </>
             ) : (
               `Guess the ${WORD_LENGTH}-letter word. A hint unlocks after ${HINT_AFTER} guesses.`
@@ -327,7 +327,7 @@ export function WordleGame() {
                       onClick={() => type(letter)}
                       aria-label={`${letter}${ks ? `, ${ks}` : ""}`}
                       className={`h-11 min-w-0 flex-1 select-none rounded-lg border-2 border-b-[3px] font-mono text-sm font-black transition-all active:translate-y-[1px] [@media(max-height:600px)]:h-10 sm:h-12 sm:text-base ${
-                        ks ? KEY_CLASS[ks] : "border-border bg-card text-foreground hover:border-violet-500/50 hover:bg-violet-500/10"
+                        ks ? KEY_CLASS[ks] : "border-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
                       }`}
                     >
                       {letter}
@@ -405,7 +405,7 @@ export function WordleGame() {
               <Button
                 type="button"
                 onClick={playBonus}
-                className="h-11 flex-1 gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-xs font-mono font-bold uppercase tracking-wider text-white"
+                className="h-11 flex-1 gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-alt-500 text-xs font-mono font-bold uppercase tracking-wider text-white"
               >
                 <Shuffle className="h-4 w-4" aria-hidden="true" />
                 Bonus word

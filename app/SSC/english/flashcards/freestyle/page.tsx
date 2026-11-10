@@ -120,7 +120,7 @@ const FreestylePage = () => {
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
               <Dices
-                className="w-4 h-4 text-violet-500 dark:text-violet-400 shrink-0"
+                className="w-4 h-4 text-fuchsia-600 dark:text-fuchsia-400 shrink-0"
                 fill="currentColor"
                 fillOpacity={0.15}
               />
@@ -128,7 +128,7 @@ const FreestylePage = () => {
                 Flashcards
               </span>
               <span className="text-muted-foreground/40 font-normal text-xs">•</span>
-              <span className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-700 dark:text-fuchsia-400">
                 {activeTab}
               </span>
             </div>
@@ -314,7 +314,7 @@ const FreestylePage = () => {
                   </div>
                   <ProgressBar
                     value={(currentCardNumber / totalCards) * 100}
-                    barClassName="bg-gradient-to-r from-amber-500 to-orange-500"
+                    barClassName="bg-gradient-to-r from-brand-500 to-brand-alt-500"
                   />
                 </div>
               )}

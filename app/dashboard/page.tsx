@@ -46,7 +46,7 @@ function RecentSessionsList({
   if (sessions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center text-center gap-3 p-6 h-full min-h-[180px]">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center ring-1 ring-border/40">
+        <div className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center ring-1 ring-border/40">
           <History className="w-4 h-4" />
         </div>
         <div className="text-sm font-bold text-foreground">No drills yet</div>
@@ -55,7 +55,7 @@ function RecentSessionsList({
         </p>
         <Link
           href="/SSC/maths/mental-maths"
-          className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 flex items-center gap-1 transition-colors"
+          className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 flex items-center gap-1 transition-colors"
         >
           Start a drill <ChevronRight className="w-3 h-3" />
         </Link>
@@ -70,14 +70,14 @@ function RecentSessionsList({
         return (
           <div
             key={session.id}
-            className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 group border-2 border-transparent hover:border-amber-500/20 hover:shadow-sm"
+            className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 group border-2 border-transparent hover:border-brand-500/20 hover:shadow-sm"
           >
             <div className={`flex items-center ${compact ? "gap-3" : "gap-3.5"}`}>
-              <div className="w-10 h-10 rounded-xl bg-background border-2 border-border flex items-center justify-center shrink-0 group-hover:bg-amber-500/10 group-hover:border-amber-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
-                <Icon className="w-4 h-4 text-muted-foreground group-hover:text-amber-600 transition-colors" />
+              <div className="w-10 h-10 rounded-xl bg-background border-2 border-border flex items-center justify-center shrink-0 group-hover:bg-brand-500/10 group-hover:border-brand-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
+                <Icon className="w-4 h-4 text-muted-foreground group-hover:text-brand-600 transition-colors" />
               </div>
               <div>
-                <div className="font-bold text-xs sm:text-sm text-foreground group-hover:text-amber-500 transition-colors">
+                <div className="font-bold text-xs sm:text-sm text-foreground group-hover:text-brand-500 transition-colors">
                   {session.title}
                 </div>
                 <div className="text-xs font-mono text-muted-foreground mt-0.5">
@@ -89,7 +89,7 @@ function RecentSessionsList({
               <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm">
                 {Math.round(session.accuracy)}%
               </div>
-              <div className="text-xs leading-none font-mono font-bold tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+              <div className="text-xs leading-none font-mono font-bold tracking-wider text-brand-700 dark:text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded border border-brand-500/20">
                 +{session.xpEarned} XP
               </div>
             </div>
@@ -190,13 +190,13 @@ export default function Dashboard() {
         <div className="grid lg:grid-cols-2 gap-5 mb-10">
           {/* Streak / Target Card */}
           <div
-            className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-brand-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
             style={{ animationDelay: "100ms", animationFillMode: "both" }}
           >
             <div className="flex items-center justify-between mb-4 relative z-10">
               <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border">
                 <Flame
-                  className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 animate-pulse"
+                  className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400 animate-pulse"
                   strokeWidth={2.5}
                 />
                 Streak · {stats.streak} {stats.streak === 1 ? "day" : "days"}
@@ -205,7 +205,7 @@ export default function Dashboard() {
                 <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
                   XP EARNED
                 </div>
-                <div className="text-lg font-black font-mono text-amber-700 dark:text-amber-400">
+                <div className="text-lg font-black font-mono text-brand-700 dark:text-brand-400">
                   {stats.xp.toLocaleString()}
                 </div>
               </div>
@@ -213,7 +213,7 @@ export default function Dashboard() {
 
             <div className="text-xl sm:text-2xl font-black tracking-tight mb-4 text-foreground relative z-10">
               Today&apos;s Target ·{" "}
-              <span className="font-mono text-amber-700 dark:text-amber-400">
+              <span className="font-mono text-brand-700 dark:text-brand-400">
                 {stats.dailyGoal}
               </span>{" "}
               Qs
@@ -223,7 +223,7 @@ export default function Dashboard() {
             <ProgressBar
               value={goalPercent}
               className="h-3.5 mb-3.5 relative z-10"
-              barClassName="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 transition-all duration-500"
+              barClassName="bg-gradient-to-r from-brand-500 via-brand-alt-500 to-brand-600 transition-all duration-500"
             />
 
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 relative z-10">
@@ -231,7 +231,7 @@ export default function Dashboard() {
                 <span>
                   {stats.solvedToday} / {stats.dailyGoal} SOLVED
                 </span>
-                <span className="text-amber-500">({goalPercent}%)</span>
+                <span className="text-brand-500">({goalPercent}%)</span>
               </div>
               <span className="text-xs font-mono font-semibold text-muted-foreground">
                 {questionsLeft === 0
@@ -246,7 +246,7 @@ export default function Dashboard() {
                 <div key={i} className="flex flex-col items-center gap-1">
                   <div
                     className={`h-2.5 w-full rounded-full transition-all ${
-                      stats.activeDays[i] ? "bg-amber-500" : "bg-muted/70"
+                      stats.activeDays[i] ? "bg-brand-500" : "bg-muted/70"
                     }`}
                   />
                   <span className="text-xs font-mono font-bold text-muted-foreground">
@@ -260,7 +260,7 @@ export default function Dashboard() {
           {/* Quick Resume Card with 2px Outer Border */}
           <Link
             href="/SSC/maths/mental-maths"
-            className="group rounded-3xl bg-gradient-to-r from-amber-500 to-orange-400 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-500/30 cursor-pointer border-2 border-amber-500/50 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
+            className="group rounded-3xl bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-brand-500/20 hover:shadow-2xl hover:shadow-brand-500/30 cursor-pointer border-2 border-brand-500/50 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
             style={{ animationDelay: "150ms", animationFillMode: "both" }}
           >
             <div className="flex items-start justify-between relative z-10">
@@ -302,7 +302,7 @@ export default function Dashboard() {
                 </div>
                 <Link
                   href="/practice"
-                  className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 flex items-center gap-1 transition-colors"
+                  className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 flex items-center gap-1 transition-colors"
                 >
                   All Practice <ArrowUpRight className="w-3 h-3" />
                 </Link>
@@ -315,7 +315,7 @@ export default function Dashboard() {
                     <Link
                       key={s.name}
                       href={s.to}
-                      className={`group rounded-3xl bg-card/70 backdrop-blur-xl border-2 border-border p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
+                      className={`group rounded-3xl bg-card border-2 border-border p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
                     >
                       <div className="flex items-start justify-between mb-4 relative z-10">
                         <div
@@ -330,7 +330,7 @@ export default function Dashboard() {
                       </div>
 
                       <div className="relative z-10">
-                        <div className="font-extrabold text-lg tracking-tight text-foreground group-hover:text-amber-500 transition-colors">
+                        <div className="font-extrabold text-lg tracking-tight text-foreground group-hover:text-brand-500 transition-colors">
                           {s.name}
                         </div>
                         <div className="text-xs font-mono font-semibold text-muted-foreground mt-0.5">
@@ -369,12 +369,12 @@ export default function Dashboard() {
                   <Link
                     key={q.label}
                     href={q.to}
-                    className="rounded-2xl surface-card p-4.5 flex items-center gap-4 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer group"
+                    className="rounded-2xl surface-card p-4.5 flex items-center gap-4 hover:border-brand-500/40 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] transition-all cursor-pointer group"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
+                    <div className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
                     </div>
-                    <div className="font-bold text-sm text-foreground group-hover:text-amber-500 transition-colors">
+                    <div className="font-bold text-sm text-foreground group-hover:text-brand-500 transition-colors">
                       {q.label}
                     </div>
                   </Link>
@@ -397,9 +397,9 @@ export default function Dashboard() {
                     <Link
                       key={q.label}
                       href={q.to}
-                      className="flex-1 rounded-2xl surface-card p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-amber-500/40 hover:bg-amber-500/[0.03] transition-all cursor-pointer justify-center text-center sm:text-left group"
+                      className="flex-1 rounded-2xl surface-card p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-brand-500/40 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] transition-all cursor-pointer justify-center text-center sm:text-left group"
                     >
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                         <q.icon
                           className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                           strokeWidth={2}
@@ -438,7 +438,7 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1.5">
-                <History className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+                <History className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400" />
                 Recent Drill Feed
               </div>
             </div>

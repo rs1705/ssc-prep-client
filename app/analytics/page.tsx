@@ -26,16 +26,16 @@ const SUMMARY_METRICS = [
     value: "3.8s / Q",
     delta: "Target: < 5.0s",
     icon: Zap,
-    theme: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
-    glow: "bg-amber-500/10",
+    theme: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
+    glow: "bg-brand-500/10",
   },
   {
     title: "Questions Mastered",
     value: "1,480",
     delta: "240 Qs in last 48h",
     icon: Award,
-    theme: "text-violet-500 bg-violet-500/10 border-violet-500/20",
-    glow: "bg-violet-500/10",
+    theme: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
+    glow: "bg-fuchsia-500/10",
   },
   {
     title: "Current Sprint Streak",
@@ -158,7 +158,7 @@ export default function AnalyticsPage() {
               return (
                 <div
                   key={i}
-                  className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-0.5"
+                  className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 hover:border-brand-500/30 transition-all duration-300 relative overflow-hidden group hover:-translate-y-0.5"
                 >
                   <div className="flex items-center justify-between mb-4 relative z-10">
                     <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
@@ -188,11 +188,11 @@ export default function AnalyticsPage() {
             {/* Left: Subject Mastery Telemetry */}
             <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
               <div className="p-6 sm:p-8 rounded-3xl surface-card shadow-xl shadow-black/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-36 h-36 bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center border-2 border-amber-500/20">
+                    <div className="w-10 h-10 rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
                       <BarChart3 className="w-5 h-5" />
                     </div>
                     <div>
@@ -239,7 +239,7 @@ export default function AnalyticsPage() {
               <div className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 flex flex-col gap-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+                    <TrendingUp className="w-4 h-4 text-brand-700 dark:text-brand-400" />
                     <h4 className="text-sm font-extrabold text-foreground tracking-tight">
                       Speed Progression (Last 7 Days)
                     </h4>
@@ -256,7 +256,7 @@ export default function AnalyticsPage() {
                       <div key={i} className="flex flex-col items-center gap-2">
                         <div className="h-28 w-full surface-card rounded-2xl flex items-end p-1.5 overflow-hidden">
                           <div 
-                            className="w-full bg-gradient-to-t from-amber-500 to-orange-500 rounded-xl shadow-xs transition-all duration-500"
+                            className="w-full bg-gradient-to-t from-brand-500 to-brand-alt-500 rounded-xl shadow-xs transition-all duration-500"
                             style={{ height: `${heights[i]}%` }}
                           />
                         </div>
@@ -309,7 +309,7 @@ export default function AnalyticsPage() {
                       <Button
                         asChild
                         variant="ghost"
-                        className="mt-1 w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-500/10 border-2 border-amber-500/25"
+                        className="mt-1 w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-500/10 border-2 border-brand-500/25"
                       >
                         <Link href={item.linkTo}>
                           <Swords className="w-3.5 h-3.5" />
@@ -324,18 +324,18 @@ export default function AnalyticsPage() {
               {/* Weekly Goal Progress Card */}
               <div className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 relative overflow-hidden">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center border-2 border-amber-500/20">
+                  <div className="w-8 h-8 rounded-xl bg-brand-500/10 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
                     <Target className="w-4 h-4" />
                   </div>
                   <div>
                     <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-foreground">
                       Weekly Sprint Goal
                     </h4>
-                    <p className="text-xs font-mono text-amber-700 dark:text-amber-400">2,000 Questions</p>
+                    <p className="text-xs font-mono text-brand-700 dark:text-brand-400">2,000 Questions</p>
                   </div>
                 </div>
                 <div className="h-2 bg-muted/60 rounded-full overflow-hidden border-2 border-border my-2">
-                  <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full w-[74%]" />
+                  <div className="h-full bg-gradient-to-r from-brand-500 to-brand-alt-500 rounded-full w-[74%]" />
                 </div>
                 <div className="flex justify-between items-center text-xs font-mono font-medium text-muted-foreground mt-2">
                   <span>1,480 Completed</span>

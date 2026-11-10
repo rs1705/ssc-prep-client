@@ -121,7 +121,7 @@ const Header = () => {
                                 : "hover:bg-accent/40 text-muted-foreground font-medium"
                             }`}
                           >
-                            <GraduationCap className="w-4 h-4 shrink-0 text-violet-500 dark:text-violet-400" />
+                            <GraduationCap className="w-4 h-4 shrink-0 text-fuchsia-600 dark:text-fuchsia-400" />
                             <span className="text-sm">English</span>
                           </div>
 
@@ -147,7 +147,7 @@ const Header = () => {
                                 : "hover:bg-accent/40 text-muted-foreground font-medium"
                             }`}
                           >
-                            <BrainCircuit className="w-4 h-4 shrink-0 text-amber-700 " />
+                            <BrainCircuit className="w-4 h-4 shrink-0 text-brand-700 " />
                             <span className="text-sm">Reasoning</span>
                           </div>
 
@@ -186,14 +186,14 @@ const Header = () => {
                                       href="/SSC/english/flashcards"
                                       className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all flex items-center gap-2"
                                     >
-                                      <Layers className="w-3.5 h-3.5 shrink-0 text-violet-400" />
+                                      <Layers className="w-3.5 h-3.5 shrink-0 text-fuchsia-600 dark:text-fuchsia-400" />
                                       Flashcards
                                     </Link>
                                   </NavigationMenuLink>
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <Skull className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                                    <Skull className="w-3.5 h-3.5 shrink-0 text-fuchsia-500/50" />
                                     Hangman{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -202,7 +202,7 @@ const Header = () => {
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <Shuffle className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                                    <Shuffle className="w-3.5 h-3.5 shrink-0 text-fuchsia-500/50" />
                                     Word Shuffle{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -211,7 +211,7 @@ const Header = () => {
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                                    <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-fuchsia-500/50" />
                                     Crossword{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -288,7 +288,7 @@ const Header = () => {
                               <ul className="flex flex-col gap-2">
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <Puzzle className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    <Puzzle className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                                     Logic Puzzles{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -297,7 +297,7 @@ const Header = () => {
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <Brain className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    <Brain className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                                     Analytical Reasoning{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -306,7 +306,7 @@ const Header = () => {
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <Layers3 className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    <Layers3 className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                                     Spatial &amp; Non-Verbal{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -315,7 +315,7 @@ const Header = () => {
                                 </li>
                                 <li>
                                   <span className="text-sm font-semibold text-muted-foreground/45 flex items-center gap-2 select-none cursor-not-allowed">
-                                    <ClipboardList className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                                    <ClipboardList className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                                     Mock Tests{" "}
                                     <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                                       (Soon)
@@ -580,7 +580,7 @@ const Header = () => {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <GraduationCap className="w-4 h-4 shrink-0 text-violet-500 dark:text-violet-400" />
+                          <GraduationCap className="w-4 h-4 shrink-0 text-fuchsia-600 dark:text-fuchsia-400" />
                           <span className="text-sm font-semibold">English</span>
                         </div>
                         <ChevronDown
@@ -601,25 +601,25 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="text-sm font-semibold text-muted-foreground hover:text-primary transition-all py-0.5 flex items-center gap-2"
                           >
-                            <Layers className="w-3.5 h-3.5 shrink-0 text-violet-400" />
+                            <Layers className="w-3.5 h-3.5 shrink-0 text-fuchsia-600 dark:text-fuchsia-400" />
                             Flashcards
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <Skull className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                            <Skull className="w-3.5 h-3.5 shrink-0 text-fuchsia-500/50" />
                             Hangman{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <Shuffle className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                            <Shuffle className="w-3.5 h-3.5 shrink-0 text-fuchsia-500/50" />
                             Word Shuffle{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-violet-300/50" />
+                            <Grid3X3 className="w-3.5 h-3.5 shrink-0 text-fuchsia-500/50" />
                             Crossword{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
@@ -710,7 +710,7 @@ const Header = () => {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <BrainCircuit className="w-4 h-4 shrink-0 text-amber-700 " />
+                          <BrainCircuit className="w-4 h-4 shrink-0 text-brand-700 " />
                           <span className="text-sm font-semibold">
                             Reasoning
                           </span>
@@ -729,28 +729,28 @@ const Header = () => {
                             Go to Reasoning Homepage
                           </Link>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <Puzzle className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            <Puzzle className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                             Logic Puzzles{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <Brain className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            <Brain className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                             Analytical Reasoning{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <Layers3 className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            <Layers3 className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                             Spatial & Non-Verbal{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)
                             </span>
                           </span>
                           <span className="text-sm font-semibold text-muted-foreground/45 py-0.5 flex items-center gap-2 select-none cursor-not-allowed">
-                            <ClipboardList className="w-3.5 h-3.5 shrink-0 text-amber-300/50" />
+                            <ClipboardList className="w-3.5 h-3.5 shrink-0 text-brand-300/50" />
                             Mock Tests{" "}
                             <span className="text-xs font-bold text-muted-foreground/30 uppercase ml-auto">
                               (Soon)

@@ -64,7 +64,7 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
     return (
       <div
         title={days === null ? "Set your exam date" : `${Math.max(days, 0)} days to your exam`}
-        className={`flex h-10 w-10 items-center justify-center rounded-xl border-2 border-amber-500/25 bg-card font-mono text-xs font-bold text-amber-700 dark:text-amber-400 ${className}`}
+        className={`flex h-10 w-10 items-center justify-center rounded-xl border-2 border-brand-500/25 bg-card font-mono text-xs font-bold text-brand-700 dark:text-brand-400 ${className}`}
       >
         {ready && days !== null && days >= 0 ? (
           `${days}d`
@@ -78,7 +78,7 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
   return (
     <section
       aria-label="Exam countdown"
-      className={`w-full rounded-2xl border-2 border-amber-500/25 bg-gradient-to-br from-amber-500/10 to-transparent p-3.5 ${className}`}
+      className={`w-full rounded-2xl border-2 border-brand-500/25 bg-gradient-to-br from-brand-500/10 to-transparent p-3.5 ${className}`}
     >
       <div className="mb-1.5 flex items-center justify-between gap-2">
         <span className="section-label whitespace-nowrap">Exam countdown</span>

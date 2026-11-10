@@ -46,12 +46,12 @@ export function ResultScreen({ state, best, isNewBest, onPlayAgain }: ResultScre
         <div
           role="status"
           aria-live="polite"
-          className="font-mono text-5xl font-black tabular-nums text-violet-700 dark:text-violet-300"
+          className="font-mono text-5xl font-black tabular-nums text-fuchsia-800 dark:text-fuchsia-300"
         >
           {state.score}
         </div>
         {isNewBest ? (
-          <span className="mt-1 flex items-center gap-1.5 rounded-full border-2 border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          <span className="mt-1 flex items-center gap-1.5 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400">
             <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
             New best score!
           </span>
@@ -123,7 +123,7 @@ export function ResultScreen({ state, best, isNewBest, onPlayAgain }: ResultScre
           type="button"
           onClick={onPlayAgain}
           autoFocus
-          className="h-12 flex-1 gap-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-sm font-mono font-black uppercase tracking-widest text-white"
+          className="h-12 flex-1 gap-2 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 text-sm font-mono font-black uppercase tracking-widest text-white"
         >
           <RotateCcw className="h-4 w-4" aria-hidden="true" />
           Play again

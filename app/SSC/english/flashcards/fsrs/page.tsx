@@ -69,7 +69,7 @@ const FsrsPage = () => {
               session!
             </p>
             <Link href="/signin">
-              <Button className="h-10 px-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full shadow-xs hover:shadow-md hover:shadow-amber-500/20 bg-gradient-to-r from-amber-500 to-orange-500 text-white active:scale-95 transition-all hover:cursor-pointer border-0 flex items-center gap-2">
+              <Button className="h-10 px-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full shadow-xs hover:shadow-md hover:shadow-brand-500/20 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white active:scale-95 transition-all hover:cursor-pointer border-0 flex items-center gap-2">
                 <LogIn className="w-4 h-4" />
                 Sign In
               </Button>
@@ -90,7 +90,7 @@ const FsrsPage = () => {
           <div className="flex items-center justify-between w-full gap-2 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
               <BookOpen
-                className="w-4 h-4 text-violet-500 dark:text-violet-400 shrink-0"
+                className="w-4 h-4 text-fuchsia-600 dark:text-fuchsia-400 shrink-0"
                 fill="currentColor"
                 fillOpacity={0.15}
               />
@@ -98,7 +98,7 @@ const FsrsPage = () => {
                 Flashcards
               </span>
               <span className="text-muted-foreground/40 font-normal text-xs">•</span>
-              <span className="text-xs font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-fuchsia-700 dark:text-fuchsia-400">
                 Daily Review
               </span>
             </div>
@@ -126,7 +126,7 @@ const FsrsPage = () => {
               </div>
               <ProgressBar
                 value={(currentCardNumber / totalCards) * 100}
-                barClassName="bg-gradient-to-r from-amber-500 to-orange-500"
+                barClassName="bg-gradient-to-r from-brand-500 to-brand-alt-500"
               />
             </div>
           )}

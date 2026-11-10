@@ -2,7 +2,11 @@
  * Single source of truth for subject colours.
  *
  * Rules:
- *  - Amber/gold is the BRAND colour (primary actions, active states).
+ *  - Indigo is the BRAND colour (primary actions, active states); it comes
+ *    from the brand-* tokens in globals.css. Subjects avoid indigo and violet
+ *    so a subject never looks like a primary action.
+ *  - Subjects are cool jewel tones that sit with indigo: maths sky,
+ *    english fuchsia, reasoning pink, gk teal.
  *  - Emerald = correct / success, rose = wrong / destructive. Subjects must
  *    never use those, otherwise a subject card reads like feedback.
  *  - Each subject owns one hue, used identically on every screen.
@@ -16,8 +20,10 @@ export type Hue =
   | "sky"
   | "violet"
   | "fuchsia"
+  | "pink"
   | "teal"
   | "amber"
+  | "brand"
   | "emerald"
   | "rose"
   | "indigo";
@@ -48,7 +54,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     text: "text-sky-600 dark:text-sky-400",
     chip: "bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/25",
     hoverBorder: "hover:border-sky-500/50",
-    hoverBg: "hover:bg-sky-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))]",
     banner: "from-sky-500/10 to-sky-500/[0.03] border-sky-500/25",
     dot: "bg-sky-500",
     bar: "from-sky-400 to-blue-600",
@@ -59,7 +65,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     text: "text-violet-600 dark:text-violet-400",
     chip: "bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/25",
     hoverBorder: "hover:border-violet-500/50",
-    hoverBg: "hover:bg-violet-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-violet-500)_5%,var(--card))]",
     banner: "from-violet-500/10 to-violet-500/[0.03] border-violet-500/25",
     dot: "bg-violet-500",
     bar: "from-violet-400 to-purple-600",
@@ -70,18 +76,29 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     text: "text-fuchsia-600 dark:text-fuchsia-400",
     chip: "bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-300 border-fuchsia-500/25",
     hoverBorder: "hover:border-fuchsia-500/50",
-    hoverBg: "hover:bg-fuchsia-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_5%,var(--card))]",
     banner: "from-fuchsia-500/10 to-fuchsia-500/[0.03] border-fuchsia-500/25",
     dot: "bg-fuchsia-500",
-    bar: "from-fuchsia-400 to-pink-600",
+    bar: "from-fuchsia-400 to-fuchsia-600",
     solid: "border-fuchsia-600 bg-fuchsia-600 text-white shadow-md shadow-fuchsia-600/25",
+  },
+  pink: {
+    iconWrap: "bg-pink-500/10 text-pink-600 dark:text-pink-400",
+    text: "text-pink-600 dark:text-pink-400",
+    chip: "bg-pink-500/10 text-pink-700 dark:text-pink-300 border-pink-500/25",
+    hoverBorder: "hover:border-pink-500/50",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-pink-500)_5%,var(--card))]",
+    banner: "from-pink-500/10 to-pink-500/[0.03] border-pink-500/25",
+    dot: "bg-pink-500",
+    bar: "from-pink-400 to-pink-600",
+    solid: "border-pink-600 bg-pink-600 text-white shadow-md shadow-pink-600/25",
   },
   teal: {
     iconWrap: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
     text: "text-teal-600 dark:text-teal-400",
     chip: "bg-teal-500/10 text-teal-700 dark:text-teal-300 border-teal-500/25",
     hoverBorder: "hover:border-teal-500/50",
-    hoverBg: "hover:bg-teal-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-teal-500)_5%,var(--card))]",
     banner: "from-teal-500/10 to-teal-500/[0.03] border-teal-500/25",
     dot: "bg-teal-500",
     bar: "from-teal-400 to-cyan-600",
@@ -92,18 +109,29 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     text: "text-amber-700 dark:text-amber-400",
     chip: "bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/25",
     hoverBorder: "hover:border-amber-500/50",
-    hoverBg: "hover:bg-amber-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-amber-500)_5%,var(--card))]",
     banner: "from-amber-500/10 to-amber-500/[0.03] border-amber-500/25",
     dot: "bg-amber-500",
     bar: "from-amber-400 to-orange-500",
-    solid: "border-amber-600 bg-amber-600 text-white shadow-md shadow-amber-600/25",
+    solid: "border-amber-500 bg-amber-500 text-amber-950 shadow-md shadow-amber-500/25",
+  },
+  brand: {
+    iconWrap: "bg-brand-500/10 text-brand-700 dark:text-brand-400",
+    text: "text-brand-700 dark:text-brand-400",
+    chip: "bg-brand-500/10 text-brand-800 dark:text-brand-300 border-brand-500/25",
+    hoverBorder: "hover:border-brand-500/50",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))]",
+    banner: "from-brand-500/10 to-brand-500/[0.03] border-brand-500/25",
+    dot: "bg-brand-500",
+    bar: "from-brand-400 to-brand-alt-500",
+    solid: "border-brand-600 bg-brand-600 text-white shadow-md shadow-brand-600/25",
   },
   emerald: {
     iconWrap: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
     text: "text-emerald-600 dark:text-emerald-400",
     chip: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/25",
     hoverBorder: "hover:border-emerald-500/50",
-    hoverBg: "hover:bg-emerald-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_5%,var(--card))]",
     banner: "from-emerald-500/10 to-emerald-500/[0.03] border-emerald-500/25",
     dot: "bg-emerald-500",
     bar: "from-emerald-400 to-emerald-600",
@@ -114,7 +142,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     text: "text-rose-600 dark:text-rose-400",
     chip: "bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/25",
     hoverBorder: "hover:border-rose-500/50",
-    hoverBg: "hover:bg-rose-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-rose-500)_5%,var(--card))]",
     banner: "from-rose-500/10 to-rose-500/[0.03] border-rose-500/25",
     dot: "bg-rose-500",
     bar: "from-rose-400 to-rose-600",
@@ -125,7 +153,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     text: "text-indigo-600 dark:text-indigo-400",
     chip: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/25",
     hoverBorder: "hover:border-indigo-500/50",
-    hoverBg: "hover:bg-indigo-500/[0.04]",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-indigo-500)_5%,var(--card))]",
     banner: "from-indigo-500/10 to-indigo-500/[0.03] border-indigo-500/25",
     dot: "bg-indigo-500",
     bar: "from-indigo-400 to-indigo-600",
@@ -135,8 +163,8 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
 
 export const SUBJECT_HUE: Record<SubjectKey, Hue> = {
   maths: "sky",
-  english: "violet",
-  reasoning: "fuchsia",
+  english: "fuchsia",
+  reasoning: "pink",
   gk: "teal",
 };
 

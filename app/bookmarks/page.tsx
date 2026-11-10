@@ -148,7 +148,7 @@ export default function BookmarksPage() {
                 placeholder="Search saved cards..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border text-xs font-medium focus-visible:border-amber-500/60 focus-visible:ring-amber-500/20"
+                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border text-xs font-medium focus-visible:border-brand-500/60 focus-visible:ring-brand-500/20"
               />
             </div>
           </div>
@@ -161,20 +161,20 @@ export default function BookmarksPage() {
             >
               {filteredItems.map((item) => {
                 const glowMap = {
-                  vocab: "bg-violet-500/10",
+                  vocab: "bg-fuchsia-500/10",
                   formula: "bg-emerald-500/10",
-                  question: "bg-amber-500/10",
+                  question: "bg-brand-500/10",
                 };
                 const tagTheme = {
-                  vocab: "text-violet-500 bg-violet-500/10 border-violet-500/20",
+                  vocab: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
                   formula: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-                  question: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
+                  question: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
                 };
 
                 return (
                   <div
                     key={item.id}
-                    className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
+                    className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 hover:border-brand-500/30 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group hover:-translate-y-1"
                   >
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-3">
@@ -220,7 +220,7 @@ export default function BookmarksPage() {
                       <Button
                         asChild
                         variant="ghost"
-                        className="w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-500/10 border-2 border-amber-500/25"
+                        className="w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-500/10 border-2 border-brand-500/25"
                       >
                         <Link href={item.linkTo}>
                           <Swords className="w-3.5 h-3.5" />

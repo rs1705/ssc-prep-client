@@ -62,37 +62,37 @@ export const TopicCard = ({
       iconWrapper:
         "bg-sky-500/10 text-sky-600 dark:text-sky-400 shadow-[0_2px_8px_rgba(14,165,233,0.05)]",
       hoverBorder: "hover:border-sky-500/50",
-      hoverBg: "hover:bg-sky-500/[0.03]",
+      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))]",
     },
     emerald: {
       iconWrapper:
         "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
       hoverBorder: "hover:border-emerald-500/50",
-      hoverBg: "hover:bg-emerald-500/[0.03]",
+      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_5%,var(--card))]",
     },
     rose: {
       iconWrapper:
         "bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
       hoverBorder: "hover:border-rose-500/50",
-      hoverBg: "hover:bg-rose-500/[0.03]",
+      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-rose-500)_5%,var(--card))]",
     },
     amber: {
       iconWrapper:
-        "bg-amber-500/10 text-amber-600 dark:text-amber-400 shadow-[0_2px_8px_rgba(245,158,11,0.05)]",
-      hoverBorder: "hover:border-amber-500/50",
-      hoverBg: "hover:bg-amber-500/[0.03]",
+        "bg-brand-500/10 text-brand-600 dark:text-brand-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
+      hoverBorder: "hover:border-brand-500/50",
+      hoverBg: "hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))]",
     },
     indigo: {
       iconWrapper:
         "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
       hoverBorder: "hover:border-indigo-500/50",
-      hoverBg: "hover:bg-indigo-500/[0.03]",
+      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-indigo-500)_5%,var(--card))]",
     },
     violet: {
       iconWrapper:
-        "bg-violet-500/10 text-violet-600 dark:text-violet-400 shadow-[0_2px_8px_rgba(139,92,246,0.05)]",
-      hoverBorder: "hover:border-violet-500/50",
-      hoverBg: "hover:bg-violet-500/[0.03]",
+        "bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
+      hoverBorder: "hover:border-fuchsia-500/50",
+      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_5%,var(--card))]",
     },
   };
 
@@ -101,7 +101,7 @@ export const TopicCard = ({
 
   return (
     <div
-      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-xl border-2 border-border hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
+      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card border-2 border-border hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
       style={{
         animationDelay: `${Math.floor(index / cols) * 80}ms`,
         animationFillMode: "both",
@@ -116,7 +116,7 @@ export const TopicCard = ({
             {emoji}
           </div>
           {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 select-none">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-brand-500/10 text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 select-none">
               {badge}
             </span>
           )}
@@ -124,7 +124,7 @@ export const TopicCard = ({
 
         {/* Title & Description: Full card width */}
         <div className="flex flex-col flex-1">
-          <h3 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors">
+          <h3 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors">
             {name}
           </h3>
           <p className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed mt-1.5 font-normal">
@@ -161,7 +161,7 @@ export const TopicCard = ({
           )}
           <Button
             onClick={onStartClick}
-            className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-amber-500 to-orange-400 text-white shadow-xs hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
+            className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white shadow-xs hover:shadow-md hover:shadow-brand-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
           >
             <Swords className="w-3.5 h-3.5 group-hover/btn:rotate-12 group-hover/btn:scale-125 transition-transform duration-300" />
             Practice

@@ -22,10 +22,11 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
     },
     {
       title: "Formulas & Tricks",
-      description: "Master shortcut techniques to cut equation solving time.",
+      description: "Every formula and shortcut in the quant syllabus, with a worked example and a test-yourself mode.",
       icon: <Lightbulb className="w-5 h-5" strokeWidth={2} />,
-      buttonText: "COMING SOON",
-      linkTo: "#",
+      buttonText: "Open",
+      meta: "99 cards · 22 topics",
+      linkTo: "/SSC/maths/formula-practice",
       colorTheme: SUBJECT_HUE.maths,
     },
     {

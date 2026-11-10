@@ -57,11 +57,11 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
               </button>
 
               {/* Header */}
-              <div className="bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-rose-500/10 p-8 pb-6 flex flex-col items-center text-center relative overflow-hidden">
+              <div className="bg-gradient-to-br from-brand-500/10 via-brand-alt-500/10 to-rose-500/10 p-8 pb-6 flex flex-col items-center text-center relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
                 <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl" />
                 
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white mb-4 shadow-lg shadow-orange-500/20 relative z-10">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-alt-500 flex items-center justify-center text-white mb-4 shadow-lg shadow-brand-alt-500/20 relative z-10">
                   <Lock className="w-8 h-8" />
                 </div>
                 <h2 className="text-2xl font-black tracking-tight text-foreground relative z-10 mb-2">
@@ -102,7 +102,7 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
                 <Link
                   href="/dashboard"
                   onClick={onClose}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-center hover:opacity-90 hover:scale-[1.02] transition-all shadow-xl shadow-orange-500/20 flex items-center justify-center gap-2"
+                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white font-bold text-center hover:opacity-90 hover:scale-[1.02] transition-all shadow-xl shadow-brand-alt-500/20 flex items-center justify-center gap-2"
                 >
                   <Rocket className="w-5 h-5" /> Upgrade to PRO
                 </Link>

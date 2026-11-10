@@ -62,6 +62,30 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  /* Brand accent: change it in one place (see "Brand accent" below). */
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
+  --color-brand-alt-50: var(--brand-alt-50);
+  --color-brand-alt-100: var(--brand-alt-100);
+  --color-brand-alt-200: var(--brand-alt-200);
+  --color-brand-alt-300: var(--brand-alt-300);
+  --color-brand-alt-400: var(--brand-alt-400);
+  --color-brand-alt-500: var(--brand-alt-500);
+  --color-brand-alt-600: var(--brand-alt-600);
+  --color-brand-alt-700: var(--brand-alt-700);
+  --color-brand-alt-800: var(--brand-alt-800);
+  --color-brand-alt-900: var(--brand-alt-900);
+  --color-brand-alt-950: var(--brand-alt-950);
+  --color-on-brand: var(--on-brand);
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-display-face), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
@@ -114,7 +138,7 @@
 :root {
   --radius: 12px;
 
-  /* EptSsc — Light: cool exam-paper white, deep navy ink, saffron accent */
+  /* EptSsc — Light: cool exam-paper white, deep navy ink, indigo accent */
   --background: #f4f6fb;
   --foreground: #0e1630;
   --card: #ffffff;
@@ -127,8 +151,8 @@
   --secondary-foreground: #0e1630;
   --muted: #e9edf6;
   --muted-foreground: #56617d;
-  --accent: #f59e0b;
-  --accent-foreground: #0e1630;
+  --accent: var(--brand-500);
+  --accent-foreground: var(--on-brand);
   --destructive: #e11d48;
   --destructive-foreground: #ffffff;
   --success: #059669;
@@ -138,7 +162,7 @@
   --ring: #16224f;
 
   --chart-1: #16224f;
-  --chart-2: #f59e0b;
+  --chart-2: var(--brand-500);
   --chart-3: #059669;
   --chart-4: #e9edf6;
   --chart-5: #56617d;
@@ -157,7 +181,7 @@
 }
 
 .dark {
-  /* EptSsc — Dark: midnight navy surfaces, soft white ink, saffron accent */
+  /* EptSsc — Dark: midnight navy surfaces, soft white ink, indigo accent */
   --background: #0b1020;
   --foreground: #eef1f8;
   --card: #131a30;
@@ -170,7 +194,7 @@
   --secondary-foreground: #eef1f8;
   --muted: #1c2542;
   --muted-foreground: #9aa6c6;
-  --accent: #fbbf24;
+  --accent: var(--brand-400);
   --accent-foreground: #0b1020;
   --destructive: #f43f5e;
   --destructive-foreground: #ffffff;
@@ -181,7 +205,7 @@
   --ring: #c7d0ea;
 
   --chart-1: #eef1f8;
-  --chart-2: #fbbf24;
+  --chart-2: var(--brand-400);
   --chart-3: #10b981;
   --chart-4: #252f52;
   --chart-5: #9aa6c6;
@@ -200,6 +224,38 @@
 
 /* The one card surface used app-wide: solid fill, 2px structural border.
    Variants (hover:, focus-visible:) can still override the border colour. */
+/*
+ * Brand accent: indigo (main) with blue as the second gradient stop.
+ * Components use brand-* / brand-alt-* / text-on-brand instead of a named
+ * palette, so the accent changes here only.
+ */
+:root {
+  --brand-50: var(--color-indigo-50);
+  --brand-100: var(--color-indigo-100);
+  --brand-200: var(--color-indigo-200);
+  --brand-300: var(--color-indigo-300);
+  --brand-400: var(--color-indigo-400);
+  --brand-500: var(--color-indigo-500);
+  --brand-600: var(--color-indigo-600);
+  --brand-700: var(--color-indigo-700);
+  --brand-800: var(--color-indigo-800);
+  --brand-900: var(--color-indigo-900);
+  --brand-950: var(--color-indigo-950);
+  --brand-alt-50: var(--color-blue-50);
+  --brand-alt-100: var(--color-blue-100);
+  --brand-alt-200: var(--color-blue-200);
+  --brand-alt-300: var(--color-blue-300);
+  --brand-alt-400: var(--color-blue-400);
+  --brand-alt-500: var(--color-blue-500);
+  --brand-alt-600: var(--color-blue-600);
+  --brand-alt-700: var(--color-blue-700);
+  --brand-alt-800: var(--color-blue-800);
+  --brand-alt-900: var(--color-blue-900);
+  --brand-alt-950: var(--color-blue-950);
+  --on-brand: #ffffff;
+  --brand-hot: var(--color-violet-500);
+}
+
 @utility surface-card {
   background-color: var(--card);
   border-width: 2px;
@@ -209,7 +265,7 @@
 }
 
 /* Page backdrop for the signed-in shell: faint ruled-paper dots plus a soft
-   saffron glow at the top, so white cards have something to sit on. */
+   brand-coloured glow at the top, so white cards have something to sit on. */
 @utility app-canvas {
   background-color: var(--background);
   background-image:

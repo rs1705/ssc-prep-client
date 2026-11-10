@@ -25,7 +25,7 @@ export default function HangmanPage() {
             <h1 className="truncate text-sm font-extrabold uppercase tracking-wider text-foreground sm:text-base">
               Hangman Sprint
             </h1>
-            <p className="truncate text-xs font-mono font-semibold text-violet-700 dark:text-violet-300">
+            <p className="truncate text-xs font-mono font-semibold text-fuchsia-800 dark:text-fuchsia-300">
               SSC vocabulary &amp; one-word substitutions
             </p>
           </div>
@@ -36,7 +36,7 @@ export default function HangmanPage() {
             className="flex shrink-0 items-center gap-1.5 rounded-full border-2 border-border bg-card px-2.5 py-1 text-xs font-mono font-bold text-muted-foreground"
             title="Your best score"
           >
-            <Trophy className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+            <Trophy className="h-3.5 w-3.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />
             {best}
           </div>
         )}

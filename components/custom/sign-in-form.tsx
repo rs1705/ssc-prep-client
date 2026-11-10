@@ -65,7 +65,7 @@ const SignInForm = () => {
                   <Input
                     type="text"
                     placeholder="Enter your email"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
@@ -82,7 +82,7 @@ const SignInForm = () => {
               <FormItem className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <FormLabel className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">Password</FormLabel>
-                  <Link href="#" className="inline-flex items-center py-2 text-xs font-mono font-semibold text-amber-700 dark:text-amber-400 hover:underline transition-colors">
+                  <Link href="#" className="inline-flex items-center py-2 text-xs font-mono font-semibold text-brand-700 dark:text-brand-400 hover:underline transition-colors">
                     Forgot password?
                   </Link>
                 </div>
@@ -90,7 +90,7 @@ const SignInForm = () => {
                   <Input
                     type="password"
                     placeholder="Enter your password"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
@@ -101,7 +101,7 @@ const SignInForm = () => {
             )}
           />
           <div className="pt-2">
-            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
+            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
               <LogIn className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
               Sign In
             </Button>

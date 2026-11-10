@@ -41,7 +41,7 @@ export function WordTiles({ word, guessed, revealAll = false }: WordTilesProps) 
               missed
                 ? "border-rose-500/50 bg-rose-500/10 text-rose-600 dark:text-rose-300"
                 : found
-                  ? "border-violet-500/50 bg-violet-500/15 text-violet-700 dark:text-violet-200"
+                  ? "border-fuchsia-500/50 bg-fuchsia-500/15 text-fuchsia-800 dark:text-fuchsia-200"
                   : "border-border bg-card text-transparent"
             }`}
           >

@@ -42,7 +42,7 @@ export function LetterKeyboard({
                     ? "border-emerald-500/40 border-b-emerald-500/60 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
                     : wrong
                       ? "border-border bg-muted text-muted-foreground/40 line-through"
-                      : "border-border border-b-border bg-card text-foreground hover:border-violet-500/50 hover:bg-violet-500/10"
+                      : "border-border border-b-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
                 }`}
               >
                 {letter}

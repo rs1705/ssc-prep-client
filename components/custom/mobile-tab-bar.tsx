@@ -26,7 +26,7 @@ export function MobileTabBar() {
                 aria-current={active ? "page" : undefined}
                 className={`flex min-h-14 flex-col items-center justify-center gap-0.5 px-1 py-2 text-xs font-bold transition-colors ${
                   active
-                    ? "text-amber-600 dark:text-amber-400"
+                    ? "text-brand-600 dark:text-brand-400"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >

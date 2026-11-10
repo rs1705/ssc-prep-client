@@ -47,8 +47,8 @@ const CATEGORIES = [
     desc: "New tool, drill, or trick idea",
     icon: Lightbulb, 
     badge: "Idea",
-    color: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
-    activeColor: "border-amber-500/50 bg-amber-500/10 text-amber-700 dark:text-amber-400 shadow-amber-500/10"
+    color: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
+    activeColor: "border-brand-500/50 bg-brand-500/10 text-brand-700 dark:text-brand-400 shadow-brand-500/10"
   },
   { 
     id: "content", 
@@ -56,8 +56,8 @@ const CATEGORIES = [
     desc: "Question, formula, or typo issue",
     icon: BookOpen, 
     badge: "QA",
-    color: "text-violet-500 bg-violet-500/10 border-violet-500/20",
-    activeColor: "border-violet-500/50 bg-violet-500/10 text-violet-500 shadow-violet-500/10"
+    color: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
+    activeColor: "border-fuchsia-500/50 bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 shadow-fuchsia-500/10"
   },
   { 
     id: "other", 
@@ -90,14 +90,14 @@ const ROADMAP_ITEMS = [
     title: "PYQ Shift Vault (2018–2024)",
     desc: "Filterable authentic Tier 1 & Tier 2 exam papers",
     status: "In Progress",
-    statusColor: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20",
+    statusColor: "bg-brand-500/15 text-brand-600 dark:text-brand-400 border-brand-500/20",
     icon: Clock,
   },
   {
     title: "Interactive English Vocab Games",
     desc: "Crosswords, sentence anagrams & rapid root words",
     status: "Planned",
-    statusColor: "bg-violet-500/15 text-violet-600 dark:text-violet-400 border-violet-500/20",
+    statusColor: "bg-fuchsia-500/15 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-500/20",
     icon: Sparkles,
   },
   {
@@ -159,7 +159,7 @@ export default function FeedbackPage() {
         particleCount: 50,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ["#f59e0b", "#10b981", "#8b5cf6"]
+        colors: ["#6366f1", "#10b981", "#d946ef"]
       });
     } catch (error) {
       console.error("Failed to submit feedback:", error);
@@ -183,7 +183,7 @@ export default function FeedbackPage() {
         >
           <div className="surface-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
             {/* Ambient Lighting Mesh */}
-            <div className="absolute -top-12 -right-12 w-44 h-44 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-12 -right-12 w-44 h-44 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
 
             <AnimatePresence mode="wait">
               {isSuccess ? (
@@ -210,7 +210,7 @@ export default function FeedbackPage() {
                   <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-md">
                     <Button
                       onClick={() => router.push("/dashboard")}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 active:scale-95 transition-all duration-200 cursor-pointer border-0"
+                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95 transition-all duration-200 cursor-pointer border-0"
                     >
                       Return to Dashboard
                     </Button>
@@ -241,7 +241,7 @@ export default function FeedbackPage() {
                 >
                   <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center border-2 border-amber-500/20 shadow-inner">
+                      <div className="w-10 h-10 rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
                         <MessageSquare className="w-5 h-5" />
                       </div>
                       <div>
@@ -253,7 +253,7 @@ export default function FeedbackPage() {
                         </p>
                       </div>
                     </div>
-                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border-2 border-amber-500/20">
+                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-brand-700 dark:text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full border-2 border-brand-500/20">
                       Tier 1 Focused
                     </span>
                   </div>
@@ -288,7 +288,7 @@ export default function FeedbackPage() {
                                     {cat.label}
                                   </span>
                                   {isSelected && (
-                                    <Check className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+                                    <Check className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400" />
                                   )}
                                 </div>
                                 <p className="text-xs text-muted-foreground leading-snug mt-0.5 truncate">
@@ -307,7 +307,7 @@ export default function FeedbackPage() {
                         <Label className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                           2. Overall App Experience
                         </Label>
-                        <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400">
+                        <span className="text-xs font-mono font-bold text-brand-700 dark:text-brand-400">
                           {RATING_EMOJIS.find(r => r.value === selectedRating)?.label || "Select rating"}
                         </span>
                       </div>
@@ -321,14 +321,14 @@ export default function FeedbackPage() {
                               onClick={() => form.setValue("rating", rating.value)}
                               className={`flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
                                 isSelected 
-                                  ? "bg-amber-500/15 border-2 border-amber-500/30 scale-105 shadow-sm shadow-amber-500/10" 
+                                  ? "bg-brand-500/15 border-2 border-brand-500/30 scale-105 shadow-sm shadow-brand-500/10" 
                                   : "hover:bg-muted/50 opacity-70 hover:opacity-100"
                               }`}
                             >
                               <span className="text-2xl sm:text-3xl select-none transition-transform duration-200">
                                 {rating.emoji}
                               </span>
-                              <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isSelected ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"}`}>
+                              <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isSelected ? "text-brand-700 dark:text-brand-400" : "text-muted-foreground"}`}>
                                 {rating.desc}
                               </span>
                             </button>
@@ -352,7 +352,7 @@ export default function FeedbackPage() {
                         placeholder="Tell us exactly what happened, what formula was off, or what feature would supercharge your preparation..."
                         {...form.register("message")}
                         rows={4}
-                        className="w-full rounded-2xl surface-card p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
+                        className="w-full rounded-2xl surface-card p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
                       />
                       {form.formState.errors.message && (
                         <p className="text-xs font-medium text-rose-500">
@@ -372,7 +372,7 @@ export default function FeedbackPage() {
                         type="text"
                         placeholder="e.g. Rahul Sharma"
                         {...form.register("name")}
-                        className="h-12 rounded-2xl border-2 border-border bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-amber-500/60 focus-visible:ring-2 focus-visible:ring-amber-500/20 transition-all"
+                        className="h-12 rounded-2xl border-2 border-border bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all"
                       />
                       {form.formState.errors.name && (
                         <p className="text-xs font-medium text-rose-500">
@@ -391,7 +391,7 @@ export default function FeedbackPage() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-12 sm:h-13 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
+                      className="w-full h-12 sm:h-13 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
                     >
                       {isSubmitting ? (
                         <>
@@ -419,11 +419,11 @@ export default function FeedbackPage() {
         >
           {/* Upcoming Roadmap Card */}
           <div className="surface-card rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-border/40">
               <div className="flex items-center gap-2">
-                <Rocket className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+                <Rocket className="w-4 h-4 text-brand-700 dark:text-brand-400" />
                 <h3 className="font-extrabold text-sm text-foreground tracking-tight">
                   Public Engineering Roadmap
                 </h3>
@@ -437,11 +437,11 @@ export default function FeedbackPage() {
               {ROADMAP_ITEMS.map((item, idx) => (
                 <div 
                   key={idx}
-                  className="p-3.5 rounded-2xl surface-card hover:border-amber-500/30 transition-all flex flex-col gap-1.5"
+                  className="p-3.5 rounded-2xl surface-card hover:border-brand-500/30 transition-all flex flex-col gap-1.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2 font-bold text-xs text-foreground">
-                      <item.icon className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
+                      <item.icon className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400 shrink-0" />
                       <span>{item.title}</span>
                     </div>
                     <span className={`text-xs font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 shrink-0 ${item.statusColor}`}>

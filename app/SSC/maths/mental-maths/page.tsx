@@ -431,7 +431,7 @@ const MentalMaths = () => {
                   <h3 className="text-lg sm:text-xl font-black tracking-tight text-foreground flex items-center gap-2">
                     {section.label}
                     {section.badge && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-amber-500/15 text-amber-600 dark:text-amber-400 border-2 border-amber-500/25 shadow-xs uppercase tracking-wider">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-brand-500/15 text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 shadow-xs uppercase tracking-wider">
                         {section.badge}
                       </span>
                     )}
@@ -518,7 +518,7 @@ const MentalMaths = () => {
                 { title: "Review", text: "Every attempt is listed after the drill." },
               ].map((row) => (
                 <li key={row.title} className="flex gap-3">
-                  <span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+                  <span aria-hidden="true" className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
                   <span>
                     <span className="font-bold">{row.title}.</span>{" "}
                     <span className="text-muted-foreground">{row.text}</span>

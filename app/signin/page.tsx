@@ -28,11 +28,11 @@ const SigninPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100dvh-8rem)] py-6 sm:py-8 px-0 w-full relative overflow-hidden">
       {/* Background Ambient Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-[460px] surface-card p-6 sm:p-8 rounded-3xl shadow-2xl shadow-black/10 flex flex-col gap-4 relative overflow-hidden">
         <div className="relative z-10">
-          <div className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border-2 border-amber-500/25 w-fit mb-3">
+          <div className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-brand-700 dark:text-brand-400 bg-brand-500/10 px-3 py-1 rounded-full border-2 border-brand-500/25 w-fit mb-3">
             <Sparkles className="w-3 h-3" />
             Tier 1 Precision
           </div>
@@ -49,7 +49,7 @@ const SigninPage = () => {
           <div className="text-center mt-4">
             <p className="text-sm text-muted-foreground font-medium">
               Don&apos;t have an account?&nbsp;
-              <Link href={`/signup${queryStr}`} className="inline-block py-2 px-1 font-bold text-amber-700 dark:text-amber-400 hover:underline transition-all">
+              <Link href={`/signup${queryStr}`} className="inline-block py-2 px-1 font-bold text-brand-700 dark:text-brand-400 hover:underline transition-all">
                 Sign up
               </Link>
             </p>

@@ -72,7 +72,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
           {meta ?? (isLive ? "Ready to practise" : "In development")}
         </span>
         {isLive && (
-          <span className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-4 text-xs font-bold uppercase tracking-wider text-white shadow-sm shadow-amber-500/30 transition-shadow group-hover:shadow-md group-hover:shadow-amber-500/40">
+          <span className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-4 text-xs font-bold uppercase tracking-wider text-white shadow-sm shadow-brand-500/30 transition-shadow group-hover:shadow-md group-hover:shadow-brand-500/40">
             {buttonText}
             <ArrowRight
               className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"

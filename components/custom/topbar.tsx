@@ -23,7 +23,7 @@ import { subjectTheme } from "@/lib/subject-theme";
 const ICON_BUTTON =
   "flex h-10 w-10 items-center justify-center rounded-full border-2 border-border bg-card text-foreground/80 transition-colors hover:bg-muted";
 const SIGN_IN_BUTTON =
-  "flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-5 text-sm font-bold text-white shadow-md shadow-amber-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/30 active:scale-95";
+  "flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-sm font-bold text-white shadow-md shadow-brand-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95";
 
 function initialsOf(name?: string | null): string {
   if (!name) return "U";
@@ -84,12 +84,12 @@ export function TopBar() {
               onClick={() => setMobileOpen(false)}
               className="mb-6 flex items-center gap-3"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-alt-600 text-white shadow-md shadow-brand-500/25">
                 <Rocket className="h-5 w-5" />
               </div>
               <div className="leading-tight">
                 <div className="font-display text-base font-extrabold tracking-tight text-foreground">
-                  Ept<span className="text-amber-600 dark:text-amber-400">Ssc</span>
+                  Ept<span className="text-brand-600 dark:text-brand-400">Ssc</span>
                 </div>
                 <div className="text-xs font-medium text-muted-foreground">Elite Prep Training</div>
               </div>
@@ -104,7 +104,7 @@ export function TopBar() {
                       const active = activePath === item.to;
                       const Icon = item.icon;
                       const iconColour = active
-                        ? "text-amber-700 dark:text-amber-400"
+                        ? "text-brand-700 dark:text-brand-400"
                         : item.subject
                           ? subjectTheme(item.subject).text
                           : "text-muted-foreground";
@@ -116,7 +116,7 @@ export function TopBar() {
                           aria-current={active ? "page" : undefined}
                           className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors ${
                             active
-                              ? "bg-amber-500/10 font-bold text-amber-800 dark:text-amber-300"
+                              ? "bg-brand-500/10 font-bold text-brand-800 dark:text-brand-300"
                               : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
                           }`}
                         >
@@ -144,16 +144,16 @@ export function TopBar() {
                 >
                   <span className="flex items-center gap-3">
                     {isDark ? (
-                      <Moon className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.75} />
+                      <Moon className="h-4 w-4 shrink-0 text-brand-400" strokeWidth={1.75} />
                     ) : (
-                      <Sun className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.75} />
+                      <Sun className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={1.75} />
                     )}
                     <span className="text-sm font-medium">Dark mode</span>
                   </span>
                   <span
                     aria-hidden="true"
                     className={`relative h-4.5 w-8 shrink-0 rounded-full transition-colors duration-300 ${
-                      isDark ? "bg-amber-500" : "bg-muted-foreground/30"
+                      isDark ? "bg-brand-500" : "bg-muted-foreground/30"
                     }`}
                   >
                     <span
@@ -170,7 +170,7 @@ export function TopBar() {
                   <div className="flex min-w-0 items-center gap-2.5">
                     <Avatar className="h-8 w-8 shrink-0">
                       {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
-                      <AvatarFallback className="bg-amber-500/15 text-xs font-bold text-amber-700 dark:text-amber-400">
+                      <AvatarFallback className="bg-brand-500/15 text-xs font-bold text-brand-700 dark:text-brand-400">
                         {initialsOf(user.displayName)}
                       </AvatarFallback>
                     </Avatar>
@@ -202,7 +202,7 @@ export function TopBar() {
         {/* Today */}
         {today && (
           <div className="hidden items-center gap-2 rounded-full border-2 border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-muted-foreground min-[440px]:flex">
-            <CalendarDays className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+            <CalendarDays className="h-3.5 w-3.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />
             {today}
           </div>
         )}
@@ -214,9 +214,9 @@ export function TopBar() {
         </Link>
         <button type="button" aria-label="Toggle theme" onClick={toggleTheme} className={`${ICON_BUTTON} md:hidden`}>
           {isDark ? (
-            <Sun className="h-4 w-4 text-amber-400" strokeWidth={1.75} />
+            <Sun className="h-4 w-4 text-brand-400" strokeWidth={1.75} />
           ) : (
-            <Moon className="h-4 w-4 text-amber-600" strokeWidth={1.75} />
+            <Moon className="h-4 w-4 text-brand-600" strokeWidth={1.75} />
           )}
         </button>
 
@@ -226,11 +226,11 @@ export function TopBar() {
               <button
                 type="button"
                 aria-label="Account menu"
-                className="ml-1 flex items-center justify-center rounded-full border-2 border-amber-500/40 transition-colors hover:border-amber-500"
+                className="ml-1 flex items-center justify-center rounded-full border-2 border-brand-500/40 transition-colors hover:border-brand-500"
               >
                 <Avatar className="h-9 w-9">
                   {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
-                  <AvatarFallback className="bg-amber-500/15 text-sm font-bold text-amber-700 dark:text-amber-400">
+                  <AvatarFallback className="bg-brand-500/15 text-sm font-bold text-brand-700 dark:text-brand-400">
                     {initialsOf(user.displayName)}
                   </AvatarFallback>
                 </Avatar>

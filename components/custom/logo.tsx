@@ -15,12 +15,12 @@ export const Logo = ({ className = "", onClick }: LogoProps) => {
       className={`flex items-center gap-2 group cursor-pointer ${className}`}
       onClick={onClick}
     >
-      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 shadow-sm flex items-center justify-center text-white transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105 hover:rotate-6 cursor-pointer">
+      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-brand-alt-500 shadow-sm flex items-center justify-center text-white transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105 hover:rotate-6 cursor-pointer">
         <Rocket className="w-5 h-5" />
       </div>
       <div className="font-bold text-2xl tracking-tight">
         <span className="text-foreground font-extrabold">Ept</span>
-        <span className="text-orange-500 font-extrabold">Ssc</span>
+        <span className="text-brand-alt-500 font-extrabold">Ssc</span>
       </div>
     </Link>
   );

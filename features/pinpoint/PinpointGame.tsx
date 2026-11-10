@@ -96,7 +96,7 @@ export function PinpointGame() {
                 key={state.score}
                 initial={reduceMotion ? false : { y: 6, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="font-mono text-lg font-black tabular-nums text-violet-700 dark:text-violet-300"
+                className="font-mono text-lg font-black tabular-nums text-fuchsia-800 dark:text-fuchsia-300"
               >
                 {state.score}
               </motion.span>
@@ -110,7 +110,7 @@ export function PinpointGame() {
                 <li
                   key={i}
                   className={`h-1.5 flex-1 rounded-full ${
-                    r ? (r.solved ? "bg-emerald-500" : "bg-rose-500") : i === state.index ? "bg-amber-500" : "bg-muted"
+                    r ? (r.solved ? "bg-emerald-500" : "bg-rose-500") : i === state.index ? "bg-brand-500" : "bg-muted"
                   }`}
                 />
               );
@@ -118,7 +118,7 @@ export function PinpointGame() {
           </ol>
 
           {/* Clues */}
-          <div className="rounded-2xl border-2 border-violet-500/25 bg-card p-3 sm:p-4">
+          <div className="rounded-2xl border-2 border-fuchsia-500/25 bg-card p-3 sm:p-4">
             <p className="section-label mb-2.5">What connects these?</p>
             <ul className="grid grid-cols-2 gap-2" aria-live="polite">
               {round.puzzle.clues.map((clue, i) => {
@@ -128,7 +128,7 @@ export function PinpointGame() {
                     key={clue}
                     className={`flex h-11 items-center justify-center rounded-xl border-2 px-2 text-center text-sm font-bold sm:text-base ${
                       shown
-                        ? "border-violet-500/40 bg-violet-500/10 text-violet-800 dark:text-violet-100"
+                        ? "border-fuchsia-500/40 bg-fuchsia-500/10 text-fuchsia-800 dark:text-fuchsia-100"
                         : "border-dashed border-border text-muted-foreground/50"
                     }`}
                   >
@@ -168,7 +168,7 @@ export function PinpointGame() {
                       ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-800 dark:text-emerald-200"
                       : isOut
                         ? "border-border bg-muted text-muted-foreground/50 line-through"
-                        : "border-border bg-card text-foreground hover:border-violet-500/50 hover:bg-violet-500/10"
+                        : "border-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
                   }`}
                 >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-muted font-mono text-xs font-black text-muted-foreground">
@@ -205,7 +205,7 @@ export function PinpointGame() {
                       type="button"
                       onClick={next}
                       autoFocus
-                      className="h-11 gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-5 text-xs font-mono font-bold uppercase tracking-wider text-white"
+                      className="h-11 gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-xs font-mono font-bold uppercase tracking-wider text-white"
                     >
                       {state.index + 1 >= state.rounds.length ? "See results" : "Next puzzle"}
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />

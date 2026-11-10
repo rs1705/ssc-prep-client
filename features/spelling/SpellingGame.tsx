@@ -77,8 +77,8 @@ export function SpellingGame() {
     timeRatio <= 0.2
       ? "from-rose-500 to-red-600 motion-safe:animate-pulse"
       : timeRatio <= 0.4
-        ? "from-orange-500 to-amber-500"
-        : "from-violet-500 to-fuchsia-500";
+        ? "from-brand-alt-500 to-brand-500"
+        : "from-fuchsia-500 to-pink-500";
   const multiplier = streakMultiplier(state.streak);
   const accuracy = state.answeredCount > 0 ? Math.round((state.correctCount / state.answeredCount) * 100) : 0;
 
@@ -111,7 +111,7 @@ export function SpellingGame() {
                 key={state.score}
                 initial={reduceMotion ? false : { y: 6, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="font-mono text-xl font-black tabular-nums text-violet-700 dark:text-violet-300"
+                className="font-mono text-xl font-black tabular-nums text-fuchsia-800 dark:text-fuchsia-300"
               >
                 {state.score}
               </motion.span>
@@ -121,7 +121,7 @@ export function SpellingGame() {
                 key={state.streak}
                 initial={reduceMotion ? false : { scale: 0.7, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="flex items-center gap-1 rounded-full border-2 border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-mono font-black text-amber-700 dark:text-amber-400"
+                className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-2.5 py-1 text-xs font-mono font-black text-brand-700 dark:text-brand-400"
                 aria-label={`${state.streak} in a row, ${multiplier} times points`}
               >
                 <Flame className="h-3.5 w-3.5" aria-hidden="true" />
@@ -143,8 +143,8 @@ export function SpellingGame() {
             </span>
           </div>
 
-          <div className="flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl border-2 border-violet-500/25 bg-card px-4 py-5 [@media(max-height:480px)_and_(min-width:560px)]:py-3 text-center">
-            <SpellCheck className="h-6 w-6 text-violet-600 dark:text-violet-400" aria-hidden="true" />
+          <div className="flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl border-2 border-fuchsia-500/25 bg-card px-4 py-5 [@media(max-height:480px)_and_(min-width:560px)]:py-3 text-center">
+            <SpellCheck className="h-6 w-6 text-fuchsia-700 dark:text-fuchsia-400" aria-hidden="true" />
             <p className="text-base font-extrabold text-foreground sm:text-lg">Which is spelled correctly?</p>
             <p className="text-xs font-semibold text-muted-foreground">Tap an option or press 1–4</p>
           </div>
@@ -167,7 +167,7 @@ export function SpellingGame() {
                       ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-800 dark:text-emerald-200"
                       : isChosen
                         ? "border-rose-500/60 bg-rose-500/15 text-rose-800 dark:text-rose-200"
-                        : "border-border bg-card text-foreground hover:border-violet-500/50 hover:bg-violet-500/10"
+                        : "border-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
                   }`}
                 >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-muted text-xs font-black text-muted-foreground">

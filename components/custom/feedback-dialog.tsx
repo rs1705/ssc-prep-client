@@ -35,7 +35,7 @@ type FeedbackFormValues = z.infer<typeof feedbackSchema>;
 const CATEGORIES = [
   { id: "bug", label: "Bug Report 🐛", color: "hover:border-destructive hover:bg-destructive/5" },
   { id: "feature", label: "Feature Idea ✨", color: "hover:border-primary hover:bg-primary/5" },
-  { id: "content", label: "Content Issue 📚", color: "hover:border-amber-500 hover:bg-amber-500/5" },
+  { id: "content", label: "Content Issue 📚", color: "hover:border-brand-500 hover:bg-brand-500/5" },
   { id: "other", label: "Other 💬", color: "hover:border-slate-500 hover:bg-slate-500/5" },
 ] as const;
 
@@ -122,7 +122,7 @@ export default function FeedbackDialog() {
       <DialogTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-full shadow-[0_4px_20px_rgba(245,158,11,0.3)] hover:shadow-[0_6px_24px_rgba(245,158,11,0.5)] active:scale-95 transition-all duration-200 cursor-pointer group"
+          className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-brand-500 to-brand-alt-500 hover:from-brand-400 hover:to-brand-alt-400 text-white rounded-full shadow-[0_4px_20px_rgba(192,38,211,0.3)] hover:shadow-[0_6px_24px_rgba(192,38,211,0.5)] active:scale-95 transition-all duration-200 cursor-pointer group"
           title="Provide Feedback"
         >
           <MessageSquare className="w-6 h-6 transition-transform duration-300 group-hover:rotate-12" />
@@ -180,9 +180,9 @@ export default function FeedbackDialog() {
                     </div>
                   </li>
                   <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-                    <span className="text-violet-500 font-bold mt-0.5">●</span>
+                    <span className="text-fuchsia-600 dark:text-fuchsia-400 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-xs bg-violet-500/10 text-violet-600 dark:text-violet-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-xs bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">

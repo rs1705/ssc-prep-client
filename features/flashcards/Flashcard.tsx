@@ -38,7 +38,7 @@ const DEFAULT_SCHEME: ColorScheme = {
   bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
   textMain: "text-stone-900 dark:text-zinc-100",
   textSecondary: "text-stone-600 dark:text-zinc-400",
-  accent: "text-amber-600 dark:text-amber-400",
+  accent: "text-brand-600 dark:text-brand-400",
   accentBg: "bg-white/60 dark:bg-zinc-800/60 border-stone-200/80 dark:border-zinc-700/40",
   border: "border-2 border-stone-200/80 dark:border-zinc-800",
 };

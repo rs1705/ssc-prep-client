@@ -132,17 +132,17 @@ export default function LeaderboardPage() {
         <div className="flex flex-col gap-8 py-2">
           {/* League Promotion Header Banner */}
           <div 
-            className="rounded-3xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-card/60 backdrop-blur-2xl border-2 border-amber-500/30 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-amber-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            className="rounded-3xl bg-gradient-to-r from-brand-500/15 via-brand-alt-500/10 to-card/60 backdrop-blur-2xl border-2 border-brand-500/30 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-brand-500/5 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
             style={{ animationDelay: "100ms", animationFillMode: "both" }}
           >
-            <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-48 h-48 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="flex items-center gap-4 text-center md:text-left">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center border-2 border-amber-500/30 shrink-0 shadow-inner">
+              <div className="w-14 h-14 rounded-2xl bg-brand-500/20 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/30 shrink-0 shadow-inner">
                 <Crown className="w-7 h-7 animate-bounce" />
               </div>
               <div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 mb-1">
+                <div className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 bg-brand-500/10 px-2.5 py-0.5 rounded-full border-2 border-brand-500/20 mb-1">
                   Weekly Sprint League · Round 4
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
@@ -157,7 +157,7 @@ export default function LeaderboardPage() {
             <div className="flex items-center gap-3 surface-card px-5 py-3 rounded-2xl shrink-0">
               <div className="flex flex-col text-right">
                 <span className="text-xs font-mono font-bold text-muted-foreground uppercase">Your Standings</span>
-                <span className="text-lg font-black font-mono text-amber-700 dark:text-amber-400">Rank #7</span>
+                <span className="text-lg font-black font-mono text-brand-700 dark:text-brand-400">Rank #7</span>
               </div>
               <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border-2 border-emerald-500/20 font-mono text-xs font-black">
                 <ArrowUp className="w-4 h-4" />
@@ -179,7 +179,7 @@ export default function LeaderboardPage() {
                 {TOP_THREE[1].avatarText}
               </div>
               <h3 className="font-extrabold text-base text-foreground">{TOP_THREE[1].name}</h3>
-              <div className="text-xl font-black font-mono text-amber-700 dark:text-amber-400 mt-1">{TOP_THREE[1].xp} XP</div>
+              <div className="text-xl font-black font-mono text-brand-700 dark:text-brand-400 mt-1">{TOP_THREE[1].xp} XP</div>
               <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mt-2">
                 <span>{TOP_THREE[1].accuracy} Acc</span>
                 <span>•</span>
@@ -188,18 +188,18 @@ export default function LeaderboardPage() {
             </div>
 
             {/* Rank 1 (Gold Champion) */}
-            <div className="p-7 rounded-3xl bg-card/70 backdrop-blur-2xl border-2 border-amber-500/40 shadow-2xl shadow-amber-500/10 flex flex-col items-center text-center relative order-1 md:order-2 md:-translate-y-3">
-              <div className="absolute -top-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center font-black font-mono shadow-lg shadow-amber-500/30">
+            <div className="p-7 rounded-3xl bg-card/70 backdrop-blur-2xl border-2 border-brand-500/40 shadow-2xl shadow-brand-500/10 flex flex-col items-center text-center relative order-1 md:order-2 md:-translate-y-3">
+              <div className="absolute -top-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-alt-500 text-white flex items-center justify-center font-black font-mono shadow-lg shadow-brand-500/30">
                 <Crown className="w-7 h-7" />
               </div>
-              <div className="w-20 h-20 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-2xl border-2 border-amber-500 mt-5 mb-3 shadow-inner">
+              <div className="w-20 h-20 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center font-black text-2xl border-2 border-brand-500 mt-5 mb-3 shadow-inner">
                 {TOP_THREE[0].avatarText}
               </div>
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border-2 border-amber-500/20 mb-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 bg-brand-500/10 px-2.5 py-0.5 rounded-full border-2 border-brand-500/20 mb-1">
                 Gold Champion
               </span>
               <h3 className="font-extrabold text-lg text-foreground">{TOP_THREE[0].name}</h3>
-              <div className="text-2xl font-black font-mono text-amber-700 dark:text-amber-400 mt-1">{TOP_THREE[0].xp} XP</div>
+              <div className="text-2xl font-black font-mono text-brand-700 dark:text-brand-400 mt-1">{TOP_THREE[0].xp} XP</div>
               <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mt-2">
                 <span className="text-emerald-500 font-bold">{TOP_THREE[0].accuracy} Acc</span>
                 <span>•</span>
@@ -208,15 +208,15 @@ export default function LeaderboardPage() {
             </div>
 
             {/* Rank 3 (Bronze) */}
-            <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-amber-700/30 shadow-xl shadow-black/5 flex flex-col items-center text-center relative order-3">
-              <div className="absolute -top-6 w-12 h-12 rounded-2xl bg-amber-700/20 text-amber-600 border-2 border-amber-700/40 flex items-center justify-center font-black font-mono shadow-md backdrop-blur-md">
+            <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-xl border-2 border-brand-700/30 shadow-xl shadow-black/5 flex flex-col items-center text-center relative order-3">
+              <div className="absolute -top-6 w-12 h-12 rounded-2xl bg-brand-700/20 text-brand-600 border-2 border-brand-700/40 flex items-center justify-center font-black font-mono shadow-md backdrop-blur-md">
                 #3
               </div>
-              <div className="w-16 h-16 rounded-full bg-amber-800/20 text-amber-600 flex items-center justify-center font-black text-xl border-2 border-amber-700/40 mt-4 mb-3">
+              <div className="w-16 h-16 rounded-full bg-brand-800/20 text-brand-600 flex items-center justify-center font-black text-xl border-2 border-brand-700/40 mt-4 mb-3">
                 {TOP_THREE[2].avatarText}
               </div>
               <h3 className="font-extrabold text-base text-foreground">{TOP_THREE[2].name}</h3>
-              <div className="text-xl font-black font-mono text-amber-700 dark:text-amber-400 mt-1">{TOP_THREE[2].xp} XP</div>
+              <div className="text-xl font-black font-mono text-brand-700 dark:text-brand-400 mt-1">{TOP_THREE[2].xp} XP</div>
               <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mt-2">
                 <span>{TOP_THREE[2].accuracy} Acc</span>
                 <span>•</span>
@@ -257,13 +257,13 @@ export default function LeaderboardPage() {
                   key={row.rank}
                   className={`p-4 sm:px-6 flex items-center justify-between gap-4 transition-colors ${
                     row.isCurrentUser
-                      ? "bg-amber-500/10 dark:bg-amber-500/15 border-l-4 border-amber-500"
+                      ? "bg-brand-500/10 dark:bg-brand-500/15 border-l-4 border-brand-500"
                       : "hover:bg-card/40"
                   }`}
                 >
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <span className={`w-7 text-center font-mono font-black text-sm sm:text-base ${
-                      row.rank <= 3 ? "text-amber-700 dark:text-amber-400" : "text-muted-foreground"
+                      row.rank <= 3 ? "text-brand-700 dark:text-brand-400" : "text-muted-foreground"
                     }`}>
                       #{row.rank}
                     </span>
@@ -274,13 +274,13 @@ export default function LeaderboardPage() {
                       <div className="font-extrabold text-sm text-foreground truncate flex items-center gap-2">
                         {row.name}
                         {row.isCurrentUser && (
-                          <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded-full border-2 border-amber-500/20">
+                          <span className="text-xs font-mono font-bold text-brand-700 dark:text-brand-400 bg-brand-500/15 px-2 py-0.5 rounded-full border-2 border-brand-500/20">
                             YOU
                           </span>
                         )}
                       </div>
                       <div className="text-xs font-mono text-muted-foreground flex items-center gap-2 mt-0.5">
-                        <span className="flex items-center gap-1 text-orange-500">
+                        <span className="flex items-center gap-1 text-brand-alt-500">
                           <Flame className="w-3 h-3" /> {row.streak}d streak
                         </span>
                         <span>•</span>

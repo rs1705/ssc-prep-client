@@ -70,12 +70,12 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
       sparkle: "text-rose-500",
     },
     amber: {
-      iconBg: "bg-amber-500/10 shadow-inner ring-1 ring-border/40 text-amber-600 dark:text-amber-400",
-      activeBtn: "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm border-0",
-      modeIcon: "text-amber-700 dark:text-amber-400",
-      revealRow: "bg-amber-500/5 hover:bg-amber-500/10 border-amber-500/25 text-amber-600 dark:text-amber-400",
-      revealPill: "text-amber-600 dark:text-amber-400 bg-amber-500/15 border-amber-500/30",
-      sparkle: "text-amber-700 dark:text-amber-400",
+      iconBg: "bg-brand-500/10 shadow-inner ring-1 ring-border/40 text-brand-600 dark:text-brand-400",
+      activeBtn: "bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-sm border-0",
+      modeIcon: "text-brand-700 dark:text-brand-400",
+      revealRow: "bg-brand-500/5 hover:bg-brand-500/10 border-brand-500/25 text-brand-600 dark:text-brand-400",
+      revealPill: "text-brand-600 dark:text-brand-400 bg-brand-500/15 border-brand-500/30",
+      sparkle: "text-brand-700 dark:text-brand-400",
     },
     indigo: {
       iconBg: "bg-indigo-500/10 shadow-inner ring-1 ring-border/40 text-indigo-600 dark:text-indigo-400",
@@ -86,12 +86,12 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
       sparkle: "text-indigo-500",
     },
     violet: {
-      iconBg: "bg-violet-500/10 shadow-inner ring-1 ring-border/40 text-violet-600 dark:text-violet-400",
-      activeBtn: "bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-sm border-0",
-      modeIcon: "text-violet-500",
-      revealRow: "bg-violet-500/5 hover:bg-violet-500/10 border-violet-500/25 text-violet-600 dark:text-violet-400",
-      revealPill: "text-violet-600 dark:text-violet-400 bg-violet-500/15 border-violet-500/30",
-      sparkle: "text-violet-500",
+      iconBg: "bg-fuchsia-500/10 shadow-inner ring-1 ring-border/40 text-fuchsia-700 dark:text-fuchsia-400",
+      activeBtn: "bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white shadow-sm border-0",
+      modeIcon: "text-fuchsia-600 dark:text-fuchsia-400",
+      revealRow: "bg-fuchsia-500/5 hover:bg-fuchsia-500/10 border-fuchsia-500/25 text-fuchsia-700 dark:text-fuchsia-400",
+      revealPill: "text-fuchsia-700 dark:text-fuchsia-400 bg-fuchsia-500/15 border-fuchsia-500/30",
+      sparkle: "text-fuchsia-600 dark:text-fuchsia-400",
     },
   };
 
@@ -238,7 +238,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                         group.label === "Easy"
                           ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
                           : group.label === "Medium"
-                            ? "bg-amber-500/10 border-amber-500/25 text-amber-600 dark:text-amber-400"
+                            ? "bg-brand-500/10 border-brand-500/25 text-brand-600 dark:text-brand-400"
                             : "bg-rose-500/10 border-rose-500/25 text-rose-600 dark:text-rose-400"
                       }`}
                     >

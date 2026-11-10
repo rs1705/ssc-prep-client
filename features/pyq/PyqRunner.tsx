@@ -109,7 +109,7 @@ export function PyqRunner({
     } else if (answer) {
       tone = "border-primary bg-primary text-primary-foreground";
     }
-    const ring = i === state.index ? "ring-2 ring-amber-500 ring-offset-2 ring-offset-background" : "";
+    const ring = i === state.index ? "ring-2 ring-brand-500 ring-offset-2 ring-offset-background" : "";
     return `${tone} ${ring}`;
   };
 
@@ -219,7 +219,7 @@ export function PyqRunner({
             <Button
               type="button"
               onClick={onRestart}
-              className="h-11 gap-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-6 text-sm font-bold text-white"
+              className="h-11 gap-2 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-6 text-sm font-bold text-white"
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" />
               {restartLabel}
@@ -391,7 +391,7 @@ export function PyqRunner({
                 <Button
                   type="button"
                   onClick={() => dispatch({ type: "SUBMIT" })}
-                  className="h-11 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-5 text-sm font-bold text-white"
+                  className="h-11 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-sm font-bold text-white"
                 >
                   See results
                 </Button>
@@ -410,7 +410,7 @@ export function PyqRunner({
           </div>
 
           {confirming && (
-            <div role="alertdialog" aria-label="Submit test?" className="rounded-2xl border-2 border-amber-500/40 bg-amber-500/10 p-4">
+            <div role="alertdialog" aria-label="Submit test?" className="rounded-2xl border-2 border-brand-500/40 bg-brand-500/10 p-4">
               <p className="text-sm font-bold text-foreground">
                 Submit the test now?
               </p>
@@ -427,7 +427,7 @@ export function PyqRunner({
                     setConfirming(false);
                     dispatch({ type: "SUBMIT" });
                   }}
-                  className="h-10 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-5 text-sm font-bold text-white"
+                  className="h-10 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-sm font-bold text-white"
                 >
                   Yes, submit
                 </Button>

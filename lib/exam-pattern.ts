@@ -29,6 +29,7 @@ export interface SubjectMeta {
 }
 
 const drill = (topic: string) => `/SSC/maths/mental-maths/${topic}`;
+const formulas = (topic: string) => `/SSC/maths/formula-practice#${topic}`;
 const FLASHCARDS = "/SSC/english/flashcards/freestyle";
 
 export const SUBJECT_META: Record<SubjectKey, SubjectMeta> = {
@@ -41,17 +42,17 @@ export const SUBJECT_META: Record<SubjectKey, SubjectMeta> = {
       { name: "Ratio & Proportion", href: drill("ratio") },
       { name: "Squares & Cubes", href: drill("squares") },
       { name: "Square & Cube Roots", href: drill("square_roots") },
-      { name: "Number System" },
-      { name: "Averages" },
-      { name: "Profit & Loss" },
-      { name: "Simple & Compound Interest" },
-      { name: "Time & Work" },
-      { name: "Time, Speed & Distance" },
-      { name: "Algebra" },
-      { name: "Geometry" },
-      { name: "Mensuration" },
-      { name: "Trigonometry" },
-      { name: "Data Interpretation" },
+      { name: "Number System", href: formulas("number-system") },
+      { name: "Averages", href: formulas("averages") },
+      { name: "Profit & Loss", href: formulas("profit-loss") },
+      { name: "Simple & Compound Interest", href: formulas("interest") },
+      { name: "Time & Work", href: formulas("time-work") },
+      { name: "Time, Speed & Distance", href: formulas("speed") },
+      { name: "Algebra", href: formulas("algebra-identities") },
+      { name: "Geometry", href: formulas("triangles") },
+      { name: "Mensuration", href: formulas("mensuration-2d") },
+      { name: "Trigonometry", href: formulas("trig-identities") },
+      { name: "Data Interpretation", href: formulas("data-interpretation") },
     ],
   },
   english: {

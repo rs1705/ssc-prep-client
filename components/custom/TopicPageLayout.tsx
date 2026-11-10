@@ -52,7 +52,7 @@ const ROUTE_NAMES: Record<string, string> = {
   "spelling-sprint": "Spelling Sprint",
   "pyq-practice": "PYQ Practice",
   "mock-test": "Mock Test",
-  "formula-practice": "Formula Practice",
+  "formula-practice": "Formulas & Tricks",
 };
 
 const toLabel = (seg: string) =>

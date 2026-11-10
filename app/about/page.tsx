@@ -30,16 +30,16 @@ const PILLARS = [
     tag: "Vocab & GK",
     desc: "Stop re-reading the same vocabulary lists endlessly. Our Smart Flashcard system schedules reviews right before your brain forgets, cutting study hours in half.",
     icon: Brain,
-    theme: "text-violet-500 bg-violet-500/10 border-violet-500/20",
-    glow: "bg-violet-500/10",
+    theme: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
+    glow: "bg-fuchsia-500/10",
   },
   {
     title: "Exam Pressure Simulation",
     tag: "Sprint Drills",
     desc: "High scores are made under pressure. Our timed blitz drills and gamified challenges condition your mind to execute high-accuracy decisions without second-guessing.",
     icon: Flame,
-    theme: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20",
-    glow: "bg-amber-500/10",
+    theme: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
+    glow: "bg-brand-500/10",
   },
 ];
 
@@ -74,17 +74,17 @@ export default function AboutPage() {
           className="relative rounded-3xl surface-card p-8 sm:p-12 shadow-xl shadow-black/5 overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
           style={{ animationDelay: "200ms", animationFillMode: "both" }}
         >
-          <div className="absolute -top-16 -right-16 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-16 -right-16 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-brand-alt-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="flex flex-col items-center sm:items-start max-w-2xl relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 bg-amber-500/10 border-2 border-amber-500/20 mb-4 shadow-xs">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 bg-brand-500/10 border-2 border-brand-500/20 mb-4 shadow-xs">
               <Sparkles className="w-3 h-3" />
               Manifesto & System Architecture
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-[1.15]">
               Engineered for Speed. <br />
-              <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent italic">
+              <span className="bg-gradient-to-r from-brand-400 via-brand-500 to-brand-alt-500 bg-clip-text text-transparent italic">
                 Built for Rank 1.
               </span>
             </h1>
@@ -95,7 +95,7 @@ export default function AboutPage() {
 
           <div className="flex sm:flex-col gap-3 relative z-10 shrink-0">
             <Link href="/practice">
-              <Button className="h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 active:scale-95 transition-all border-0 cursor-pointer">
+              <Button className="h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95 transition-all border-0 cursor-pointer">
                 <Swords className="w-4 h-4" />
                 Start Training
               </Button>
@@ -116,12 +116,12 @@ export default function AboutPage() {
           {TELEMETRY_STATS.map((stat, i) => (
             <div 
               key={i} 
-              className="p-5 rounded-2xl surface-card flex flex-col justify-between shadow-sm hover:border-amber-500/30 transition-colors"
+              className="p-5 rounded-2xl surface-card flex flex-col justify-between shadow-sm hover:border-brand-500/30 transition-colors"
             >
               <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">
                 {stat.label}
               </span>
-              <div className="text-xl sm:text-2xl font-black font-mono tracking-tight my-1.5 text-amber-700 dark:text-amber-400">
+              <div className="text-xl sm:text-2xl font-black font-mono tracking-tight my-1.5 text-brand-700 dark:text-brand-400">
                 {stat.val}
               </div>
               <span className="text-xs text-muted-foreground font-medium truncate">
@@ -137,7 +137,7 @@ export default function AboutPage() {
           style={{ animationDelay: "400ms", animationFillMode: "both" }}
         >
           <div className="flex flex-col">
-            <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest">
+            <span className="text-xs font-mono font-bold text-brand-700 dark:text-brand-400 uppercase tracking-widest">
               Core Principles
             </span>
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground mt-0.5">
@@ -151,7 +151,7 @@ export default function AboutPage() {
               return (
                 <div
                   key={i}
-                  className="p-6 sm:p-7 rounded-3xl surface-card hover:border-amber-500/30 transition-all duration-300 flex flex-col justify-between shadow-lg shadow-black/5 relative overflow-hidden group hover:-translate-y-1"
+                  className="p-6 sm:p-7 rounded-3xl surface-card hover:border-brand-500/30 transition-all duration-300 flex flex-col justify-between shadow-lg shadow-black/5 relative overflow-hidden group hover:-translate-y-1"
                 >
                   <div className={`absolute -right-6 -top-6 w-28 h-28 ${pillar.glow} rounded-full blur-2xl group-hover:scale-125 transition-transform`} />
                   
@@ -184,7 +184,7 @@ export default function AboutPage() {
           style={{ animationDelay: "500ms", animationFillMode: "both" }}
         >
           <div>
-            <span className="text-xs font-mono font-bold text-amber-700 dark:text-amber-400 uppercase tracking-widest">
+            <span className="text-xs font-mono font-bold text-brand-700 dark:text-brand-400 uppercase tracking-widest">
               Methodology Breakdown
             </span>
             <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground mt-0.5">
@@ -208,15 +208,15 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-amber-500/[0.04] border-2 border-amber-500/30 flex flex-col gap-3 shadow-inner">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs font-mono uppercase tracking-wider">
+            <div className="p-5 rounded-2xl bg-brand-500/[0.04] border-2 border-brand-500/30 flex flex-col gap-3 shadow-inner">
+              <div className="flex items-center gap-2 text-brand-700 dark:text-brand-400 font-bold text-xs font-mono uppercase tracking-wider">
                 <CheckCircle2 className="w-4 h-4" />
                 The EptSsc Advantage
               </div>
               <div className="space-y-3">
                 {COMPARISONS.map((comp, idx) => (
                   <div key={idx} className="flex items-start gap-2.5 text-xs text-foreground font-semibold">
-                    <span className="text-amber-700 dark:text-amber-400 font-bold mt-0.5">✓</span>
+                    <span className="text-brand-700 dark:text-brand-400 font-bold mt-0.5">✓</span>
                     <span>{comp.pilot}</span>
                   </div>
                 ))}
@@ -227,11 +227,11 @@ export default function AboutPage() {
 
         {/* Live Status & Community Banner */}
         <div 
-          className="rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent border-2 border-amber-500/20 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+          className="rounded-2xl bg-gradient-to-r from-brand-500/10 via-brand-alt-500/5 to-transparent border-2 border-brand-500/20 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
           style={{ animationDelay: "600ms", animationFillMode: "both" }}
         >
           <div className="flex items-center gap-3 text-center sm:text-left">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border-2 border-amber-500/30 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-brand-500/15 border-2 border-brand-500/30 flex items-center justify-center text-brand-700 dark:text-brand-400 shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
@@ -244,7 +244,7 @@ export default function AboutPage() {
             </div>
           </div>
           <Link href="/feedback">
-            <Button variant="ghost" className="px-4 py-2 h-auto text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 hover:bg-amber-500/10 shrink-0 cursor-pointer border-2 border-amber-500/20 rounded-full">
+            <Button variant="ghost" className="px-4 py-2 h-auto text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-500/10 shrink-0 cursor-pointer border-2 border-brand-500/20 rounded-full">
               Suggest a Feature <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </Link>

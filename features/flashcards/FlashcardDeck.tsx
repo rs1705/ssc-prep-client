@@ -41,22 +41,22 @@ export const COLOR_SCHEMES = [
     border: "border-2 border-sky-200/80 dark:border-sky-500/30",
   },
   {
-    bg: "from-violet-50 to-violet-100/90 dark:from-violet-950/40 dark:to-zinc-900",
-    textMain: "text-violet-950 dark:text-violet-100",
-    textSecondary: "text-violet-700/80 dark:text-violet-300/70",
-    accent: "text-violet-600 dark:text-violet-400",
-    accentBg: "bg-white/60 dark:bg-violet-950/50 border-violet-200/80 dark:border-violet-500/25",
-    barBg: "bg-gradient-to-r from-violet-400 to-violet-500",
-    border: "border-2 border-violet-200/80 dark:border-violet-500/30",
+    bg: "from-fuchsia-50 to-fuchsia-100/90 dark:from-fuchsia-950/40 dark:to-zinc-900",
+    textMain: "text-fuchsia-950 dark:text-fuchsia-100",
+    textSecondary: "text-fuchsia-700/80 dark:text-fuchsia-300/70",
+    accent: "text-fuchsia-700 dark:text-fuchsia-400",
+    accentBg: "bg-white/60 dark:bg-fuchsia-950/50 border-fuchsia-200/80 dark:border-fuchsia-500/25",
+    barBg: "bg-gradient-to-r from-fuchsia-400 to-fuchsia-500",
+    border: "border-2 border-fuchsia-200/80 dark:border-fuchsia-500/30",
   },
   {
-    bg: "from-amber-50 to-amber-100/90 dark:from-amber-950/40 dark:to-zinc-900",
-    textMain: "text-amber-950 dark:text-amber-100",
-    textSecondary: "text-amber-800/80 dark:text-amber-300/70",
-    accent: "text-amber-600 dark:text-amber-400",
-    accentBg: "bg-white/60 dark:bg-amber-950/50 border-amber-200/80 dark:border-amber-500/25",
-    barBg: "bg-gradient-to-r from-amber-500 to-amber-600",
-    border: "border-2 border-amber-200/80 dark:border-amber-500/30",
+    bg: "from-brand-50 to-brand-100/90 dark:from-brand-950/40 dark:to-zinc-900",
+    textMain: "text-brand-950 dark:text-brand-100",
+    textSecondary: "text-brand-800/80 dark:text-brand-300/70",
+    accent: "text-brand-600 dark:text-brand-400",
+    accentBg: "bg-white/60 dark:bg-brand-950/50 border-brand-200/80 dark:border-brand-500/25",
+    barBg: "bg-gradient-to-r from-brand-500 to-brand-600",
+    border: "border-2 border-brand-200/80 dark:border-brand-500/30",
   },
   {
     bg: "from-emerald-50 to-emerald-100/90 dark:from-emerald-950/40 dark:to-zinc-900",
@@ -77,13 +77,13 @@ export const COLOR_SCHEMES = [
     border: "border-2 border-indigo-200/80 dark:border-indigo-500/30",
   },
   {
-    bg: "from-orange-50 to-orange-100/90 dark:from-orange-950/40 dark:to-zinc-900",
-    textMain: "text-orange-950 dark:text-orange-100",
-    textSecondary: "text-orange-800/80 dark:text-orange-300/70",
-    accent: "text-orange-600 dark:text-orange-400",
-    accentBg: "bg-white/60 dark:bg-orange-950/50 border-orange-200/80 dark:border-orange-500/25",
-    barBg: "bg-gradient-to-r from-orange-400 to-orange-500",
-    border: "border-2 border-orange-200/80 dark:border-orange-500/30",
+    bg: "from-brand-alt-50 to-brand-alt-100/90 dark:from-brand-alt-950/40 dark:to-zinc-900",
+    textMain: "text-brand-alt-950 dark:text-brand-alt-100",
+    textSecondary: "text-brand-alt-800/80 dark:text-brand-alt-300/70",
+    accent: "text-brand-alt-600 dark:text-brand-alt-400",
+    accentBg: "bg-white/60 dark:bg-brand-alt-950/50 border-brand-alt-200/80 dark:border-brand-alt-500/25",
+    barBg: "bg-gradient-to-r from-brand-alt-400 to-brand-alt-500",
+    border: "border-2 border-brand-alt-200/80 dark:border-brand-alt-500/30",
   },
   {
     bg: "from-teal-50 to-teal-100/90 dark:from-teal-950/40 dark:to-zinc-900",
@@ -95,19 +95,19 @@ export const COLOR_SCHEMES = [
     border: "border-2 border-teal-200/80 dark:border-teal-500/30",
   },
   {
-    bg: "from-fuchsia-50 to-fuchsia-100/90 dark:from-fuchsia-950/40 dark:to-zinc-900",
-    textMain: "text-fuchsia-950 dark:text-fuchsia-100",
-    textSecondary: "text-fuchsia-800/80 dark:text-fuchsia-300/70",
-    accent: "text-fuchsia-600 dark:text-fuchsia-400",
-    accentBg: "bg-white/60 dark:bg-fuchsia-950/50 border-fuchsia-200/80 dark:border-fuchsia-500/25",
-    barBg: "bg-gradient-to-r from-fuchsia-400 to-fuchsia-500",
-    border: "border-2 border-fuchsia-200/80 dark:border-fuchsia-500/30",
+    bg: "from-pink-50 to-pink-100/90 dark:from-pink-950/40 dark:to-zinc-900",
+    textMain: "text-pink-950 dark:text-pink-100",
+    textSecondary: "text-pink-800/80 dark:text-pink-300/70",
+    accent: "text-pink-600 dark:text-pink-400",
+    accentBg: "bg-white/60 dark:bg-pink-950/50 border-pink-200/80 dark:border-pink-500/25",
+    barBg: "bg-gradient-to-r from-pink-400 to-pink-500",
+    border: "border-2 border-pink-200/80 dark:border-pink-500/30",
   },
   {
     bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
     textMain: "text-stone-900 dark:text-zinc-100",
     textSecondary: "text-stone-600 dark:text-zinc-400",
-    accent: "text-amber-600 dark:text-amber-400",
+    accent: "text-brand-600 dark:text-brand-400",
     accentBg: "bg-white/60 dark:bg-zinc-800/60 border-stone-200/80 dark:border-zinc-700/40",
     barBg: "bg-gradient-to-r from-stone-400 to-stone-500",
     border: "border-2 border-stone-200/80 dark:border-zinc-800",
@@ -125,7 +125,7 @@ export const BUTTON_ACTIONS = {
     label: "HARD",
     sub: "2 days",
     rating: 2,
-    color: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40 border-b-[4px] border-b-amber-600/70 hover:bg-amber-500/25 hover:border-amber-500/60 active:border-b-[1px] active:translate-y-[3px]",
+    color: "bg-brand-500/15 text-brand-600 dark:text-brand-400 border-brand-500/40 border-b-[4px] border-b-brand-600/70 hover:bg-brand-500/25 hover:border-brand-500/60 active:border-b-[1px] active:translate-y-[3px]",
   },
   GOOD: {
     label: "GOOD",
@@ -151,13 +151,13 @@ export type ActionType = keyof typeof BUTTON_ACTIONS;
     bg: "from-slate-700 to-slate-800",
     textMain: "text-white",
     textSecondary: "text-slate-400",
-    accent: "text-amber-400",
-    accentBg: "bg-amber-400/10 border-amber-400/20"
+    accent: "text-brand-400",
+    accentBg: "bg-brand-400/10 border-brand-400/20"
   }
 
   Progress Bar (FlashcardDeck.tsx):
   - Container class: "relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border-2 border-slate-600/50 shadow-inner"
-  - Progress fill class: "absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 transition-all duration-300"
+  - Progress fill class: "absolute top-0 left-0 h-full bg-gradient-to-r from-brand-500 via-brand-400 to-brand-500 transition-all duration-300"
   - Text class: "absolute inset-0 flex items-center justify-center text-xs font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
 */
 
@@ -273,7 +273,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
             <button
               onClick={onPrevClick}
               disabled={deck.length <= 1}
-              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
+              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-brand-500/30`}
             >
               <MoveLeft className="w-5 h-5" />
             </button>
@@ -344,7 +344,7 @@ const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: Flashcar
 
             {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
             <button
-              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-amber-500/30`}
+              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-brand-500/30`}
               onClick={onNextClick}
               disabled={deck.length <= 1}
             >

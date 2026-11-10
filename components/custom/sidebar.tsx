@@ -29,7 +29,7 @@ function SidebarLink({
 }) {
   const Icon = item.icon;
   const iconColour = active
-    ? "text-amber-700 dark:text-amber-400"
+    ? "text-brand-700 dark:text-brand-400"
     : item.subject
       ? subjectTheme(item.subject).text
       : "text-muted-foreground group-hover:text-foreground";
@@ -43,14 +43,14 @@ function SidebarLink({
         collapsed ? "mx-auto h-10 w-10 justify-center" : "gap-3 px-3 py-2"
       } ${
         active
-          ? "bg-amber-500/10 font-bold text-amber-800 dark:text-amber-300"
+          ? "bg-brand-500/10 font-bold text-brand-800 dark:text-brand-300"
           : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
       }`}
     >
       {active && !collapsed && (
         <span
           aria-hidden="true"
-          className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-amber-500"
+          className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-brand-500"
         />
       )}
       <Icon
@@ -95,7 +95,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
         href="/"
         className={`group mb-6 flex min-w-0 items-center ${ease} ${isCollapsed ? "gap-0" : "gap-3"}`}
       >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md shadow-amber-500/25 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-alt-600 text-white shadow-md shadow-brand-500/25 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
           <Rocket className="h-5 w-5" />
         </div>
         <div
@@ -104,7 +104,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           }`}
         >
           <div className="font-display text-base font-extrabold tracking-tight text-foreground">
-            Ept<span className="text-amber-600 dark:text-amber-400">Ssc</span>
+            Ept<span className="text-brand-600 dark:text-brand-400">Ssc</span>
           </div>
           <div className="truncate text-xs font-medium text-muted-foreground">
             Elite Prep Training
@@ -183,24 +183,24 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           >
             {isCollapsed ? (
               theme === "dark" ? (
-                <Moon className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.75} />
+                <Moon className="h-4 w-4 shrink-0 text-brand-400" strokeWidth={1.75} />
               ) : (
-                <Sun className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.75} />
+                <Sun className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={1.75} />
               )
             ) : (
               <>
                 <span className="flex items-center gap-3">
                   {theme === "dark" ? (
-                    <Moon className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.75} />
+                    <Moon className="h-4 w-4 shrink-0 text-brand-400" strokeWidth={1.75} />
                   ) : (
-                    <Sun className="h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.75} />
+                    <Sun className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={1.75} />
                   )}
                   <span className="text-sm font-medium">Dark mode</span>
                 </span>
                 <span
                   aria-hidden="true"
                   className={`relative h-4.5 w-8 shrink-0 rounded-full transition-colors duration-300 ${
-                    theme === "dark" ? "bg-amber-500" : "bg-muted-foreground/30"
+                    theme === "dark" ? "bg-brand-500" : "bg-muted-foreground/30"
                   }`}
                 >
                   <span

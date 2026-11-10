@@ -50,8 +50,8 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
     timeRatio <= 0.2
       ? "from-rose-500 to-red-600 motion-safe:animate-pulse"
       : timeRatio <= 0.4
-        ? "from-orange-500 to-amber-500"
-        : "from-violet-500 to-fuchsia-500";
+        ? "from-brand-alt-500 to-brand-500"
+        : "from-fuchsia-500 to-pink-500";
 
   return (
     <section
@@ -79,7 +79,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
             key={state.combo}
             initial={reduceMotion ? false : { scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="flex items-center gap-1 rounded-full border-2 border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-mono font-black text-amber-700 dark:text-amber-400"
+            className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-2.5 py-1 text-xs font-mono font-black text-brand-700 dark:text-brand-400"
             aria-label={`Combo ${state.combo}, score multiplier ${comboMultiplier(state.combo)}`}
           >
             <Flame className="h-3.5 w-3.5" aria-hidden="true" />
@@ -93,7 +93,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
             key={state.score}
             initial={reduceMotion ? false : { y: 6, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="font-mono text-lg font-black tabular-nums text-violet-700 dark:text-violet-300"
+            className="font-mono text-lg font-black tabular-nums text-fuchsia-800 dark:text-fuchsia-300"
           >
             {state.score}
           </motion.span>
@@ -113,7 +113,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
                     ? "bg-emerald-500"
                     : "bg-rose-500"
                   : i === state.index
-                    ? "bg-amber-500"
+                    ? "bg-brand-500"
                     : "bg-muted"
               }`}
             />
@@ -153,10 +153,10 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
       </motion.div>
 
       {/* Clue */}
-      <div className="flex items-start gap-3 rounded-2xl border-2 border-violet-500/25 bg-card p-3 sm:p-4 [@media(max-height:600px)]:p-2.5">
+      <div className="flex items-start gap-3 rounded-2xl border-2 border-fuchsia-500/25 bg-card p-3 sm:p-4 [@media(max-height:600px)]:p-2.5">
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex flex-wrap items-center gap-1.5">
-            <span className="rounded-full border-2 border-violet-500/25 bg-violet-500/10 px-2 py-0.5 text-xs font-mono font-bold uppercase text-violet-700 dark:text-violet-300">
+            <span className="rounded-full border-2 border-fuchsia-500/25 bg-fuchsia-500/10 px-2 py-0.5 text-xs font-mono font-bold uppercase text-fuchsia-800 dark:text-fuchsia-300">
               {word.category}
             </span>
             <span className="text-xs font-mono font-bold uppercase text-muted-foreground">
@@ -176,7 +176,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
           aria-label={`Reveal a letter, costs ${HINT_COST} points, ${state.hintsLeft} left`}
           className="h-10 shrink-0 flex-col gap-0 rounded-xl px-3 text-xs font-bold"
         >
-          <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+          <Lightbulb className="h-4 w-4 text-brand-600 dark:text-brand-400" aria-hidden="true" />
           <span className="font-mono tabular-nums">{state.hintsLeft}</span>
         </Button>
       </div>
@@ -237,7 +237,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
                   </p>
                 </div>
                 {result.outcome === "solved" && (
-                  <span className="shrink-0 font-mono text-lg font-black tabular-nums text-amber-700 dark:text-amber-400">
+                  <span className="shrink-0 font-mono text-lg font-black tabular-nums text-brand-700 dark:text-brand-400">
                     +{result.gained}
                   </span>
                 )}
@@ -247,7 +247,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
                 type="button"
                 onClick={onNext}
                 autoFocus
-                className="h-11 w-full gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-xs font-mono font-bold uppercase tracking-wider text-white"
+                className="h-11 w-full gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-alt-500 text-xs font-mono font-bold uppercase tracking-wider text-white"
               >
                 {isFinal ? "See results" : "Next word"}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -258,7 +258,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: REVEAL_MS / 1000, ease: "linear" }}
-                  className="h-full origin-left bg-amber-500"
+                  className="h-full origin-left bg-brand-500"
                 />
               </div>
             </motion.div>
