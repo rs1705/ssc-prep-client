@@ -1,181 +1,67 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ChevronLeft, HelpCircle, Heart, HeartCrack } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ProgressBar } from "@/components/custom/ProgressBar";
+import { ChevronLeft, Trophy } from "lucide-react";
+import { HangmanBoard } from "@/features/hangman/HangmanBoard";
+import { LobbyScreen } from "@/features/hangman/LobbyScreen";
+import { ResultScreen } from "@/features/hangman/ResultScreen";
+import { useHangmanGame } from "@/features/hangman/useHangmanGame";
 
-export default function HangmanDemoPage() {
-  // Static Mock Data for the Demo
-  const mockWord = "UBIQUITOUS";
-  const mockHint = "Present, appearing, or found everywhere at the same time.";
-  
-  // Static state for visual demonstration
-  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(
-    new Set(["U", "I", "O", "T", "X", "Z"])
-  );
-  
-  const totalLives = 6;
-  const wrongGuesses = 2; // 'X' and 'Z'
-
-  // Generate Keyboard A-Z
-  const keyboardRows = [
-    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-    ["Z", "X", "C", "V", "B", "N", "M"],
-  ];
-
-  const handleKeyPress = (letter: string) => {
-    setGuessedLetters((prev) => {
-      const next = new Set(prev);
-      next.add(letter);
-      return next;
-    });
-  };
+export default function HangmanPage() {
+  const { state, word, best, isNewBest, start, guess, hint, next } = useHangmanGame();
 
   return (
-    <div className="flex flex-col min-h-[100dvh] max-h-[100dvh] overflow-hidden bg-background">
-      {/* Top Header */}
-      <div className="w-full h-12 sm:h-14 flex items-center justify-between px-3 sm:px-6 border-b-2 border-border/40 shrink-0 sticky top-0 bg-background/80 backdrop-blur-xl z-10">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <Link href="/SSC/english">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-card/60 shrink-0 border-2 border-border"
-            >
-              <ChevronLeft className="w-4 h-4 text-muted-foreground" />
-            </Button>
+    <div className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col gap-3">
+      <header className="flex shrink-0 items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <Link
+            href="/SSC/english/games"
+            aria-label="Back to all games"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
           </Link>
-          <div className="flex flex-col min-w-0">
-            <span className="text-xs sm:text-sm font-extrabold text-foreground truncate uppercase tracking-wider">
+          <div className="min-w-0 leading-tight">
+            <h1 className="truncate text-sm font-extrabold uppercase tracking-wider text-foreground sm:text-base">
               Hangman Sprint
-            </span>
-            <span className="text-xs sm:text-xs font-mono font-semibold text-violet-500 truncate">
-              High-Frequency Vocabulary
-            </span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="bg-card/60 backdrop-blur-md px-2.5 py-1 rounded-full border-2 border-violet-500/30 flex items-center gap-1.5 shadow-2xs">
-            <span className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">
-              Score
-            </span>
-            <span className="text-xs sm:text-sm font-black font-mono text-violet-600 dark:text-violet-400">
-              450
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Game Container */}
-      <main className="flex-1 w-full max-w-sm sm:max-w-md md:max-w-[480px] mx-auto flex flex-col justify-between pt-1.5 sm:pt-3 pb-2 sm:pb-4 px-3 sm:px-0 overflow-hidden">
-        
-        {/* Top Progress & Lives */}
-        <div className="w-full flex flex-col gap-1.5 shrink-0">
-          <div className="flex items-center justify-between px-1">
-            <div className="flex gap-1.5">
-              {Array.from({ length: totalLives }).map((_, i) => (
-                <div key={i}>
-                  {i < totalLives - wrongGuesses ? (
-                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 drop-shadow-xs animate-pulse" />
-                  ) : (
-                    <HeartCrack className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/30" />
-                  )}
-                </div>
-              ))}
-            </div>
-            <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest surface-card px-2.5 py-0.5 rounded-full">
-              Word 4 of 10
-            </span>
-          </div>
-          <ProgressBar
-            value={40}
-            barClassName="bg-gradient-to-r from-amber-500 to-orange-500"
-          />
-        </div>
-
-        {/* Central Puzzle Area */}
-        <div className="flex-1 flex flex-col items-center justify-center gap-2.5 sm:gap-4 py-1 my-auto">
-          {/* Hangman Graphic/Visualizer Placeholder */}
-          <div className="relative flex flex-col items-center gap-0.5">
-            <span className="text-3xl sm:text-4xl text-foreground font-black drop-shadow-xs">
-              {wrongGuesses > 0 ? "😰" : "🤔"}
-            </span>
-            <span className="text-xs sm:text-xs font-mono font-bold text-rose-500 bg-rose-500/10 px-2.5 py-0.5 rounded-full uppercase tracking-widest border-2 border-rose-500/20">
-              {wrongGuesses} / {totalLives} Strikes
-            </span>
-          </div>
-
-          {/* Hidden Word Display */}
-          <div className="flex w-full justify-center gap-1 sm:gap-2">
-            {mockWord.split("").map((letter, i) => {
-              const isRevealed = guessedLetters.has(letter);
-              return (
-                <div
-                  key={i}
-                  className={`h-10 sm:h-12 min-w-0 flex-1 max-w-11 flex items-center justify-center rounded-xl sm:rounded-2xl border-2 text-sm sm:text-lg md:text-xl font-black font-mono uppercase transition-all duration-300 shadow-2xs ${
-                    isRevealed
-                      ? "bg-violet-500/15 border-violet-500/40 text-violet-600 dark:text-violet-300 shadow-violet-500/10 scale-105"
-                      : "bg-card border-border text-transparent"
-                  }`}
-                >
-                  {isRevealed ? letter : ""}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Definition Hint */}
-          <div className="bg-card border-2 border-violet-500/25 rounded-2xl p-3 sm:p-4 w-full text-center shadow-md shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-indigo-500"></div>
-            <div className="flex items-start justify-center gap-2">
-              <HelpCircle className="w-3.5 h-3.5 text-violet-500 shrink-0 mt-0.5" />
-              <p className="text-xs sm:text-sm md:text-base font-semibold text-foreground/90 leading-relaxed italic">
-                "{mockHint}"
-              </p>
-            </div>
+            </h1>
+            <p className="truncate text-xs font-mono font-semibold text-violet-700 dark:text-violet-300">
+              SSC vocabulary &amp; one-word substitutions
+            </p>
           </div>
         </div>
 
-        {/* Virtual Keyboard */}
-        <div className="w-full flex flex-col gap-1 sm:gap-1.5 shrink-0">
-          {keyboardRows.map((row, rowIndex) => (
-            <div
-              key={rowIndex}
-              className="flex justify-center gap-1 sm:gap-1.5 w-full"
-            >
-              {row.map((key) => {
-                const isGuessed = guessedLetters.has(key);
-                const isCorrect = isGuessed && mockWord.includes(key);
-                const isWrong = isGuessed && !mockWord.includes(key);
+        {best > 0 && state.phase !== "lobby" && (
+          <div
+            className="flex shrink-0 items-center gap-1.5 rounded-full border-2 border-border bg-card px-2.5 py-1 text-xs font-mono font-bold text-muted-foreground"
+            title="Your best score"
+          >
+            <Trophy className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+            {best}
+          </div>
+        )}
+      </header>
 
-                let keyClasses =
-                  "bg-card border-border text-foreground hover:bg-muted active:scale-[0.95] shadow-2xs";
-                
-                if (isCorrect) {
-                  keyClasses = "bg-emerald-500/20 border-emerald-500/40 text-emerald-600 dark:text-emerald-300 opacity-60 cursor-default";
-                } else if (isWrong) {
-                  keyClasses = "bg-rose-500/10 border-rose-500/20 text-rose-500/40 opacity-40 cursor-default";
-                }
+      {state.phase === "lobby" && <LobbyScreen best={best} onStart={start} />}
 
-                return (
-                  <button
-                    key={key}
-                    onClick={() => !isGuessed && handleKeyPress(key)}
-                    disabled={isGuessed}
-                    className={`flex-1 max-w-[34px] sm:max-w-[42px] h-9 sm:h-11 md:h-12 rounded-lg sm:rounded-xl border-2 flex items-center justify-center text-xs sm:text-sm font-black font-mono transition-all select-none touch-manipulation cursor-pointer ${keyClasses}`}
-                  >
-                    {key}
-                  </button>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </main>
+      {(state.phase === "playing" || state.phase === "reveal") && word && (
+        <HangmanBoard
+          state={state}
+          word={word}
+          onGuess={guess}
+          onHint={hint}
+          onNext={next}
+        />
+      )}
+
+      {state.phase === "over" && (
+        <ResultScreen
+          state={state}
+          best={best}
+          isNewBest={isNewBest}
+          onPlayAgain={start}
+        />
+      )}
     </div>
   );
 }

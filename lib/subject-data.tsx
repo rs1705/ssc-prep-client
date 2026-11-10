@@ -74,10 +74,10 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
     {
       title: "Games",
       description:
-        "Play Hangman, Word Shuffle and Crossword to test your vocabulary.",
+        "Hangman, Odd Link, Word of the Day and Spelling Sprint: quick games for SSC vocabulary.",
       icon: <Skull className="w-5 h-5" strokeWidth={2} />,
-      buttonText: "COMING SOON",
-      linkTo: "#",
+      buttonText: "PLAY",
+      linkTo: "/SSC/english/games",
       colorTheme: SUBJECT_HUE.english,
     },
   ],
