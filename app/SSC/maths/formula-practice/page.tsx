@@ -131,7 +131,7 @@ export default function FormulasPage() {
                       aria-current={active ? "page" : undefined}
                       className={`flex items-center justify-between gap-2 rounded-lg px-3 py-1.5 text-left text-sm transition-colors ${
                         active
-                          ? "bg-brand-500/10 font-bold text-brand-700 dark:text-brand-300"
+                          ? "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] font-bold text-brand-700 dark:text-brand-300"
                           : "font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                       }`}
                     >
@@ -239,7 +239,7 @@ function FormulaCard({ entry, startHidden }: { entry: FormulaEntry; startHidden:
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-base font-bold leading-snug text-foreground">{entry.title}</h3>
         {entry.kind === "trick" && (
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-brand-500/10 px-2 py-0.5 text-[11px] font-bold text-brand-700 dark:text-brand-300">
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2 py-0.5 text-[11px] font-bold text-brand-700 dark:text-brand-300">
             <Lightbulb className="h-3 w-3" aria-hidden="true" />
             Trick
           </span>
@@ -273,7 +273,7 @@ function FormulaCard({ entry, startHidden }: { entry: FormulaEntry; startHidden:
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
           {open && (
-            <div className={`mt-2 flex flex-col gap-2 rounded-xl bg-muted/70 p-3 text-sm leading-relaxed text-muted-foreground ${MATH_CLASS}`}>
+            <div className={`mt-2 flex flex-col gap-2 rounded-xl bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] p-3 text-sm leading-relaxed text-muted-foreground ${MATH_CLASS}`}>
               {entry.note && <p>{entry.note}</p>}
               {entry.example && (
                 <div className="text-foreground">

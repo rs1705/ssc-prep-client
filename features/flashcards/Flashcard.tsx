@@ -43,7 +43,7 @@ function SpeakButton({ text }: { text: string }) {
 
 function TypeChip({ type }: { type: string }) {
   return (
-    <span className="relative rounded-full border-2 border-fuchsia-500/25 bg-fuchsia-500/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-fuchsia-700 dark:text-fuchsia-300">
+    <span className="relative rounded-full border-2 border-fuchsia-500/25 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-fuchsia-700 dark:text-fuchsia-300">
       {TYPE_LABEL[type] ?? type}
     </span>
   );
@@ -60,7 +60,7 @@ function WordList({ label, words }: { label: string; words?: string[] }) {
       {list.map((word) => (
         <span
           key={word}
-          className="rounded-lg border-2 border-border bg-muted/60 px-2 py-0.5 text-sm font-semibold text-foreground"
+          className="rounded-lg border-2 border-border bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] px-2 py-0.5 text-sm font-semibold text-foreground"
         >
           {word.toLowerCase()}
         </span>

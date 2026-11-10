@@ -10,15 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors",
+          "bg-primary text-primary-foreground shadow-sm hover:bg-[color-mix(in_oklab,var(--primary)_90%,var(--card))] transition-colors",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-destructive text-white shadow-xs hover:bg-[color-mix(in_oklab,var(--destructive)_90%,var(--card))] focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-[color-mix(in_oklab,var(--destructive)_60%,var(--card))]",
         outline:
-          "border-2 bg-background shadow-xs hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border-2 bg-background shadow-xs hover:bg-muted hover:text-foreground dark:bg-[color-mix(in_oklab,var(--input)_30%,var(--card))] dark:border-input dark:hover:bg-[color-mix(in_oklab,var(--input)_50%,var(--card))]",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground shadow-xs hover:bg-[color-mix(in_oklab,var(--secondary)_80%,var(--card))]",
         ghost:
-          "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50",
+          "hover:bg-muted hover:text-foreground dark:hover:bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))]",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

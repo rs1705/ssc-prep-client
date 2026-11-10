@@ -26,7 +26,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={Math.round(clampedValue)}
-            className={cn("relative w-full h-3.5 bg-muted/70 rounded-full overflow-hidden border-2 border-border p-0.5 z-10", className)}
+            className={cn("relative w-full h-3.5 bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] rounded-full overflow-hidden border-2 border-border p-0.5 z-10", className)}
         >
             {/* Progress Fill */}
             <div

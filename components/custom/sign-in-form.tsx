@@ -65,7 +65,7 @@ const SignInForm = () => {
                   <Input
                     type="text"
                     placeholder="Enter your email"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>
@@ -90,7 +90,7 @@ const SignInForm = () => {
                   <Input
                     type="password"
                     placeholder="Enter your password"
-                    className="h-12 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all text-sm px-4"
+                    className="h-12 rounded-2xl bg-card backdrop-blur-md border-2 border-border hover:border-border focus-visible:bg-card focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all text-sm px-4"
                     {...field}
                   />
                 </FormControl>

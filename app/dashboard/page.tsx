@@ -46,7 +46,7 @@ function RecentSessionsList({
   if (sessions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center text-center gap-3 p-6 h-full min-h-[180px]">
-        <div className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center ring-1 ring-border/40">
+        <div className="w-10 h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 flex items-center justify-center ring-1 ring-border/40">
           <History className="w-4 h-4" />
         </div>
         <div className="text-sm font-bold text-foreground">No drills yet</div>
@@ -70,10 +70,10 @@ function RecentSessionsList({
         return (
           <div
             key={session.id}
-            className="flex items-center justify-between p-3 hover:bg-muted/40 rounded-2xl transition-all duration-300 group border-2 border-transparent hover:border-brand-500/20 hover:shadow-sm"
+            className="flex items-center justify-between p-3 hover:bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] rounded-2xl transition-all duration-300 group border-2 border-transparent hover:border-brand-500/20 hover:shadow-sm"
           >
             <div className={`flex items-center ${compact ? "gap-3" : "gap-3.5"}`}>
-              <div className="w-10 h-10 rounded-xl bg-background border-2 border-border flex items-center justify-center shrink-0 group-hover:bg-brand-500/10 group-hover:border-brand-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
+              <div className="w-10 h-10 rounded-xl bg-background border-2 border-border flex items-center justify-center shrink-0 group-hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] group-hover:border-brand-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
                 <Icon className="w-4 h-4 text-muted-foreground group-hover:text-brand-600 transition-colors" />
               </div>
               <div>
@@ -89,7 +89,7 @@ function RecentSessionsList({
               <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm">
                 {Math.round(session.accuracy)}%
               </div>
-              <div className="text-xs leading-none font-mono font-bold tracking-wider text-brand-700 dark:text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded border border-brand-500/20">
+              <div className="text-xs leading-none font-mono font-bold tracking-wider text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-1.5 py-0.5 rounded border border-brand-500/20">
                 +{session.xpEarned} XP
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function Dashboard() {
       label: "Daily Flashcards",
       to: "/SSC/english/flashcards/fsrs",
     },
-    { icon: Gamepad2, label: "Hangman Sprint", to: "/SSC/english/hangman" },
+    { icon: Gamepad2, label: "Hangman", to: "/SSC/english/hangman" },
   ];
 
   return (
@@ -190,11 +190,11 @@ export default function Dashboard() {
         <div className="grid lg:grid-cols-2 gap-5 mb-10">
           {/* Streak / Target Card */}
           <div
-            className="rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-brand-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+            className="rounded-3xl bg-card backdrop-blur-2xl border-2 border-brand-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
             style={{ animationDelay: "100ms", animationFillMode: "both" }}
           >
             <div className="flex items-center justify-between mb-4 relative z-10">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background/60 px-3 py-1 rounded-full border-2 border-border">
+              <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background px-3 py-1 rounded-full border-2 border-border">
                 <Flame
                   className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400 animate-pulse"
                   strokeWidth={2.5}
@@ -246,7 +246,7 @@ export default function Dashboard() {
                 <div key={i} className="flex flex-col items-center gap-1">
                   <div
                     className={`h-2.5 w-full rounded-full transition-all ${
-                      stats.activeDays[i] ? "bg-brand-500" : "bg-muted/70"
+                      stats.activeDays[i] ? "bg-brand-500" : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))]"
                     }`}
                   />
                   <span className="text-xs font-mono font-bold text-muted-foreground">
@@ -371,7 +371,7 @@ export default function Dashboard() {
                     href={q.to}
                     className="rounded-2xl surface-card p-4.5 flex items-center gap-4 hover:border-brand-500/40 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] transition-all cursor-pointer group"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
+                    <div className="w-10 h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                       <q.icon className="w-4 h-4" strokeWidth={2} />
                     </div>
                     <div className="font-bold text-sm text-foreground group-hover:text-brand-500 transition-colors">
@@ -399,7 +399,7 @@ export default function Dashboard() {
                       href={q.to}
                       className="flex-1 rounded-2xl surface-card p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-brand-500/40 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] transition-all cursor-pointer justify-center text-center sm:text-left group"
                     >
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
                         <q.icon
                           className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                           strokeWidth={2}

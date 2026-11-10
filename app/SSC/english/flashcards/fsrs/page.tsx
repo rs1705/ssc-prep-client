@@ -169,13 +169,13 @@ const FsrsPage = () => {
           </AlertDialogDescription>
           <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
             <AlertDialogCancel
-              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-muted/60 active:scale-95 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] active:scale-95 transition-all cursor-pointer"
               onClick={() => setShowQuitConfirm(false)}
             >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))] text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
               onClick={() => {
                 setShowQuitConfirm(false);
                 router.push("/SSC/english/flashcards");

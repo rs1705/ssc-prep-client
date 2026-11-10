@@ -11,6 +11,10 @@ export interface FlashcardFilters {
   difficulty?: string;
   alphabet?: string;
   highFrequency?: boolean;
+  /** Max number of cards. */
+  limit?: number;
+  /** Random order (a fresh sample each request). */
+  random?: boolean;
 }
 
 /** 1 = Again, 2 = Hard, 3 = Good, 4 = Easy. */
@@ -54,13 +58,15 @@ export const flashcardApi = createApi({
     getFilteredCards: builder.query<FlashCardInterface[], FlashcardFilters>({
       query: (filters) => {
         const params = new URLSearchParams();
-        const { highFrequency, alphabet, ...rest } = filters;
+        const { highFrequency, alphabet, limit, random, ...rest } = filters;
 
         for (const [key, value] of Object.entries(rest)) {
-          if (value && value !== "all") params.append(key, value);
+          if (value && value !== "all") params.append(key, String(value));
         }
         if (alphabet) params.append("alphabet", alphabet);
         if (highFrequency) params.append("highFrequency", "true");
+        if (limit) params.append("limit", String(limit));
+        if (random) params.append("random", "true");
 
         return `/flashcards?${params.toString()}`;
       },
@@ -86,6 +92,7 @@ export const flashcardApi = createApi({
 
 export const {
   useGetFilteredCardsQuery,
+  useLazyGetFilteredCardsQuery,
   useSaveFlashcardInteractionsMutation,
   useGetStudyDeckQuery,
 } = flashcardApi;

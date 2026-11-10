@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Swords, BookOpen } from "lucide-react";
+import { Swords, BookOpen, Loader2 } from "lucide-react";
 import { RevisionDialog } from "./revision-dialog";
 
 export interface RevisionRange {
@@ -28,6 +28,10 @@ export interface TopicCardProps {
   description: string;
   difficulty: "Easy" | "Medium" | "Hard";
   onStartClick?: () => void;
+  /** The drill is opening: show a spinner on Practice. */
+  isStarting?: boolean;
+  /** Another drill is opening: ignore clicks. */
+  startDisabled?: boolean;
   index?: number;
   cols?: number;
   colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
@@ -42,6 +46,8 @@ export const TopicCard = ({
   description,
   difficulty,
   onStartClick,
+  isStarting = false,
+  startDisabled = false,
   index = 0,
   cols = 3,
   colorTheme = "amber",
@@ -60,37 +66,37 @@ export const TopicCard = ({
   > = {
     sky: {
       iconWrapper:
-        "bg-sky-500/10 text-sky-600 dark:text-sky-400 shadow-[0_2px_8px_rgba(14,165,233,0.05)]",
+        "bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] text-sky-600 dark:text-sky-400 shadow-[0_2px_8px_rgba(14,165,233,0.05)]",
       hoverBorder: "hover:border-sky-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))]",
     },
     emerald: {
       iconWrapper:
-        "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
+        "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
       hoverBorder: "hover:border-emerald-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_5%,var(--card))]",
     },
     rose: {
       iconWrapper:
-        "bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
+        "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
       hoverBorder: "hover:border-rose-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-rose-500)_5%,var(--card))]",
     },
     amber: {
       iconWrapper:
-        "bg-brand-500/10 text-brand-600 dark:text-brand-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
+        "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
       hoverBorder: "hover:border-brand-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))]",
     },
     indigo: {
       iconWrapper:
-        "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
+        "bg-[color-mix(in_oklab,var(--color-indigo-500)_10%,var(--card))] text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
       hoverBorder: "hover:border-indigo-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-indigo-500)_5%,var(--card))]",
     },
     violet: {
       iconWrapper:
-        "bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
+        "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-700 dark:text-fuchsia-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
       hoverBorder: "hover:border-fuchsia-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_5%,var(--card))]",
     },
@@ -116,7 +122,7 @@ export const TopicCard = ({
             {emoji}
           </div>
           {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-brand-500/10 text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 select-none">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 select-none">
               {badge}
             </span>
           )}
@@ -136,7 +142,7 @@ export const TopicCard = ({
       {/* Bottom Controls Row */}
       <div className="flex items-center justify-between mt-5 pt-3.5 border-t-2 border-border/40 relative z-10 gap-2">
         {/* Left: Stats Pill */}
-        <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-muted/60 px-2.5 py-1 rounded-lg border-2 border-border truncate max-w-[120px]">
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] px-2.5 py-1 rounded-lg border-2 border-border truncate max-w-[120px]">
           {stats}
         </span>
 
@@ -151,7 +157,7 @@ export const TopicCard = ({
               trigger={
                 <Button
                   variant="ghost"
-                  className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer"
+                  className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer"
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   Revise
@@ -161,10 +167,16 @@ export const TopicCard = ({
           )}
           <Button
             onClick={onStartClick}
+            disabled={startDisabled}
+            aria-busy={isStarting}
             className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white shadow-xs hover:shadow-md hover:shadow-brand-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
           >
-            <Swords className="w-3.5 h-3.5 group-hover/btn:rotate-12 group-hover/btn:scale-125 transition-transform duration-300" />
-            Practice
+            {isStarting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" />
+            ) : (
+              <Swords className="w-3.5 h-3.5 group-hover/btn:rotate-12 group-hover/btn:scale-125 transition-transform duration-300" />
+            )}
+            {isStarting ? "Opening…" : "Practice"}
           </Button>
         </div>
       </div>

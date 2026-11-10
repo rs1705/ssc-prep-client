@@ -699,7 +699,7 @@ export default function MentalMathsPractice() {
             role="dialog"
             aria-modal="true"
             aria-label="Drill paused"
-            className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-4 rounded-3xl bg-background/85 backdrop-blur-md animate-in fade-in duration-200"
+            className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-4 rounded-3xl bg-background backdrop-blur-md animate-in fade-in duration-200"
           >
             <div className="text-2xl font-black tracking-tight">Paused</div>
             <p className="text-xs font-mono font-semibold text-muted-foreground">
@@ -748,7 +748,7 @@ export default function MentalMathsPractice() {
                 {topic !== "mixed" && (
                   <div className="surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-brand-500/10 text-brand-700 dark:text-brand-400 border-2 border-brand-500/20 font-mono text-xs font-bold">
+                      <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 border-2 border-brand-500/20 font-mono text-xs font-bold">
                         1
                       </span>
                       <h3 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground">
@@ -773,8 +773,8 @@ export default function MentalMathsPractice() {
                             onClick={() => handleDifficultyChange(d)}
                             className={`rounded-xl sm:rounded-2xl h-8.5 sm:h-9 md:h-9.5 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border-2 select-none ${
                               isSelected
-                                ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                                : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
+                                ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                                : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
                             }`}
                           >
                             {label}
@@ -797,7 +797,7 @@ export default function MentalMathsPractice() {
                 {/* 2. Practice Mode Card */}
                 <div className="surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-brand-400/15 text-brand-700  border-2 border-brand-400/30 font-mono text-xs font-bold">
+                    <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] text-brand-700  border-2 border-brand-400/30 font-mono text-xs font-bold">
                       2
                     </span>
                     <h3 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground">
@@ -811,11 +811,11 @@ export default function MentalMathsPractice() {
                         onClick={() => handleModeChange("timed")}
                         className={`rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[92px] sm:min-h-[100px] md:min-h-[104px] transition-all duration-75 cursor-pointer border-2 select-none p-2.5 sm:p-3 ${
                           engine.state.mode === "timed"
-                            ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[4px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
-                            : "bg-card/70 border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[3px]"
+                            ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[4px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
+                            : "bg-card border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[3px]"
                         }`}
                       >
-                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "timed" ? "bg-brand-500/20 text-brand-600 dark:text-brand-300" : "bg-muted/70 text-muted-foreground"}`}>
+                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "timed" ? "bg-[color-mix(in_oklab,var(--brand-500)_20%,var(--card))] text-brand-600 dark:text-brand-300" : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] text-muted-foreground"}`}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0"
@@ -845,11 +845,11 @@ export default function MentalMathsPractice() {
                         onClick={() => handleModeChange("freestyle")}
                         className={`rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[92px] sm:min-h-[100px] md:min-h-[104px] transition-all duration-75 cursor-pointer border-2 select-none p-2.5 sm:p-3 ${
                           engine.state.mode === "freestyle"
-                            ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[4px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
-                            : "bg-card/70 border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[3px]"
+                            ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[4px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
+                            : "bg-card border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[3px]"
                         }`}
                       >
-                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "freestyle" ? "bg-brand-500/20 text-brand-600 dark:text-brand-300" : "bg-muted/70 text-muted-foreground"}`}>
+                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "freestyle" ? "bg-[color-mix(in_oklab,var(--brand-500)_20%,var(--card))] text-brand-600 dark:text-brand-300" : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] text-muted-foreground"}`}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0"
@@ -888,8 +888,8 @@ export default function MentalMathsPractice() {
                                 onClick={() => handleTimerLimitChange(t)}
                                 className={`rounded-xl sm:rounded-2xl h-8.5 sm:h-9 md:h-9.5 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border-2 select-none ${
                                   isSelected
-                                    ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                                    : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
+                                    ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                                    : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
                                 }`}
                               >
                                 {t}s
@@ -906,8 +906,8 @@ export default function MentalMathsPractice() {
                               onClick={() => handleQuestionLimitChange(q)}
                               className={`rounded-xl sm:rounded-2xl h-8.5 sm:h-9 md:h-9.5 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border-2 select-none ${
                                 isSelected
-                                  ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                                  : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
+                                  ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
+                                  : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
                               }`}
                             >
                               {q} Qs
@@ -920,7 +920,7 @@ export default function MentalMathsPractice() {
                 {/* 3. Input Layout Card */}
                 <div className="surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-brand-400/15 text-brand-700  border-2 border-brand-400/30 font-mono text-xs font-bold">
+                    <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] text-brand-700  border-2 border-brand-400/30 font-mono text-xs font-bold">
                       3
                     </span>
                     <h3 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground">
@@ -933,8 +933,8 @@ export default function MentalMathsPractice() {
                       onClick={() => setInputLayout("mcq")}
                       className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13.5 sm:h-14 md:h-14 transition-all duration-75 cursor-pointer border-2 select-none p-2 sm:p-2.5 ${
                         inputLayout === "mcq"
-                          ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
-                          : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[2px]"
+                          ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
+                          : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[2px]"
                       }`}
                     >
                       <span
@@ -952,8 +952,8 @@ export default function MentalMathsPractice() {
                       onClick={() => setInputLayout("keys")}
                       className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13.5 sm:h-14 md:h-14 transition-all duration-75 cursor-pointer border-2 select-none p-2 sm:p-2.5 ${
                         inputLayout === "keys"
-                          ? "bg-brand-400/20 dark:bg-brand-400/15 border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
-                          : "bg-card/70 border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[2px]"
+                          ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
+                          : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[2px]"
                       }`}
                     >
                       <span
@@ -1019,7 +1019,7 @@ export default function MentalMathsPractice() {
                   <div className="flex items-center justify-between w-full pb-1.5 gap-2">
                     {/* Left: Topic Icon + Name & Tags */}
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-brand-500/10 rounded-2xl text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] rounded-2xl text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
                         {renderTopicIcon(
                           topic,
                           "w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 shrink-0",
@@ -1030,13 +1030,13 @@ export default function MentalMathsPractice() {
                           {topic}
                         </span>
                         <div className="flex items-center gap-1.5 mt-1 min-w-0 text-xs font-mono font-bold uppercase tracking-wider select-none">
-                          <span className="bg-muted/70 text-foreground/80 px-1.5 py-0.5 rounded">
+                          <span className="bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] text-foreground/80 px-1.5 py-0.5 rounded">
                             {engine.state.mode === "timed"
                               ? "Timed"
                               : "Freestyle"}
                           </span>
                           <span
-                            className={`px-1.5 py-0.5 rounded bg-muted/70 ${
+                            className={`px-1.5 py-0.5 rounded bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] ${
                               engine.state.difficulty === "easy"
                                 ? "text-emerald-600 dark:text-emerald-400"
                                 : engine.state.difficulty === "medium"
@@ -1056,7 +1056,7 @@ export default function MentalMathsPractice() {
                     <div className="flex items-center gap-2 shrink-0">
                       {streak >= 2 && (
                         <div
-                          className="flex items-center gap-1 bg-brand-500/10 dark:bg-brand-500/15 border-2 border-brand-500/20 rounded-full px-2.5 py-1 select-none animate-in zoom-in-75 duration-200"
+                          className="flex items-center gap-1 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] border-2 border-brand-500/20 rounded-full px-2.5 py-1 select-none animate-in zoom-in-75 duration-200"
                           aria-label={`${streak} correct in a row`}
                         >
                           <Flame
@@ -1070,7 +1070,7 @@ export default function MentalMathsPractice() {
                       )}
 
                       {/* Score Pill */}
-                      <div className="flex items-center gap-1.5 bg-emerald-500/10 dark:bg-emerald-500/15 border-2 border-emerald-500/20 rounded-full px-2.5 py-1 select-none">
+                      <div className="flex items-center gap-1.5 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] dark:bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] border-2 border-emerald-500/20 rounded-full px-2.5 py-1 select-none">
                         <Zap className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 fill-emerald-500 dark:fill-emerald-400" />
                         <div className="h-5 overflow-hidden flex items-center relative min-w-[16px] justify-center">
                           <AnimatePresence mode="popLayout" initial={false}>
@@ -1093,7 +1093,7 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Compact Layout Switcher */}
-                      <div className="flex items-center bg-muted/50 p-0.5 rounded-xl border-2 border-border select-none text-xs font-bold w-[76px] sm:w-[84px]">
+                      <div className="flex items-center bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] p-0.5 rounded-xl border-2 border-border select-none text-xs font-bold w-[76px] sm:w-[84px]">
                         <button
                           type="button"
                           onClick={() => setInputLayout("mcq")}
@@ -1155,10 +1155,10 @@ export default function MentalMathsPractice() {
                   <div
                     className={`
                             my-0.5 sm:my-1.5 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-3 sm:py-4 md:py-6 lg:py-7 px-4 sm:px-6 md:px-8 min-h-[110px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[165px] overflow-hidden border-2 transition-all duration-200 ease-in-out select-none relative
-                            ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : ""}
-                            ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500/60 bg-rose-500/15 text-rose-600 dark:text-rose-300" : ""}
-                            ${engine.state.currentAnswerStatus === "skipped" ? "border-brand-500/60 bg-brand-500/15 text-brand-600 dark:text-brand-300" : ""}
-                            ${engine.state.currentAnswerStatus === "idle" ? "border-border/40 bg-card/60 backdrop-blur-xl" : ""}
+                            ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500/60 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-300" : ""}
+                            ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500/60 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-600 dark:text-rose-300" : ""}
+                            ${engine.state.currentAnswerStatus === "skipped" ? "border-brand-500/60 bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-600 dark:text-brand-300" : ""}
+                            ${engine.state.currentAnswerStatus === "idle" ? "border-border/40 bg-card backdrop-blur-xl" : ""}
                         `}
                   >
                     {engine.state.currentAnswerStatus !== "idle" && (
@@ -1219,7 +1219,7 @@ export default function MentalMathsPractice() {
                               onChange={(e) =>
                                 setUserInput(e.target.value.replace(/\D/g, ""))
                               }
-                              className="h-9 sm:h-10 md:h-11 flex-1 rounded-2xl text-center px-4 text-base sm:text-lg md:text-xl font-bold font-mono border-2 border-border bg-card/70 backdrop-blur-md focus-visible:bg-card focus-visible:border-brand-400/70 focus-visible:ring-2 focus-visible:ring-brand-400/20 caret-brand-400 shadow-inner transition-all"
+                              className="h-9 sm:h-10 md:h-11 flex-1 rounded-2xl text-center px-4 text-base sm:text-lg md:text-xl font-bold font-mono border-2 border-border bg-card backdrop-blur-md focus-visible:bg-card focus-visible:border-brand-400/70 focus-visible:ring-2 focus-visible:ring-brand-400/20 caret-brand-400 shadow-inner transition-all"
                               autoFocus
                             />
                             <Button
@@ -1268,10 +1268,10 @@ export default function MentalMathsPractice() {
                                 onClick={() => handleNumClick(btn)}
                                 className={`w-full h-full font-black rounded-xl sm:rounded-2xl border-2 transition-all duration-75 ease-out outline-none select-none cursor-pointer font-mono ${
                                   btn === "Clear"
-                                    ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-500/25 border-rose-500/40 border-b-[4px] border-b-rose-600/70 active:translate-y-[2px] text-xs sm:text-sm font-bold uppercase font-mono shadow-xs"
+                                    ? "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-600 dark:text-rose-400 hover:bg-[color-mix(in_oklab,var(--color-rose-500)_25%,var(--card))] border-rose-500/40 border-b-[4px] border-b-rose-600/70 active:translate-y-[2px] text-xs sm:text-sm font-bold uppercase font-mono shadow-xs"
                                     : btn === "⌫"
-                                      ? "bg-muted/60 text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-base sm:text-lg md:text-xl font-sans shadow-xs"
-                                      : "bg-card/90 text-foreground hover:bg-card hover:border-brand-400/60 hover:border-b-brand-500 border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-lg sm:text-xl md:text-2xl shadow-xs"
+                                      ? "bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-base sm:text-lg md:text-xl font-sans shadow-xs"
+                                      : "bg-card text-foreground hover:bg-card hover:border-brand-400/60 hover:border-b-brand-500 border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-lg sm:text-xl md:text-2xl shadow-xs"
                                 }`}
                               >
                                 {btn}
@@ -1295,14 +1295,14 @@ export default function MentalMathsPractice() {
                                 const isSelected = selectedOption === option;
                                 const status = engine.state.currentAnswerStatus;
                                 let highlightClass =
-                                  "border-border/60 border-b-[5px] border-b-border/80 bg-card/85 text-foreground hover:bg-card hover:border-brand-400/60 hover:border-b-brand-500 shadow-sm";
+                                  "border-border/60 border-b-[5px] border-b-border/80 bg-card text-foreground hover:bg-card hover:border-brand-400/60 hover:border-b-brand-500 shadow-sm";
                                 if (isSelected) {
                                   if (status === "correct") {
                                     highlightClass =
-                                      "border-emerald-500/70 border-b-[5px] border-b-emerald-600 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-emerald-500/10";
+                                      "border-emerald-500/70 border-b-[5px] border-b-emerald-600 bg-[color-mix(in_oklab,var(--color-emerald-500)_20%,var(--card))] text-emerald-600 dark:text-emerald-400 shadow-emerald-500/10";
                                   } else if (status === "wrong") {
                                     highlightClass =
-                                      "border-rose-500/70 border-b-[5px] border-b-rose-600 bg-rose-500/20 text-rose-600 dark:text-rose-400 shadow-rose-500/10";
+                                      "border-rose-500/70 border-b-[5px] border-b-rose-600 bg-[color-mix(in_oklab,var(--color-rose-500)_20%,var(--card))] text-rose-600 dark:text-rose-400 shadow-rose-500/10";
                                   }
                                 }
                                 return (
@@ -1411,7 +1411,7 @@ export default function MentalMathsPractice() {
                       {/* Header */}
                       <div className="w-full flex items-center justify-between pb-3 sm:pb-4 border-b-2 border-border/40 gap-3 shrink-0">
                         <div className="flex items-center gap-3 sm:gap-4">
-                          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-brand-500/10 border-2 border-brand-500/20 flex items-center justify-center text-brand-700 dark:text-brand-400 shrink-0">
+                          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/20 flex items-center justify-center text-brand-700 dark:text-brand-400 shrink-0">
                             <Trophy className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.2} />
                           </div>
                           <div>
@@ -1458,7 +1458,7 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Mobile View Tab Switcher */}
-                      <div className="flex md:hidden w-full p-1 bg-muted/60 border-2 border-border rounded-xl mt-2 mb-1 shrink-0">
+                      <div className="flex md:hidden w-full p-1 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] border-2 border-border rounded-xl mt-2 mb-1 shrink-0">
                         <button
                           type="button"
                           onClick={() => setResultTab("overview")}
@@ -1525,7 +1525,7 @@ export default function MentalMathsPractice() {
 
                             {/* Stacked Metric Cards */}
                             <div className="flex-1 flex flex-col gap-1.5 sm:gap-2">
-                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border">
+                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-xl border-2 border-border">
                                 <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Correct
                                 </span>
@@ -1533,7 +1533,7 @@ export default function MentalMathsPractice() {
                                   {correct}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border">
+                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-xl border-2 border-border">
                                 <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Wrong
                                 </span>
@@ -1541,7 +1541,7 @@ export default function MentalMathsPractice() {
                                   {wrong}
                                 </span>
                               </div>
-                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-muted/50 rounded-xl border-2 border-border">
+                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-xl border-2 border-border">
                                 <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
                                   Skipped
                                 </span>
@@ -1596,7 +1596,7 @@ export default function MentalMathsPractice() {
                                           bottom: `${Math.min(95, Math.max(5, (targetTime / topY) * 100))}%`,
                                         }}
                                       >
-                                        <span className="bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs sm:text-xs md:text-xs font-mono font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase transform -translate-y-1/2 select-none mr-0.5 sm:mr-1">
+                                        <span className="bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs sm:text-xs md:text-xs font-mono font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase transform -translate-y-1/2 select-none mr-0.5 sm:mr-1">
                                           TARGET {targetTime}s
                                         </span>
                                       </div>
@@ -1690,7 +1690,7 @@ export default function MentalMathsPractice() {
                           ) : (
                             <div className="surface-card rounded-2xl flex-1 flex flex-col min-h-0 overflow-hidden">
                               {/* Internal Card Header - Perfectly aligned with Left Column Accuracy Box */}
-                              <div className="flex justify-between items-center px-3.5 sm:px-4 py-2.5 sm:py-3 border-b-2 border-border/40 shrink-0 bg-muted/40">
+                              <div className="flex justify-between items-center px-3.5 sm:px-4 py-2.5 sm:py-3 border-b-2 border-border/40 shrink-0 bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))]">
                                 <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
                                   Every Answer
                                 </span>
@@ -1709,7 +1709,7 @@ export default function MentalMathsPractice() {
                                   return (
                                     <div
                                       key={idx}
-                                      className="flex items-center justify-between py-2.5 sm:py-3 px-2.5 sm:px-3 hover:bg-muted/40 transition-colors group rounded-xl"
+                                      className="flex items-center justify-between py-2.5 sm:py-3 px-2.5 sm:px-3 hover:bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] transition-colors group rounded-xl"
                                     >
                                       {/* Left: Index + Status Circle + Question & Answer Text */}
                                       <div className="flex items-center gap-2 sm:gap-2.5 flex-1 min-w-0 pr-2 sm:pr-3">
@@ -1718,17 +1718,17 @@ export default function MentalMathsPractice() {
                                         </span>
                                         <div className="flex items-center justify-center shrink-0">
                                           {isCorrect && (
-                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-emerald-500/10 border-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                                               <Check className="w-2.5 h-2.5" strokeWidth={2.5} />
                                             </div>
                                           )}
                                           {isWrong && (
-                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-rose-500/10 border-2 border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-2 border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center">
                                               <X className="w-2.5 h-2.5" strokeWidth={2.5} />
                                             </div>
                                           )}
                                           {isSkipped && (
-                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-brand-500/10 border-2 border-brand-500/30 text-brand-600 dark:text-brand-500 flex items-center justify-center">
+                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/30 text-brand-600 dark:text-brand-500 flex items-center justify-center">
                                               <Minus className="w-2.5 h-2.5" strokeWidth={2.5} />
                                             </div>
                                           )}
@@ -1755,17 +1755,17 @@ export default function MentalMathsPractice() {
                                         {/* Status Pill Badge - Fixed uniform width for perfect left alignment */}
                                         <div className="w-[58px] sm:w-[64px] md:w-[68px] shrink-0 flex items-center justify-start">
                                           {isCorrect && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-600 dark:text-emerald-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
                                               Correct
                                             </span>
                                           )}
                                           {isWrong && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-rose-500/20">
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-600 dark:text-rose-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-rose-500/20">
                                               Incorrect
                                             </span>
                                           )}
                                           {isSkipped && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-500 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-brand-500/20">
+                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-500 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-brand-500/20">
                                               Skipped
                                             </span>
                                           )}
@@ -1796,7 +1796,7 @@ export default function MentalMathsPractice() {
                           <button
                             type="button"
                             onClick={() => router.push("/SSC/maths/mental-maths")}
-                            className="flex-[3] h-11 sm:h-12 flex items-center justify-center rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-muted/60 border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer select-none"
+                            className="flex-[3] h-11 sm:h-12 flex items-center justify-center rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer select-none"
                           >
                             Topics
                           </button>
@@ -1854,13 +1854,13 @@ export default function MentalMathsPractice() {
 
           <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
             <AlertDialogCancel
-              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-muted/60 active:scale-95 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] active:scale-95 transition-all cursor-pointer"
               onClick={() => setShowQuitConfirm(false)}
             >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
+              className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))] text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
               onClick={() => {
                 setShowQuitConfirm(false);
                 if (gameState === "game_over") {

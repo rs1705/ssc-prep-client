@@ -14,7 +14,7 @@ export function MobileTabBar() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t-2 border-border/40 bg-background/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]"
+      className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t-2 border-border/40 bg-background backdrop-blur-xl pb-[env(safe-area-inset-bottom)]"
     >
       <ul className="mx-auto flex max-w-lg items-stretch justify-around">
         {PRIMARY_NAV.map(({ to, label, icon: Icon }) => {

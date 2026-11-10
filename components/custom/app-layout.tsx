@@ -22,6 +22,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     if (path.includes('/freestyle')) return true;
     // Individual games live under /games/<name>; the /games hub itself is a normal page.
     if (/\/games\/.+/.test(path)) return true;
+    if (/\/speed-drills\/.+/.test(path)) return true;
     
     // Trigger on specific topics inside mental-maths, but NOT the topic list page itself
     const isMentalMathsTopic = path.includes('/mental-maths/') && path.split('/mental-maths/')[1]?.length > 0;
@@ -33,7 +34,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const isFocusMode = isGameRoute(pathname);
   // Games that lay themselves out to exactly the viewport height (and scroll internally if
   // they must). Other focus routes keep their natural height and scroll the column instead.
-  const fitsViewport = pathname.includes("/hangman") || /\/games\/.+/.test(pathname);
+  const fitsViewport =
+    pathname.includes("/hangman") || /\/games\/.+/.test(pathname) || /\/speed-drills\/.+/.test(pathname);
   const isAuthRoute = pathname.startsWith("/signin") || pathname.startsWith("/signup");
   const isDashboard = pathname === "/dashboard";
   const sidebarWidthClass = isCollapsed
@@ -49,7 +51,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       
       {/* Main Content Area */}
       <div className="app-canvas flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
-        <div className="sticky top-0 z-30 w-full bg-background/85 border-b-2 border-border/60 backdrop-blur-md shrink-0">
+        <div className="sticky top-0 z-30 w-full bg-background border-b-2 border-border/60 backdrop-blur-md shrink-0">
           <div className="mx-auto w-full max-w-[1400px]">
             <TopBar />
           </div>

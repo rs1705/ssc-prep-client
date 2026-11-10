@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, CornerDownLeft, Delete, Flame, Share2, Shuffle } from "lucide-react";
@@ -221,7 +223,7 @@ export function WordleGame() {
             Guess {Math.min(state.guesses.length + (state.status === "playing" ? 1 : 0), MAX_GUESSES)} of {MAX_GUESSES}
           </span>
           {stats.streak > 0 && (
-            <span className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-2.5 py-0.5 text-xs font-mono font-black text-brand-700 dark:text-brand-400">
+            <span className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-0.5 text-xs font-mono font-black text-brand-700 dark:text-brand-400">
               <Flame className="h-3.5 w-3.5" aria-hidden="true" />
               {stats.streak} day streak
             </span>
@@ -313,7 +315,7 @@ export function WordleGame() {
                     type="button"
                     onClick={submit}
                     aria-label="Enter"
-                    className="flex h-11 flex-[1.5] items-center justify-center rounded-lg border-2 border-b-[3px] border-border bg-card text-foreground transition-all active:translate-y-[1px] [@media(max-height:600px)]:h-10 sm:h-12"
+                    className="flex h-11 flex-[1.5] items-center justify-center rounded-lg border-2 border-b-4 border-border bg-card text-foreground transition-all active:translate-y-[2px] active:border-b-2 [@media(max-height:600px)]:h-10 sm:h-12"
                   >
                     <CornerDownLeft className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -326,7 +328,7 @@ export function WordleGame() {
                       type="button"
                       onClick={() => type(letter)}
                       aria-label={`${letter}${ks ? `, ${ks}` : ""}`}
-                      className={`h-11 min-w-0 flex-1 select-none rounded-lg border-2 border-b-[3px] font-mono text-sm font-black transition-all active:translate-y-[1px] [@media(max-height:600px)]:h-10 sm:h-12 sm:text-base ${
+                      className={`h-11 min-w-0 flex-1 select-none rounded-lg border-2 border-b-4 font-mono text-sm font-black transition-all active:translate-y-[2px] active:border-b-2 [@media(max-height:600px)]:h-10 sm:h-12 sm:text-base ${
                         ks ? KEY_CLASS[ks] : "border-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
                       }`}
                     >
@@ -339,7 +341,7 @@ export function WordleGame() {
                     type="button"
                     onClick={remove}
                     aria-label="Backspace"
-                    className="flex h-11 flex-[1.5] items-center justify-center rounded-lg border-2 border-b-[3px] border-border bg-card text-foreground transition-all active:translate-y-[1px] [@media(max-height:600px)]:h-10 sm:h-12"
+                    className="flex h-11 flex-[1.5] items-center justify-center rounded-lg border-2 border-b-4 border-border bg-card text-foreground transition-all active:translate-y-[2px] active:border-b-2 [@media(max-height:600px)]:h-10 sm:h-12"
                   >
                     <Delete className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -378,7 +380,7 @@ export function WordleGame() {
                   { label: "Streak", value: stats.streak },
                   { label: "Best", value: stats.bestStreak },
                 ].map((s) => (
-                  <div key={s.label} className="rounded-xl bg-muted/60 px-1 py-1.5">
+                  <div key={s.label} className="rounded-xl bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] px-1 py-1.5">
                     <div className="font-mono text-base font-black tabular-nums text-foreground">{s.value}</div>
                     <div className="section-label">{s.label}</div>
                   </div>
@@ -397,7 +399,7 @@ export function WordleGame() {
                 type="button"
                 variant="outline"
                 onClick={share}
-                className="h-11 flex-1 gap-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider"
+                className={cn(DUO.secondary, "h-12 flex-1")}
               >
                 {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Share2 className="h-4 w-4" aria-hidden="true" />}
                 {copied ? "Copied" : "Share"}
@@ -405,7 +407,7 @@ export function WordleGame() {
               <Button
                 type="button"
                 onClick={playBonus}
-                className="h-11 flex-1 gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-alt-500 text-xs font-mono font-bold uppercase tracking-wider text-white"
+                className={cn(DUO.primary, "h-12 flex-1")}
               >
                 <Shuffle className="h-4 w-4" aria-hidden="true" />
                 Bonus word

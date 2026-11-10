@@ -34,7 +34,7 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-background backdrop-blur-sm z-[100]"
           />
 
           {/* Modal Container */}
@@ -57,9 +57,9 @@ export function ProUpgradeModal({ isOpen, onClose, featureName = "this feature" 
               </button>
 
               {/* Header */}
-              <div className="bg-gradient-to-br from-brand-500/10 via-brand-alt-500/10 to-rose-500/10 p-8 pb-6 flex flex-col items-center text-center relative overflow-hidden">
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
-                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl" />
+              <div className="bg-card bg-gradient-to-br from-brand-500/10 via-brand-alt-500/10 to-rose-500/10 p-8 pb-6 flex flex-col items-center text-center relative overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[color-mix(in_oklab,var(--primary)_10%,var(--card))] rounded-full blur-2xl" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] rounded-full blur-2xl" />
                 
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-alt-500 flex items-center justify-center text-white mb-4 shadow-lg shadow-brand-alt-500/20 relative z-10">
                   <Lock className="w-8 h-8" />

@@ -28,7 +28,7 @@ export function MobileFocusDock() {
               className={`p-2.5 rounded-full transition-all duration-200 flex items-center justify-center relative ${
                 active
                   ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                  : "text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-[color-mix(in_oklab,var(--secondary)_80%,var(--card))] hover:text-foreground"
               }`}
               title={item.label}
             >

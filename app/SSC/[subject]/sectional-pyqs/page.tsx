@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, CircleMinus, Clock, FileText, Target } from "lucide-react";
+import { ArrowRight, CircleMinus, Clock, FileText, Loader2, Target } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
 import { Loader } from "@/components/custom/loader";
@@ -34,6 +34,8 @@ export default function SectionalPyqsPage() {
   const [fetchPaper, { isFetching: isLoadingPaper, isError: isPaperError }] =
     useLazyGetSectionalPaperQuery();
   const [paper, setPaper] = useState<SectionalPaper | null>(null);
+  /** Paper being fetched, for the spinner on its card. */
+  const [pending, setPending] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
   const [attempt, setAttempt] = useState(0);
 
@@ -49,10 +51,15 @@ export default function SectionalPyqsPage() {
   const section = SUBJECT_META[subject].paperSection;
 
   const open = async (paperId: string) => {
-    const result = await fetchPaper({ paperId, subject }, true);
-    if (result.data) {
-      setPaper(result.data);
-      setStarted(false);
+    setPending(paperId);
+    try {
+      const result = await fetchPaper({ paperId, subject }, true);
+      if (result.data) {
+        setPaper(result.data);
+        setStarted(false);
+      }
+    } finally {
+      setPending(null);
     }
   };
 
@@ -178,8 +185,12 @@ export default function SectionalPyqsPage() {
                       </span>
                     </span>
                     <span className="inline-flex h-10 shrink-0 items-center gap-1.5 self-start rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-xs font-bold uppercase tracking-wider text-white sm:self-center">
-                      Open
-                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                      {pending === p.id ? "Opening" : "Open"}
+                      {pending === p.id ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                      ) : (
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                      )}
                     </span>
                   </button>
                 </li>

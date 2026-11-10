@@ -22,24 +22,24 @@ const PILLARS = [
     tag: "Quant Engine",
     desc: "With strict sectional time limits, manual scratchpad calculations guarantee missed attempts. We train subconscious muscle memory for squares, fractions, and multiplication shortcuts.",
     icon: Zap,
-    theme: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    glow: "bg-emerald-500/10",
+    theme: "text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))]",
   },
   {
     title: "Long-Term Retention via Flashcards",
     tag: "Vocab & GK",
     desc: "Stop re-reading the same vocabulary lists endlessly. Our Smart Flashcard system schedules reviews right before your brain forgets, cutting study hours in half.",
     icon: Brain,
-    theme: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
-    glow: "bg-fuchsia-500/10",
+    theme: "text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]",
   },
   {
     title: "Exam Pressure Simulation",
     tag: "Sprint Drills",
     desc: "High scores are made under pressure. Our timed blitz drills and gamified challenges condition your mind to execute high-accuracy decisions without second-guessing.",
     icon: Flame,
-    theme: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
-    glow: "bg-brand-500/10",
+    theme: "text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))]",
   },
 ];
 
@@ -74,11 +74,11 @@ export default function AboutPage() {
           className="relative rounded-3xl surface-card p-8 sm:p-12 shadow-xl shadow-black/5 overflow-hidden text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-8 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
           style={{ animationDelay: "200ms", animationFillMode: "both" }}
         >
-          <div className="absolute -top-16 -right-16 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-brand-alt-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-16 -right-16 w-64 h-64 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-[color-mix(in_oklab,var(--brand-alt-500)_10%,var(--card))] rounded-full blur-3xl pointer-events-none" />
 
           <div className="flex flex-col items-center sm:items-start max-w-2xl relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 bg-brand-500/10 border-2 border-brand-500/20 mb-4 shadow-xs">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/20 mb-4 shadow-xs">
               <Sparkles className="w-3 h-3" />
               Manifesto & System Architecture
             </span>
@@ -101,7 +101,7 @@ export default function AboutPage() {
               </Button>
             </Link>
             <Link href="/SSC/maths/mental-maths">
-              <Button variant="outline" className="h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 border-2 border-border hover:bg-card/80 text-foreground cursor-pointer transition-all">
+              <Button variant="outline" className="h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 border-2 border-border hover:bg-card text-foreground cursor-pointer transition-all">
                 Speed Math
               </Button>
             </Link>
@@ -160,7 +160,7 @@ export default function AboutPage() {
                       <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border-2 shadow-inner ${pillar.theme}`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-mono font-bold text-muted-foreground bg-muted/60 px-2.5 py-1 rounded-full uppercase tracking-wider border-2 border-border">
+                      <span className="text-xs font-mono font-bold text-muted-foreground bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] px-2.5 py-1 rounded-full uppercase tracking-wider border-2 border-border">
                         {pillar.tag}
                       </span>
                     </div>
@@ -193,7 +193,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-5 rounded-2xl bg-rose-500/[0.03] border-2 border-rose-500/20 flex flex-col gap-3">
+            <div className="p-5 rounded-2xl bg-[color-mix(in_oklab,var(--color-rose-500)_3%,var(--card))] border-2 border-rose-500/20 flex flex-col gap-3">
               <div className="flex items-center gap-2 text-rose-500 font-bold text-xs font-mono uppercase tracking-wider">
                 <XCircle className="w-4 h-4" />
                 The Outdated Traditional Way
@@ -208,7 +208,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-brand-500/[0.04] border-2 border-brand-500/30 flex flex-col gap-3 shadow-inner">
+            <div className="p-5 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_4%,var(--card))] border-2 border-brand-500/30 flex flex-col gap-3 shadow-inner">
               <div className="flex items-center gap-2 text-brand-700 dark:text-brand-400 font-bold text-xs font-mono uppercase tracking-wider">
                 <CheckCircle2 className="w-4 h-4" />
                 The EptSsc Advantage
@@ -227,11 +227,11 @@ export default function AboutPage() {
 
         {/* Live Status & Community Banner */}
         <div 
-          className="rounded-2xl bg-gradient-to-r from-brand-500/10 via-brand-alt-500/5 to-transparent border-2 border-brand-500/20 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
+          className="bg-card rounded-2xl bg-gradient-to-r from-brand-500/10 via-brand-alt-500/5 to-transparent border-2 border-brand-500/20 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
           style={{ animationDelay: "600ms", animationFillMode: "both" }}
         >
           <div className="flex items-center gap-3 text-center sm:text-left">
-            <div className="w-10 h-10 rounded-xl bg-brand-500/15 border-2 border-brand-500/30 flex items-center justify-center text-brand-700 dark:text-brand-400 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] border-2 border-brand-500/30 flex items-center justify-center text-brand-700 dark:text-brand-400 shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
@@ -244,7 +244,7 @@ export default function AboutPage() {
             </div>
           </div>
           <Link href="/feedback">
-            <Button variant="ghost" className="px-4 py-2 h-auto text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-500/10 shrink-0 cursor-pointer border-2 border-brand-500/20 rounded-full">
+            <Button variant="ghost" className="px-4 py-2 h-auto text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] shrink-0 cursor-pointer border-2 border-brand-500/20 rounded-full">
               Suggest a Feature <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </Link>

@@ -39,9 +39,9 @@ export function WordTiles({ word, guessed, revealAll = false }: WordTilesProps) 
               long ? "text-base sm:text-xl" : "text-lg sm:text-2xl"
             } ${
               missed
-                ? "border-rose-500/50 bg-rose-500/10 text-rose-600 dark:text-rose-300"
+                ? "border-rose-500/50 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-600 dark:text-rose-300"
                 : found
-                  ? "border-fuchsia-500/50 bg-fuchsia-500/15 text-fuchsia-800 dark:text-fuchsia-200"
+                  ? "border-fuchsia-500/50 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] text-fuchsia-800 dark:text-fuchsia-200"
                   : "border-border bg-card text-transparent"
             }`}
           >

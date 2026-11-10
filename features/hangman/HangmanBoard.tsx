@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Clock, Flame, Heart, Lightbulb, X } from "lucide-react";
@@ -79,7 +81,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
             key={state.combo}
             initial={reduceMotion ? false : { scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-2.5 py-1 text-xs font-mono font-black text-brand-700 dark:text-brand-400"
+            className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-1 text-xs font-mono font-black text-brand-700 dark:text-brand-400"
             aria-label={`Combo ${state.combo}, score multiplier ${comboMultiplier(state.combo)}`}
           >
             <Flame className="h-3.5 w-3.5" aria-hidden="true" />
@@ -156,7 +158,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
       <div className="flex items-start gap-3 rounded-2xl border-2 border-fuchsia-500/25 bg-card p-3 sm:p-4 [@media(max-height:600px)]:p-2.5">
         <div className="min-w-0 flex-1">
           <div className="mb-1 flex flex-wrap items-center gap-1.5">
-            <span className="rounded-full border-2 border-fuchsia-500/25 bg-fuchsia-500/10 px-2 py-0.5 text-xs font-mono font-bold uppercase text-fuchsia-800 dark:text-fuchsia-300">
+            <span className="rounded-full border-2 border-fuchsia-500/25 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] px-2 py-0.5 text-xs font-mono font-bold uppercase text-fuchsia-800 dark:text-fuchsia-300">
               {word.category}
             </span>
             <span className="text-xs font-mono font-bold uppercase text-muted-foreground">
@@ -174,7 +176,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
           disabled={!canHint}
           onClick={onHint}
           aria-label={`Reveal a letter, costs ${HINT_COST} points, ${state.hintsLeft} left`}
-          className="h-10 shrink-0 flex-col gap-0 rounded-xl px-3 text-xs font-bold"
+          className={cn(DUO.secondary, "h-12 shrink-0 flex-col gap-0 px-3 normal-case")}
         >
           <Lightbulb className="h-4 w-4 text-brand-600 dark:text-brand-400" aria-hidden="true" />
           <span className="font-mono tabular-nums">{state.hintsLeft}</span>
@@ -185,7 +187,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
       <div className="relative mt-auto grid [@media(max-height:480px)_and_(min-width:560px)]:col-start-2 [@media(max-height:480px)_and_(min-width:560px)]:row-start-1 [@media(max-height:480px)_and_(min-width:560px)]:row-span-6 [@media(max-height:480px)_and_(min-width:560px)]:self-center [@media(max-height:480px)_and_(min-width:560px)]:mt-0">
         <div
           className={`col-start-1 row-start-1 transition-opacity duration-150 ${
-            revealing ? "pointer-events-none opacity-15" : ""
+            revealing ? "pointer-events-none invisible" : ""
           }`}
           aria-hidden={revealing}
         >
@@ -207,7 +209,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
               transition={{ duration: 0.18 }}
               role="status"
               aria-live="polite"
-              className="col-start-1 row-start-1 flex flex-col justify-between gap-2 overflow-hidden rounded-2xl border-2 border-border bg-card p-3 sm:p-4"
+              className="col-start-1 row-start-1 flex flex-col justify-between gap-2 overflow-hidden rounded-2xl border-2 border-border bg-card p-3 shadow-[var(--shadow-card)] sm:p-4"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -247,7 +249,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
                 type="button"
                 onClick={onNext}
                 autoFocus
-                className="h-11 w-full gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-alt-500 text-xs font-mono font-bold uppercase tracking-wider text-white"
+                className={cn(DUO.primary, "h-12 w-full")}
               >
                 {isFinal ? "See results" : "Next word"}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Layers, Shuffle } from "lucide-react";
+import { ArrowRight, Layers, Loader2, Shuffle } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
 import { Loader } from "@/components/custom/loader";
@@ -28,6 +28,8 @@ export default function TopicPyqsPage() {
   });
   const [fetchSet, { isFetching: isLoadingSet, isError: isSetError }] = useLazyGetPyqSetQuery();
   const [active, setActive] = useState<ActiveSet | null>(null);
+  /** Which card is fetching its set ("__mixed" for the mixed set). */
+  const [pending, setPending] = useState<string | null>(null);
 
   if (!subject) {
     return (
@@ -41,9 +43,14 @@ export default function TopicPyqsPage() {
   const total = topics?.reduce((sum, t) => sum + t.count, 0) ?? 0;
 
   const start = async (topic: string | null) => {
-    const result = await fetchSet({ subject, topic: topic ?? undefined, limit: SET_SIZE });
-    if (result.data && result.data.length > 0) {
-      setActive({ topic, questions: result.data, key: Date.now() });
+    setPending(topic ?? "__mixed");
+    try {
+      const result = await fetchSet({ subject, topic: topic ?? undefined, limit: SET_SIZE });
+      if (result.data && result.data.length > 0) {
+        setActive({ topic, questions: result.data, key: Date.now() });
+      }
+    } finally {
+      setPending(null);
     }
   };
 
@@ -105,8 +112,12 @@ export default function TopicPyqsPage() {
               </span>
             </div>
             <span className="inline-flex h-10 shrink-0 items-center gap-1.5 self-start rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-xs font-bold uppercase tracking-wider text-white sm:self-auto">
-              Start
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              {pending === "__mixed" ? "Loading" : "Start"}
+              {pending === "__mixed" ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+              ) : (
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+              )}
             </span>
           </button>
 
@@ -145,8 +156,12 @@ export default function TopicPyqsPage() {
                       </span>
                     )}
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-sm font-bold text-brand-700 dark:text-brand-400">
-                      Practise {Math.min(SET_SIZE, topic.count)} questions
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                      {pending === topic.topic ? "Loading questions" : `Practise ${Math.min(SET_SIZE, topic.count)} questions`}
+                      {pending === topic.topic ? (
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                      ) : (
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                      )}
                     </span>
                   </button>
                 </li>

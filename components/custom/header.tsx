@@ -75,7 +75,7 @@ const Header = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <nav className="w-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-md border-b-2 border-border/40 sticky top-0 z-50">
+    <nav className="w-full bg-background sm:bg-background backdrop-blur-none sm:backdrop-blur-md border-b-2 border-border/40 sticky top-0 z-50">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
           {/* Logo */}
@@ -111,14 +111,14 @@ const Header = () => {
                     <NavigationMenuContent className="p-0 md:w-[420px] lg:w-[440px]">
                       <div className="flex h-[260px]">
                         {/* Left Pane - Subjects list */}
-                        <div className="w-[170px] p-2 border-r-2 border-border/40 flex flex-col gap-1 bg-accent/10 dark:bg-slate-900/20">
+                        <div className="w-[170px] p-2 border-r-2 border-border/40 flex flex-col gap-1 bg-[color-mix(in_oklab,var(--accent)_10%,var(--card))] dark:bg-slate-900/20">
                           {/* English */}
                           <div
                             onMouseEnter={() => setHoveredSubject("english")}
                             className={`flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                               hoveredSubject === "english"
                                 ? "bg-accent text-accent-foreground font-semibold"
-                                : "hover:bg-accent/40 text-muted-foreground font-medium"
+                                : "hover:bg-[color-mix(in_oklab,var(--accent)_40%,var(--card))] text-muted-foreground font-medium"
                             }`}
                           >
                             <GraduationCap className="w-4 h-4 shrink-0 text-fuchsia-600 dark:text-fuchsia-400" />
@@ -131,7 +131,7 @@ const Header = () => {
                             className={`flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                               hoveredSubject === "maths"
                                 ? "bg-accent text-accent-foreground font-semibold"
-                                : "hover:bg-accent/40 text-muted-foreground font-medium"
+                                : "hover:bg-[color-mix(in_oklab,var(--accent)_40%,var(--card))] text-muted-foreground font-medium"
                             }`}
                           >
                             <Calculator className="w-4 h-4 shrink-0 text-emerald-500 dark:text-emerald-400" />
@@ -144,7 +144,7 @@ const Header = () => {
                             className={`flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                               hoveredSubject === "reasoning"
                                 ? "bg-accent text-accent-foreground font-semibold"
-                                : "hover:bg-accent/40 text-muted-foreground font-medium"
+                                : "hover:bg-[color-mix(in_oklab,var(--accent)_40%,var(--card))] text-muted-foreground font-medium"
                             }`}
                           >
                             <BrainCircuit className="w-4 h-4 shrink-0 text-brand-700 " />
@@ -157,7 +157,7 @@ const Header = () => {
                             className={`flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                               hoveredSubject === "gk"
                                 ? "bg-accent text-accent-foreground font-semibold"
-                                : "hover:bg-accent/40 text-muted-foreground font-medium"
+                                : "hover:bg-[color-mix(in_oklab,var(--accent)_40%,var(--card))] text-muted-foreground font-medium"
                             }`}
                           >
                             <Globe className="w-4 h-4 shrink-0 text-rose-500 dark:text-rose-400" />
@@ -425,7 +425,7 @@ const Header = () => {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="h-11 px-3 pr-5 hover:cursor-pointer flex-row items-center font-semibold bg-accent/30 rounded-full hover:bg-accent border-2 border-border shadow-sm">
+                    <NavigationMenuTrigger className="h-11 px-3 pr-5 hover:cursor-pointer flex-row items-center font-semibold bg-[color-mix(in_oklab,var(--accent)_30%,var(--card))] rounded-full hover:bg-accent border-2 border-border shadow-sm">
                       <div className="flex items-center gap-3">
                         <Avatar className="w-8 h-8 border-2 border-border">
                           <AvatarImage
@@ -451,7 +451,7 @@ const Header = () => {
                         <Button
                           onClick={logout}
                           variant="ghost"
-                          className="flex items-center justify-start w-full h-10 px-3 font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md cursor-pointer transition-colors"
+                          className="flex items-center justify-start w-full h-10 px-3 font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-[color-mix(in_oklab,var(--color-red-900)_20%,var(--card))] rounded-md cursor-pointer transition-colors"
                         >
                           <LucideLogOut className="mr-2 w-4 h-4" />
                           Sign Out
@@ -515,7 +515,7 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 px-3.5 text-sm font-semibold rounded-xl border-2 border-border hover:bg-accent/60 transition-colors shadow-sm"
+                  className="h-9 px-3.5 text-sm font-semibold rounded-xl border-2 border-border hover:bg-[color-mix(in_oklab,var(--accent)_60%,var(--card))] transition-colors shadow-sm"
                 >
                   Sign In
                 </Button>
@@ -548,8 +548,8 @@ const Header = () => {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-8 py-2.5 transition-all text-sm ${
                       pathname === "/"
-                        ? "bg-accent/80 text-foreground font-bold"
-                        : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-[color-mix(in_oklab,var(--accent)_80%,var(--card))] text-foreground font-bold"
+                        : "text-muted-foreground font-semibold hover:bg-[color-mix(in_oklab,var(--accent)_50%,var(--card))] hover:text-foreground"
                     }`}
                   >
                     <HomeIcon
@@ -558,7 +558,7 @@ const Header = () => {
                     Home
                   </Link>
 
-                  <div className="flex flex-col gap-2 px-4 py-3 bg-accent/20 rounded-xl mx-4 my-1 border-2 border-border max-h-[380px] overflow-y-auto">
+                  <div className="flex flex-col gap-2 px-4 py-3 bg-[color-mix(in_oklab,var(--accent)_20%,var(--card))] rounded-xl mx-4 my-1 border-2 border-border max-h-[380px] overflow-y-auto">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 px-3">
                       Subjects
                     </p>
@@ -576,7 +576,7 @@ const Header = () => {
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "english"
                             ? "bg-background shadow-sm border-2 border-border"
-                            : "hover:bg-background/50 hover:text-foreground"
+                            : "hover:bg-background hover:text-foreground"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -640,7 +640,7 @@ const Header = () => {
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "maths"
                             ? "bg-background shadow-sm border-2 border-border"
-                            : "hover:bg-background/50 hover:text-foreground"
+                            : "hover:bg-background hover:text-foreground"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -706,7 +706,7 @@ const Header = () => {
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "reasoning"
                             ? "bg-background shadow-sm border-2 border-border"
-                            : "hover:bg-background/50 hover:text-foreground"
+                            : "hover:bg-background hover:text-foreground"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -771,7 +771,7 @@ const Header = () => {
                         className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                           activeMobileSubject === "gk"
                             ? "bg-background shadow-sm border-2 border-border"
-                            : "hover:bg-background/50 hover:text-foreground"
+                            : "hover:bg-background hover:text-foreground"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -831,8 +831,8 @@ const Header = () => {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-8 py-2.5 transition-all text-sm ${
                       pathname === "/about"
-                        ? "bg-accent/80 text-foreground font-bold"
-                        : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-[color-mix(in_oklab,var(--accent)_80%,var(--card))] text-foreground font-bold"
+                        : "text-muted-foreground font-semibold hover:bg-[color-mix(in_oklab,var(--accent)_50%,var(--card))] hover:text-foreground"
                     }`}
                   >
                     <BookOpen
@@ -846,8 +846,8 @@ const Header = () => {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-8 py-2.5 transition-all text-sm ${
                       pathname === "/feedback"
-                        ? "bg-accent/80 text-foreground font-bold"
-                        : "text-muted-foreground font-semibold hover:bg-accent/50 hover:text-foreground"
+                        ? "bg-[color-mix(in_oklab,var(--accent)_80%,var(--card))] text-foreground font-bold"
+                        : "text-muted-foreground font-semibold hover:bg-[color-mix(in_oklab,var(--accent)_50%,var(--card))] hover:text-foreground"
                     }`}
                   >
                     <MessageSquare
@@ -859,7 +859,7 @@ const Header = () => {
                   <div className="mt-8 border-t-2 border-border/40 pt-6">
                     {user ? (
                       <div className="flex flex-col gap-2 px-8">
-                        <div className="p-4 rounded-2xl bg-accent/30 border-2 border-border flex flex-col gap-3 mb-2">
+                        <div className="p-4 rounded-2xl bg-[color-mix(in_oklab,var(--accent)_30%,var(--card))] border-2 border-border flex flex-col gap-3 mb-2">
                           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                             My Account
                           </p>
@@ -884,7 +884,7 @@ const Header = () => {
                             setIsMobileMenuOpen(false);
                           }}
                           variant="outline"
-                          className="w-fit mx-auto justify-center gap-2 h-10 px-5 rounded-xl text-sm font-bold border-red-200/80 dark:border-red-950/80 text-red-600 hover:text-red-700 hover:bg-red-50/80 dark:hover:bg-red-950/20 transition-all shadow-sm"
+                          className="w-fit mx-auto justify-center gap-2 h-10 px-5 rounded-xl text-sm font-bold border-red-200/80 dark:border-red-950/80 text-red-600 hover:text-red-700 hover:bg-[color-mix(in_oklab,var(--color-red-50)_80%,var(--card))] dark:hover:bg-[color-mix(in_oklab,var(--color-red-950)_20%,var(--card))] transition-all shadow-sm"
                         >
                           <LucideLogOut className="w-4 h-4" />
                           Sign Out

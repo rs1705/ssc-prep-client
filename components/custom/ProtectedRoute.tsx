@@ -1,5 +1,6 @@
 "use client";
 
+import { PageLoader } from "@/components/custom/page-loader";
 import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -24,7 +25,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     }
   }, [user, isLoading, isLoggingOut, router]);
 
-  if (isLoading || !user) return null;
+  if (isLoading || !user) return <PageLoader text="Checking your sign-in" />;
 
   return <>{children}</>;
 }

@@ -116,8 +116,8 @@ export function TopBar() {
                           aria-current={active ? "page" : undefined}
                           className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors ${
                             active
-                              ? "bg-brand-500/10 font-bold text-brand-800 dark:text-brand-300"
-                              : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                              ? "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] font-bold text-brand-800 dark:text-brand-300"
+                              : "text-muted-foreground hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground"
                           }`}
                         >
                           <Icon className={`h-4 w-4 shrink-0 ${iconColour}`} strokeWidth={active ? 2.25 : 1.75} />
@@ -140,7 +140,7 @@ export function TopBar() {
                   role="switch"
                   aria-checked={isDark}
                   aria-label="Dark mode"
-                  className="flex min-h-11 items-center justify-between rounded-xl px-3 text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
+                  className="flex min-h-11 items-center justify-between rounded-xl px-3 text-muted-foreground transition-colors hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground"
                 >
                   <span className="flex items-center gap-3">
                     {isDark ? (
@@ -170,7 +170,7 @@ export function TopBar() {
                   <div className="flex min-w-0 items-center gap-2.5">
                     <Avatar className="h-8 w-8 shrink-0">
                       {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
-                      <AvatarFallback className="bg-brand-500/15 text-xs font-bold text-brand-700 dark:text-brand-400">
+                      <AvatarFallback className="bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-xs font-bold text-brand-700 dark:text-brand-400">
                         {initialsOf(user.displayName)}
                       </AvatarFallback>
                     </Avatar>
@@ -185,7 +185,7 @@ export function TopBar() {
                     type="button"
                     onClick={logout}
                     aria-label="Sign out"
-                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))] hover:text-destructive"
                   >
                     <LogOut className="h-4 w-4" />
                   </button>
@@ -230,7 +230,7 @@ export function TopBar() {
               >
                 <Avatar className="h-9 w-9">
                   {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
-                  <AvatarFallback className="bg-brand-500/15 text-sm font-bold text-brand-700 dark:text-brand-400">
+                  <AvatarFallback className="bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-sm font-bold text-brand-700 dark:text-brand-400">
                     {initialsOf(user.displayName)}
                   </AvatarFallback>
                 </Avatar>
@@ -243,7 +243,7 @@ export function TopBar() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="my-1 bg-border" />
               <DropdownMenuItem
-                className="cursor-pointer rounded-xl px-3 py-2 font-medium text-destructive focus:bg-destructive/10 focus:text-destructive"
+                className="cursor-pointer rounded-xl px-3 py-2 font-medium text-destructive focus:bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))] focus:text-destructive"
                 onClick={logout}
               >
                 <LogOut className="mr-2.5 h-4 w-4" />

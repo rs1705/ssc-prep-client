@@ -1,8 +1,10 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 import { Play, Trophy } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { DUO } from "./buttons";
+import { GAME_TONE, type GameTone } from "./tone";
 
 export interface LobbyRule {
   icon: LucideIcon;
@@ -17,6 +19,9 @@ interface GameLobbyProps {
   best: number;
   onStart: () => void;
   startLabel?: string;
+  tone?: GameTone;
+  /** Extra controls between the rules and the start button (e.g. a deck picker). */
+  children?: React.ReactNode;
 }
 
 export function GameLobby({
@@ -27,49 +32,48 @@ export function GameLobby({
   best,
   onStart,
   startLabel = "Start",
+  tone = "english",
+  children,
 }: GameLobbyProps) {
+  const t = GAME_TONE[tone];
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-5 overflow-y-auto py-2 text-center [scrollbar-width:none]">
-      <div className="flex h-[clamp(64px,14dvh,112px)] items-center justify-center text-fuchsia-700 dark:text-fuchsia-400 [&_svg]:h-full [&_svg]:w-auto">
-        {hero}
+    <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-5 overflow-y-auto py-1 text-center [scrollbar-width:none]">
+      <div className="flex flex-col items-center gap-3 pt-1">
+        <div
+          className={`flex h-[clamp(64px,12dvh,88px)] w-[clamp(64px,12dvh,88px)] items-center justify-center rounded-3xl border-2 border-border ${t.iconWrap} [&_svg]:h-1/2 [&_svg]:w-1/2`}
+        >
+          {hero}
+        </div>
+        <div className="flex flex-col gap-1">
+          <h2 className="text-2xl font-extrabold text-foreground">{title}</h2>
+          <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground">{blurb}</p>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <h2 className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">{title}</h2>
-        <p className="mx-auto max-w-xs text-sm text-muted-foreground">{blurb}</p>
-      </div>
-
-      <ul className="flex w-full max-w-sm flex-col gap-2 text-left">
+      <ul className="flex w-full max-w-sm flex-col divide-y-2 divide-border overflow-hidden rounded-2xl border-2 border-border text-left">
         {rules.map(({ icon: Icon, text }) => (
-          <li
-            key={text}
-            className="flex items-center gap-3 rounded-2xl border-2 border-border bg-card px-3.5 py-2.5 text-sm font-medium text-foreground"
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400">
-              <Icon className="h-4 w-4" aria-hidden="true" />
-            </span>
+          <li key={text} className="flex items-center gap-3 bg-card px-3.5 py-2.5 text-sm text-foreground">
+            <Icon className={`h-4 w-4 shrink-0 ${t.icon}`} aria-hidden="true" />
             {text}
           </li>
         ))}
       </ul>
 
-      {best > 0 && (
-        <div className="flex items-center gap-2 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-3.5 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-brand-700 dark:text-brand-400">
-          <Trophy className="h-4 w-4" aria-hidden="true" />
-          Best score {best}
-        </div>
-      )}
+      {children}
 
-      <Button
-        type="button"
-        onClick={onStart}
-        autoFocus
-        className="h-12 w-full max-w-sm gap-2 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 text-sm font-mono font-black uppercase tracking-widest text-white shadow-md shadow-brand-500/25"
-      >
-        <Play className="h-4 w-4 fill-current" aria-hidden="true" />
-        {startLabel}
-        <kbd className="hidden rounded bg-white/20 px-1.5 py-0.5 text-xs md:inline">Enter</kbd>
-      </Button>
+      <div className="mt-auto flex w-full max-w-sm flex-col items-center gap-3 pt-1">
+        {best > 0 && (
+          <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+            <Trophy className="h-3.5 w-3.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />
+            Your best: <span className="tabular-nums text-foreground">{best}</span>
+          </span>
+        )}
+        <button type="button" onClick={onStart} autoFocus className={cn(DUO.primary, "w-full")}>
+          <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+          {startLabel}
+        </button>
+        <p className="hidden text-xs text-muted-foreground md:block">or press Enter</p>
+      </div>
     </div>
   );
 }

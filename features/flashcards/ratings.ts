@@ -14,14 +14,15 @@ export const RATINGS: {
     rating: 1,
     key: "1",
     className:
-      "border-rose-500/40 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-700 hover:border-rose-500/70 dark:text-rose-300",
+      "border-rose-500 bg-[color-mix(in_oklab,var(--color-rose-500)_12%,var(--card))] text-rose-700 hover:bg-[color-mix(in_oklab,var(--color-rose-500)_20%,var(--card))] dark:text-rose-300",
   },
   {
     action: "HARD",
     label: "Hard",
     rating: 2,
     key: "2",
-    className: "border-border bg-card text-foreground hover:border-foreground/30",
+    className:
+      "border-amber-500 bg-[color-mix(in_oklab,var(--color-amber-500)_14%,var(--card))] text-amber-800 hover:bg-[color-mix(in_oklab,var(--color-amber-500)_22%,var(--card))] dark:text-amber-300",
   },
   {
     action: "GOOD",
@@ -29,7 +30,7 @@ export const RATINGS: {
     rating: 3,
     key: "3",
     className:
-      "border-emerald-500/40 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-700 hover:border-emerald-500/70 dark:text-emerald-300",
+      "border-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_12%,var(--card))] text-emerald-700 hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_20%,var(--card))] dark:text-emerald-300",
   },
   {
     action: "EASY",
@@ -37,7 +38,7 @@ export const RATINGS: {
     rating: 4,
     key: "4",
     className:
-      "border-sky-500/40 bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] text-sky-700 hover:border-sky-500/70 dark:text-sky-300",
+      "border-sky-500 bg-[color-mix(in_oklab,var(--color-sky-500)_12%,var(--card))] text-sky-700 hover:bg-[color-mix(in_oklab,var(--color-sky-500)_20%,var(--card))] dark:text-sky-300",
   },
 ];
 

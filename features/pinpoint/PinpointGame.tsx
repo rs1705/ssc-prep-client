@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useReducer } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Eye, Link2, Target, X } from "lucide-react";
@@ -128,7 +130,7 @@ export function PinpointGame() {
                     key={clue}
                     className={`flex h-11 items-center justify-center rounded-xl border-2 px-2 text-center text-sm font-bold sm:text-base ${
                       shown
-                        ? "border-fuchsia-500/40 bg-fuchsia-500/10 text-fuchsia-800 dark:text-fuchsia-100"
+                        ? "border-fuchsia-500/40 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-800 dark:text-fuchsia-100"
                         : "border-dashed border-border text-muted-foreground/50"
                     }`}
                   >
@@ -163,9 +165,9 @@ export function PinpointGame() {
                   disabled={revealing || isOut}
                   onClick={() => pick(option)}
                   aria-label={`Option ${i + 1}: ${option}${isOut ? ", wrong" : ""}`}
-                  className={`flex min-h-12 [@media(max-height:480px)_and_(min-width:560px)]:min-h-9 items-center gap-3 rounded-2xl border-2 border-b-[3px] px-3 py-2 [@media(max-height:480px)_and_(min-width:560px)]:py-1 text-left text-sm font-bold transition-all active:translate-y-[1px] disabled:cursor-default sm:text-base ${
+                  className={`flex min-h-12 [@media(max-height:480px)_and_(min-width:560px)]:min-h-9 items-center gap-3 rounded-2xl border-2 border-b-4 px-3 py-2 [@media(max-height:480px)_and_(min-width:560px)]:py-1 text-left text-sm font-bold transition-all active:translate-y-[2px] active:border-b-2 disabled:cursor-default sm:text-base ${
                     revealing && isAnswer
-                      ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-800 dark:text-emerald-200"
+                      ? "border-emerald-500/50 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-800 dark:text-emerald-200"
                       : isOut
                         ? "border-border bg-muted text-muted-foreground/50 line-through"
                         : "border-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
@@ -205,7 +207,7 @@ export function PinpointGame() {
                       type="button"
                       onClick={next}
                       autoFocus
-                      className="h-11 gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-xs font-mono font-bold uppercase tracking-wider text-white"
+                      className={cn(DUO.primary, "h-12")}
                     >
                       {state.index + 1 >= state.rounds.length ? "See results" : "Next puzzle"}
                       <ArrowRight className="h-4 w-4" aria-hidden="true" />

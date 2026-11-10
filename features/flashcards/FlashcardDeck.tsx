@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
@@ -252,7 +254,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
             onClick={prev}
             disabled={index === 0}
             aria-label="Previous card"
-            className="flex w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-border bg-card text-foreground transition-colors hover:bg-muted disabled:opacity-40"
+            className={cn(DUO.secondary, "w-14 shrink-0 px-0")}
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
@@ -261,14 +263,14 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
               <button
                 type="button"
                 onClick={() => mark("learning")}
-                className="flex flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-border bg-card text-sm font-bold text-foreground transition-colors hover:bg-muted"
+                className={cn(DUO.secondary, "flex-1 whitespace-nowrap px-2 text-[13px] tracking-normal sm:px-3")}
               >
                 <RotateCcw className="h-4 w-4" aria-hidden="true" /> Still learning
               </button>
               <button
                 type="button"
                 onClick={() => mark("known")}
-                className="flex flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-emerald-500/40 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-sm font-bold text-emerald-700 transition-colors hover:border-emerald-500/70 dark:text-emerald-300"
+                className={cn(DUO.success, "flex-1 whitespace-nowrap px-2 text-[13px] tracking-normal sm:px-3")}
               >
                 <Check className="h-4 w-4" aria-hidden="true" /> Got it
               </button>
@@ -277,7 +279,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
             <button
               type="button"
               onClick={flip}
-              className="flex-1 rounded-2xl bg-brand-600 text-sm font-bold text-on-brand shadow-md shadow-brand-600/25 transition-colors hover:bg-brand-700"
+              className={cn(DUO.primary, "flex-1 px-3")}
             >
               Show meaning
             </button>
@@ -286,7 +288,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
             type="button"
             onClick={next}
             aria-label={index + 1 >= order.length ? "Finish deck" : "Next card"}
-            className="flex w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-border bg-card text-foreground transition-colors hover:bg-muted"
+            className={cn(DUO.secondary, "w-14 shrink-0 px-0")}
           >
             <ArrowRight className="h-5 w-5" />
           </button>
@@ -300,7 +302,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
                 key={r.action}
                 type="button"
                 onClick={() => rate(r.rating)}
-                className={`flex flex-col items-center justify-center rounded-2xl border-2 px-1 py-1.5 text-sm font-bold transition-colors ${r.className}`}
+                className={cn(DUO.option, "flex flex-col items-center justify-center px-1 py-1.5 text-sm font-extrabold uppercase tracking-wide", r.className)}
               >
                 {r.label}
                 {when && <span className="text-[11px] font-semibold opacity-75">{when}</span>}
@@ -312,7 +314,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
         <button
           type="button"
           onClick={flip}
-          className="min-h-14 rounded-2xl bg-brand-600 text-sm font-bold text-on-brand shadow-md shadow-brand-600/25 transition-colors hover:bg-brand-700"
+          className={cn(DUO.primary, "min-h-14 w-full")}
         >
           Show answer
         </button>

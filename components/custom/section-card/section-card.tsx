@@ -43,12 +43,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
         >
           {icon}
         </div>
-        {isLive ? (
-          <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
-            Live
-          </span>
-        ) : (
+        {!isLive && (
           <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-border bg-muted px-2.5 py-0.5 text-xs font-bold text-muted-foreground">
             <Lock className="h-3 w-3" aria-hidden="true" />
             Soon
@@ -91,7 +86,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
     return (
       <div
         aria-disabled="true"
-        className={`${shared} border-2 border-dashed border-border bg-card/50`}
+        className={`${shared} border-2 border-dashed border-border bg-card`}
         style={style}
       >
         {body}

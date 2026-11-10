@@ -18,7 +18,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   return (
     <div className={`w-full max-w-md mx-auto transition-all duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 ${className}`}>
       <div className="flex flex-col items-center justify-center text-center p-8 rounded-3xl surface-card shadow-xs hover:shadow-sm hover:border-border/80 transition-all duration-300">
-        <div className="w-12 h-12 rounded-2xl bg-rose-500/10 shadow-inner ring-1 ring-border/40 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 select-none">
+        <div className="w-12 h-12 rounded-2xl bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 select-none">
           <AlertCircle className="w-6 h-6" strokeWidth={2} />
         </div>
         <h3 className="text-base font-black tracking-tight text-foreground mb-1.5">{title}</h3>

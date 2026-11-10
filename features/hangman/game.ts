@@ -142,6 +142,23 @@ function finishWord(
   };
 }
 
+/**
+ * Letters shown before the first guess so the word is approachable: the first
+ * letter, plus the last one for words of 7+ letters. Never so many that fewer
+ * than two different letters are left to find.
+ */
+export function prefillLetters(word: string): string[] {
+  const letters = word.toUpperCase().split("");
+  const distinct = new Set(letters);
+  const picks = [letters[0]];
+  if (letters.length >= 7 && letters[letters.length - 1] !== letters[0]) picks.push(letters[letters.length - 1]);
+  const out: string[] = [];
+  for (const letter of picks) {
+    if (distinct.size - (out.length + 1) >= 2) out.push(letter);
+  }
+  return out;
+}
+
 function startWord(state: HangmanState, index: number): HangmanState {
   const word = state.queue[index];
   const total = timeForWord(word.word);
@@ -149,7 +166,7 @@ function startWord(state: HangmanState, index: number): HangmanState {
     ...state,
     phase: "playing",
     index,
-    guessed: [],
+    guessed: prefillLetters(word.word),
     wrong: 0,
     hintUsed: false,
     timeLeft: total,

@@ -72,7 +72,7 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="absolute top-4 right-4 rounded-full h-8 w-8 flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-ring disabled:pointer-events-none cursor-pointer border-none outline-none">
+        <SheetPrimitive.Close className="absolute top-4 right-4 rounded-full h-8 w-8 flex items-center justify-center bg-transparent text-muted-foreground hover:text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_80%,var(--card))] active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-ring disabled:pointer-events-none cursor-pointer border-none outline-none">
           <XIcon className="h-4 w-4" strokeWidth={2.5} />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>

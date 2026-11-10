@@ -38,8 +38,8 @@ const CATEGORIES = [
     desc: "Something is broken or acting up",
     icon: Bug, 
     badge: "Fix",
-    color: "text-rose-500 bg-rose-500/10 border-rose-500/20",
-    activeColor: "border-rose-500/50 bg-rose-500/10 text-rose-500 shadow-rose-500/10"
+    color: "text-rose-500 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/20",
+    activeColor: "border-rose-500/50 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-500 shadow-rose-500/10"
   },
   { 
     id: "feature", 
@@ -47,8 +47,8 @@ const CATEGORIES = [
     desc: "New tool, drill, or trick idea",
     icon: Lightbulb, 
     badge: "Idea",
-    color: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
-    activeColor: "border-brand-500/50 bg-brand-500/10 text-brand-700 dark:text-brand-400 shadow-brand-500/10"
+    color: "text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/20",
+    activeColor: "border-brand-500/50 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 shadow-brand-500/10"
   },
   { 
     id: "content", 
@@ -56,8 +56,8 @@ const CATEGORIES = [
     desc: "Question, formula, or typo issue",
     icon: BookOpen, 
     badge: "QA",
-    color: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
-    activeColor: "border-fuchsia-500/50 bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 shadow-fuchsia-500/10"
+    color: "text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/20",
+    activeColor: "border-fuchsia-500/50 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-600 dark:text-fuchsia-400 shadow-fuchsia-500/10"
   },
   { 
     id: "other", 
@@ -65,8 +65,8 @@ const CATEGORIES = [
     desc: "Thoughts, praise, or suggestions",
     icon: MessageSquare, 
     badge: "Note",
-    color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    activeColor: "border-emerald-500/50 bg-emerald-500/10 text-emerald-500 shadow-emerald-500/10"
+    color: "text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/20",
+    activeColor: "border-emerald-500/50 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-500 shadow-emerald-500/10"
   },
 ] as const;
 
@@ -83,28 +83,28 @@ const ROADMAP_ITEMS = [
     title: "Speed Math Practice Engine",
     desc: "Timed arithmetic, percentage fractions & BODMAS chains",
     status: "Active Sprint",
-    statusColor: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+    statusColor: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: Rocket,
   },
   {
     title: "PYQ Shift Vault (2018–2024)",
     desc: "Filterable authentic Tier 1 & Tier 2 exam papers",
     status: "In Progress",
-    statusColor: "bg-brand-500/15 text-brand-600 dark:text-brand-400 border-brand-500/20",
+    statusColor: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-600 dark:text-brand-400 border-brand-500/20",
     icon: Clock,
   },
   {
     title: "Interactive English Vocab Games",
     desc: "Crosswords, sentence anagrams & rapid root words",
     status: "Planned",
-    statusColor: "bg-fuchsia-500/15 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-500/20",
+    statusColor: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-500/20",
     icon: Sparkles,
   },
   {
     title: "AI Weakness Radar & Diagnostics",
     desc: "Pinpoints sub-topic accuracy leaks across sectional tests",
     status: "Planned",
-    statusColor: "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/20",
+    statusColor: "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-600 dark:text-rose-400 border-rose-500/20",
     icon: Compass,
   },
 ];
@@ -183,7 +183,7 @@ export default function FeedbackPage() {
         >
           <div className="surface-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
             {/* Ambient Lighting Mesh */}
-            <div className="absolute -top-12 -right-12 w-44 h-44 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-12 -right-12 w-44 h-44 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] rounded-full blur-3xl pointer-events-none" />
 
             <AnimatePresence mode="wait">
               {isSuccess ? (
@@ -194,10 +194,10 @@ export default function FeedbackPage() {
                   exit={{ opacity: 0, scale: 0.95 }}
                   className="flex flex-col items-center text-center py-8 relative z-10"
                 >
-                  <div className="w-16 h-16 bg-emerald-500/15 border-2 border-emerald-500/30 rounded-3xl flex items-center justify-center text-emerald-500 mb-6 shadow-lg shadow-emerald-500/10">
+                  <div className="w-16 h-16 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] border-2 border-emerald-500/30 rounded-3xl flex items-center justify-center text-emerald-500 mb-6 shadow-lg shadow-emerald-500/10">
                     <CheckCircle2 className="w-8 h-8 animate-bounce" />
                   </div>
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border-2 border-emerald-500/20 mb-3">
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] px-3 py-1 rounded-full border-2 border-emerald-500/20 mb-3">
                     Feedback Received
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
@@ -225,7 +225,7 @@ export default function FeedbackPage() {
                           name: user?.displayName || "",
                         });
                       }}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border-2 border-border hover:bg-card/80 text-foreground cursor-pointer transition-all"
+                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border-2 border-border hover:bg-card text-foreground cursor-pointer transition-all"
                     >
                       Submit Another
                     </Button>
@@ -241,7 +241,7 @@ export default function FeedbackPage() {
                 >
                   <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
+                      <div className="w-10 h-10 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
                         <MessageSquare className="w-5 h-5" />
                       </div>
                       <div>
@@ -253,7 +253,7 @@ export default function FeedbackPage() {
                         </p>
                       </div>
                     </div>
-                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-brand-700 dark:text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full border-2 border-brand-500/20">
+                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-1 rounded-full border-2 border-brand-500/20">
                       Tier 1 Focused
                     </span>
                   </div>
@@ -276,7 +276,7 @@ export default function FeedbackPage() {
                               className={`p-3.5 rounded-2xl border-2 text-left transition-all duration-200 cursor-pointer flex items-start gap-3 relative overflow-hidden ${
                                 isSelected
                                   ? `${cat.activeColor} shadow-md`
-                                  : "border-border/50 bg-card/40 hover:bg-card/70 hover:border-border text-foreground"
+                                  : "border-border/50 bg-card hover:bg-card hover:border-border text-foreground"
                               }`}
                             >
                               <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border-2 ${cat.color}`}>
@@ -321,8 +321,8 @@ export default function FeedbackPage() {
                               onClick={() => form.setValue("rating", rating.value)}
                               className={`flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
                                 isSelected 
-                                  ? "bg-brand-500/15 border-2 border-brand-500/30 scale-105 shadow-sm shadow-brand-500/10" 
-                                  : "hover:bg-muted/50 opacity-70 hover:opacity-100"
+                                  ? "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] border-2 border-brand-500/30 scale-105 shadow-sm shadow-brand-500/10" 
+                                  : "hover:bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] opacity-70 hover:opacity-100"
                               }`}
                             >
                               <span className="text-2xl sm:text-3xl select-none transition-transform duration-200">
@@ -372,7 +372,7 @@ export default function FeedbackPage() {
                         type="text"
                         placeholder="e.g. Rahul Sharma"
                         {...form.register("name")}
-                        className="h-12 rounded-2xl border-2 border-border bg-card/40 backdrop-blur-md px-4 text-sm font-medium focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all"
+                        className="h-12 rounded-2xl border-2 border-border bg-card backdrop-blur-md px-4 text-sm font-medium focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all"
                       />
                       {form.formState.errors.name && (
                         <p className="text-xs font-medium text-rose-500">
@@ -382,7 +382,7 @@ export default function FeedbackPage() {
                     </div>
 
                     {errorMsg && (
-                      <div className="text-xs font-mono font-bold text-rose-500 text-center p-3 rounded-xl bg-rose-500/10 border-2 border-rose-500/20">
+                      <div className="text-xs font-mono font-bold text-rose-500 text-center p-3 rounded-xl bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-2 border-rose-500/20">
                         {errorMsg}
                       </div>
                     )}
@@ -419,7 +419,7 @@ export default function FeedbackPage() {
         >
           {/* Upcoming Roadmap Card */}
           <div className="surface-card rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-border/40">
               <div className="flex items-center gap-2">
@@ -457,9 +457,9 @@ export default function FeedbackPage() {
           </div>
 
           {/* Developer Commitment Card */}
-          <div className="bg-card/60 backdrop-blur-2xl border-2 border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 relative overflow-hidden">
+          <div className="bg-card backdrop-blur-2xl border-2 border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 relative overflow-hidden">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border-2 border-emerald-500/20">
+              <div className="w-9 h-9 rounded-xl bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-500 flex items-center justify-center border-2 border-emerald-500/20">
                 <HeartHandshake className="w-4.5 h-4.5" />
               </div>
               <div>

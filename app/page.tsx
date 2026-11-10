@@ -344,7 +344,7 @@ function ScrollTimelineLine() {
   });
 
   return (
-    <div ref={ref} className="absolute top-12 md:top-20 bottom-12 md:bottom-20 left-[23.5px] md:left-1/2 md:-ml-[1.5px] w-[2px] md:w-[3px] z-0 bg-border/40 rounded-full overflow-hidden">
+    <div ref={ref} className="absolute top-12 md:top-20 bottom-12 md:bottom-20 left-[23.5px] md:left-1/2 md:-ml-[1.5px] w-[2px] md:w-[3px] z-0 bg-[color-mix(in_oklab,var(--border)_40%,var(--card))] rounded-full overflow-hidden">
       <motion.div 
         className="w-full h-full origin-top bg-gradient-to-b from-brand-500 via-brand-alt-500 to-brand-500"
         style={{ scaleY: scrollYProgress }}
@@ -441,7 +441,7 @@ function InteractiveHeroDashboard() {
       <motion.div 
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card/80 backdrop-blur-xl border-2 border-brand-500/30 shadow-xl shadow-brand-500/10 absolute -top-5 -left-6 z-30 font-mono text-xs font-bold text-foreground"
+        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card backdrop-blur-xl border-2 border-brand-500/30 shadow-xl shadow-brand-500/10 absolute -top-5 -left-6 z-30 font-mono text-xs font-bold text-foreground"
       >
         <Flame className="w-4 h-4 text-brand-500 animate-pulse" />
         <span>14-Day Streak 🔥</span>
@@ -450,31 +450,31 @@ function InteractiveHeroDashboard() {
       <motion.div 
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card/80 backdrop-blur-xl border-2 border-emerald-500/30 shadow-xl shadow-emerald-500/10 absolute -bottom-4 -right-6 z-30 font-mono text-xs font-bold text-foreground"
+        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card backdrop-blur-xl border-2 border-emerald-500/30 shadow-xl shadow-emerald-500/10 absolute -bottom-4 -right-6 z-30 font-mono text-xs font-bold text-foreground"
       >
         <TrendingUp className="w-4 h-4 text-emerald-500" />
         <span>+18 Marks in Quant 📈</span>
       </motion.div>
 
       {/* Main Glassmorphic Window */}
-      <div className="relative rounded-2xl sm:rounded-3xl border-2 border-brand-500/25 bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-2xl shadow-brand-500/10 flex flex-col">
+      <div className="relative rounded-2xl sm:rounded-3xl border-2 border-brand-500/25 bg-card md:bg-card backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-2xl shadow-brand-500/10 flex flex-col">
         
         {/* Window Chrome Header & Interactive Tabs */}
-        <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 border-b-2 border-border/40 bg-background/40">
+        <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 border-b-2 border-border/40 bg-background">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-              <div className="w-3 h-3 rounded-full bg-brand-500/80" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+              <div className="w-3 h-3 rounded-full bg-[color-mix(in_oklab,var(--color-rose-500)_80%,var(--card))]" />
+              <div className="w-3 h-3 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_80%,var(--card))]" />
+              <div className="w-3 h-3 rounded-full bg-[color-mix(in_oklab,var(--color-emerald-500)_80%,var(--card))]" />
             </div>
             <span className="text-xs font-mono font-semibold text-muted-foreground ml-2 hidden sm:inline">eptssc.live/demo</span>
           </div>
 
           {/* Interactive Mode Pills */}
-          <div className="flex items-center gap-1 bg-background/80 p-1 rounded-xl border-2 border-border shadow-inner">
+          <div className="flex items-center gap-1 bg-background p-1 rounded-xl border-2 border-border shadow-inner">
             {[
               { id: "analytics", label: "AI Analytics", icon: BarChart3 },
-              { id: "maths", label: "Maths Sprint", icon: Zap },
+              { id: "maths", label: "Speed Maths", icon: Zap },
               { id: "flashcards", label: "Flashcards", icon: Brain },
             ].map((tab) => {
               const Icon = tab.icon;
@@ -486,7 +486,7 @@ function InteractiveHeroDashboard() {
                   className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition-all ${
                     isActive 
                       ? "bg-brand-500 text-on-brand shadow-md shadow-brand-500/20" 
-                      : "text-muted-foreground hover:text-foreground hover:bg-card/50"
+                      : "text-muted-foreground hover:text-foreground hover:bg-card"
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -496,7 +496,7 @@ function InteractiveHeroDashboard() {
             })}
           </div>
 
-          <div className="hidden lg:flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border-2 border-emerald-500/20 px-2.5 py-1 rounded-full">
+          <div className="hidden lg:flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-2 border-emerald-500/20 px-2.5 py-1 rounded-full">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             LIVE SIMULATION
           </div>
@@ -517,12 +517,12 @@ function InteractiveHeroDashboard() {
                 className="grid grid-cols-1 md:grid-cols-3 gap-4"
               >
                 {/* Column 1: Sectional Split */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
+                <div className="rounded-xl bg-background backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <BarChart3 className="w-3.5 h-3.5 text-brand-500" /> Sectional Accuracy
                     </span>
-                    <span className="text-xs font-mono bg-brand-500/10 text-brand-500 px-1.5 py-0.5 rounded font-bold">Today</span>
+                    <span className="text-xs font-mono bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-500 px-1.5 py-0.5 rounded font-bold">Today</span>
                   </div>
                   <div className="flex flex-col gap-3">
                     {[
@@ -536,7 +536,7 @@ function InteractiveHeroDashboard() {
                           <span className="text-foreground/70">{s.label}</span>
                           <span className="text-foreground">{s.val}%</span>
                         </div>
-                        <div className="w-full h-1.5 rounded-full bg-border/40 overflow-hidden">
+                        <div className="w-full h-1.5 rounded-full bg-[color-mix(in_oklab,var(--border)_40%,var(--card))] overflow-hidden">
                           <motion.div 
                             className={`h-full rounded-full ${s.color}`}
                             initial={{ width: 0 }}
@@ -550,12 +550,12 @@ function InteractiveHeroDashboard() {
                 </div>
 
                 {/* Column 2: Accuracy Trend */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
+                <div className="rounded-xl bg-background backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
                       <Activity className="w-3.5 h-3.5 text-brand-500" /> 7-Shift Mastery Curve
                     </span>
-                    <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded font-bold">+32% Net Trajectory</span>
+                    <span className="text-xs font-mono text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] px-1.5 py-0.5 rounded font-bold">+32% Net Trajectory</span>
                   </div>
 
                   <div className="w-full h-32 relative mt-1 select-none">
@@ -674,11 +674,11 @@ function InteractiveHeroDashboard() {
                 </div>
 
                 {/* Column 3: Overall Rank Metric */}
-                <div className="rounded-xl bg-background/60 backdrop-blur-sm border-2 border-border p-4 flex flex-col items-center justify-center text-center">
+                <div className="rounded-xl bg-background backdrop-blur-sm border-2 border-border p-4 flex flex-col items-center justify-center text-center">
                   <span className="text-xs font-mono font-bold uppercase text-muted-foreground mb-3 flex items-center gap-1">
                     <Target className="w-3.5 h-3.5 text-brand-500" /> Overall Accuracy
                   </span>
-                  <div className="relative w-24 h-24 rounded-full bg-muted/40 flex items-center justify-center mb-3">
+                  <div className="relative w-24 h-24 rounded-full bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] flex items-center justify-center mb-3">
                     <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
                       <circle cx="50" cy="50" r="44" fill="none" className="stroke-border/50" strokeWidth="8" />
                       <motion.circle 
@@ -717,14 +717,14 @@ function InteractiveHeroDashboard() {
                 {/* Header with question indicators and streak */}
                 <div className="flex flex-wrap items-center justify-between gap-2 w-full mb-3 px-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-500 bg-brand-500/10 px-2.5 py-1 rounded-full border-2 border-brand-500/20 flex items-center gap-1.5">
-                      <Timer className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "6s" }} /> Speed Sprint
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-1 rounded-full border-2 border-brand-500/20 flex items-center gap-1.5">
+                      <Timer className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "6s" }} /> Speed Maths
                     </span>
                     <span className="text-xs font-mono text-muted-foreground hidden sm:inline">{currentQ.level}</span>
                   </div>
 
                   {/* Question Pills */}
-                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border">
+                  <div className="flex items-center gap-1 bg-background p-1 rounded-xl border-2 border-border">
                     {SPRINT_QUESTIONS.map((q, idx) => (
                       <button
                         key={idx}
@@ -736,7 +736,7 @@ function InteractiveHeroDashboard() {
                         className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center transition-all ${
                           currentSprintIndex === idx
                             ? "bg-brand-500 text-on-brand font-black shadow-xs"
-                            : "text-muted-foreground hover:text-foreground hover:bg-card/40"
+                            : "text-muted-foreground hover:text-foreground hover:bg-card"
                         }`}
                       >
                         {idx + 1}
@@ -745,7 +745,7 @@ function InteractiveHeroDashboard() {
                   </div>
 
                   {sprintStreak > 0 && (
-                    <span className="text-xs font-mono font-bold text-brand-500 bg-brand-500/10 px-2 py-0.5 rounded-full border-2 border-brand-500/20 flex items-center gap-1">
+                    <span className="text-xs font-mono font-bold text-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2 py-0.5 rounded-full border-2 border-brand-500/20 flex items-center gap-1">
                       🔥 {sprintStreak}
                     </span>
                   )}
@@ -767,7 +767,7 @@ function InteractiveHeroDashboard() {
                   {currentQ.options.map((option) => {
                     const isSelected = selectedMathAnswer === option;
                     const isCorrect = option === currentQ.answer;
-                    let btnStyle = "bg-background/80 hover:bg-card border-border/50 text-foreground";
+                    let btnStyle = "bg-background hover:bg-card border-border/50 text-foreground";
                     
                     if (isSelected) {
                       btnStyle = isCorrect 
@@ -794,7 +794,7 @@ function InteractiveHeroDashboard() {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono w-full bg-emerald-500/10 p-2.5 rounded-xl border-2 border-emerald-500/20 text-emerald-400 font-bold"
+                    className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono w-full bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] p-2.5 rounded-xl border-2 border-emerald-500/20 text-emerald-400 font-bold"
                   >
                     <div className="flex items-center gap-2 text-left">
                       <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -806,7 +806,7 @@ function InteractiveHeroDashboard() {
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={resetMathDemo} 
-                        className="px-2 py-1 rounded bg-background/60 text-foreground hover:text-brand-400 flex items-center gap-1 text-xs"
+                        className="px-2 py-1 rounded bg-background text-foreground hover:text-brand-400 flex items-center gap-1 text-xs"
                       >
                         <RotateCw className="w-3 h-3" /> Retry
                       </button>
@@ -840,7 +840,7 @@ function InteractiveHeroDashboard() {
                 {/* Header with Card Topic Selector */}
                 <div className="flex flex-wrap items-center justify-between gap-2 w-full mb-3 px-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 px-2.5 py-1 rounded-full border-2 border-fuchsia-500/20 flex items-center gap-1.5">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] px-2.5 py-1 rounded-full border-2 border-fuchsia-500/20 flex items-center gap-1.5">
                       <Brain className="w-3.5 h-3.5" /> Spaced Recall
                     </span>
                     <span className="text-xs font-mono text-muted-foreground hidden sm:inline">
@@ -849,7 +849,7 @@ function InteractiveHeroDashboard() {
                   </div>
 
                   {/* 4 Card Selector Pills */}
-                  <div className="flex items-center gap-1 bg-background/60 p-1 rounded-xl border-2 border-border">
+                  <div className="flex items-center gap-1 bg-background p-1 rounded-xl border-2 border-border">
                     {FLASHCARD_DEMOS.map((card, idx) => (
                       <button
                         key={idx}
@@ -861,7 +861,7 @@ function InteractiveHeroDashboard() {
                         className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-mono font-bold transition-all ${
                           currentCardIndex === idx
                             ? "bg-fuchsia-600 text-white font-black shadow-xs"
-                            : "text-muted-foreground hover:text-foreground hover:bg-card/40"
+                            : "text-muted-foreground hover:text-foreground hover:bg-card"
                         }`}
                       >
                         Deck {idx + 1}
@@ -873,11 +873,11 @@ function InteractiveHeroDashboard() {
                 {/* 3D Flip Card */}
                 <div 
                   onClick={() => setCardFlipped(!cardFlipped)}
-                  className="w-full min-h-[190px] sm:min-h-[200px] rounded-2xl bg-background/80 border-2 border-fuchsia-500/30 p-5 sm:p-6 flex flex-col justify-between cursor-pointer hover:border-fuchsia-500/60 transition-all shadow-xl shadow-fuchsia-500/10 relative group select-none"
+                  className="w-full min-h-[190px] sm:min-h-[200px] rounded-2xl bg-background border-2 border-fuchsia-500/30 p-5 sm:p-6 flex flex-col justify-between cursor-pointer hover:border-fuchsia-500/60 transition-all shadow-xl shadow-fuchsia-500/10 relative group select-none"
                 >
                   <div className="flex justify-between items-center text-xs font-mono text-muted-foreground">
                     <div className="flex items-center gap-1.5">
-                      <span className="bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 px-2 py-0.5 rounded font-bold">
+                      <span className="bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-600 dark:text-fuchsia-400 px-2 py-0.5 rounded font-bold">
                         {currentCard.subtag}
                       </span>
                       <span className="text-xs text-brand-500/90 hidden sm:inline">
@@ -973,10 +973,10 @@ function InteractiveHeroDashboard() {
                     className="grid grid-cols-4 gap-2 w-full mt-3"
                   >
                     {[
-                      { label: "Again", time: "<1 min", color: "bg-rose-500/15 text-rose-400 border-rose-500/30" },
-                      { label: "Hard", time: "12 hrs", color: "bg-brand-500/15 text-brand-400 border-brand-500/30" },
-                      { label: "Good", time: "3 days", color: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
-                      { label: "Easy", time: "8 days", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
+                      { label: "Again", time: "<1 min", color: "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-400 border-rose-500/30" },
+                      { label: "Hard", time: "12 hrs", color: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-400 border-brand-500/30" },
+                      { label: "Good", time: "3 days", color: "bg-[color-mix(in_oklab,var(--color-blue-500)_15%,var(--card))] text-blue-400 border-blue-500/30" },
+                      { label: "Easy", time: "8 days", color: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-400 border-emerald-500/30" },
                     ].map((b) => (
                       <button
                         key={b.label}
@@ -1013,7 +1013,7 @@ function SyllabusMatrixSection() {
   const Icon = section.icon;
 
   return (
-    <section className="w-full py-16 sm:py-24 relative z-10 bg-background/50 border-t-2 border-border/40">
+    <section className="w-full py-16 sm:py-24 relative z-10 bg-background border-t-2 border-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
@@ -1040,7 +1040,7 @@ function SyllabusMatrixSection() {
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold font-mono transition-all border-2 cursor-pointer ${
                   isSelected
                     ? "bg-brand-500 text-on-brand border-brand-400 shadow-md shadow-brand-500/20 font-black"
-                    : "bg-card/60 border-border/40 text-foreground/80 hover:bg-card hover:text-foreground"
+                    : "bg-card border-border/40 text-foreground/80 hover:bg-card hover:text-foreground"
                 }`}
               >
                 <SIcon className="w-4 h-4" />
@@ -1057,13 +1057,13 @@ function SyllabusMatrixSection() {
         <div className="surface-card rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b-2 border-border/40">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-brand-500/15 text-brand-500 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
+              <div className="w-12 h-12 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-500 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
                 <Icon className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="text-xl font-black text-foreground tracking-tight flex items-center gap-2">
                   {section.title}
-                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-brand-500/10 text-brand-500 border-2 border-brand-500/20">
+                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-500 border-2 border-brand-500/20">
                     {section.badge}
                   </span>
                 </h3>
@@ -1072,7 +1072,7 @@ function SyllabusMatrixSection() {
             </div>
 
             <Link href="/practice" className="shrink-0">
-              <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-500 border-2 border-brand-500/30 text-xs font-mono font-bold transition-all cursor-pointer">
+              <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] hover:bg-[color-mix(in_oklab,var(--brand-500)_20%,var(--card))] text-brand-500 border-2 border-brand-500/30 text-xs font-mono font-bold transition-all cursor-pointer">
                 <span>Practice {section.title.split(" ")[0]} PYQs</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -1097,8 +1097,8 @@ function SyllabusMatrixSection() {
                   <span
                     className={`text-xs font-bold px-2 py-0.5 rounded-full border-2 ${
                       t.weight === "High"
-                        ? "bg-rose-500/10 text-rose-500 border-rose-500/20"
-                        : "bg-blue-500/10 text-blue-500 border-blue-500/20"
+                        ? "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-500 border-rose-500/20"
+                        : "bg-[color-mix(in_oklab,var(--color-blue-500)_10%,var(--card))] text-blue-500 border-blue-500/20"
                     }`}
                   >
                     {t.weight}
@@ -1141,8 +1141,8 @@ function AspirantFaqSection() {
                 key={i}
                 className={`rounded-2xl border-2 transition-all overflow-hidden ${
                   isOpen 
-                    ? "bg-card/70 border-brand-500/30 shadow-lg shadow-brand-500/5" 
-                    : "bg-card/40 border-border/40 hover:border-border/70"
+                    ? "bg-card border-brand-500/30 shadow-lg shadow-brand-500/5" 
+                    : "bg-card border-border/40 hover:border-border/70"
                 }`}
               >
                 <button
@@ -1202,7 +1202,7 @@ export default function LandingPage() {
       desc: "Timed calculation sprints, from tables and squares to percentages and ratios, at three difficulty levels.",
       badge: "12 drills",
       href: "/SSC/maths/mental-maths",
-      iconBg: "bg-brand-500/15",
+      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))]",
       iconText: "text-brand-600 dark:text-brand-400",
       auraBg: "from-brand-500/25 via-brand-500/10 to-transparent",
       borderHover: "hover:border-brand-500/40",
@@ -1214,7 +1214,7 @@ export default function LandingPage() {
       desc: "Real SSC CGL questions grouped by topic. Answer, see if you were right, and read the explanation straight away.",
       badge: "Real papers",
       href: "/SSC/maths/topic-pyqs",
-      iconBg: "bg-emerald-500/15",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))]",
       iconText: "text-emerald-600 dark:text-emerald-400",
       auraBg: "from-emerald-500/25 via-emerald-500/10 to-transparent",
       borderHover: "hover:border-emerald-500/40",
@@ -1226,7 +1226,7 @@ export default function LandingPage() {
       desc: "Sit one section of a past paper against the clock with exam marking, then review every answer.",
       badge: "+2 / −0.5",
       href: "/SSC/english/sectional-pyqs",
-      iconBg: "bg-blue-500/15",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-blue-500)_15%,var(--card))]",
       iconText: "text-blue-600 dark:text-blue-400",
       auraBg: "from-blue-500/25 via-blue-500/10 to-transparent",
       borderHover: "hover:border-blue-500/40",
@@ -1238,7 +1238,7 @@ export default function LandingPage() {
       desc: "High-frequency words, idioms and one-word substitutions with Hindi meanings, scheduled by spaced repetition.",
       badge: "637 cards",
       href: "/SSC/english/flashcards",
-      iconBg: "bg-fuchsia-500/15",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))]",
       iconText: "text-fuchsia-700 dark:text-fuchsia-400",
       auraBg: "from-fuchsia-500/25 via-fuchsia-500/10 to-transparent",
       borderHover: "hover:border-fuchsia-500/40",
@@ -1247,10 +1247,10 @@ export default function LandingPage() {
     {
       icon: Gamepad2,
       title: "Word Games",
-      desc: "Hangman Sprint, Odd Link, Word of the Day and Spelling Sprint. Two-minute games that make vocabulary stick.",
+      desc: "Match the Following, Fill in the Blanks, Hangman, Odd Link, Word of the Day and Spelling Check. Two-minute games that make vocabulary stick.",
       badge: "4 games",
       href: "/SSC/english/games",
-      iconBg: "bg-rose-500/15",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))]",
       iconText: "text-rose-600 dark:text-rose-400",
       auraBg: "from-rose-500/25 via-rose-500/10 to-transparent",
       borderHover: "hover:border-rose-500/40",
@@ -1262,7 +1262,7 @@ export default function LandingPage() {
       desc: "Each section laid out as on the paper: questions, marks, negative marking and the topics you can practise today.",
       badge: "4 subjects",
       href: "/practice",
-      iconBg: "bg-cyan-500/15",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-cyan-500)_15%,var(--card))]",
       iconText: "text-cyan-600 dark:text-cyan-400",
       auraBg: "from-cyan-500/25 via-cyan-500/10 to-transparent",
       borderHover: "hover:border-cyan-500/40",
@@ -1279,17 +1279,17 @@ export default function LandingPage() {
           <motion.div 
             animate={{ y: [0, -30, 0], x: [0, 20, 0], scale: [1, 1.15, 1], opacity: [0.15, 0.28, 0.15] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[12%] -left-20 w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-brand-500/30 blur-[120px] rounded-full"
+            className="absolute top-[12%] -left-20 w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-[color-mix(in_oklab,var(--brand-500)_30%,var(--card))] blur-[120px] rounded-full"
           />
           <motion.div 
             animate={{ y: [0, 40, 0], x: [0, -30, 0], scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-[20%] -right-20 w-[45vw] h-[45vw] max-w-[700px] max-h-[700px] bg-brand-alt-500/25 blur-[140px] rounded-full"
+            className="absolute bottom-[20%] -right-20 w-[45vw] h-[45vw] max-w-[700px] max-h-[700px] bg-[color-mix(in_oklab,var(--brand-alt-500)_25%,var(--card))] blur-[140px] rounded-full"
           />
           <motion.div 
             animate={{ y: [0, 25, 0], x: [0, -15, 0], opacity: [0.06, 0.14, 0.06] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute top-[60%] left-[20%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-fuchsia-500/15 blur-[100px] rounded-full"
+            className="absolute top-[60%] left-[20%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] blur-[100px] rounded-full"
           />
         </div>
         {/* Zero-overhead static ambient backdrop for mobile phones */}
@@ -1299,7 +1299,7 @@ export default function LandingPage() {
 
       {/* ─── Floating Pill Navbar ─── */}
       <header className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2 z-50 sticky top-0">
-        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background/95 sm:bg-background/80 backdrop-blur-none sm:backdrop-blur-xl border-2 border-border shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
+        <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background sm:bg-background backdrop-blur-none sm:backdrop-blur-xl border-2 border-border shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
           <Link href="/" className="flex items-center gap-3 group cursor-pointer">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-brand-alt-500 shadow-md shadow-brand-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
               <Rocket className="w-4 h-4" />
@@ -1318,9 +1318,9 @@ export default function LandingPage() {
             className="flex items-center gap-2 sm:gap-3"
           >
             <div className="hidden lg:flex items-center gap-1 mr-2 text-sm font-semibold text-muted-foreground">
-              <a href="#features" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-muted/70 transition-colors">Features</a>
-              <a href="#how-it-works" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-muted/70 transition-colors">How it works</a>
-              <a href="#faq" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-muted/70 transition-colors">FAQ</a>
+              <a href="#features" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] transition-colors">Features</a>
+              <a href="#how-it-works" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] transition-colors">How it works</a>
+              <a href="#faq" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] transition-colors">FAQ</a>
             </div>
             {user ? (
               <Link 
@@ -1357,7 +1357,7 @@ export default function LandingPage() {
           initial={{ opacity: 0, scale: 0.9, y: 10 }} 
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ ...SNAPPY_SPRING, delay: 0.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card/70 backdrop-blur-md border-2 border-brand-500/30 text-xs sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-brand-500/10"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card backdrop-blur-md border-2 border-brand-500/30 text-xs sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-brand-500/10"
         >
           <Sparkles className="w-3.5 h-3.5 text-brand-500" />
           <span>Built around the SSC CGL Tier 1 paper</span>
@@ -1607,7 +1607,7 @@ export default function LandingPage() {
                   className="h-full"
                 >
                   <div 
-                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card/95 md:bg-card/60 backdrop-blur-none md:backdrop-blur-2xl border-2 border-border ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full overflow-hidden hover:-translate-y-1`}
+                    className={`group relative flex flex-col p-6 sm:p-7 rounded-3xl bg-card md:bg-card backdrop-blur-none md:backdrop-blur-2xl border-2 border-border ${f.borderHover} hover:shadow-2xl transition-all duration-300 shine-sweep h-full overflow-hidden hover:-translate-y-1`}
                   >
                     {/* Focused Corner Radial Aura — Desktop Only */}
                     <div 
@@ -1619,7 +1619,7 @@ export default function LandingPage() {
                       <div className={`w-12 h-12 rounded-2xl ${f.iconBg} ${f.iconText} flex items-center justify-center border-2 border-border/20 group-hover:scale-110 shadow-sm transition-transform duration-300`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="text-xs font-mono font-bold bg-background/80 backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border shadow-2xs">
+                      <span className="text-xs font-mono font-bold bg-background backdrop-blur-md text-muted-foreground px-2.5 py-1 rounded-full border-2 border-border shadow-2xs">
                         {f.badge}
                       </span>
                     </div>
@@ -1672,7 +1672,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {/* Free Tier */}
             <TiltCard>
-              <div className="bg-card/50 border-2 border-border rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
+              <div className="bg-card border-2 border-border rounded-3xl p-7 sm:p-8 flex flex-col hover:border-border/70 transition-all h-full">
                 <div className="mb-6">
                   <h3 className="text-2xl font-black text-foreground mb-1">Free Tier</h3>
                   <p className="text-foreground/70 text-xs font-medium">Everything that is live today.</p>
@@ -1699,7 +1699,7 @@ export default function LandingPage() {
                 
                 <Link 
                   href="/practice" 
-                  className="w-full py-3 rounded-2xl bg-muted hover:bg-muted/80 text-foreground font-bold transition-all text-center text-sm font-mono"
+                  className="w-full py-3 rounded-2xl bg-muted hover:bg-[color-mix(in_oklab,var(--muted)_80%,var(--card))] text-foreground font-bold transition-all text-center text-sm font-mono"
                 >
                   Start Free
                 </Link>
@@ -1765,7 +1765,7 @@ export default function LandingPage() {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         
         <div className="max-w-3xl mx-auto px-4 sm:px-6 mb-16 text-center relative">
-          <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-500/10 blur-[130px] rounded-full pointer-events-none" />
+          <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] blur-[130px] rounded-full pointer-events-none" />
           
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
             Your selection{" "}

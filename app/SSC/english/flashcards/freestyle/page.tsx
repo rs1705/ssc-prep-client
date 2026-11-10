@@ -139,7 +139,7 @@ const FreestylePage = () => {
           {!isError && (
             <>
               <div className="flex flex-row items-center gap-1.5 sm:gap-2 w-full mt-0.5">
-                <TabsList className="flex-1 !h-8 sm:!h-9 bg-muted/60 border-2 border-border p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
+                <TabsList className="flex-1 !h-8 sm:!h-9 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] border-2 border-border p-0.5 sm:p-1 rounded-lg sm:rounded-xl shadow-2xs">
                   {TABS.map((tab) => (
                     <TabsTrigger
                       key={tab}
@@ -199,7 +199,7 @@ const FreestylePage = () => {
                   <SheetTrigger asChild>
                     <Button
                       variant="outline"
-                      className="h-8 sm:h-9 hover:cursor-pointer border-border shadow-2xs hover:bg-muted/50 transition-all rounded-lg sm:rounded-xl px-2 sm:px-2.5 flex items-center gap-1"
+                      className="h-8 sm:h-9 hover:cursor-pointer border-border shadow-2xs hover:bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] transition-all rounded-lg sm:rounded-xl px-2 sm:px-2.5 flex items-center gap-1"
                     >
                       <SlidersVertical className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                       <span className="font-semibold text-xs sm:text-xs text-foreground hidden min-[400px]:inline">
@@ -263,7 +263,7 @@ const FreestylePage = () => {
                           </div>
                         ))}
 
-                      <div className="flex items-center justify-between p-4 rounded-lg bg-accent/20 border-2 border-border my-6 shadow-xs">
+                      <div className="flex items-center justify-between p-4 rounded-lg bg-[color-mix(in_oklab,var(--accent)_20%,var(--card))] border-2 border-border my-6 shadow-xs">
                         <div className="flex flex-col gap-0.5 pr-2">
                           <Label
                             htmlFor="highFrequency"
@@ -387,13 +387,13 @@ const FreestylePage = () => {
         </AlertDialogDescription>
         <AlertDialogFooter className="flex-row gap-2 mt-4 sm:justify-end">
           <AlertDialogCancel
-            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-muted/60 active:scale-95 transition-all cursor-pointer"
+            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] active:scale-95 transition-all cursor-pointer"
             onClick={() => setShowQuitConfirm(false)}
           >
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
+            className="flex-1 sm:flex-none h-10 sm:h-11 px-4 rounded-xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase border-2 border-destructive/30 bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))] text-destructive hover:bg-destructive hover:text-white active:scale-95 transition-all cursor-pointer shadow-xs"
             onClick={() => {
               setShowQuitConfirm(false);
               router.push("/SSC/english/flashcards");

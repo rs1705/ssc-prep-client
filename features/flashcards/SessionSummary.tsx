@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import Link from "next/link";
 import { PartyPopper, RotateCcw, Shuffle } from "lucide-react";
 
@@ -22,7 +24,7 @@ interface SessionSummaryProps {
 export function SessionSummary({ title, subtitle, stats, primary, onRestart, onShuffle }: SessionSummaryProps) {
   return (
     <div className="surface-card flex w-full flex-col items-center gap-5 rounded-3xl px-5 py-8 text-center sm:px-8">
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-300">
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-700 dark:text-fuchsia-300">
         <PartyPopper className="h-7 w-7" aria-hidden="true" />
       </div>
       <div>
@@ -32,7 +34,7 @@ export function SessionSummary({ title, subtitle, stats, primary, onRestart, onS
 
       <dl className={`grid w-full gap-2 ${stats.length > 2 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-2"}`}>
         {stats.map((stat) => (
-          <div key={stat.label} className="rounded-2xl border-2 border-border bg-muted/50 px-3 py-3">
+          <div key={stat.label} className="rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] px-3 py-3">
             <dd className={`text-2xl font-extrabold tabular-nums ${stat.className}`}>{stat.value}</dd>
             <dt className="text-xs font-semibold text-muted-foreground">{stat.label}</dt>
           </div>
@@ -44,7 +46,7 @@ export function SessionSummary({ title, subtitle, stats, primary, onRestart, onS
           <button
             type="button"
             onClick={primary.onClick}
-            className="min-h-11 rounded-xl bg-brand-600 px-4 text-sm font-bold text-on-brand shadow-md shadow-brand-600/25 hover:bg-brand-700"
+            className={DUO.primary}
           >
             {primary.label}
           </button>
@@ -54,7 +56,7 @@ export function SessionSummary({ title, subtitle, stats, primary, onRestart, onS
             <button
               type="button"
               onClick={onRestart}
-              className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border-2 border-border bg-card text-sm font-bold text-foreground hover:bg-muted"
+              className={cn(DUO.secondary, "flex-1 whitespace-nowrap px-2 text-[13px] tracking-normal sm:px-3")}
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" /> Start again
             </button>
@@ -63,7 +65,7 @@ export function SessionSummary({ title, subtitle, stats, primary, onRestart, onS
             <button
               type="button"
               onClick={onShuffle}
-              className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border-2 border-border bg-card text-sm font-bold text-foreground hover:bg-muted"
+              className={cn(DUO.secondary, "flex-1 whitespace-nowrap px-2 text-[13px] tracking-normal sm:px-3")}
             >
               <Shuffle className="h-4 w-4" aria-hidden="true" /> Shuffle
             </button>

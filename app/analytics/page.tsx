@@ -18,32 +18,32 @@ const SUMMARY_METRICS = [
     value: "92.4%",
     delta: "+3.2% this week",
     icon: Target,
-    theme: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    glow: "bg-emerald-500/10",
+    theme: "text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))]",
   },
   {
     title: "Avg Solving Speed",
     value: "3.8s / Q",
     delta: "Target: < 5.0s",
     icon: Zap,
-    theme: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
-    glow: "bg-brand-500/10",
+    theme: "text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))]",
   },
   {
     title: "Questions Mastered",
     value: "1,480",
     delta: "240 Qs in last 48h",
     icon: Award,
-    theme: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
-    glow: "bg-fuchsia-500/10",
+    theme: "text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]",
   },
   {
     title: "Current Sprint Streak",
     value: "12 Days",
     delta: "Top 5% of Aspirants",
     icon: Flame,
-    theme: "text-rose-500 bg-rose-500/10 border-rose-500/20",
-    glow: "bg-rose-500/10",
+    theme: "text-rose-500 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/20",
+    glow: "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))]",
   },
 ];
 
@@ -133,7 +133,7 @@ export default function AnalyticsPage() {
                   className={`flex-1 min-h-10 px-4 rounded-xl text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer sm:flex-none ${
                     activeRange === r
                       ? "bg-foreground text-background shadow-xs"
-                      : "text-muted-foreground hover:text-foreground hover:bg-card/80"
+                      : "text-muted-foreground hover:text-foreground hover:bg-card"
                   }`}
                 >
                   <span className="sm:hidden">{r === "7d" ? "7 Days" : r === "30d" ? "30 Days" : "All"}</span>
@@ -188,11 +188,11 @@ export default function AnalyticsPage() {
             {/* Left: Subject Mastery Telemetry */}
             <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
               <div className="p-6 sm:p-8 rounded-3xl surface-card shadow-xl shadow-black/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-36 h-36 bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-36 h-36 bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
+                    <div className="w-10 h-10 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
                       <BarChart3 className="w-5 h-5" />
                     </div>
                     <div>
@@ -224,7 +224,7 @@ export default function AnalyticsPage() {
                         </div>
                       </div>
 
-                      <div className="h-2.5 bg-muted/60 rounded-full overflow-hidden border-2 border-border">
+                      <div className="h-2.5 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] rounded-full overflow-hidden border-2 border-border">
                         <div
                           className={`h-full bg-gradient-to-r ${subjectTheme(s.key).bar} rounded-full shadow-xs transition-all duration-500`}
                           style={{ width: `${s.score}%` }}
@@ -244,7 +244,7 @@ export default function AnalyticsPage() {
                       Speed Progression (Last 7 Days)
                     </h4>
                   </div>
-                  <span className="whitespace-nowrap text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border-2 border-emerald-500/20">
+                  <span className="whitespace-nowrap text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] px-2 py-0.5 rounded-full border-2 border-emerald-500/20">
                     -0.6s Reduction
                   </span>
                 </div>
@@ -273,11 +273,11 @@ export default function AnalyticsPage() {
 
             {/* Right: AI Weak Area Radar & Prescriptions */}
             <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
-              <div className="p-6 rounded-3xl bg-card/60 backdrop-blur-2xl border-2 border-rose-500/25 shadow-xl shadow-rose-500/5 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="p-6 rounded-3xl bg-card backdrop-blur-2xl border-2 border-rose-500/25 shadow-xl shadow-rose-500/5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] rounded-full blur-3xl pointer-events-none" />
                 
                 <div className="flex items-center gap-2.5 mb-4 pb-3 border-b-2 border-border/40">
-                  <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center border-2 border-rose-500/20">
+                  <div className="w-8 h-8 rounded-xl bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-500 flex items-center justify-center border-2 border-rose-500/20">
                     <AlertCircle className="w-4 h-4" />
                   </div>
                   <div>
@@ -299,7 +299,7 @@ export default function AnalyticsPage() {
                           <div className="text-xs font-black text-foreground">{item.topic}</div>
                           <div className="text-xs font-mono text-muted-foreground mt-0.5">{item.subject}</div>
                         </div>
-                        <span className="text-xs font-mono font-bold text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full border-2 border-rose-500/20">
+                        <span className="text-xs font-mono font-bold text-rose-500 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] px-2 py-0.5 rounded-full border-2 border-rose-500/20">
                           {item.accuracy}
                         </span>
                       </div>
@@ -309,7 +309,7 @@ export default function AnalyticsPage() {
                       <Button
                         asChild
                         variant="ghost"
-                        className="mt-1 w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-500/10 border-2 border-brand-500/25"
+                        className="mt-1 w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/25"
                       >
                         <Link href={item.linkTo}>
                           <Swords className="w-3.5 h-3.5" />
@@ -324,7 +324,7 @@ export default function AnalyticsPage() {
               {/* Weekly Goal Progress Card */}
               <div className="p-6 rounded-3xl surface-card shadow-xl shadow-black/5 relative overflow-hidden">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-brand-500/10 text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
+                  <div className="w-8 h-8 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
                     <Target className="w-4 h-4" />
                   </div>
                   <div>
@@ -334,7 +334,7 @@ export default function AnalyticsPage() {
                     <p className="text-xs font-mono text-brand-700 dark:text-brand-400">2,000 Questions</p>
                   </div>
                 </div>
-                <div className="h-2 bg-muted/60 rounded-full overflow-hidden border-2 border-border my-2">
+                <div className="h-2 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] rounded-full overflow-hidden border-2 border-border my-2">
                   <div className="h-full bg-gradient-to-r from-brand-500 to-brand-alt-500 rounded-full w-[74%]" />
                 </div>
                 <div className="flex justify-between items-center text-xs font-mono font-medium text-muted-foreground mt-2">

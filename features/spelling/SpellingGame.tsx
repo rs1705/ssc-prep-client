@@ -83,11 +83,11 @@ export function SpellingGame() {
   const accuracy = state.answeredCount > 0 ? Math.round((state.correctCount / state.answeredCount) * 100) : 0;
 
   return (
-    <GameFrame title="Spelling Sprint" subtitle="Spot the correct spelling, fast" best={best}>
+    <GameFrame title="Spelling Check" subtitle="Spot the correct spelling, fast" best={best}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<SpellCheck aria-hidden="true" strokeWidth={1.6} />}
-          title="Spelling Sprint"
+          title="Spelling Check"
           blurb="Four spellings, one is right. Beat the clock and build a streak."
           rules={[
             { icon: Timer, text: `${ROUND_SECONDS} seconds on the clock` },
@@ -101,7 +101,7 @@ export function SpellingGame() {
 
       {state.phase === "playing" && question && (
         <section
-          aria-label="Spelling Sprint"
+          aria-label="Spelling Check"
           className="flex min-h-0 w-full flex-1 flex-col gap-3 overflow-y-auto pb-1 [scrollbar-width:none] [@media(max-height:600px)]:gap-2 [@media(max-height:480px)_and_(min-width:560px)]:grid [@media(max-height:480px)_and_(min-width:560px)]:grid-cols-2 [@media(max-height:480px)_and_(min-width:560px)]:content-start [@media(max-height:480px)_and_(min-width:560px)]:gap-x-4 [@media(max-height:480px)_and_(min-width:560px)]:gap-y-2"
         >
           <div className="flex items-center justify-between gap-2">
@@ -121,7 +121,7 @@ export function SpellingGame() {
                 key={state.streak}
                 initial={reduceMotion ? false : { scale: 0.7, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-brand-500/10 px-2.5 py-1 text-xs font-mono font-black text-brand-700 dark:text-brand-400"
+                className="flex items-center gap-1 rounded-full border-2 border-brand-500/30 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-1 text-xs font-mono font-black text-brand-700 dark:text-brand-400"
                 aria-label={`${state.streak} in a row, ${multiplier} times points`}
               >
                 <Flame className="h-3.5 w-3.5" aria-hidden="true" />
@@ -162,11 +162,11 @@ export function SpellingGame() {
                   disabled={!!fb}
                   onClick={() => answer(option)}
                   aria-label={`Option ${i + 1}: ${option}`}
-                  className={`flex min-h-14 [@media(max-height:480px)_and_(min-width:560px)]:min-h-10 items-center gap-3 rounded-2xl border-2 border-b-[3px] px-3 py-2 [@media(max-height:480px)_and_(min-width:560px)]:py-1 text-left font-mono text-base font-bold transition-all active:translate-y-[1px] disabled:cursor-default sm:text-lg ${
+                  className={`flex min-h-14 [@media(max-height:480px)_and_(min-width:560px)]:min-h-10 items-center gap-3 rounded-2xl border-2 border-b-4 px-3 py-2 [@media(max-height:480px)_and_(min-width:560px)]:py-1 text-left font-mono text-base font-bold transition-all active:translate-y-[2px] active:border-b-2 disabled:cursor-default sm:text-lg ${
                     showRight
-                      ? "border-emerald-500/60 bg-emerald-500/15 text-emerald-800 dark:text-emerald-200"
+                      ? "border-emerald-500/60 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-800 dark:text-emerald-200"
                       : isChosen
-                        ? "border-rose-500/60 bg-rose-500/15 text-rose-800 dark:text-rose-200"
+                        ? "border-rose-500/60 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-800 dark:text-rose-200"
                         : "border-border bg-card text-foreground hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]"
                   }`}
                 >

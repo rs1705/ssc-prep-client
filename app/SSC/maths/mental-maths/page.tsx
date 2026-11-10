@@ -6,7 +6,6 @@ import { TopicCard, type RevisionConfig } from "@/components/custom/TopicCard";
 import { TOPIC_ID } from "@/lib/mathGenerator";
 import { useRouter } from "next/navigation";
 import posthog from "posthog-js";
-import Loader from "@/components/custom/loader";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface MathTopic {
@@ -391,7 +390,7 @@ const MentalMaths = () => {
             className={`flex-shrink-0 min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
               activeFilter === "all"
                 ? "bg-foreground text-background shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-card/60"
+                : "text-muted-foreground hover:text-foreground hover:bg-card"
             }`}
           >
             All Topics
@@ -403,7 +402,7 @@ const MentalMaths = () => {
               className={`flex-shrink-0 min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 activeFilter === section.id
                   ? "bg-foreground text-background shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-card/60"
+                  : "text-muted-foreground hover:text-foreground hover:bg-card"
               }`}
             >
               {section.label}
@@ -431,7 +430,7 @@ const MentalMaths = () => {
                   <h3 className="text-lg sm:text-xl font-black tracking-tight text-foreground flex items-center gap-2">
                     {section.label}
                     {section.badge && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-brand-500/15 text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 shadow-xs uppercase tracking-wider">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 shadow-xs uppercase tracking-wider">
                         {section.badge}
                       </span>
                     )}
@@ -466,6 +465,8 @@ const MentalMaths = () => {
                             description={topic.description}
                             difficulty={topic.difficulty}
                             onStartClick={() => handleStart(topic.id)}
+                            isStarting={loadingTopic === topic.id}
+                            startDisabled={loadingTopic !== null}
                             colorTheme={section.theme}
                             revisionConfig={topic.revisionConfig}
                             stats={topic.stats}
@@ -493,7 +494,7 @@ const MentalMaths = () => {
                 { value: "50", label: "Marks" },
                 { value: "−0.50", label: "Per wrong" },
               ].map((fact) => (
-                <div key={fact.label} className="rounded-2xl bg-muted/70 px-2 py-3">
+                <div key={fact.label} className="rounded-2xl bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] px-2 py-3">
                   <dd className="font-mono text-lg font-black tabular-nums leading-none text-foreground">
                     {fact.value}
                   </dd>
@@ -529,14 +530,14 @@ const MentalMaths = () => {
           </div>
 
           {/* Daily Warm-up Pro-Tip Banner */}
-          <div className="rounded-3xl border-2 border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 flex flex-col gap-4">
+          <div className="bg-card rounded-3xl border-2 border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 flex flex-col gap-4">
             <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <span className="text-emerald-500 text-base">💡</span> Pro Tip
             </h3>
             <div className="space-y-2 z-10">
               <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
                 Daily Warm-Up
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-bold tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 uppercase border-2 border-emerald-500/20">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-bold tracking-wider bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-300 uppercase border-2 border-emerald-500/20">
                   10 Mins
                 </span>
               </h4>
@@ -548,11 +549,6 @@ const MentalMaths = () => {
         </div>
       </div>
 
-      {loadingTopic && (
-        <div className="fixed inset-0 w-screen h-[100dvh] bg-background/80 backdrop-blur-md z-50 flex flex-col items-center justify-center animate-in fade-in duration-200">
-          <Loader size="lg" text="Loading practice lobby..." />
-        </div>
-      )}
     </TopicPageLayout>
   );
 };

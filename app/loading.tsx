@@ -1,13 +1,5 @@
-import { Loader } from "@/components/custom/loader";
+import { PageLoader } from "@/components/custom/page-loader";
 
 export default function Loading() {
-  return (
-    <div
-      role="status"
-      aria-live="polite"
-      className="flex min-h-[60vh] w-full items-center justify-center"
-    >
-      <Loader size="lg" text="Loading" />
-    </div>
-  );
+  return <PageLoader />;
 }

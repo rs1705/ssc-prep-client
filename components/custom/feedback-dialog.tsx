@@ -33,9 +33,9 @@ const feedbackSchema = z.object({
 type FeedbackFormValues = z.infer<typeof feedbackSchema>;
 
 const CATEGORIES = [
-  { id: "bug", label: "Bug Report 🐛", color: "hover:border-destructive hover:bg-destructive/5" },
-  { id: "feature", label: "Feature Idea ✨", color: "hover:border-primary hover:bg-primary/5" },
-  { id: "content", label: "Content Issue 📚", color: "hover:border-brand-500 hover:bg-brand-500/5" },
+  { id: "bug", label: "Bug Report 🐛", color: "hover:border-destructive hover:bg-[color-mix(in_oklab,var(--destructive)_5%,var(--card))]" },
+  { id: "feature", label: "Feature Idea ✨", color: "hover:border-primary hover:bg-[color-mix(in_oklab,var(--primary)_5%,var(--card))]" },
+  { id: "content", label: "Content Issue 📚", color: "hover:border-brand-500 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))]" },
   { id: "other", label: "Other 💬", color: "hover:border-slate-500 hover:bg-slate-500/5" },
 ] as const;
 
@@ -131,7 +131,7 @@ export default function FeedbackDialog() {
       <DialogContent className="sm:max-w-[450px] overflow-hidden">
         {isSuccess ? (
           <div className="flex flex-col items-center text-center py-6 animate-in fade-in zoom-in-95 duration-300">
-            <div className="p-3 bg-emerald-500/10 rounded-full border-2 border-emerald-500/20 text-emerald-500 mb-4">
+            <div className="p-3 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] rounded-full border-2 border-emerald-500/20 text-emerald-500 mb-4">
               <CheckCircle2 className="w-10 h-10 animate-bounce" />
             </div>
             <DialogTitle className="text-xl font-bold text-foreground">Thank You!</DialogTitle>
@@ -140,7 +140,7 @@ export default function FeedbackDialog() {
             </DialogDescription>
             <Button
               onClick={() => onOpenChange(false)}
-              className="mt-6 w-full h-11 rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-md active:scale-98 transition-transform"
+              className="mt-6 w-full h-11 rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--primary)_90%,var(--card))] shadow-md active:scale-98 transition-transform"
             >
               Close
             </Button>
@@ -162,7 +162,7 @@ export default function FeedbackDialog() {
             </DialogHeader>
 
             {showRoadmap && (
-              <div className="bg-muted/50 rounded-2xl p-4 border-2 border-border animate-in slide-in-from-top-2 duration-300 space-y-3">
+              <div className="bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-2xl p-4 border-2 border-border animate-in slide-in-from-top-2 duration-300 space-y-3">
                 <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
                   <span>🚀</span> App Roadmap & Upcoming Features
                 </h4>
@@ -170,25 +170,25 @@ export default function FeedbackDialog() {
                   <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-emerald-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">Speed Math Modules:</span> Timed drills for Addition, Subtraction, Multiplication, Division, Percentage, Ratios, Simplification, etc. <span className="inline-block text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">In Active Development</span>
+                      <span className="font-semibold text-foreground">Speed Math Modules:</span> Timed drills for Addition, Subtraction, Multiplication, Division, Percentage, Ratios, Simplification, etc. <span className="inline-block text-xs bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-600 dark:text-emerald-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">In Active Development</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-sky-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">Sectional Pyqs & Topic wise Pyqs:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-xs bg-sky-500/10 text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">Sectional Pyqs & Topic wise Pyqs:</span> Chapter-wise previous year questions and topic practice for all subjects. <span className="inline-block text-xs bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] text-sky-600 dark:text-sky-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-fuchsia-600 dark:text-fuchsia-400 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-xs bg-fuchsia-500/10 text-fuchsia-700 dark:text-fuchsia-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">English Word Games:</span> Interactive crossword and word-shuffling puzzles. <span className="inline-block text-xs bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-700 dark:text-fuchsia-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
                     <span className="text-rose-500 font-bold mt-0.5">●</span>
                     <div>
-                      <span className="font-semibold text-foreground">GK & Static Quiz:</span> Daily static general knowledge cards and topic checks. <span className="inline-block text-xs bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
+                      <span className="font-semibold text-foreground">GK & Static Quiz:</span> Daily static general knowledge cards and topic checks. <span className="inline-block text-xs bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-600 dark:text-rose-400 font-bold px-1.5 py-0.5 rounded-full ml-1 select-none">Planned; Coming Soon</span>
                     </div>
                   </li>
                 </ul>
@@ -209,7 +209,7 @@ export default function FeedbackDialog() {
                         onClick={() => form.setValue("category", cat.id)}
                         className={`h-11 rounded-xl border-2 text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
                           isSelected
-                            ? "border-primary bg-primary/10 text-primary shadow-sm font-bold"
+                            ? "border-primary bg-[color-mix(in_oklab,var(--primary)_10%,var(--card))] text-primary shadow-sm font-bold"
                             : "border-border bg-card text-foreground " + cat.color
                         }`}
                       >
@@ -223,7 +223,7 @@ export default function FeedbackDialog() {
               {/* Rating selection */}
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">How is your experience?</Label>
-                <div className="flex justify-between p-2.5 bg-muted/40 border-2 rounded-2xl">
+                <div className="flex justify-between p-2.5 bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] border-2 rounded-2xl">
                   {RATING_EMOJIS.map((rating) => {
                     const isSelected = form.watch("rating") === rating.value;
                     return (
@@ -316,7 +316,7 @@ export default function FeedbackDialog() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 h-11 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-md active:scale-98 transition-all flex items-center justify-center gap-1.5"
+                  className="flex-1 h-11 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--primary)_90%,var(--card))] shadow-md active:scale-98 transition-all flex items-center justify-center gap-1.5"
                 >
                   {isSubmitting ? (
                     <>

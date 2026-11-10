@@ -78,7 +78,7 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
   return (
     <section
       aria-label="Exam countdown"
-      className={`w-full rounded-2xl border-2 border-brand-500/25 bg-gradient-to-br from-brand-500/10 to-transparent p-3.5 ${className}`}
+      className={`bg-card w-full rounded-2xl border-2 border-brand-500/25 bg-gradient-to-br from-brand-500/10 to-transparent p-3.5 ${className}`}
     >
       <div className="mb-1.5 flex items-center justify-between gap-2">
         <span className="section-label whitespace-nowrap">Exam countdown</span>

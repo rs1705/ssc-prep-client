@@ -131,7 +131,7 @@ export default function BookmarksPage() {
                     className={`min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
                       activeTab === tab
                         ? "bg-foreground text-background shadow-xs"
-                        : "text-muted-foreground hover:text-foreground hover:bg-card/80"
+                        : "text-muted-foreground hover:text-foreground hover:bg-card"
                     }`}
                   >
                     {labels[tab]}
@@ -148,7 +148,7 @@ export default function BookmarksPage() {
                 placeholder="Search saved cards..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 pl-10 rounded-2xl bg-card/60 backdrop-blur-md border-2 border-border text-xs font-medium focus-visible:border-brand-500/60 focus-visible:ring-brand-500/20"
+                className="h-11 pl-10 rounded-2xl bg-card backdrop-blur-md border-2 border-border text-xs font-medium focus-visible:border-brand-500/60 focus-visible:ring-brand-500/20"
               />
             </div>
           </div>
@@ -161,14 +161,14 @@ export default function BookmarksPage() {
             >
               {filteredItems.map((item) => {
                 const glowMap = {
-                  vocab: "bg-fuchsia-500/10",
-                  formula: "bg-emerald-500/10",
-                  question: "bg-brand-500/10",
+                  vocab: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]",
+                  formula: "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))]",
+                  question: "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))]",
                 };
                 const tagTheme = {
-                  vocab: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/20",
-                  formula: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-                  question: "text-brand-700 dark:text-brand-400 bg-brand-500/10 border-brand-500/20",
+                  vocab: "text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/20",
+                  formula: "text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/20",
+                  question: "text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/20",
                 };
 
                 return (
@@ -186,7 +186,7 @@ export default function BookmarksPage() {
                             type="button"
                             onClick={() => handleCopy(item.id, `${item.title}: ${item.content}`)}
                             title="Copy to clipboard"
-                            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors cursor-pointer"
+                            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-card transition-colors cursor-pointer"
                           >
                             {copiedId === item.id ? (
                               <Check className="w-3.5 h-3.5 text-emerald-500" />
@@ -198,7 +198,7 @@ export default function BookmarksPage() {
                             type="button"
                             onClick={() => handleDelete(item.id)}
                             title="Remove bookmark"
-                            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -220,7 +220,7 @@ export default function BookmarksPage() {
                       <Button
                         asChild
                         variant="ghost"
-                        className="w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-500/10 border-2 border-brand-500/25"
+                        className="w-full h-10 rounded-xl text-xs font-mono font-bold uppercase tracking-wider gap-1.5 text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/25"
                       >
                         <Link href={item.linkTo}>
                           <Swords className="w-3.5 h-3.5" />

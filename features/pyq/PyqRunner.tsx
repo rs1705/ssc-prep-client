@@ -104,8 +104,8 @@ export function PyqRunner({
     if (show && answer) {
       tone =
         answer === q.answer
-          ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
-          : "border-rose-500/50 bg-rose-500/15 text-rose-700 dark:text-rose-300";
+          ? "border-emerald-500/50 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-700 dark:text-emerald-300"
+          : "border-rose-500/50 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-700 dark:text-rose-300";
     } else if (answer) {
       tone = "border-primary bg-primary text-primary-foreground";
     }
@@ -147,7 +147,7 @@ export function PyqRunner({
               aria-label="Time left"
               className={`flex shrink-0 items-center gap-1.5 rounded-full border-2 px-3 py-1.5 font-mono text-sm font-black tabular-nums ${
                 timeRatio <= 0.15
-                  ? "border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-300"
+                  ? "border-rose-500/40 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-700 dark:text-rose-300"
                   : "border-border bg-card text-foreground"
               }`}
             >
@@ -254,7 +254,7 @@ export function PyqRunner({
           </div>
 
           {question.passage && (
-            <details open className="group rounded-2xl border-2 border-border bg-muted/50">
+            <details open className="group rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))]">
               <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground">
                 <BookOpenText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 Passage
@@ -278,13 +278,13 @@ export function PyqRunner({
               const isChosen = chosen === option.label;
               const isAnswer = option.label === question.answer;
               let tone =
-                "border-border bg-card text-foreground hover:border-primary/40 hover:bg-muted/60";
+                "border-border bg-card text-foreground hover:border-primary/40 hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))]";
               if (revealed && isAnswer) {
-                tone = "border-emerald-500/60 bg-emerald-500/10 text-foreground";
+                tone = "border-emerald-500/60 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-foreground";
               } else if (revealed && isChosen) {
-                tone = "border-rose-500/60 bg-rose-500/10 text-foreground";
+                tone = "border-rose-500/60 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-foreground";
               } else if (isChosen) {
-                tone = "border-primary bg-primary/5 text-foreground";
+                tone = "border-primary bg-[color-mix(in_oklab,var(--primary)_5%,var(--card))] text-foreground";
               } else if (revealed) {
                 tone = "border-border bg-card text-muted-foreground";
               }
@@ -329,7 +329,7 @@ export function PyqRunner({
           </p>
 
           {revealed && (
-            <div className="rounded-2xl border-2 border-border bg-muted/50 p-4">
+            <div className="rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] p-4">
               <p className="mb-2 flex items-center gap-2 text-sm font-bold text-foreground">
                 {!chosen ? (
                   <span className="text-muted-foreground">Not attempted · Answer: {question.answer}</span>
@@ -410,7 +410,7 @@ export function PyqRunner({
           </div>
 
           {confirming && (
-            <div role="alertdialog" aria-label="Submit test?" className="rounded-2xl border-2 border-brand-500/40 bg-brand-500/10 p-4">
+            <div role="alertdialog" aria-label="Submit test?" className="rounded-2xl border-2 border-brand-500/40 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] p-4">
               <p className="text-sm font-bold text-foreground">
                 Submit the test now?
               </p>

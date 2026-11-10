@@ -46,51 +46,51 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
     }
   > = {
     sky: {
-      iconBg: "bg-sky-500/10 shadow-inner ring-1 ring-border/40 text-sky-600 dark:text-sky-400",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-sky-600 dark:text-sky-400",
       activeBtn: "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sm border-0",
       modeIcon: "text-sky-500",
-      revealRow: "bg-sky-500/5 hover:bg-sky-500/10 border-sky-500/25 text-sky-600 dark:text-sky-400",
-      revealPill: "text-sky-600 dark:text-sky-400 bg-sky-500/15 border-sky-500/30",
+      revealRow: "bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] border-sky-500/25 text-sky-600 dark:text-sky-400",
+      revealPill: "text-sky-600 dark:text-sky-400 bg-[color-mix(in_oklab,var(--color-sky-500)_15%,var(--card))] border-sky-500/30",
       sparkle: "text-sky-500",
     },
     emerald: {
-      iconBg: "bg-emerald-500/10 shadow-inner ring-1 ring-border/40 text-emerald-600 dark:text-emerald-400",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-emerald-600 dark:text-emerald-400",
       activeBtn: "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-sm border-0",
       modeIcon: "text-emerald-500",
-      revealRow: "bg-emerald-500/5 hover:bg-emerald-500/10 border-emerald-500/25 text-emerald-600 dark:text-emerald-400",
-      revealPill: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
+      revealRow: "bg-[color-mix(in_oklab,var(--color-emerald-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/25 text-emerald-600 dark:text-emerald-400",
+      revealPill: "text-emerald-600 dark:text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] border-emerald-500/30",
       sparkle: "text-emerald-500",
     },
     rose: {
-      iconBg: "bg-rose-500/10 shadow-inner ring-1 ring-border/40 text-rose-600 dark:text-rose-400",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-rose-600 dark:text-rose-400",
       activeBtn: "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-sm border-0",
       modeIcon: "text-rose-500",
-      revealRow: "bg-rose-500/5 hover:bg-rose-500/10 border-rose-500/25 text-rose-600 dark:text-rose-400",
-      revealPill: "text-rose-600 dark:text-rose-400 bg-rose-500/15 border-rose-500/30",
+      revealRow: "bg-[color-mix(in_oklab,var(--color-rose-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/25 text-rose-600 dark:text-rose-400",
+      revealPill: "text-rose-600 dark:text-rose-400 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] border-rose-500/30",
       sparkle: "text-rose-500",
     },
     amber: {
-      iconBg: "bg-brand-500/10 shadow-inner ring-1 ring-border/40 text-brand-600 dark:text-brand-400",
+      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-brand-600 dark:text-brand-400",
       activeBtn: "bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-sm border-0",
       modeIcon: "text-brand-700 dark:text-brand-400",
-      revealRow: "bg-brand-500/5 hover:bg-brand-500/10 border-brand-500/25 text-brand-600 dark:text-brand-400",
-      revealPill: "text-brand-600 dark:text-brand-400 bg-brand-500/15 border-brand-500/30",
+      revealRow: "bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/25 text-brand-600 dark:text-brand-400",
+      revealPill: "text-brand-600 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] border-brand-500/30",
       sparkle: "text-brand-700 dark:text-brand-400",
     },
     indigo: {
-      iconBg: "bg-indigo-500/10 shadow-inner ring-1 ring-border/40 text-indigo-600 dark:text-indigo-400",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-indigo-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-indigo-600 dark:text-indigo-400",
       activeBtn: "bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-sm border-0",
       modeIcon: "text-indigo-500",
-      revealRow: "bg-indigo-500/5 hover:bg-indigo-500/10 border-indigo-500/25 text-indigo-600 dark:text-indigo-400",
-      revealPill: "text-indigo-600 dark:text-indigo-400 bg-indigo-500/15 border-indigo-500/30",
+      revealRow: "bg-[color-mix(in_oklab,var(--color-indigo-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-indigo-500)_10%,var(--card))] border-indigo-500/25 text-indigo-600 dark:text-indigo-400",
+      revealPill: "text-indigo-600 dark:text-indigo-400 bg-[color-mix(in_oklab,var(--color-indigo-500)_15%,var(--card))] border-indigo-500/30",
       sparkle: "text-indigo-500",
     },
     violet: {
-      iconBg: "bg-fuchsia-500/10 shadow-inner ring-1 ring-border/40 text-fuchsia-700 dark:text-fuchsia-400",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-fuchsia-700 dark:text-fuchsia-400",
       activeBtn: "bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white shadow-sm border-0",
       modeIcon: "text-fuchsia-600 dark:text-fuchsia-400",
-      revealRow: "bg-fuchsia-500/5 hover:bg-fuchsia-500/10 border-fuchsia-500/25 text-fuchsia-700 dark:text-fuchsia-400",
-      revealPill: "text-fuchsia-700 dark:text-fuchsia-400 bg-fuchsia-500/15 border-fuchsia-500/30",
+      revealRow: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/25 text-fuchsia-700 dark:text-fuchsia-400",
+      revealPill: "text-fuchsia-700 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] border-fuchsia-500/30",
       sparkle: "text-fuchsia-600 dark:text-fuchsia-400",
     },
   };
@@ -168,10 +168,10 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="sm:max-w-lg rounded-3xl border-border/60 bg-card/95 backdrop-blur-2xl shadow-2xl p-0 flex flex-col gap-0 max-h-[85vh] overflow-hidden"
+        className="sm:max-w-lg rounded-3xl border-border/60 bg-card backdrop-blur-2xl shadow-2xl p-0 flex flex-col gap-0 max-h-[85vh] overflow-hidden"
       >
         {/* Header */}
-        <DialogHeader className="p-4 sm:p-5 border-b-2 border-border/40 bg-card/80 backdrop-blur-xl flex flex-row items-center justify-between space-y-0 text-left shrink-0">
+        <DialogHeader className="p-4 sm:p-5 border-b-2 border-border/40 bg-card backdrop-blur-xl flex flex-row items-center justify-between space-y-0 text-left shrink-0">
           <DialogTitle className="text-lg sm:text-xl font-black tracking-tight flex items-center gap-2.5 text-foreground">
             {emoji && (
               <span className={`flex items-center justify-center shrink-0 w-8 h-8 rounded-xl select-none ${currentTheme.iconBg}`}>
@@ -190,7 +190,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
               className={`h-8 px-3 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 transition-all cursor-pointer select-none ${
                 selfTest
                   ? currentTheme.activeBtn
-                  : "bg-muted/70 hover:bg-muted text-foreground border-2 border-border"
+                  : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:bg-muted text-foreground border-2 border-border"
               }`}
             >
               {selfTest ? (
@@ -230,16 +230,16 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                 <button
                   type="button"
                   onClick={() => toggleSection(group.label)}
-                  className="w-full text-left py-2.5 px-3.5 flex items-center justify-between hover:bg-muted/50 transition-colors cursor-pointer group/header select-none"
+                  className="w-full text-left py-2.5 px-3.5 flex items-center justify-between hover:bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] transition-colors cursor-pointer group/header select-none"
                 >
                   <div className="flex items-center gap-2.5">
                     <span
                       className={`text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border-2 ${
                         group.label === "Easy"
-                          ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
+                          ? "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
                           : group.label === "Medium"
-                            ? "bg-brand-500/10 border-brand-500/25 text-brand-600 dark:text-brand-400"
-                            : "bg-rose-500/10 border-rose-500/25 text-rose-600 dark:text-rose-400"
+                            ? "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/25 text-brand-600 dark:text-brand-400"
+                            : "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/25 text-rose-600 dark:text-rose-400"
                       }`}
                     >
                       {group.label}
@@ -263,7 +263,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-1.5 p-3.5 pt-2 border-t-2 border-border/30 bg-muted/15">
+                    <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-1.5 p-3.5 pt-2 border-t-2 border-border/30 bg-[color-mix(in_oklab,var(--muted)_15%,var(--card))]">
                       {group.items.map((item) => {
                         const equation = `${item.text} = ${item.value}`;
                         const isRevealed = !selfTest || revealed[item.num];
@@ -276,7 +276,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                             className={`flex items-center justify-between gap-2 h-9 px-3 rounded-xl border-2 transition-all duration-150 cursor-pointer select-none group/row ${
                               selfTest && !isRevealed
                                 ? currentTheme.revealRow
-                                : "border-transparent hover:border-border/50 hover:bg-card/90"
+                                : "border-transparent hover:border-border/50 hover:bg-card"
                             }`}
                           >
                             <div className="flex items-center gap-2 shrink-0">
@@ -321,7 +321,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
         </div>
 
         {/* Footer Helper Tip */}
-        <div className="px-4 py-2.5 bg-muted/30 border-t-2 border-border/40 text-xs font-medium text-muted-foreground flex items-center justify-between shrink-0">
+        <div className="px-4 py-2.5 bg-[color-mix(in_oklab,var(--muted)_30%,var(--card))] border-t-2 border-border/40 text-xs font-medium text-muted-foreground flex items-center justify-between shrink-0">
           <div className="flex items-center gap-1.5">
             <Sparkles className={`w-3.5 h-3.5 shrink-0 ${currentTheme.sparkle}`} />
             <span>

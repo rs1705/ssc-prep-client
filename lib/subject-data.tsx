@@ -81,10 +81,10 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
     {
       title: "Games",
       description:
-        "Hangman, Odd Link, Word of the Day and Spelling Sprint: quick games for SSC vocabulary.",
+        "Match the Following, Fill in the Blanks, Hangman, Odd Link, Word of the Day and Spelling Check.",
       icon: <Skull className="w-5 h-5" strokeWidth={2} />,
       buttonText: "Play",
-      meta: "4 games",
+      meta: "6 games",
       linkTo: "/SSC/english/games",
       colorTheme: SUBJECT_HUE.english,
     },
@@ -111,6 +111,15 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
     },
   ],
   reasoning: [
+    {
+      title: "Speed Drills",
+      description: "60-second drills for coding-decoding, alphabet positions, series, analogies and odd one out.",
+      icon: <Zap className="w-5 h-5" strokeWidth={2} />,
+      buttonText: "Start",
+      meta: "8 drills · 60 seconds",
+      linkTo: "/SSC/reasoning/speed-drills",
+      colorTheme: SUBJECT_HUE.reasoning,
+    },
     {
       title: "Topic-wise PYQs",
       description: "Real past-paper questions grouped by topic, with an explanation for each.",

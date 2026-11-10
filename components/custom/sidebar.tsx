@@ -43,8 +43,8 @@ function SidebarLink({
         collapsed ? "mx-auto h-10 w-10 justify-center" : "gap-3 px-3 py-2"
       } ${
         active
-          ? "bg-brand-500/10 font-bold text-brand-800 dark:text-brand-300"
-          : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+          ? "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] font-bold text-brand-800 dark:text-brand-300"
+          : "text-muted-foreground hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground"
       }`}
     >
       {active && !collapsed && (
@@ -155,7 +155,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           onClick={toggleSidebar}
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={`flex items-center rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-muted/70 hover:text-foreground ${
+          className={`flex items-center rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground ${
             isCollapsed ? "mx-auto h-10 w-10 justify-center" : "w-full gap-3 px-3 py-2"
           }`}
         >
@@ -177,7 +177,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             aria-checked={theme === "dark"}
             aria-label="Dark mode"
             title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            className={`flex items-center justify-between rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-muted/70 hover:text-foreground ${
+            className={`flex items-center justify-between rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground ${
               isCollapsed ? "mx-auto h-10 w-10 justify-center" : "w-full px-3 py-2"
             }`}
           >

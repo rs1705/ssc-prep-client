@@ -31,7 +31,7 @@ const InfoDialog: React.FC<InfoDialogProps> = ({ title, description }) => {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent 
-        className="relative rounded-3xl w-[calc(100%-2rem)] sm:max-w-md border-2 border-border p-6 bg-background/95 backdrop-blur-md shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
+        className="relative rounded-3xl w-[calc(100%-2rem)] sm:max-w-md border-2 border-border p-6 bg-background backdrop-blur-md shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden"
       >
         <AlertDialogCancel asChild>
           <button
