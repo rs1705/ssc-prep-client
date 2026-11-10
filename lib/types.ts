@@ -10,6 +10,8 @@ export interface FlashCardInterface {
   front: FlashCardFrontProps;
   back: FlashCardBackProps;
   tags: string[];
+  /** Study deck only: when the card comes back for each rating (ISO, keys "1".."4"). */
+  nextReview?: Record<"1" | "2" | "3" | "4", string>;
 }
 export interface FlashCardFrontProps {
   text: string;

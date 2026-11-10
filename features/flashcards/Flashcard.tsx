@@ -1,290 +1,153 @@
-import React, { useState, useEffect } from "react";
-import {
-  FlashCardInterface,
-  FlashCardBackProps,
-  FlashCardFrontProps,
-} from "@/lib/types";
+"use client";
 
-export interface ColorScheme {
-  bg: string;
-  textMain: string;
-  textSecondary: string;
-  accent: string;
-  accentBg?: string;
-  border: string;
-}
+import { RotateCcw, Volume2 } from "lucide-react";
+import type { FlashCardInterface } from "@/lib/types";
+import { TYPE_LABEL } from "./ratings";
+import { useSpeech } from "./useSpeech";
 
-interface FlashCardProps {
+interface FlashcardProps {
   card: FlashCardInterface;
-  onFlipChange?: (flipped: boolean) => void;
-  colorScheme?: ColorScheme;
-  activeFilters?: string[];
-  isDragging?: boolean;
+  flipped: boolean;
+  onFlip: () => void;
 }
 
-interface CardFrontPropsWithStyle extends FlashCardFrontProps {
-  scheme?: ColorScheme;
-  tags?: string[];
-  type?: string;
-  activeFilters?: string[];
+const FACE =
+  "absolute inset-0 flex flex-col overflow-hidden rounded-3xl border-2 border-border bg-card shadow-[var(--shadow-card)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]";
+
+/** Soft English-coloured wash at the top of each face (on top of the solid card). */
+const WASH =
+  "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-fuchsia-500/[0.08] to-transparent";
+
+function capitalise(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-interface CardBackPropsWithStyle extends FlashCardBackProps {
-  scheme?: ColorScheme;
-}
-
-
-const DEFAULT_SCHEME: ColorScheme = {
-  bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
-  textMain: "text-stone-900 dark:text-zinc-100",
-  textSecondary: "text-stone-600 dark:text-zinc-400",
-  accent: "text-brand-600 dark:text-brand-400",
-  accentBg: "bg-white/60 dark:bg-zinc-800/60 border-stone-200/80 dark:border-zinc-700/40",
-  border: "border-2 border-stone-200/80 dark:border-zinc-800",
-};
-
-const CardFront = ({ text, pronunciation, scheme = DEFAULT_SCHEME }: CardFrontPropsWithStyle) => {
-  const [animate, setAnimate] = useState(false);
-  const [showHint, setShowHint] = useState(false);
-
-  useEffect(() => {
-    setAnimate(false);
-    const timeout = setTimeout(() => setAnimate(true), 10);
-    
-    // Always show hint
-    setShowHint(true);
-    
-    return () => clearTimeout(timeout);
-  }, [text]);
-
+function SpeakButton({ text }: { text: string }) {
+  const { supported, speak } = useSpeech();
+  if (!supported) return null;
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100%",
-        height: "100%",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-        transform: "rotateY(0deg)",
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        speak(text);
       }}
-      className={`bg-gradient-to-br ${scheme.bg} flex flex-col items-center justify-between gap-2 rounded-3xl shadow-2xl ${scheme.border} text-center p-4 sm:p-5 md:p-6 overflow-hidden`}
+      aria-label={`Pronounce ${text}`}
+      title="Pronounce"
+      className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card text-muted-foreground transition-colors hover:border-fuchsia-500/50 hover:text-fuchsia-700 dark:hover:text-fuchsia-300"
     >
-      <div className="flex-1 flex flex-col items-center justify-center w-full relative z-10 my-auto">
-        <p
-          key={text}
-          className={`text-3xl min-[375px]:text-4xl sm:text-4xl md:text-5xl font-black tracking-tight ${scheme.textMain} pb-1 ${animate ? "animate-fadeIn" : ""}`}
+      <Volume2 className="h-4 w-4" aria-hidden="true" />
+    </button>
+  );
+}
+
+function TypeChip({ type }: { type: string }) {
+  return (
+    <span className="relative rounded-full border-2 border-fuchsia-500/25 bg-fuchsia-500/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-fuchsia-700 dark:text-fuchsia-300">
+      {TYPE_LABEL[type] ?? type}
+    </span>
+  );
+}
+
+function WordList({ label, words }: { label: string; words?: string[] }) {
+  const list = (words ?? []).filter(Boolean).slice(0, 3);
+  if (list.length === 0) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      <span className="w-full text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+        {label}
+      </span>
+      {list.map((word) => (
+        <span
+          key={word}
+          className="rounded-lg border-2 border-border bg-muted/60 px-2 py-0.5 text-sm font-semibold text-foreground"
         >
-          {text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()}
-        </p>
-        {pronunciation && (
-          <div className="mt-1.5">
-            <span
-              className={`${scheme.accent} text-xs min-[375px]:text-sm sm:text-sm md:text-base font-bold bg-black/5 dark:bg-white/10 px-3 py-0.5 sm:py-1 rounded-full border-2 border-black/10 dark:border-white/15 backdrop-blur-sm ${animate ? "animate-fadeIn" : ""}`}
-              style={{ animationDelay: "150ms" }}
-            >
-              {pronunciation.hindi}
-            </span>
-          </div>
-        )}
-      </div>
-      <div className="pb-1 h-7 flex items-center justify-center relative z-10">
-        {showHint && (
-          <div
-            className={`${scheme.textSecondary} text-xs sm:text-xs font-mono font-semibold tracking-wider uppercase select-none flex items-center justify-center opacity-80 bg-black/5 dark:bg-white/10 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border-2 border-black/10 dark:border-white/15`}
-          >
-            <span>Tap to flip · Swipe to next</span>
-          </div>
-        )}
-      </div>
+          {word.toLowerCase()}
+        </span>
+      ))}
     </div>
   );
-};
+}
 
-const CardBack = ({
-  content_eng,
-  example_eng,
-  content_hindi,
-  example_hindi,
-  synonyms,
-  antonyms,
-  scheme = DEFAULT_SCHEME
-}: CardBackPropsWithStyle) => {
-  const hindiexample = example_hindi && example_hindi[0].split("।");
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100%",
-        height: "100%",
-        backfaceVisibility: "hidden",
-        WebkitBackfaceVisibility: "hidden",
-        transform: "rotateY(-180deg)",
-      }}
-      className={`bg-gradient-to-br ${scheme.bg} ${scheme.textMain} rounded-3xl flex flex-col justify-center gap-2.5 sm:gap-3 md:gap-3.5 shadow-2xl ${scheme.border} text-left p-4 sm:p-5 md:p-5.5 overflow-hidden`}
-    >
-      {/* 1. Definition Section */}
-      <div id="flashcard_definition" className="space-y-1 relative z-10">
-        <div className="flex items-center gap-2">
-          <span className={`px-2 py-0.5 rounded-full text-xs sm:text-xs md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
-            Definition
-          </span>
-        </div>
-        <p className={`text-sm sm:text-base md:text-lg font-bold leading-snug tracking-tight ${scheme.textMain}`}>
-          {content_eng}
-        </p>
-        {content_hindi && content_hindi.length > 0 && (
-          <p className={`text-xs sm:text-sm md:text-base font-semibold ${scheme.accent} opacity-95`}>
-            ({content_hindi.join(", ")})
-          </p>
-        )}
-      </div>
-
-      {/* 2. Synonyms & Antonyms Subcards */}
-      {((synonyms && synonyms.length > 0) || (antonyms && antonyms.length > 0)) && (
-        <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full relative z-10">
-          {synonyms && synonyms.length > 0 && (
-            <div className={`flex flex-col gap-1 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
-              <span className="text-xs sm:text-xs md:text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase text-center w-full">
-                Synonyms
-              </span>
-              <div className="grid grid-cols-1 gap-1 w-full">
-                {synonyms.slice(0, 2).map((syn) => (
-                  <span
-                    key={syn}
-                    className="px-2 py-1 text-xs sm:text-xs md:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
-                  >
-                    {syn.toUpperCase()}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {antonyms && antonyms.length > 0 && (
-            <div className={`flex flex-col gap-1 p-2 sm:p-2.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md shadow-xs`}>
-              <span className="text-xs sm:text-xs md:text-xs font-mono font-bold text-rose-600 dark:text-rose-400 tracking-wider uppercase text-center w-full">
-                Antonyms
-              </span>
-              <div className="grid grid-cols-1 gap-1 w-full">
-                {antonyms.slice(0, 2).map((ant) => (
-                  <span
-                    key={ant}
-                    className="px-2 py-1 text-xs sm:text-xs md:text-sm font-mono font-bold rounded-lg bg-white/90 dark:bg-zinc-800/80 text-stone-900 dark:text-zinc-100 border-2 border-black/5 dark:border-white/15 shadow-2xs flex items-center justify-center text-center leading-none"
-                  >
-                    {ant.toUpperCase()}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 3. Example Subcard */}
-      {example_eng && example_eng.length > 0 && (
-        <div id="flashcard_examples" className={`p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl ${scheme.accentBg || "bg-black/[0.03] dark:bg-white/[0.06] border-2 border-black/5 dark:border-white/10"} backdrop-blur-md space-y-1 relative z-10 shadow-xs`}>
-          <div className="flex items-center gap-1.5">
-            <span className={`px-2 py-0.5 rounded-full text-xs sm:text-xs md:text-xs font-mono font-bold tracking-widest uppercase ${scheme.accent} bg-black/5 dark:bg-white/10 border-2 border-black/5 dark:border-white/15 backdrop-blur-md`}>
-              Example
-            </span>
-          </div>
-          <div>
-            <p className={`text-xs sm:text-sm md:text-base font-semibold italic ${scheme.textMain} leading-relaxed`}>
-              &ldquo;{example_eng[0]}&rdquo;
-            </p>
-            {hindiexample?.[0] && (
-              <p className={`text-xs sm:text-sm md:text-base font-medium ${scheme.textSecondary} mt-0.5 leading-relaxed`}>
-                {hindiexample[0]}
-                {hindiexample[0] && !hindiexample[0].endsWith("।") && !hindiexample[0].endsWith(".") ? "।" : ""}
-              </p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Flashcard = ({ card, onFlipChange, colorScheme, activeFilters = [], isDragging = false }: FlashCardProps) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  const flipTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-
-  // Reset flipped state when card changes
-  useEffect(() => {
-    setIsFlipped(false);
-    if (onFlipChange) onFlipChange(false);
-  }, [card._id]);
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isDragging) return;
-    
-    const newState = !isFlipped;
-    setIsFlipped(newState);
-    if (newState && typeof window !== "undefined") {
-      localStorage.setItem("hasFlippedFlashcard", "true");
-    }
-    
-    if (flipTimeoutRef.current) {
-      clearTimeout(flipTimeoutRef.current);
-    }
-
-    if (onFlipChange) {
-      if (newState) {
-        flipTimeoutRef.current = setTimeout(() => onFlipChange(true), 200);
-      } else {
-        onFlipChange(false);
-      }
-    }
-  };
+export default function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
+  const word = capitalise(card.front.text.toLowerCase());
+  const hindiWord = card.front.pronunciation?.hindi;
+  const { content_eng, content_hindi, example_eng, example_hindi, synonyms, antonyms } = card.back;
+  const hindiExample = example_hindi?.[0]?.split("।")[0]?.trim();
 
   return (
     <div
-      style={{
-        perspective: "1000px",
-        WebkitPerspective: "1000px",
+      role="button"
+      tabIndex={0}
+      aria-label={flipped ? `Meaning of ${word}. Press to show the word.` : `${word}. Press to show the meaning.`}
+      onClick={onFlip}
+      onKeyDown={(e) => {
+        // Space / Enter are handled by the deck's global shortcuts.
+        if (e.key === " " || e.key === "Enter") e.preventDefault();
       }}
-      className="w-full h-full cursor-pointer select-none"
-      onClick={handleClick}
+      className="h-full w-full cursor-pointer select-none rounded-3xl outline-none [perspective:1200px] focus-visible:ring-4 focus-visible:ring-brand-500/30"
     >
       <div
-        style={{
-          transformStyle: "preserve-3d",
-          WebkitTransformStyle: "preserve-3d",
-          transform: isFlipped ? "rotateY(-180deg)" : "rotateY(0deg)",
-          transition: "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-        className="relative w-full h-full"
+        className="relative h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] [transform-style:preserve-3d] motion-reduce:transition-none"
+        style={{ transform: flipped ? "rotateY(-180deg)" : "rotateY(0deg)" }}
       >
-        <CardFront
-          text={card.front.text}
-          pronunciation={card.front.pronunciation}
-          scheme={colorScheme}
-          tags={card.tags}
-          type={card.type}
-          activeFilters={activeFilters}
-        />
-        <CardBack
-          content_eng={card.back.content_eng}
-          example_eng={card.back.example_eng}
-          content_hindi={card.back.content_hindi}
-          example_hindi={card.back.example_hindi}
-          antonyms={card.back.antonyms}
-          synonyms={card.back.synonyms}
-          scheme={colorScheme}
-        />
+        {/* ── Front ── */}
+        <div className={FACE} aria-hidden={flipped}>
+          <div className={WASH} />
+          <div className="relative flex items-center justify-between p-4">
+            <TypeChip type={card.type} />
+            <SpeakButton text={card.front.text} />
+          </div>
+          <div className="relative flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center">
+            <p className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">{word}</p>
+            {hindiWord && <p className="text-base font-medium text-muted-foreground">{hindiWord}</p>}
+          </div>
+          <p className="relative pb-4 text-center text-xs font-semibold text-muted-foreground">
+            Tap to see the meaning
+          </p>
+        </div>
+
+        {/* ── Back ── */}
+        <div className={`${FACE} [transform:rotateY(180deg)]`} aria-hidden={!flipped}>
+          <div className={WASH} />
+          <div className="relative flex items-center justify-between gap-3 border-b-2 border-border px-4 py-3">
+            <div className="min-w-0">
+              <p className="truncate text-lg font-extrabold text-foreground">{word}</p>
+              {hindiWord && <p className="truncate text-xs text-muted-foreground">{hindiWord}</p>}
+            </div>
+            <SpeakButton text={card.front.text} />
+          </div>
+
+          <div className="relative flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4 sm:px-5">
+            <div>
+              <p className="text-lg font-bold leading-snug text-foreground sm:text-xl">{content_eng}</p>
+              {content_hindi && content_hindi.length > 0 && (
+                <p className="mt-1 text-sm text-muted-foreground">{content_hindi.join(", ")}</p>
+              )}
+            </div>
+
+            {(synonyms?.length || antonyms?.length) ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                <WordList label="Synonyms" words={synonyms} />
+                <WordList label="Antonyms" words={antonyms} />
+              </div>
+            ) : null}
+
+            {example_eng?.[0] && (
+              <div className="border-l-4 border-fuchsia-500/40 pl-3">
+                <p className="text-sm italic leading-relaxed text-foreground">&ldquo;{example_eng[0]}&rdquo;</p>
+                {hindiExample && (
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{hindiExample}।</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          <p className="relative flex items-center justify-center gap-1 pb-3 text-xs font-semibold text-muted-foreground">
+            <RotateCcw className="h-3 w-3" aria-hidden="true" /> Tap to see the word
+          </p>
+        </div>
       </div>
     </div>
   );
-};
-
-export default Flashcard;
+}

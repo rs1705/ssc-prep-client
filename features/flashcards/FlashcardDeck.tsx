@@ -1,415 +1,328 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Flashcard from "./Flashcard";
-import { Button } from "@/components/ui/button";
-import { MoveLeft, MoveRight } from "lucide-react";
-import { FlashCardInterface } from "@/lib/types";
-import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
-import posthog from "posthog-js";
 
-import { initializeSession, setCurrentCard } from "@/redux/sessionSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import Loader from "@/components/custom/loader";
-import { ProgressBar } from "@/components/custom/ProgressBar";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
+import posthog from "posthog-js";
+import type { FlashCardInterface } from "@/lib/types";
+import { shuffle } from "@/lib/shuffle";
+import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
+import Flashcard from "./Flashcard";
+import { RATINGS, formatInterval } from "./ratings";
+import { SessionSummary } from "./SessionSummary";
+
+export type { ActionType } from "./ratings";
+
 interface FlashcardDeckProps {
   deck: FlashCardInterface[];
-  deckId?: string;
-  isLinear?: boolean;
-  mode?: "freestyle" | "study";
-  activeFilters?: string[];
+  mode: "freestyle" | "study";
+  /** Changing this starts the deck again (new tab, new filters...). */
+  resetKey?: string;
+  shuffled?: boolean;
+  /** Reports the 1-based card position so the page can show progress. */
+  onPosition?: (position: number, total: number) => void;
 }
 
-export const COLOR_SCHEMES = [
-  {
-    bg: "from-rose-50 to-rose-100/90 dark:from-rose-950/40 dark:to-zinc-900",
-    textMain: "text-rose-950 dark:text-rose-100",
-    textSecondary: "text-rose-700/80 dark:text-rose-300/70",
-    accent: "text-rose-600 dark:text-rose-400",
-    accentBg: "bg-white/60 dark:bg-rose-950/50 border-rose-200/80 dark:border-rose-500/25",
-    barBg: "bg-gradient-to-r from-rose-400 to-rose-500",
-    border: "border-2 border-rose-200/80 dark:border-rose-500/30",
-  },
-  {
-    bg: "from-sky-50 to-sky-100/90 dark:from-sky-950/40 dark:to-zinc-900",
-    textMain: "text-sky-950 dark:text-sky-100",
-    textSecondary: "text-sky-700/80 dark:text-sky-300/70",
-    accent: "text-sky-600 dark:text-sky-400",
-    accentBg: "bg-white/60 dark:bg-sky-950/50 border-sky-200/80 dark:border-sky-500/25",
-    barBg: "bg-gradient-to-r from-sky-400 to-sky-500",
-    border: "border-2 border-sky-200/80 dark:border-sky-500/30",
-  },
-  {
-    bg: "from-fuchsia-50 to-fuchsia-100/90 dark:from-fuchsia-950/40 dark:to-zinc-900",
-    textMain: "text-fuchsia-950 dark:text-fuchsia-100",
-    textSecondary: "text-fuchsia-700/80 dark:text-fuchsia-300/70",
-    accent: "text-fuchsia-700 dark:text-fuchsia-400",
-    accentBg: "bg-white/60 dark:bg-fuchsia-950/50 border-fuchsia-200/80 dark:border-fuchsia-500/25",
-    barBg: "bg-gradient-to-r from-fuchsia-400 to-fuchsia-500",
-    border: "border-2 border-fuchsia-200/80 dark:border-fuchsia-500/30",
-  },
-  {
-    bg: "from-brand-50 to-brand-100/90 dark:from-brand-950/40 dark:to-zinc-900",
-    textMain: "text-brand-950 dark:text-brand-100",
-    textSecondary: "text-brand-800/80 dark:text-brand-300/70",
-    accent: "text-brand-600 dark:text-brand-400",
-    accentBg: "bg-white/60 dark:bg-brand-950/50 border-brand-200/80 dark:border-brand-500/25",
-    barBg: "bg-gradient-to-r from-brand-500 to-brand-600",
-    border: "border-2 border-brand-200/80 dark:border-brand-500/30",
-  },
-  {
-    bg: "from-emerald-50 to-emerald-100/90 dark:from-emerald-950/40 dark:to-zinc-900",
-    textMain: "text-emerald-950 dark:text-emerald-100",
-    textSecondary: "text-emerald-700/80 dark:text-emerald-300/70",
-    accent: "text-emerald-600 dark:text-emerald-400",
-    accentBg: "bg-white/60 dark:bg-emerald-950/50 border-emerald-200/80 dark:border-emerald-500/25",
-    barBg: "bg-gradient-to-r from-emerald-400 to-emerald-500",
-    border: "border-2 border-emerald-200/80 dark:border-emerald-500/30",
-  },
-  {
-    bg: "from-indigo-50 to-indigo-100/90 dark:from-indigo-950/40 dark:to-zinc-900",
-    textMain: "text-indigo-950 dark:text-indigo-100",
-    textSecondary: "text-indigo-700/80 dark:text-indigo-300/70",
-    accent: "text-indigo-600 dark:text-indigo-400",
-    accentBg: "bg-white/60 dark:bg-indigo-950/50 border-indigo-200/80 dark:border-indigo-500/25",
-    barBg: "bg-gradient-to-r from-indigo-400 to-indigo-500",
-    border: "border-2 border-indigo-200/80 dark:border-indigo-500/30",
-  },
-  {
-    bg: "from-brand-alt-50 to-brand-alt-100/90 dark:from-brand-alt-950/40 dark:to-zinc-900",
-    textMain: "text-brand-alt-950 dark:text-brand-alt-100",
-    textSecondary: "text-brand-alt-800/80 dark:text-brand-alt-300/70",
-    accent: "text-brand-alt-600 dark:text-brand-alt-400",
-    accentBg: "bg-white/60 dark:bg-brand-alt-950/50 border-brand-alt-200/80 dark:border-brand-alt-500/25",
-    barBg: "bg-gradient-to-r from-brand-alt-400 to-brand-alt-500",
-    border: "border-2 border-brand-alt-200/80 dark:border-brand-alt-500/30",
-  },
-  {
-    bg: "from-teal-50 to-teal-100/90 dark:from-teal-950/40 dark:to-zinc-900",
-    textMain: "text-teal-950 dark:text-teal-100",
-    textSecondary: "text-teal-800/80 dark:text-teal-300/70",
-    accent: "text-teal-600 dark:text-teal-400",
-    accentBg: "bg-white/60 dark:bg-teal-950/50 border-teal-200/80 dark:border-teal-500/25",
-    barBg: "bg-gradient-to-r from-teal-400 to-teal-500",
-    border: "border-2 border-teal-200/80 dark:border-teal-500/30",
-  },
-  {
-    bg: "from-pink-50 to-pink-100/90 dark:from-pink-950/40 dark:to-zinc-900",
-    textMain: "text-pink-950 dark:text-pink-100",
-    textSecondary: "text-pink-800/80 dark:text-pink-300/70",
-    accent: "text-pink-600 dark:text-pink-400",
-    accentBg: "bg-white/60 dark:bg-pink-950/50 border-pink-200/80 dark:border-pink-500/25",
-    barBg: "bg-gradient-to-r from-pink-400 to-pink-500",
-    border: "border-2 border-pink-200/80 dark:border-pink-500/30",
-  },
-  {
-    bg: "from-stone-50 to-stone-100/90 dark:from-zinc-900 dark:to-zinc-950",
-    textMain: "text-stone-900 dark:text-zinc-100",
-    textSecondary: "text-stone-600 dark:text-zinc-400",
-    accent: "text-brand-600 dark:text-brand-400",
-    accentBg: "bg-white/60 dark:bg-zinc-800/60 border-stone-200/80 dark:border-zinc-700/40",
-    barBg: "bg-gradient-to-r from-stone-400 to-stone-500",
-    border: "border-2 border-stone-200/80 dark:border-zinc-800",
-  },
-];
+type Mark = "known" | "learning";
 
-export const BUTTON_ACTIONS = {
-  AGAIN: {
-    label: "AGAIN",
-    sub: "< 1 min",
-    rating: 1,
-    color: "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/40 border-b-[4px] border-b-rose-600/70 hover:bg-rose-500/25 hover:border-rose-500/60 active:border-b-[1px] active:translate-y-[3px]",
-  },
-  HARD: {
-    label: "HARD",
-    sub: "2 days",
-    rating: 2,
-    color: "bg-brand-500/15 text-brand-600 dark:text-brand-400 border-brand-500/40 border-b-[4px] border-b-brand-600/70 hover:bg-brand-500/25 hover:border-brand-500/60 active:border-b-[1px] active:translate-y-[3px]",
-  },
-  GOOD: {
-    label: "GOOD",
-    sub: "4 days",
-    rating: 3,
-    color: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40 border-b-[4px] border-b-emerald-600/70 hover:bg-emerald-500/25 hover:border-emerald-500/60 active:border-b-[1px] active:translate-y-[3px]",
-  },
-  EASY: {
-    label: "EASY",
-    sub: "7 days",
-    rating: 4,
-    color: "bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/40 border-b-[4px] border-b-sky-600/70 hover:bg-sky-500/25 hover:border-sky-500/60 active:border-b-[1px] active:translate-y-[3px]",
-  },
-} as const;
-export type ActionType = keyof typeof BUTTON_ACTIONS;
-
-/*
-  REFERENCE: ORIGINAL DARK COLOR SCHEME
-  If you ever want to revert back to the original dark styling, use these values:
-  
-  Card scheme (DEFAULT_SCHEME in Flashcard.tsx):
-  {
-    bg: "from-slate-700 to-slate-800",
-    textMain: "text-white",
-    textSecondary: "text-slate-400",
-    accent: "text-brand-400",
-    accentBg: "bg-brand-400/10 border-brand-400/20"
-  }
-
-  Progress Bar (FlashcardDeck.tsx):
-  - Container class: "relative h-4 w-full bg-slate-700 rounded-full overflow-hidden border-2 border-slate-600/50 shadow-inner"
-  - Progress fill class: "absolute top-0 left-0 h-full bg-gradient-to-r from-brand-500 via-brand-400 to-brand-500 transition-all duration-300"
-  - Text class: "absolute inset-0 flex items-center justify-center text-xs font-bold tracking-wider transition-colors duration-300 text-white mix-blend-difference"
-*/
-
-const FlashcardDeck = ({ deck = [], deckId, mode, activeFilters = [] }: FlashcardDeckProps) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [cardHistory, setCardHistory] = useState<string[]>([]);
-  const [direction, setDirection] = useState(1);
-  const [navCount, setNavCount] = useState(0);
-  const [saveInteraction] = useSaveFlashcardInteractionsMutation();
-  const dispatch = useDispatch();
-
-  const { currentCardId } = useSelector((state: RootState) => state.session);
-
-  const currentIndex = deck.findIndex((card) => card._id === currentCardId);
-  const scheme =
-    COLOR_SCHEMES[
-      (currentIndex >= 0 ? currentIndex : 0) % COLOR_SCHEMES.length
-    ];
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-      }
-      if (e.key === "ArrowRight") {
-      }
-      if (e.key === " ") setIsFlipped((f) => !f);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  });
-
-  useEffect(() => {
-    setIsFlipped(false);
-    setNavCount((prev) => prev + 1);
-  }, [deckId, currentCardId]);
-
-  useEffect(() => {
-    if (deck && deck.length > 0) {
-      dispatch(
-        initializeSession({
-          deck: deck.map((card) => card._id),
-        }),
-      );
-      posthog.capture("flashcard_session_started", {
-        mode: mode || "freestyle",
-        deckSize: deck.length,
-      });
-    }
-  }, [deck, dispatch]);
-
-  const onActionClick = (action: keyof typeof BUTTON_ACTIONS) => {
-    console.log(action);
-    const card = deck.find((card) => card._id === currentCardId);
-    if (!card) return;
-
-    if (!currentCardId) return;
-    setDirection(1);
-    const newHistory = [...cardHistory, currentCardId];
-    setCardHistory(newHistory);
-
-    if (mode === "study") {
-      saveInteraction({
-        cardId: card._id,
-        rating: BUTTON_ACTIONS[action].rating,
-      });
-    }
-
-    posthog.capture("flashcard_rated", {
-      rating: BUTTON_ACTIONS[action].label,
-      ratingValue: BUTTON_ACTIONS[action].rating,
-      mode: mode || "freestyle",
-      cardId: card._id,
-    });
-    const currentIndex = deck.findIndex((c) => c._id === currentCardId);
-    const nextIndex = (currentIndex + 1) % deck.length;
-    const nextId = deck[nextIndex]._id;
-
-    setTimeout(() => {
-      dispatch(setCurrentCard({ cardId: nextId }));
-    }, 100);
-    setIsFlipped(false);
-  };
-
-  const onNextClick = () => {
-    if (!deck || deck.length === 0) return;
-    const currentIndex = deck.findIndex((c) => c._id === currentCardId);
-    const nextIndex = (currentIndex + 1) % deck.length;
-    setDirection(1);
-    dispatch(setCurrentCard({ cardId: deck[nextIndex]._id }));
-    setIsFlipped(false);
-  };
-
-  const onPrevClick = () => {
-    if (!deck || deck.length === 0) return;
-    const currentIndex = deck.findIndex((c) => c._id === currentCardId);
-    const prevIndex = (currentIndex - 1 + deck.length) % deck.length;
-    setDirection(-1);
-    dispatch(setCurrentCard({ cardId: deck[prevIndex]._id }));
-    setIsFlipped(false);
-  };
-
-  const currentCard = deck.find((card) => card._id === currentCardId);
-
-  return (
-    <>
-      {deck.length > 0 ? (
-        <div className="flex flex-col items-center w-full">
-
-
-          <div className="relative w-full h-[380px] min-[375px]:h-[410px] min-[414px]:h-[430px] sm:h-[450px] md:h-[475px] lg:h-[490px]">
-            {/* LEFT BUTTON (Outside 3D perspective to avoid visual clipping) */}
-            <button
-              onClick={onPrevClick}
-              disabled={deck.length <= 1}
-              className={`absolute z-30 hidden md:flex -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-brand-500/30`}
-            >
-              <MoveLeft className="w-5 h-5" />
-            </button>
-
-            {/* 3D PERSPECTIVE WRAPPER */}
-            <div className="relative grid place-items-center w-full h-[380px] min-[375px]:h-[410px] min-[414px]:h-[430px] sm:h-[450px] md:h-[475px] lg:h-[490px] [perspective:1000px]">
-              {currentCard ? (
-                <AnimatePresence custom={direction}>
-                  <motion.div
-                    key={`${currentCard._id}-${navCount}`}
-                    custom={direction}
-                    className="row-start-1 col-start-1 w-full h-full cursor-grab active:cursor-grabbing select-none"
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.7}
-                    onDragStart={() => setIsDragging(true)}
-                    onDragEnd={(e, { offset, velocity }) => {
-                      setTimeout(() => setIsDragging(false), 80);
-                      const swipeThreshold = 40;
-                      const velocityThreshold = 400;
-                      if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
-                        onNextClick();
-                      } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
-                        onPrevClick();
-                      }
-                    }}
-                    initial={{
-                      x: direction > 0 ? 250 : -250,
-                      opacity: 0,
-                      rotateY: direction > 0 ? -50 : 50,
-                      scale: 0.6,
-                      zIndex: 0,
-                    }}
-                    animate={{
-                      x: 0,
-                      opacity: 1,
-                      rotateY: 0,
-                      scale: 1,
-                      zIndex: 1,
-                    }}
-                    exit={{
-                      x: direction > 0 ? -250 : 250,
-                      opacity: 0,
-                      rotateY: direction > 0 ? 50 : -50,
-                      scale: 0.6,
-                      zIndex: 0,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 28,
-                      mass: 0.8,
-                    }}
-                  >
-                    <Flashcard
-                      card={currentCard}
-                      onFlipChange={setIsFlipped}
-                      colorScheme={scheme}
-                      activeFilters={activeFilters}
-                      isDragging={isDragging}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              ) : (
-                <Loader size="sm" />
-              )}
-            </div>
-
-            {/* RIGHT BUTTON (Outside 3D perspective to avoid visual clipping) */}
-            <button
-              className={`absolute z-30 hidden md:flex -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full text-foreground shadow-xl shadow-black/5 items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 hover:cursor-pointer border-2 border-border/40 ${deck.length <= 1 ? "md:hidden" : ""} bg-card/60 backdrop-blur-xl hover:border-brand-500/30`}
-              onClick={onNextClick}
-              disabled={deck.length <= 1}
-            >
-              <MoveRight className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="w-full">
-            <div className="w-full h-14 sm:h-14 mt-4 sm:mt-5 flex items-center">
-              <AnimatePresence>
-                {isFlipped && (
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex primary-buttons gap-2 sm:gap-2.5 w-full h-full"
-                  >
-                    {(Object.keys(BUTTON_ACTIONS) as ActionType[]).map(
-                      (actionKey, index) => {
-                        const actionConfig = BUTTON_ACTIONS[actionKey];
-                        return (
-                          <motion.button
-                            key={actionKey}
-                            type="button"
-                            initial={{ opacity: 0, y: 12, scale: 0.92 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 6, scale: 0.95 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 520,
-                              damping: 25,
-                              delay: index * 0.04,
-                            }}
-                            className={`flex-1 h-full rounded-xl sm:rounded-2xl py-1.5 sm:py-2 text-xs font-mono font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-0.5 border-2 select-none transition-colors duration-75 cursor-pointer shadow-xs ${actionConfig.color}`}
-                            onClick={() => onActionClick(actionKey)}
-                          >
-                            <span className="font-bold">{actionConfig.label}</span>
-                            <span className="text-xs font-normal opacity-80 font-mono">
-                              {actionConfig.sub}
-                            </span>
-                          </motion.button>
-                        );
-                      },
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-6 sm:p-8 min-h-[300px] min-[375px]:min-h-[330px] sm:min-h-[440px] rounded-3xl surface-card shadow-sm">
-            <span className="text-5xl mb-4 animate-pulse select-none">🔍</span>
-            <h3 className="text-lg font-bold text-foreground mb-1.5">
-              No Cards Found
-            </h3>
-            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              Oops! No flashcards match your current filters. Try changing the
-              category or removing some filters above.
-            </p>
-          </div>
-        </div>
-      )}
-    </>
-  );
+const slide = {
+  enter: (dir: number) => ({ x: dir * 60, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir * -60, opacity: 0 }),
 };
 
-export default FlashcardDeck;
+function isTyping(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false;
+  const el = target;
+  return (
+    ["INPUT", "SELECT", "TEXTAREA"].includes(el.tagName) ||
+    el.isContentEditable ||
+    Boolean(el.closest("[role=dialog],[role=listbox],[role=menu]"))
+  );
+}
+
+export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, onPosition }: FlashcardDeckProps) {
+  const [order, setOrder] = useState<FlashCardInterface[]>(() => (shuffled ? shuffle(deck) : deck));
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [direction, setDirection] = useState(1);
+  const [finished, setFinished] = useState(false);
+  const [marks, setMarks] = useState<Record<string, Mark>>({});
+  const [ratings, setRatings] = useState<Record<string, number>>({});
+  const [nextDue, setNextDue] = useState<string | null>(null);
+  const [saveReview] = useSaveFlashcardInteractionsMutation();
+  const shownAt = useRef(0);
+  const dragging = useRef(false);
+
+  const start = (cards: FlashCardInterface[]) => {
+    setOrder(cards);
+    setIndex(0);
+    setFlipped(false);
+    setFinished(false);
+    setMarks({});
+    setRatings({});
+    setNextDue(null);
+    setDirection(1);
+  };
+
+  // Start over whenever the source deck, the reset key or shuffle changes.
+  const [source, setSource] = useState({ deck, resetKey, shuffled });
+  if (source.deck !== deck || source.resetKey !== resetKey || source.shuffled !== shuffled) {
+    setSource({ deck, resetKey, shuffled });
+    start(shuffled ? shuffle(deck) : deck);
+  }
+
+  const card = order[index];
+
+  useEffect(() => {
+    onPosition?.(Math.min(index + 1, order.length), order.length);
+  }, [index, order.length, onPosition]);
+
+  useEffect(() => {
+    shownAt.current = Date.now();
+  }, [card?._id]);
+
+  useEffect(() => {
+    if (deck.length > 0) {
+      posthog.capture("flashcard_session_started", { mode, deckSize: deck.length });
+    }
+  }, [deck, mode]);
+
+  const goTo = useCallback((next: number, dir: number) => {
+    setDirection(dir);
+    setIndex(next);
+    setFlipped(false);
+  }, []);
+
+  const next = useCallback(() => {
+    if (index + 1 >= order.length) setFinished(true);
+    else goTo(index + 1, 1);
+  }, [index, order.length, goTo]);
+
+  const prev = useCallback(() => {
+    if (index > 0) goTo(index - 1, -1);
+  }, [index, goTo]);
+
+  const flip = useCallback(() => setFlipped((f) => !f), []);
+
+  const mark = useCallback(
+    (value: Mark) => {
+      if (!card) return;
+      setMarks((m) => ({ ...m, [card._id]: value }));
+      next();
+    },
+    [card, next],
+  );
+
+  const rate = useCallback(
+    (rating: 1 | 2 | 3 | 4) => {
+      if (!card) return;
+      setRatings((r) => ({ ...r, [card._id]: rating }));
+      const timeTaken = Math.round((Date.now() - shownAt.current) / 1000);
+      saveReview({ cardId: card._id, rating, timeTaken })
+        .unwrap()
+        .then((res) =>
+          setNextDue((due) => (!due || new Date(res.dueDate) < new Date(due) ? res.dueDate : due)),
+        )
+        .catch(() => {
+          // The review stays counted locally; the next session will resend due cards.
+        });
+      posthog.capture("flashcard_rated", { rating, mode, cardId: card._id });
+      next();
+    },
+    [card, mode, next, saveReview],
+  );
+
+  // Keyboard: Space/Enter flip, arrows move (freestyle), number keys answer.
+  useEffect(() => {
+    if (finished || !card) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || isTyping(e.target)) return;
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        flip();
+      } else if (mode === "freestyle" && e.key === "ArrowRight") {
+        next();
+      } else if (mode === "freestyle" && e.key === "ArrowLeft") {
+        prev();
+      } else if (flipped && mode === "freestyle" && (e.key === "1" || e.key === "2")) {
+        mark(e.key === "1" ? "learning" : "known");
+      } else if (flipped && mode === "study") {
+        const r = RATINGS.find((x) => x.key === e.key);
+        if (r) rate(r.rating);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [finished, card, mode, flipped, flip, next, prev, mark, rate]);
+
+  if (order.length === 0) {
+    return (
+      <div className="surface-card flex w-full flex-col items-center gap-2 rounded-3xl px-6 py-14 text-center">
+        <p className="text-lg font-bold text-foreground">No cards here</p>
+        <p className="max-w-xs text-sm text-muted-foreground">
+          {mode === "study"
+            ? "You're all caught up for today. Come back tomorrow for new cards."
+            : "No flashcards match these filters. Try another letter or clear the filters."}
+        </p>
+      </div>
+    );
+  }
+
+  if (finished) {
+    if (mode === "study") {
+      const counts = RATINGS.map((r) => ({
+        label: r.label,
+        value: Object.values(ratings).filter((v) => v === r.rating).length,
+        className: r.className.match(/text-\S+/)?.[0] ?? "text-foreground",
+      }));
+      const due = formatInterval(nextDue ?? undefined);
+      return (
+        <SessionSummary
+          title="Today's review is done"
+          subtitle={`${Object.keys(ratings).length} cards reviewed.${due ? ` The first one comes back in ${due}.` : ""}`}
+          stats={counts}
+        />
+      );
+    }
+    const known = Object.values(marks).filter((m) => m === "known").length;
+    const learning = order.filter((c) => marks[c._id] === "learning");
+    return (
+      <SessionSummary
+        title="End of the deck"
+        subtitle={`${order.length} cards. ${order.length - known - learning.length} skipped without marking.`}
+        stats={[
+          { label: "Got it", value: known, className: "text-emerald-600 dark:text-emerald-400" },
+          { label: "Still learning", value: learning.length, className: "text-foreground" },
+        ]}
+        primary={
+          learning.length > 0
+            ? { label: `Review the ${learning.length} I'm still learning`, onClick: () => start(learning) }
+            : undefined
+        }
+        onRestart={() => start(order)}
+        onShuffle={() => start(shuffle(order))}
+      />
+    );
+  }
+
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <div className="relative h-[clamp(300px,calc(100dvh-22rem),440px)] w-full">
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={`${card._id}-${index}`}
+            custom={direction}
+            variants={slide}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ type: "spring", stiffness: 420, damping: 36 }}
+            drag={mode === "freestyle" ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.5}
+            onDragStart={() => {
+              dragging.current = true;
+            }}
+            onDragEnd={(_, { offset, velocity }) => {
+              window.setTimeout(() => {
+                dragging.current = false;
+              }, 50);
+              if (offset.x < -60 || velocity.x < -500) next();
+              else if (offset.x > 60 || velocity.x > 500) prev();
+            }}
+            className="absolute inset-0"
+          >
+            <Flashcard
+              card={card}
+              flipped={flipped}
+              onFlip={() => {
+                if (!dragging.current) flip();
+              }}
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* ── Controls ── */}
+      {mode === "freestyle" ? (
+        <div className="flex min-h-14 items-stretch gap-2">
+          <button
+            type="button"
+            onClick={prev}
+            disabled={index === 0}
+            aria-label="Previous card"
+            className="flex w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-border bg-card text-foreground transition-colors hover:bg-muted disabled:opacity-40"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          {flipped ? (
+            <>
+              <button
+                type="button"
+                onClick={() => mark("learning")}
+                className="flex flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-border bg-card text-sm font-bold text-foreground transition-colors hover:bg-muted"
+              >
+                <RotateCcw className="h-4 w-4" aria-hidden="true" /> Still learning
+              </button>
+              <button
+                type="button"
+                onClick={() => mark("known")}
+                className="flex flex-1 items-center justify-center gap-2 rounded-2xl border-2 border-emerald-500/40 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-sm font-bold text-emerald-700 transition-colors hover:border-emerald-500/70 dark:text-emerald-300"
+              >
+                <Check className="h-4 w-4" aria-hidden="true" /> Got it
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={flip}
+              className="flex-1 rounded-2xl bg-brand-600 text-sm font-bold text-on-brand shadow-md shadow-brand-600/25 transition-colors hover:bg-brand-700"
+            >
+              Show meaning
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={next}
+            aria-label={index + 1 >= order.length ? "Finish deck" : "Next card"}
+            className="flex w-14 shrink-0 items-center justify-center rounded-2xl border-2 border-border bg-card text-foreground transition-colors hover:bg-muted"
+          >
+            <ArrowRight className="h-5 w-5" />
+          </button>
+        </div>
+      ) : flipped ? (
+        <div className="grid min-h-14 grid-cols-4 gap-2">
+          {RATINGS.map((r) => {
+            const when = formatInterval(card.nextReview?.[String(r.rating) as "1" | "2" | "3" | "4"]);
+            return (
+              <button
+                key={r.action}
+                type="button"
+                onClick={() => rate(r.rating)}
+                className={`flex flex-col items-center justify-center rounded-2xl border-2 px-1 py-1.5 text-sm font-bold transition-colors ${r.className}`}
+              >
+                {r.label}
+                {when && <span className="text-[11px] font-semibold opacity-75">{when}</span>}
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={flip}
+          className="min-h-14 rounded-2xl bg-brand-600 text-sm font-bold text-on-brand shadow-md shadow-brand-600/25 transition-colors hover:bg-brand-700"
+        >
+          Show answer
+        </button>
+      )}
+
+      <p className="hidden text-center text-xs text-muted-foreground md:block">
+        {mode === "freestyle"
+          ? "Space to flip · ← → to move · 1 still learning · 2 got it"
+          : "Space to flip · 1–4 to rate · the time under each button is when you'll see the card again"}
+      </p>
+    </div>
+  );
+}

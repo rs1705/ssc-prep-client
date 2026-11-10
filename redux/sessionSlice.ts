@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ActionType } from "@/features/flashcards/FlashcardDeck";
+import type { ActionType } from "@/features/flashcards/ratings";
 type CardStatus = "new" | "unknown" | "known";
 type CardMeta = {
   status: CardStatus;

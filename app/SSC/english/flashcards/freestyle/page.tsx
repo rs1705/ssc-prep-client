@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
@@ -44,8 +44,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SlidersVertical, Dices, AlertTriangle, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { SlidersVertical, Dices, AlertTriangle, X, Shuffle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const FreestylePage = () => {
@@ -90,21 +89,14 @@ const FreestylePage = () => {
     }
   }, [dispatch, activeTab, filterStore]);
 
-  const rawFilters = Object.entries(filterStore[activeTab]);
-  const activeFilters = rawFilters.reduce<string[]>((acc, [key, val]) => {
-    if (key === "subject" || key === "type" || key === "alphabet") return acc;
-    if (key === "highFrequency") {
-      if (val === true) acc.push("High frequency");
-    } else if (val !== "all") {
-      acc.push(val as string);
-    }
-    return acc;
-  }, []);
-
-  const { currentCardId } = useSelector((state: RootState) => state.session);
-  const currentIndex = data ? data.findIndex((card) => card._id === currentCardId) : -1;
-  const currentCardNumber = currentIndex >= 0 ? currentIndex + 1 : 1;
-  const totalCards = data ? data.length : 0;
+  const [shuffled, setShuffled] = useState(false);
+  const [position, setPosition] = useState({ current: 1, total: 0 });
+  const onPosition = useCallback(
+    (current: number, total: number) => setPosition({ current, total }),
+    [],
+  );
+  const currentCardNumber = position.current;
+  const totalCards = position.total;
 
   return (
     <>
@@ -187,6 +179,21 @@ const FreestylePage = () => {
                     ))}
                   </SelectContent>
                 </Select>
+
+                <button
+                  type="button"
+                  aria-pressed={shuffled}
+                  onClick={() => setShuffled((v) => !v)}
+                  title={shuffled ? "Back to A-Z order" : "Shuffle the cards"}
+                  aria-label="Shuffle cards"
+                  className={`flex h-8 w-9 shrink-0 items-center justify-center rounded-lg border-2 transition-colors sm:h-9 sm:rounded-xl ${
+                    shuffled
+                      ? "border-brand-600 bg-brand-600 text-on-brand"
+                      : "border-border bg-background text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Shuffle className="h-3.5 w-3.5" />
+                </button>
 
                 <Sheet open={open} onOpenChange={setOpen}>
                   <SheetTrigger asChild>
@@ -306,7 +313,7 @@ const FreestylePage = () => {
                 <div className="w-full mt-3 mb-2 flex flex-col gap-1.5 px-1">
                   <div className="w-full flex justify-between items-end mb-0.5">
                     <span className="text-xs font-bold tracking-wider text-muted-foreground select-none">
-                      PROGRESS
+                      {shuffled ? "SHUFFLED" : "PROGRESS"}
                     </span>
                     <span className="text-xs font-bold tracking-wider text-muted-foreground select-none font-mono">
                       {currentCardNumber} / {totalCards}
@@ -343,10 +350,10 @@ const FreestylePage = () => {
               >
                 <FlashcardDeck
                   deck={data ?? []}
-                  deckId={activeTab}
-                  isLinear={true}
+                  resetKey={activeTab}
+                  shuffled={shuffled}
                   mode="freestyle"
-                  activeFilters={activeFilters}
+                  onPosition={onPosition}
                 />
               </div>
 

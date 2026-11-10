@@ -1,7 +1,5 @@
 "use client";
 import FlashcardDeck from "@/features/flashcards/FlashcardDeck";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { useGetStudyDeckQuery } from "@/redux/FlashcardApiSlice";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import Loader from "@/components/custom/loader";
@@ -10,7 +8,7 @@ import { useAuth } from "@/context/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LogIn, BookOpen, AlertTriangle, X } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlertDialog,
@@ -35,10 +33,13 @@ const FsrsPage = () => {
 
   const [showQuitConfirm, setShowQuitConfirm] = useState(false);
   
-  const { currentCardId } = useSelector((state: RootState) => state.session);
-  const currentIndex = data ? data.findIndex((card) => card._id === currentCardId) : -1;
-  const currentCardNumber = currentIndex >= 0 ? currentIndex + 1 : 1;
-  const totalCards = data ? data.length : 0;
+  const [position, setPosition] = useState({ current: 1, total: 0 });
+  const onPosition = useCallback(
+    (current: number, total: number) => setPosition({ current, total }),
+    [],
+  );
+  const currentCardNumber = position.current;
+  const totalCards = position.total;
   const router = useRouter();
 
   if (isAuthLoading) {
@@ -148,14 +149,8 @@ const FsrsPage = () => {
                 onRetry={refetch}
               />
             </div>
-          ) : data && data.length > 0 ? (
-            <FlashcardDeck deck={data} isLinear={false} mode="study" />
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center min-h-[220px] p-6 text-center">
-              <p className="text-center font-medium text-muted-foreground">
-                No study cards available today! 🎉
-              </p>
-            </div>
+            <FlashcardDeck deck={data ?? []} mode="study" onPosition={onPosition} />
           )}
         </div>
       </div>
