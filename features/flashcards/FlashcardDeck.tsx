@@ -4,7 +4,7 @@ import { recordPlanActivity } from "@/lib/today-plan";
 import { cn } from "@/lib/utils";
 import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
 import posthog from "posthog-js";
 import type { FlashCardInterface } from "@/lib/types";
@@ -38,10 +38,11 @@ interface FlashcardDeckProps<T extends DeckItem> {
 
 type Mark = "known" | "learning";
 
-const slide = {
+const slide: Variants = {
   enter: (dir: number) => ({ x: dir * 60, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (dir: number) => ({ x: dir * -60, opacity: 0 }),
+  center: { x: 0, opacity: 1, zIndex: 1 },
+  // The old card leaves fast (and underneath), so its text never shows through the new one.
+  exit: (dir: number) => ({ x: dir * -30, opacity: 0, zIndex: 0, transition: { duration: 0.12, ease: "easeOut" as const } }),
 };
 
 function isTyping(target: EventTarget | null) {
@@ -310,7 +311,7 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
               onClick={flip}
               className={cn(DUO.primary, "flex-1 px-3")}
             >
-              Show meaning
+              {renderCard ? "Show answer" : "Show meaning"}
             </button>
           )}
           <button

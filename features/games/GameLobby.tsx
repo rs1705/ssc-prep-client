@@ -40,7 +40,7 @@ export function GameLobby({
 }: GameLobbyProps) {
   const t = GAME_TONE[tone];
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-5 overflow-y-auto py-1 text-center [scrollbar-width:none]">
+    <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center-safe gap-5 overflow-y-auto py-1 text-center [scrollbar-width:none]">
       <div className="flex flex-col items-center gap-3 pt-1">
         <div
           className={`flex h-[clamp(64px,12dvh,88px)] w-[clamp(64px,12dvh,88px)] items-center justify-center rounded-3xl border-2 border-border ${t.iconWrap} [&_svg]:h-1/2 [&_svg]:w-1/2`}
@@ -80,7 +80,7 @@ export function GameLobby({
 
       {children}
 
-      <div className="mt-auto flex w-full max-w-sm flex-col items-center gap-3 pt-1">
+      <div className="flex w-full max-w-sm shrink-0 flex-col items-center gap-3 pt-1">
         {best > 0 && (
           <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
             <Trophy className="h-3.5 w-3.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />

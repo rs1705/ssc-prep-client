@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/custom/sidebar";
 import { TopBar } from "@/components/custom/topbar";
 import { MobileTabBar } from "@/components/custom/mobile-tab-bar";
 import { PlanStepToast } from "@/features/dashboard/PlanStepToast";
+import { ServerWakeNotice } from "@/components/custom/server-wake-notice";
 import { useAuth } from "@/context/auth";
 import { SidebarProvider, useSidebar } from "@/components/custom/sidebar-context";
 
@@ -36,6 +37,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   const isFocusMode = isGameRoute(pathname);
+  // Room at the bottom is only needed when the phone tab bar is showing.
+  const showTabBar = Boolean(user) && !isGameRoute(pathname) && !(pathname.startsWith("/signin") || pathname.startsWith("/signup"));
   // Games that lay themselves out to exactly the viewport height (and scroll internally if
   // they must). Other focus routes keep their natural height and scroll the column instead.
   const fitsViewport =
@@ -65,7 +68,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
             className={`flex-1 flex flex-col animate-in fade-in duration-500 fill-mode-forwards min-h-0 ${
               isFocusMode 
                 ? "px-3 pt-2 pb-2 sm:px-4 sm:pt-3 sm:pb-3 md:px-6 md:pt-4 md:pb-4 items-center justify-start overflow-hidden" 
-                : "pt-4 sm:pt-6 md:pt-8 px-4 sm:px-6 md:px-8 pb-28 md:pb-16"
+                : `pt-4 sm:pt-6 md:pt-8 px-4 sm:px-6 md:px-8 md:pb-16 ${showTabBar ? "pb-28" : "pb-8"}`
             }`}
           >
             {children}
@@ -74,6 +77,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       </div>
       {user && !isFocusMode && !isAuthRoute && <MobileTabBar />}
       {!isAuthRoute && <PlanStepToast />}
+      <ServerWakeNotice />
     </div>
   );
 }

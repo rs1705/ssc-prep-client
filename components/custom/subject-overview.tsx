@@ -9,18 +9,18 @@ export function ExamPatternStrip({ subject }: { subject: SubjectKey }) {
   const meta = SUBJECT_META[subject];
 
   const facts = [
-    { icon: FileText, value: String(TIER1_PATTERN.questionsPerSection), label: "Questions" },
-    { icon: Target, value: String(TIER1_PATTERN.marksPerSection), label: "Marks" },
-    { icon: CircleMinus, value: `−${TIER1_PATTERN.negativeMark.toFixed(2)}`, label: "Per wrong answer" },
-    { icon: Clock, value: `${TIER1_PATTERN.durationMinutes} min`, label: "Whole paper" },
+    { icon: FileText, value: String(TIER1_PATTERN.questionsPerSection), label: "Questions", short: "Questions" },
+    { icon: Target, value: String(TIER1_PATTERN.marksPerSection), label: "Marks", short: "Marks" },
+    { icon: CircleMinus, value: `−${TIER1_PATTERN.negativeMark.toFixed(2)}`, label: "Per wrong answer", short: "Per wrong" },
+    { icon: Clock, value: `${TIER1_PATTERN.durationMinutes} min`, label: "Whole paper", short: "Paper" },
   ];
 
   return (
     <section
       aria-label={`${meta.paperSection} in ${TIER1_PATTERN.exam}`}
-      className={`relative overflow-hidden rounded-3xl border-2 bg-gradient-to-br p-5 sm:p-6 ${theme.banner}`}
+      className={`relative overflow-hidden rounded-3xl border-2 bg-gradient-to-br p-4 sm:p-6 ${theme.banner}`}
     >
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3 sm:gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0 max-w-xl">
           <p className="section-label">
             {TIER1_PATTERN.exam} · Section
@@ -31,17 +31,20 @@ export function ExamPatternStrip({ subject }: { subject: SubjectKey }) {
           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{meta.tagline}</p>
         </div>
 
-        <dl className="grid shrink-0 grid-cols-2 gap-2 sm:grid-cols-4 lg:w-auto">
-          {facts.map(({ icon: Icon, value, label }) => (
+        <dl className="grid shrink-0 grid-cols-4 gap-1.5 sm:gap-2 lg:w-auto">
+          {facts.map(({ icon: Icon, value, label, short }) => (
             <div
               key={label}
-              className="flex min-w-[6.5rem] flex-col gap-1 rounded-2xl border-2 border-border bg-card px-3.5 py-3"
+              className="flex min-w-0 flex-col gap-0.5 rounded-xl border-2 border-border bg-card px-2 py-2 text-center sm:min-w-[6.5rem] sm:gap-1 sm:rounded-2xl sm:px-3.5 sm:py-3 sm:text-left"
             >
-              <Icon className={`h-4 w-4 ${theme.text}`} aria-hidden="true" />
-              <dd className="font-mono text-lg font-black tabular-nums leading-none text-foreground">
+              <Icon className={`hidden h-4 w-4 sm:block ${theme.text}`} aria-hidden="true" />
+              <dd className="whitespace-nowrap font-mono text-sm font-black tabular-nums leading-tight text-foreground sm:text-lg sm:leading-none">
                 {value}
               </dd>
-              <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
+              <dt className="text-[11px] font-medium leading-tight text-muted-foreground sm:text-xs">
+                <span className="sm:hidden">{short}</span>
+                <span className="hidden sm:inline">{label}</span>
+              </dt>
             </div>
           ))}
         </dl>

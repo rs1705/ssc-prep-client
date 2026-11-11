@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { withServerWake } from "@/lib/server-wake";
 import { auth } from "@/firebase/config";
 import type { FlashCardInterface } from "@/lib/types";
 
@@ -44,7 +45,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 export const flashcardApi = createApi({
   reducerPath: "FlashcardApi",
   tagTypes: ["Interactions"],
-  baseQuery: fetchBaseQuery({
+  // Retries reads while a sleeping server wakes up (see lib/server-wake.ts).
+  baseQuery: withServerWake(fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: async (headers) => {
       const token = await auth.currentUser?.getIdToken();
@@ -53,7 +55,7 @@ export const flashcardApi = createApi({
       }
       return headers;
     },
-  }),
+  })),
   endpoints: (builder) => ({
     getFilteredCards: builder.query<FlashCardInterface[], FlashcardFilters>({
       query: (filters) => {
