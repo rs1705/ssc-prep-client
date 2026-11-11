@@ -93,7 +93,7 @@ export function MatchGame({
       if (rounds.length === 0) throw new Error("not enough cards");
       dispatch({ type: "START", rounds });
     } catch {
-      setError("Couldn't load words. Check your connection and try again.");
+      setError("Couldn't reach the practice server. Please try again in a moment.");
     } finally {
       setLoading(false);
     }

@@ -56,7 +56,7 @@ export function ClozeGame() {
       if (questions.length === 0) throw new Error("no questions");
       dispatch({ type: "START", questions });
     } catch {
-      setError("Couldn't load sentences. Check your connection and try again.");
+      setError("Couldn't reach the practice server. Please try again in a moment.");
     } finally {
       setLoading(false);
     }
