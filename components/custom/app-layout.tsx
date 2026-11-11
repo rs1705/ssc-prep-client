@@ -26,6 +26,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     if (/\/games\/.+/.test(path)) return true;
     if (/\/speed-drills\/.+/.test(path)) return true;
     if (/\/(maths|reasoning)\/match$/.test(path)) return true;
+    if (path === '/review') return true;
     
     // Trigger on specific topics inside mental-maths, but NOT the topic list page itself
     const isMentalMathsTopic = path.includes('/mental-maths/') && path.split('/mental-maths/')[1]?.length > 0;
@@ -38,7 +39,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   // Games that lay themselves out to exactly the viewport height (and scroll internally if
   // they must). Other focus routes keep their natural height and scroll the column instead.
   const fitsViewport =
-    pathname.includes("/hangman") || /\/games\/.+/.test(pathname) || /\/speed-drills\/.+/.test(pathname) || /\/(maths|reasoning)\/match$/.test(pathname);
+    pathname.includes("/hangman") || /\/games\/.+/.test(pathname) || /\/speed-drills\/.+/.test(pathname) || /\/(maths|reasoning)\/match$/.test(pathname) || pathname === "/review";
   const isAuthRoute = pathname.startsWith("/signin") || pathname.startsWith("/signup");
   const sidebarWidthClass = isCollapsed
     ? "md:w-[72px]"

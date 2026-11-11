@@ -29,6 +29,7 @@ import {
   type Side,
 } from "./game";
 import { shuffle } from "@/lib/shuffle";
+import { loadSet, saveSet, useReplayRequest } from "@/features/games/sessionSet";
 import { MATCH_DECKS, type MatchDeck, type MatchDeckId } from "./decks";
 
 interface MatchGameProps {
@@ -75,6 +76,46 @@ export function MatchGame({
     writeStored(DECK_KEY, id);
   };
 
+  // Start with given pairs and remember them for "Same set again" / "Go again".
+  const begin = useCallback(
+    (pairs: Pair[], save = true, roundCount?: number) => {
+      const rounds = buildRounds(pairs, roundCount);
+      if (rounds.length === 0) return false;
+      clearNewBest();
+      setError(null);
+      if (save) saveSet(window.location.pathname, rounds.flat(), deckId);
+      dispatch({ type: "START", rounds });
+      return true;
+    },
+    [clearNewBest, deckId],
+  );
+
+  const replay = useReplayRequest();
+  useEffect(() => {
+    if (!replay) return;
+    const saved = loadSet<Pair[]>(window.location.pathname);
+    if (!saved?.items?.length) return;
+    if (saved.meta && decks.some((d) => d.id === saved.meta)) setDeckId(saved.meta as MatchDeckId);
+    begin(shuffle(saved.items));
+    // Only when the page was opened with ?replay=1.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replay]);
+
+  const replaySet = useCallback(() => {
+    const saved = loadSet<Pair[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items), false);
+  }, [begin]);
+
+  // Missed pairs, topped up from the same set to fill whole rounds of five.
+  const retryMistakes = useCallback(() => {
+    const saved = loadSet<Pair[]>(window.location.pathname)?.items ?? [];
+    const missedIds = new Set(state.missed.map((p) => p.id));
+    const rounds = Math.max(1, Math.ceil(state.missed.length / ROUND_SIZE));
+    const fillers = shuffle(saved.filter((p) => !missedIds.has(p.id)));
+    const pairs = [...state.missed, ...fillers].slice(0, rounds * ROUND_SIZE);
+    begin(shuffle(pairs), false, rounds);
+  }, [begin, state.missed]);
+
   const start = useCallback(async () => {
     if (loading) return;
     clearNewBest();
@@ -89,15 +130,13 @@ export function MatchGame({
         const toPair = deck.toPair ?? (() => null);
         pairs = cards.map(toPair).filter((p): p is Pair => p !== null);
       }
-      const rounds = buildRounds(pairs);
-      if (rounds.length === 0) throw new Error("not enough cards");
-      dispatch({ type: "START", rounds });
+      if (!begin(pairs)) throw new Error("not enough cards");
     } catch {
       setError("Couldn't reach the practice server. Please try again in a moment.");
     } finally {
       setLoading(false);
     }
-  }, [loading, clearNewBest, fetchCards, deck]);
+  }, [loading, clearNewBest, fetchCards, deck, begin]);
 
   const pick = (side: Side, id: string) => dispatch({ type: "PICK", side, id });
 
@@ -285,6 +324,9 @@ export function MatchGame({
           kicker={state.clearedAll ? `All rounds cleared · +${state.timeLeft * TIME_BONUS} time bonus` : "Time's up"}
           result={{ correct: state.matchedTotal, total: state.matchedTotal + state.mistakes }}
           mistakes={state.missed.map((p) => ({ prompt: p.left, answer: p.right }))}
+          onReplaySet={replaySet}
+          onRetryMistakes={retryMistakes}
+          retryCount={state.missed.length}
           rank={rankTitle(state.score)}
           score={state.score}
           best={best}

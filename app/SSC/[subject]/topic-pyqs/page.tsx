@@ -1,7 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, Layers, Loader2, Shuffle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { loadSet, saveSet, useReplayRequest } from "@/features/games/sessionSet";
+import { clearUnfinished, loadUnfinished, saveUnfinished, takeResumeParam, type Unfinished } from "@/features/games/unfinished";
+import type { PyqSessionState } from "@/features/pyq/session";
+
+interface SavedSession {
+  topic: string | null;
+  session: PyqSessionState;
+}
+import { ArrowRight, Layers, Loader2, RotateCcw, Shuffle } from "lucide-react";
+import { DUO } from "@/features/games/buttons";
+import { cn } from "@/lib/utils";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
 import { Loader } from "@/components/custom/loader";
@@ -19,6 +29,8 @@ interface ActiveSet {
   questions: Pyq[];
   /** Changes on every new set so the runner starts fresh. */
   key: number;
+  /** Continue a half-finished set. */
+  session?: PyqSessionState;
 }
 
 export default function TopicPyqsPage() {
@@ -31,6 +43,26 @@ export default function TopicPyqsPage() {
   /** Which card is fetching its set ("__mixed" for the mixed set). */
   const [pending, setPending] = useState<string | null>(null);
 
+  // Opened from the dashboard's "Go again": reopen the last set.
+  const replay = useReplayRequest();
+  useEffect(() => {
+    if (!replay) return;
+    const saved = loadSet<Pyq[]>(window.location.pathname);
+    if (saved?.items?.length) setActive({ topic: saved.meta || null, questions: saved.items, key: Date.now() });
+  }, [replay]);
+
+  // A half-finished set: offered on the topic list, or opened straight away with ?resume=1.
+  const [unfinished, setUnfinished] = useState<Unfinished<SavedSession> | null>(null);
+  const resumeSet = (run: Unfinished<SavedSession>) => {
+    setUnfinished(null);
+    setActive({ topic: run.state.topic, questions: run.state.session.questions, key: Date.now(), session: run.state.session });
+  };
+  useEffect(() => {
+    const run = loadUnfinished<SavedSession>(window.location.pathname);
+    if (run && takeResumeParam()) resumeSet(run);
+    else setUnfinished(run);
+  }, []);
+
   if (!subject) {
     return (
       <TopicPageLayout title="Topic-wise PYQs">
@@ -42,12 +74,18 @@ export default function TopicPyqsPage() {
   const theme = subjectTheme(subject);
   const total = topics?.reduce((sum, t) => sum + t.count, 0) ?? 0;
 
+  // Play a set, remembering it so the dashboard's "Go again" can reopen it.
+  const play = (topic: string | null, questions: Pyq[], save = true) => {
+    if (save) saveSet(window.location.pathname, questions, topic ?? "");
+    setActive({ topic, questions, key: Date.now() });
+  };
+
   const start = async (topic: string | null) => {
     setPending(topic ?? "__mixed");
     try {
       const result = await fetchSet({ subject, topic: topic ?? undefined, limit: SET_SIZE });
       if (result.data && result.data.length > 0) {
-        setActive({ topic, questions: result.data, key: Date.now() });
+        play(topic, result.data);
       }
     } finally {
       setPending(null);
@@ -66,6 +104,22 @@ export default function TopicPyqsPage() {
           restartLabel="Another set"
           onRestart={() => start(active.topic)}
           onExit={() => setActive(null)}
+          onPlayQuestions={(questions) => play(active.topic, questions, false)}
+          initialSession={active.session}
+          onProgress={(session) => {
+            const path = window.location.pathname;
+            if (!session) return clearUnfinished(path);
+            const done = Object.keys(session.answers).length;
+            if (done === 0) return;
+            saveUnfinished<SavedSession>({
+              path,
+              label: `${active.topic ?? "Mixed"} PYQs · ${SUBJECT_LABEL[subject]}`,
+              subject,
+              done,
+              total: session.questions.length,
+              state: { topic: active.topic, session },
+            });
+          }}
         />
       </TopicPageLayout>
     );
@@ -93,6 +147,36 @@ export default function TopicPyqsPage() {
         />
       ) : (
         <div className="flex w-full flex-col gap-6">
+          {unfinished && (
+            <section
+              aria-label="Unfinished set"
+              className="flex flex-col gap-3 rounded-3xl border-2 border-brand-500/50 bg-[color-mix(in_oklab,var(--brand-500)_8%,var(--card))] p-4 sm:flex-row sm:items-center sm:p-5"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="font-extrabold text-foreground">Continue where you stopped</p>
+                <p className="text-sm text-muted-foreground">
+                  {unfinished.state.topic ?? "Mixed topics"} · {unfinished.done} of {unfinished.total} answered
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => resumeSet(unfinished)} className={cn(DUO.primary, "min-h-11 flex-1 px-4 text-xs sm:flex-none")}>
+                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                  Resume
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearUnfinished(window.location.pathname);
+                    setUnfinished(null);
+                  }}
+                  className={cn(DUO.secondary, "min-h-11 px-4 text-xs")}
+                >
+                  Discard
+                </button>
+              </div>
+            </section>
+          )}
+
           {/* Mixed set */}
           <button
             type="button"

@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import { Play, Trophy } from "lucide-react";
+import { Play, RotateCcw, Trophy } from "lucide-react";
 import { DUO } from "./buttons";
 import { GAME_TONE, type GameTone } from "./tone";
 
@@ -22,6 +22,8 @@ interface GameLobbyProps {
   tone?: GameTone;
   /** Extra controls between the rules and the start button (e.g. a deck picker). */
   children?: React.ReactNode;
+  /** A half-finished run that can be picked up again. */
+  resume?: { label: string; onResume: () => void; onDiscard: () => void };
 }
 
 export function GameLobby({
@@ -34,6 +36,7 @@ export function GameLobby({
   startLabel = "Start",
   tone = "english",
   children,
+  resume,
 }: GameLobbyProps) {
   const t = GAME_TONE[tone];
   return (
@@ -50,7 +53,23 @@ export function GameLobby({
         </div>
       </div>
 
-      <ul className="flex w-full max-w-sm flex-col divide-y-2 divide-border overflow-hidden rounded-2xl border-2 border-border text-left">
+      {resume && (
+        <div className="flex w-full max-w-sm shrink-0 flex-col gap-2 rounded-2xl border-2 border-brand-500/50 bg-[color-mix(in_oklab,var(--brand-500)_8%,var(--card))] p-3 text-left">
+          <p className="text-sm font-bold text-foreground">You have an unfinished run</p>
+          <p className="-mt-1.5 text-xs text-muted-foreground">{resume.label}</p>
+          <div className="flex gap-2">
+            <button type="button" onClick={resume.onResume} autoFocus className={cn(DUO.primary, "min-h-11 flex-1 px-3 text-xs")}>
+              <RotateCcw className="h-4 w-4" aria-hidden="true" />
+              Resume
+            </button>
+            <button type="button" onClick={resume.onDiscard} className={cn(DUO.secondary, "min-h-11 px-3 text-xs")}>
+              Start fresh
+            </button>
+          </div>
+        </div>
+      )}
+
+      <ul className="flex w-full max-w-sm shrink-0 flex-col divide-y-2 divide-border overflow-hidden rounded-2xl border-2 border-border text-left">
         {rules.map(({ icon: Icon, text }) => (
           <li key={text} className="flex items-center gap-3 bg-card px-3.5 py-2.5 text-sm text-foreground">
             <Icon className={`h-4 w-4 shrink-0 ${t.icon}`} aria-hidden="true" />

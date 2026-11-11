@@ -12,9 +12,11 @@ import {
   Languages,
   Layers,
   Newspaper,
+  Play,
   RotateCcw,
   Sigma,
   Sparkles,
+  Target,
   X,
   Zap,
   type LucideIcon,
@@ -24,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import {
   dismissMistake,
+  readMastered,
   startOfWeek,
   subjectStats,
   timeAgo,
@@ -32,6 +35,7 @@ import {
   type ActivityKind,
   type MistakeEntry,
 } from "@/lib/activity-log";
+import { resumeHref, type Unfinished } from "@/features/games/unfinished";
 
 const KIND_ICON: Record<ActivityKind, LucideIcon> = {
   drill: Zap,
@@ -95,20 +99,52 @@ function EmptyNote({ icon: Icon, title, children }: { icon: LucideIcon; title: s
 /* Continue where you left off                                          */
 /* ------------------------------------------------------------------ */
 
-export function ContinueCard({ activities, now }: { activities: ActivityEntry[]; now: number }) {
+export function ContinueCard({
+  activities,
+  unfinished = [],
+  now,
+}: {
+  activities: ActivityEntry[];
+  unfinished?: Unfinished[];
+  now: number;
+}) {
   const [latest, ...rest] = activities;
-  const earlier = rest.slice(0, 3);
+  const earlier = rest.slice(0, unfinished.length > 0 ? 2 : 3);
 
   return (
     <CardShell label="Pick up where you left off" icon={History}>
-      {!latest ? (
+      {unfinished.slice(0, 2).map((u) => (
+        <div
+          key={u.path}
+          className="flex flex-col gap-3 rounded-2xl border-2 border-brand-500/50 bg-[color-mix(in_oklab,var(--brand-500)_8%,var(--card))] p-3"
+        >
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-brand-500 px-2 py-0.5 text-xs font-bold text-white">Unfinished</span>
+            <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">{timeAgo(u.at, now)}</span>
+          </div>
+          <div>
+            <p className="truncate font-bold text-foreground">{u.label}</p>
+            <p className="text-xs text-muted-foreground">
+              {u.done} of {u.total} answered
+            </p>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+              <div className="h-full rounded-full bg-brand-500" style={{ width: `${(u.done / u.total) * 100}%` }} />
+            </div>
+          </div>
+          <Link href={resumeHref(u.path)} className={cn(DUO.primary, "min-h-11 w-full")}>
+            <Play className="h-4 w-4" aria-hidden="true" />
+            Resume
+          </Link>
+        </div>
+      ))}
+      {!latest && unfinished.length === 0 ? (
         <EmptyNote icon={History} title="Nothing here yet">
           Finish a drill, game or PYQ set and it shows up here, so you can jump straight back in.
         </EmptyNote>
-      ) : (
+      ) : !latest ? null : (
         <>
           <ActivityRow entry={latest} now={now} big />
-          <Link href={latest.href} className={cn(DUO.primary, "w-full")}>
+          <Link href={latest.href} className={cn(unfinished.length > 0 ? DUO.secondary : DUO.primary, "w-full")}>
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Go again
           </Link>
@@ -352,6 +388,7 @@ export function SubjectsStanding({ activities, now }: { activities: ActivityEntr
 export function MistakesCard({ mistakes, now }: { mistakes: MistakeEntry[]; now: number }) {
   const weekStart = startOfWeek(new Date(now)).getTime();
   const thisWeek = mistakes.filter((m) => m.at >= weekStart).length;
+  const masteredThisWeek = readMastered().filter((t) => t >= weekStart).length;
   const shown = mistakes.slice(0, 5);
 
   return (
@@ -359,9 +396,12 @@ export function MistakesCard({ mistakes, now }: { mistakes: MistakeEntry[]; now:
       label="Mistakes to review"
       icon={RotateCcw}
       action={
-        mistakes.length > 0 ? (
+        mistakes.length > 0 || masteredThisWeek > 0 ? (
           <span className="text-xs font-semibold text-muted-foreground">
-            {thisWeek} this week · {mistakes.length} saved
+            {mistakes.length} to review · {thisWeek} new this week
+            {masteredThisWeek > 0 && (
+              <span className="text-emerald-700 dark:text-emerald-300"> · {masteredThisWeek} mastered</span>
+            )}
           </span>
         ) : undefined
       }
@@ -371,6 +411,11 @@ export function MistakesCard({ mistakes, now }: { mistakes: MistakeEntry[]; now:
           Wrong answers from games, drills and PYQ sets are kept here with the right answer, so you can go over them.
         </EmptyNote>
       ) : (
+        <>
+        <Link href="/review" className={cn(DUO.primary, "w-full sm:w-auto sm:self-start")}>
+          <Target className="h-4 w-4" aria-hidden="true" />
+          Review {Math.min(mistakes.length, 10)} now
+        </Link>
         <ul className="grid gap-2 lg:grid-cols-2">
           {shown.map((m) => {
             const theme = subjectTheme(m.subject);
@@ -408,6 +453,7 @@ export function MistakesCard({ mistakes, now }: { mistakes: MistakeEntry[]; now:
             );
           })}
         </ul>
+        </>
       )}
     </CardShell>
   );

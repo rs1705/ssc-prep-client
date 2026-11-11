@@ -9,9 +9,12 @@ interface ResultScreenProps {
   best: number;
   isNewBest: boolean;
   onPlayAgain: () => void;
+  onReplaySet?: () => void;
+  onRetryMistakes?: () => void;
+  retryCount?: number;
 }
 
-export function ResultScreen({ state, best, isNewBest, onPlayAgain }: ResultScreenProps) {
+export function ResultScreen({ state, best, isNewBest, onPlayAgain, onReplaySet, onRetryMistakes, retryCount }: ResultScreenProps) {
   const solved = state.results.filter((r) => r.outcome === "solved").length;
   const accuracy =
     state.totalGuesses > 0
@@ -39,6 +42,9 @@ export function ResultScreen({ state, best, isNewBest, onPlayAgain }: ResultScre
       isNewBest={isNewBest}
       stats={stats}
       onPlayAgain={onPlayAgain}
+      onReplaySet={onReplaySet}
+      onRetryMistakes={onRetryMistakes}
+      retryCount={retryCount}
       note={state.lifeBonus > 0 ? `Includes +${state.lifeBonus} for hearts left` : undefined}
       celebrate={cleared && solved === state.queue.length}
     >

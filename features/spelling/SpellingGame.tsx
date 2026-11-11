@@ -2,6 +2,7 @@
 
 import { playFeedback } from "@/features/games/feedback";
 import { useCallback, useEffect, useReducer } from "react";
+import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, SpellCheck, Timer, X, Zap } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
@@ -19,6 +20,7 @@ import {
   rankTitle,
   spellingReducer,
   streakMultiplier,
+  type Question,
 } from "./game";
 
 export function SpellingGame() {
@@ -27,10 +29,40 @@ export function SpellingGame() {
   const reduceMotion = useReducedMotion();
   const question = state.queue[state.index];
 
-  const start = useCallback(() => {
-    clearNewBest();
-    dispatch({ type: "START", queue: buildQueue(SPELLING_WORDS) });
-  }, [clearNewBest]);
+  const begin = useCallback(
+    (queue: Question[], save = true) => {
+      clearNewBest();
+      if (save) saveSet(window.location.pathname, queue);
+      dispatch({ type: "START", queue });
+    },
+    [clearNewBest],
+  );
+
+  const start = useCallback(() => begin(buildQueue(SPELLING_WORDS)), [begin]);
+
+  const replay = useReplayRequest();
+  useEffect(() => {
+    if (!replay) return;
+    const saved = loadSet<Question[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items));
+    // Only when the page was opened with ?replay=1.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replay]);
+
+  const replaySet = useCallback(() => {
+    const saved = loadSet<Question[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items), false);
+  }, [begin]);
+
+  const missedWords = new Set(state.misses.map((m) => m.correct));
+  const retryMistakes = useCallback(() => {
+    const wrong = new Set(state.misses.map((m) => m.correct));
+    const seen = new Set<string>();
+    const queue = state.queue.filter((q) =>
+      wrong.has(q.word.correct) && !seen.has(q.word.correct) ? (seen.add(q.word.correct), true) : false,
+    );
+    begin(shuffle(queue), false);
+  }, [begin, state.misses, state.queue]);
 
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
 
@@ -204,11 +236,15 @@ export function SpellingGame() {
       {state.phase === "over" && (
         <ResultSummary
           kicker="Time's up"
+          onReplaySet={replaySet}
+          onRetryMistakes={retryMistakes}
+          retryCount={missedWords.size}
           result={{ correct: state.correctCount, total: state.answeredCount }}
           mistakes={state.misses.map((m) => ({
             prompt: `Spelled as "${m.chosen}"`,
             answer: m.correct,
             detail: "Correct spelling",
+            options: [m.correct, m.chosen],
           }))}
           rank={rankTitle(state.score)}
           score={state.score}

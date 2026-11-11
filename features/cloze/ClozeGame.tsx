@@ -4,6 +4,14 @@ import { playFeedback } from "@/features/games/feedback";
 import { cn } from "@/lib/utils";
 import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useReducer, useState } from "react";
+import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
+import type { ClozeQuestion, ClozeState } from "./game";
+import { clearUnfinished, loadUnfinished, saveUnfinished, takeResumeParam, type Unfinished } from "@/features/games/unfinished";
+
+interface SavedRun {
+  game: ClozeState;
+  deck: ClozeDeck;
+}
 import { ArrowRight, Check, Flame, Lightbulb, ListChecks, TextCursorInput, X } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { GameFrame } from "@/features/games/GameFrame";
@@ -45,6 +53,63 @@ export function ClozeGame() {
     writeStored(DECK_KEY, id);
   };
 
+  // Start a run with a given set and remember it for "Same set again" / "Go again".
+  const begin = useCallback(
+    (questions: ClozeQuestion[], save = true) => {
+      clearNewBest();
+      setError(null);
+      if (save) saveSet(window.location.pathname, questions, deck);
+      dispatch({ type: "START", questions });
+    },
+    [clearNewBest, deck],
+  );
+
+  const replay = useReplayRequest();
+  useEffect(() => {
+    if (!replay) return;
+    const saved = loadSet<ClozeQuestion[]>(window.location.pathname);
+    if (!saved?.items?.length) return;
+    if (DECKS.some((d) => d.id === saved.meta)) setDeck(saved.meta as ClozeDeck);
+    begin(shuffle(saved.items));
+    // Only when the page was opened with ?replay=1.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replay]);
+
+  // Half-finished runs: saved after every answer, offered again in the lobby.
+  const [unfinished, setUnfinished] = useState<Unfinished<SavedRun> | null>(null);
+  const resumeRun = useCallback((run: Unfinished<SavedRun>) => {
+    if (DECKS.some((d) => d.id === run.state.deck)) setDeck(run.state.deck);
+    setUnfinished(null);
+    dispatch({ type: "RESTORE", state: run.state.game });
+  }, []);
+  useEffect(() => {
+    const run = loadUnfinished<SavedRun>(window.location.pathname);
+    if (run && takeResumeParam()) resumeRun(run);
+    else setUnfinished(run);
+  }, [resumeRun]);
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (state.phase === "playing") {
+      const done = state.index + (state.chosen !== null ? 1 : 0);
+      if (done === 0) return;
+      saveUnfinished<SavedRun>({
+        path,
+        label: `Fill in the Blanks · ${DECKS.find((d) => d.id === deck)?.label ?? ""}`,
+        subject: "english",
+        done,
+        total: state.questions.length,
+        state: { game: state, deck },
+      });
+    } else if (state.phase === "over") {
+      clearUnfinished(path);
+    }
+  }, [state, deck]);
+
+  const replaySet = useCallback(() => {
+    const saved = loadSet<ClozeQuestion[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items), false);
+  }, [begin]);
+
   const start = useCallback(async () => {
     if (loading) return;
     clearNewBest();
@@ -54,13 +119,13 @@ export function ClozeGame() {
       const cards = await fetchCards({ type: deck, random: true, limit: 40 }).unwrap();
       const questions = buildQuestions(cards);
       if (questions.length === 0) throw new Error("no questions");
-      dispatch({ type: "START", questions });
+      begin(questions);
     } catch {
       setError("Couldn't reach the practice server. Please try again in a moment.");
     } finally {
       setLoading(false);
     }
-  }, [loading, clearNewBest, fetchCards, deck]);
+  }, [loading, clearNewBest, fetchCards, deck, begin]);
 
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
   const next = useCallback(() => dispatch({ type: "NEXT" }), []);
@@ -108,6 +173,18 @@ export function ClozeGame() {
             { icon: Flame, text: "Three right in a row raises your points multiplier" },
             { icon: Lightbulb, text: "Every answer shows the meaning, so misses still teach" },
           ]}
+          resume={
+            unfinished
+              ? {
+                  label: `${unfinished.done} of ${unfinished.total} answered · ${DECKS.find((d) => d.id === unfinished.state.deck)?.label ?? ""}`,
+                  onResume: () => resumeRun(unfinished),
+                  onDiscard: () => {
+                    clearUnfinished(window.location.pathname);
+                    setUnfinished(null);
+                  },
+                }
+              : undefined
+          }
           best={best}
           onStart={() => void start()}
           startLabel={loading ? "Loading sentences…" : "Start"}
@@ -223,11 +300,15 @@ export function ClozeGame() {
       {state.phase === "over" && (
         <ResultSummary
           kicker={`${state.correctCount} of ${state.questions.length} correct`}
+          onReplaySet={replaySet}
+          onRetryMistakes={() => begin(shuffle(state.misses), false)}
+          retryCount={state.misses.length}
           result={{ correct: state.correctCount, total: state.questions.length }}
           mistakes={state.misses.map((m) => ({
             prompt: `${m.before}____${m.after}`.trim(),
             answer: m.answer,
             detail: m.meaning,
+            options: m.options,
           }))}
           rank={rankTitle(state.correctCount, state.questions.length)}
           score={state.score}

@@ -35,7 +35,9 @@ export type ClozeAction =
   | { type: "START"; questions: ClozeQuestion[] }
   | { type: "ANSWER"; option: string }
   | { type: "NEXT" }
-  | { type: "RESET" };
+  | { type: "RESET" }
+  /** Pick up a saved, half-finished run. */
+  | { type: "RESTORE"; state: ClozeState };
 
 export const initialState: ClozeState = {
   phase: "lobby",
@@ -137,6 +139,8 @@ export function clozeReducer(state: ClozeState, action: ClozeAction): ClozeState
       return { ...state, chosen: action.option, streak: 0, misses: [...state.misses, q] };
     }
 
+    case "RESTORE":
+      return action.state.phase === "playing" ? action.state : state;
     case "NEXT": {
       if (state.phase !== "playing" || state.chosen === null) return state;
       const index = state.index + 1;

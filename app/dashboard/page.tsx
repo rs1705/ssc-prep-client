@@ -7,11 +7,13 @@ import { TodayPlanHero } from "@/features/dashboard/TodayPlanHero";
 import { HeaderCountdown } from "@/features/dashboard/HeaderCountdown";
 import { ContinueCard, MistakesCard, SubjectsStanding, WeekCard } from "@/features/dashboard/ActivityCards";
 import { useActivityLog } from "@/lib/activity-log";
+import { useUnfinished } from "@/features/games/unfinished";
 import { greetingFor, quoteFor } from "@/lib/greetings";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const { activities, mistakes, ready } = useActivityLog();
+  const unfinished = useUnfinished();
   const [now, setNow] = useState<number | null>(null);
 
   // Time-based text is set after mount so server and client markup agree.
@@ -53,7 +55,7 @@ export default function Dashboard() {
           <>
             <SubjectsStanding activities={activities} now={now} />
             <div className="grid gap-6 lg:grid-cols-2">
-              <ContinueCard activities={activities} now={now} />
+              <ContinueCard activities={activities} unfinished={unfinished} now={now} />
               <WeekCard activities={activities} now={now} />
             </div>
             <MistakesCard mistakes={mistakes} now={now} />

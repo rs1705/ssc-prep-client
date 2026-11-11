@@ -9,7 +9,7 @@ import { ResultScreen } from "@/features/hangman/ResultScreen";
 import { useHangmanGame } from "@/features/hangman/useHangmanGame";
 
 export default function HangmanPage() {
-  const { state, word, best, isNewBest, start, guess, hint, next } = useHangmanGame();
+  const { state, word, best, isNewBest, start, guess, hint, next, replaySet, retryMistakes, retryCount } = useHangmanGame();
   const previous = useRef({ phase: state.phase, index: state.index, wrong: 0, guessed: 0 });
 
   // Sound + vibration per guess (prefilled letters at a word's start stay silent).
@@ -35,7 +35,15 @@ export default function HangmanPage() {
       )}
 
       {state.phase === "over" && (
-        <ResultScreen state={state} best={best} isNewBest={isNewBest} onPlayAgain={start} />
+        <ResultScreen
+          state={state}
+          best={best}
+          isNewBest={isNewBest}
+          onPlayAgain={start}
+          onReplaySet={replaySet}
+          onRetryMistakes={retryMistakes}
+          retryCount={retryCount}
+        />
       )}
     </GameFrame>
   );

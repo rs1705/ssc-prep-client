@@ -2,6 +2,7 @@
 
 import { playFeedback } from "@/features/games/feedback";
 import { useCallback, useEffect, useReducer } from "react";
+import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, Lightbulb, Timer, X, Zap, type LucideIcon } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
@@ -53,10 +54,42 @@ export function SprintGame({
   const t = GAME_TONE[tone];
   const q = state.queue[state.index];
 
-  const start = useCallback(() => {
-    clearNewBest();
-    dispatch({ type: "START", queue: buildQueue() });
-  }, [clearNewBest, buildQueue]);
+  const begin = useCallback(
+    (queue: SprintQuestion[], save = true) => {
+      clearNewBest();
+      if (save) saveSet(window.location.pathname, queue);
+      dispatch({ type: "START", queue });
+    },
+    [clearNewBest],
+  );
+
+  const start = useCallback(() => begin(buildQueue()), [begin, buildQueue]);
+
+  const replay = useReplayRequest();
+  useEffect(() => {
+    if (!replay) return;
+    const saved = loadSet<SprintQuestion[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items));
+    // Only when the page was opened with ?replay=1.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replay]);
+
+  const replaySet = useCallback(() => {
+    const saved = loadSet<SprintQuestion[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items), false);
+  }, [begin]);
+
+  const retryMistakes = useCallback(() => {
+    const seen = new Set<string>();
+    const queue = state.misses
+      .map((m): SprintQuestion => {
+        const q: Partial<typeof m> = { ...m };
+        delete q.chosen;
+        return q as SprintQuestion;
+      })
+      .filter((q) => (seen.has(q.prompt + q.answer) ? false : (seen.add(q.prompt + q.answer), true)));
+    begin(shuffle(queue), false);
+  }, [begin, state.misses]);
 
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
 
@@ -215,11 +248,15 @@ export function SprintGame({
       {state.phase === "over" && (
         <ResultSummary
           kicker="Time's up"
+          onReplaySet={replaySet}
+          onRetryMistakes={retryMistakes}
+          retryCount={new Set(state.misses.map((m) => m.prompt + m.answer)).size}
           result={{ correct: state.correctCount, total: state.answeredCount }}
           mistakes={state.misses.map((m) => ({
             prompt: m.display ? `${m.prompt} ${m.display}` : m.prompt,
             answer: m.answer,
             detail: m.explain,
+            options: m.options,
           }))}
           rank={rankTitle(state.score)}
           score={state.score}

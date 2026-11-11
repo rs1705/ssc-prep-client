@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { HANGMAN_WORDS, type HangmanWord } from "@/lib/hangman-words";
 import { readStored, writeStored } from "@/lib/storage";
+import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
 import {
   REVEAL_MS,
   currentWord,
@@ -60,10 +61,35 @@ export function useHangmanGame({ bank = HANGMAN_WORDS }: Options = {}) {
     return () => window.clearTimeout(id);
   }, [state.phase, state.index]);
 
-  const start = useCallback(() => {
+  // Start with a given list of words and remember it for "Same set again".
+  const begin = useCallback((queue: HangmanWord[], save = true) => {
+    if (queue.length === 0) return;
     setIsNewBest(false);
-    dispatch({ type: "START", queue: shuffleQueue(bank) });
-  }, [bank]);
+    if (save) saveSet(window.location.pathname, queue);
+    dispatch({ type: "START", queue });
+  }, []);
+
+  const start = useCallback(() => begin(shuffleQueue(bank)), [bank, begin]);
+
+  const replaySet = useCallback(() => {
+    const saved = loadSet<HangmanWord[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items), false);
+  }, [begin]);
+
+  const missedWords = state.results.filter((r) => r.outcome !== "solved").map((r) => r.word);
+  const retryMistakes = useCallback(() => {
+    const missed = state.results.filter((r) => r.outcome !== "solved").map((r) => r.word);
+    begin(shuffle(missed), false);
+  }, [begin, state.results]);
+
+  const replay = useReplayRequest();
+  useEffect(() => {
+    if (!replay) return;
+    const saved = loadSet<HangmanWord[]>(window.location.pathname);
+    if (saved?.items?.length) begin(shuffle(saved.items));
+    // Only when the page was opened with ?replay=1.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [replay]);
 
   const guess = useCallback((letter: string) => {
     dispatch({ type: "GUESS", letter });
@@ -105,5 +131,5 @@ export function useHangmanGame({ bank = HANGMAN_WORDS }: Options = {}) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [state.phase, start, next, guess]);
 
-  return { state, word, best, isNewBest, start, guess, hint, next, reset };
+  return { state, word, best, isNewBest, start, guess, hint, next, reset, replaySet, retryMistakes, retryCount: missedWords.length };
 }

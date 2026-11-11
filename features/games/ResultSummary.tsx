@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import confetti from "canvas-confetti";
-import { LayoutGrid, RotateCcw, Trophy } from "lucide-react";
+import { LayoutGrid, Repeat, RotateCcw, Target, Trophy } from "lucide-react";
+import { replayHref } from "./sessionSet";
 import { DUO } from "./buttons";
 import { GAME_TONE, type GameTone } from "./tone";
 
@@ -35,7 +36,13 @@ interface ResultSummaryProps {
   /** Right answers out of total, for the dashboard. */
   result?: { correct: number; total: number };
   /** What the player got wrong, saved for the dashboard's mistakes card. */
-  mistakes?: { prompt: string; answer: string; detail?: string }[];
+  mistakes?: { prompt: string; answer: string; detail?: string; options?: string[] }[];
+  /** Replays the exact same set (shuffled). Shows "Same set again". */
+  onReplaySet?: () => void;
+  /** Replays only what was missed. Shows "Retry N mistakes" when N > 0. */
+  onRetryMistakes?: () => void;
+  /** How many items "Retry mistakes" will bring back. */
+  retryCount?: number;
 }
 
 export function ResultSummary({
@@ -54,6 +61,9 @@ export function ResultSummary({
   celebrate = false,
   result,
   mistakes = [],
+  onReplaySet,
+  onRetryMistakes,
+  retryCount = 0,
 }: ResultSummaryProps) {
   // A finished game counts towards today's plan, exactly once per results screen.
   const counted = useRef(false);
@@ -63,7 +73,9 @@ export function ResultSummary({
     recordPlanActivity("game");
     const path = window.location.pathname;
     const route = describeRoute(path);
-    logActivity({ kind: "game", subject: route.subject, label: route.label, href: path, ...result });
+    // With a saved set, the dashboard's "Go again" reopens this exact set.
+    const href = onReplaySet ? replayHref(path) : path;
+    logActivity({ kind: "game", subject: route.subject, label: route.label, href, ...result });
     logMistakes(mistakes.map((m) => ({ ...m, subject: route.subject, source: route.label, href: path })));
     // Logged once, when the results first appear.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,15 +124,43 @@ export function ResultSummary({
         {children}
       </div>
 
-      <div className="flex shrink-0 flex-col gap-2 border-t-2 border-border pt-3 sm:flex-row">
-        <button type="button" onClick={onPlayAgain} autoFocus className={cn(DUO.primary, "flex-1")}>
+      <div className="flex shrink-0 flex-col gap-2 border-t-2 border-border pt-3">
+        {(onReplaySet || (onRetryMistakes && retryCount > 0)) && (
+          <div className="flex flex-col gap-2 sm:flex-row">
+            {onRetryMistakes && retryCount > 0 && (
+              <button type="button" onClick={onRetryMistakes} autoFocus className={cn(DUO.primary, "flex-1")}>
+                <Target className="h-4 w-4" aria-hidden="true" />
+                Retry {retryCount} {retryCount === 1 ? "mistake" : "mistakes"}
+              </button>
+            )}
+            {onReplaySet && (
+              <button
+                type="button"
+                onClick={onReplaySet}
+                autoFocus={!(onRetryMistakes && retryCount > 0)}
+                className={cn(retryCount > 0 && onRetryMistakes ? DUO.secondary : DUO.primary, "flex-1")}
+              >
+                <Repeat className="h-4 w-4" aria-hidden="true" />
+                Same set again
+              </button>
+            )}
+          </div>
+        )}
+        <div className="flex flex-col gap-2 sm:flex-row">
+        <button
+          type="button"
+          onClick={onPlayAgain}
+          autoFocus={!onReplaySet && !(onRetryMistakes && retryCount > 0)}
+          className={cn(onReplaySet ? DUO.secondary : DUO.primary, "flex-1")}
+        >
           <RotateCcw className="h-4 w-4" aria-hidden="true" />
-          Play again
+          {onReplaySet ? "New set" : "Play again"}
         </button>
         <Link href={allHref} className={cn(DUO.secondary, "flex-1")}>
           <LayoutGrid className="h-4 w-4" aria-hidden="true" />
           {allLabel}
         </Link>
+        </div>
       </div>
     </div>
   );

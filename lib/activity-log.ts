@@ -33,10 +33,18 @@ export interface MistakeEntry {
   answer: string;
   detail?: string;
   href: string;
+  /** Answer choices (incl. the answer) when the source had them; enables multiple choice in review. */
+  options?: string[];
+  /** Days (YYYY-MM-DD) it was answered right in review. Two different days = mastered. */
+  rightDays?: string[];
 }
+
+/** Right in review on this many different days and a mistake leaves the list. */
+export const MASTERY_DAYS = 2;
 
 const ACTIVITY_KEY = "ssc:activity";
 const MISTAKES_KEY = "ssc:mistakes";
+const MASTERED_KEY = "ssc:mistakes-mastered";
 export const ACTIVITY_EVENT = "ssc:activity-updated";
 const MAX_ACTIVITY = 300;
 const MAX_MISTAKES = 150;
@@ -106,6 +114,50 @@ export function logMistakes(items: Omit<MistakeEntry, "id" | "at">[], at = Date.
   const next = [...fresh, ...readMistakes().filter((m) => !prompts.has(m.prompt))].slice(0, MAX_MISTAKES);
   writeStored(MISTAKES_KEY, next);
   notify();
+}
+
+const localDay = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+/**
+ * Record a review answer. Right on MASTERY_DAYS different days removes the
+ * mistake (counted as mastered); a wrong answer starts the count again.
+ * Returns true when the mistake was just mastered.
+ */
+export function recordReview(id: string, correct: boolean, date = new Date()): boolean {
+  const list = readMistakes();
+  const entry = list.find((m) => m.id === id);
+  if (!entry) return false;
+  const today = localDay(date);
+  const rightDays = correct ? [...new Set([...(entry.rightDays ?? []), today])] : [];
+  const mastered = rightDays.length >= MASTERY_DAYS;
+  writeStored(
+    MISTAKES_KEY,
+    mastered ? list.filter((m) => m.id !== id) : list.map((m) => (m.id === id ? { ...m, rightDays } : m)),
+  );
+  if (mastered) writeStored(MASTERED_KEY, [date.getTime(), ...readStored<number[]>(MASTERED_KEY, [])].slice(0, 500));
+  notify();
+  return mastered;
+}
+
+/** When mistakes were mastered (newest first). */
+export function readMastered(): number[] {
+  return readStored<number[]>(MASTERED_KEY, []);
+}
+
+/** Was this mistake already answered right today? */
+export function reviewedToday(m: MistakeEntry, date = new Date()): boolean {
+  return (m.rightDays ?? []).includes(localDay(date));
+}
+
+/**
+ * Up to `count` mistakes to review: ones not yet right today come first,
+ * oldest mistakes first within that.
+ */
+export function pickForReview(list: MistakeEntry[], count = 10, date = new Date()): MistakeEntry[] {
+  return [...list]
+    .sort((a, b) => Number(reviewedToday(a, date)) - Number(reviewedToday(b, date)) || a.at - b.at)
+    .slice(0, count);
 }
 
 export function dismissMistake(id: string): void {

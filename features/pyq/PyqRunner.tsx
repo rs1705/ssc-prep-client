@@ -14,8 +14,13 @@ import {
   RotateCcw,
   X,
   ChevronDown,
+  Repeat,
+  Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DUO } from "@/features/games/buttons";
+import { replayHref, shuffle } from "@/features/games/sessionSet";
+import { cn } from "@/lib/utils";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import type { Pyq } from "@/redux/PyqApi";
@@ -29,6 +34,7 @@ import {
   isPracticeComplete,
   sessionReducer,
   type PyqMode,
+  type PyqSessionState,
 } from "./session";
 
 interface PyqRunnerProps {
@@ -41,6 +47,12 @@ interface PyqRunnerProps {
   restartLabel: string;
   onRestart: () => void;
   onExit: () => void;
+  /** Start a new run with these questions ("Same set again", "Retry wrong"). */
+  onPlayQuestions?: (questions: Pyq[]) => void;
+  /** A saved half-finished session to continue from. */
+  initialSession?: PyqSessionState;
+  /** Called after every answer (null once the set is finished). */
+  onProgress?: (session: PyqSessionState | null) => void;
 }
 
 export function PyqRunner({
@@ -52,11 +64,14 @@ export function PyqRunner({
   restartLabel,
   onRestart,
   onExit,
+  onPlayQuestions,
+  initialSession,
+  onProgress,
 }: PyqRunnerProps) {
   const [state, dispatch] = useReducer(
     sessionReducer,
     undefined,
-    () => createSession(mode, questions, durationSeconds),
+    () => initialSession ?? createSession(mode, questions, durationSeconds),
   );
   const [confirming, setConfirming] = useState(false);
   const theme = subjectTheme(subject);
@@ -69,6 +84,7 @@ export function PyqRunner({
   const unanswered = state.questions.length - answeredCount;
   const result = computeResult(state);
   const practiceDone = mode === "practice" && isPracticeComplete(state);
+  const wrongQuestions = state.questions.filter((q) => state.answers[q.id] && state.answers[q.id] !== q.answer);
 
   // Count a finished set towards today's plan (once per set).
   const counted = useRef(false);
@@ -81,7 +97,7 @@ export function PyqRunner({
         kind: "pyq",
         subject,
         label: describeRoute(path).label,
-        href: path,
+        href: onPlayQuestions ? replayHref(path) : path,
         correct: result.correct,
         total: state.questions.length,
       });
@@ -95,12 +111,20 @@ export function PyqRunner({
             answer: plainText(q.options.find((o) => o.label === q.answer)?.text ?? q.answer, 80),
             detail: q.topic,
             href: path,
+            options: q.options.map((o) => plainText(o.text, 80)),
           })),
       );
     }
     // Logged once when the set finishes; the values are read at that moment.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.submitted, practiceDone]);
+
+  // Report progress so the page can save a half-finished set.
+  useEffect(() => {
+    if (!onProgress) return;
+    onProgress(state.submitted || practiceDone ? null : state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.answers, state.index, state.submitted, practiceDone]);
 
   // Exam clock.
   useEffect(() => {
@@ -250,7 +274,23 @@ export function PyqRunner({
               ))}
             </dl>
           </div>
-          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+          <div className="mt-4 flex flex-col flex-wrap gap-2 sm:flex-row">
+            {onPlayQuestions && wrongQuestions.length > 0 && (
+              <button type="button" onClick={() => onPlayQuestions(shuffle(wrongQuestions))} className={cn(DUO.primary, "min-h-11")}>
+                <Target className="h-4 w-4" aria-hidden="true" />
+                Retry {wrongQuestions.length} wrong
+              </button>
+            )}
+            {onPlayQuestions && (
+              <button
+                type="button"
+                onClick={() => onPlayQuestions(shuffle(state.questions))}
+                className={cn(wrongQuestions.length > 0 ? DUO.secondary : DUO.primary, "min-h-11")}
+              >
+                <Repeat className="h-4 w-4" aria-hidden="true" />
+                Same set again
+              </button>
+            )}
             <Button
               type="button"
               onClick={onRestart}
