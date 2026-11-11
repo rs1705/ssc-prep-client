@@ -286,10 +286,14 @@ export function SubjectsStanding({ activities, now }: { activities: ActivityEntr
               </Link>
 
               {st.sessions === 0 ? (
-                <div className="flex flex-1 flex-col justify-end gap-2">
-                  <p className="text-sm text-muted-foreground">Not started yet.</p>
-                  <Link href={s.href} className={cn("text-sm font-bold", theme.text)}>
-                    Start {s.name} →
+                <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t-2 border-border pt-3">
+                  <p className="whitespace-nowrap text-sm text-muted-foreground">Not started yet</p>
+                  <Link
+                    href={s.href}
+                    className={cn("group/start ml-auto inline-flex items-center gap-1 whitespace-nowrap text-sm font-bold", theme.text)}
+                  >
+                    Start {s.name}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover/start:translate-x-1" aria-hidden="true" />
                   </Link>
                 </div>
               ) : (
@@ -320,8 +324,12 @@ export function SubjectsStanding({ activities, now }: { activities: ActivityEntr
                       {st.lastAt ? `Last: ${timeAgo(st.lastAt, now)}` : `${st.questions} questions`}
                     </span>
                     {weak ? (
-                      <Link href={`/SSC/${s.key}/topic-pyqs`} className="font-bold text-amber-700 hover:underline dark:text-amber-300">
-                        Fix it →
+                      <Link
+                        href={`/SSC/${s.key}/topic-pyqs`}
+                        className="group/fix inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-300"
+                      >
+                        Fix it
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/fix:translate-x-1" aria-hidden="true" />
                       </Link>
                     ) : (
                       <span className="font-semibold text-muted-foreground">{st.questions} Qs</span>
@@ -381,9 +389,10 @@ export function MistakesCard({ mistakes, now }: { mistakes: MistakeEntry[]; now:
                   {m.detail && <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{m.detail}</p>}
                   <Link
                     href={m.href}
-                    className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:underline dark:text-brand-400"
+                    className="group/again mt-2 inline-flex items-center gap-1 text-xs font-bold text-brand-700 dark:text-brand-400"
                   >
-                    Practise again <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                    Practise again
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover/again:translate-x-1" aria-hidden="true" />
                   </Link>
                 </div>
                 <button
