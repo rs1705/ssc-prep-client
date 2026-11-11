@@ -29,6 +29,10 @@ export function ResultScreen({ state, best, isNewBest, onPlayAgain }: ResultScre
   return (
     <ResultSummary
       kicker={cleared ? "Run complete" : "Out of hearts"}
+      result={{ correct: solved, total: state.results.length }}
+      mistakes={state.results
+        .filter((r) => r.outcome !== "solved")
+        .map((r) => ({ prompt: r.word.meaning, answer: r.word.word, detail: r.word.hindi }))}
       rank={rankTitle(state.score)}
       score={state.score}
       best={best}

@@ -8,6 +8,7 @@ import {
   ChevronDown,
   Eye,
   EyeOff,
+  Layers,
   Lightbulb,
   Search,
   Target,
@@ -329,6 +330,13 @@ function TopicPager({
           <span />
         )}
       </div>
+      <Link
+        href="/SSC/maths/flashcards"
+        className="flex items-center justify-center gap-2 rounded-xl py-2 text-sm font-bold text-brand-700 hover:underline dark:text-brand-300"
+      >
+        <Layers className="h-4 w-4" aria-hidden="true" />
+        Revise them as flashcards
+      </Link>
       <Link
         href="/SSC/maths/topic-pyqs"
         className="flex items-center justify-center gap-2 rounded-xl py-2 text-sm font-bold text-brand-700 hover:underline dark:text-brand-300"

@@ -4,6 +4,7 @@ import {
   Target,
   ClipboardList,
   Layers,
+  Puzzle,
   Skull,
 } from "lucide-react";
 import type { SectionCardProps } from "@/components/custom/section-card/section-card";
@@ -27,6 +28,24 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       buttonText: "Open",
       meta: "99 cards · 22 topics",
       linkTo: "/SSC/maths/formula-practice",
+      colorTheme: SUBJECT_HUE.maths,
+    },
+    {
+      title: "Flashcards",
+      description: "Squares, cubes, roots, fraction-to-% and every formula as flip cards. Shuffle, mark what you know, repeat.",
+      icon: <Layers className="w-5 h-5" strokeWidth={2} />,
+      buttonText: "Start",
+      meta: "4 tables · 99 formulas",
+      linkTo: "/SSC/maths/flashcards",
+      colorTheme: SUBJECT_HUE.maths,
+    },
+    {
+      title: "Match the Pairs",
+      description: "Tap a number, then its square, cube, root or percentage. Five pairs a round, against the clock.",
+      icon: <Puzzle className="w-5 h-5" strokeWidth={2} />,
+      buttonText: "Play",
+      meta: "4 decks · 90 seconds",
+      linkTo: "/SSC/maths/match",
       colorTheme: SUBJECT_HUE.maths,
     },
     {
@@ -118,6 +137,15 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
       buttonText: "Start",
       meta: "8 drills · 60 seconds",
       linkTo: "/SSC/reasoning/speed-drills",
+      colorTheme: SUBJECT_HUE.reasoning,
+    },
+    {
+      title: "Match the Pairs",
+      description: "Letters and their positions, positions from Z and opposite letters, matched against the clock.",
+      icon: <Puzzle className="w-5 h-5" strokeWidth={2} />,
+      buttonText: "Play",
+      meta: "3 decks · 90 seconds",
+      linkTo: "/SSC/reasoning/match",
       colorTheme: SUBJECT_HUE.reasoning,
     },
     {

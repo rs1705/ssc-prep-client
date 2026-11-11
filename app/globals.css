@@ -436,3 +436,16 @@
   }
 }
 
+
+/* Settings page: larger text and reduced motion (per device). */
+html[data-text-size="large"] {
+  font-size: 112.5%;
+}
+html[data-reduce-motion="on"] *,
+html[data-reduce-motion="on"] *::before,
+html[data-reduce-motion="on"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

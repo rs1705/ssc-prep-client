@@ -14,7 +14,7 @@ export default function NotFoundComponent() {
           Page not found
         </h2>
         <p className="mt-2 text-sm md:text-base text-muted-foreground leading-relaxed">
-          The page you're looking for doesn't exist, has been moved, or you lost your way in the syllabus.
+          The page you&apos;re looking for doesn&apos;t exist, has been moved, or you lost your way in the syllabus.
         </p>
         <div className="mt-8 flex items-center justify-center">
           <Link

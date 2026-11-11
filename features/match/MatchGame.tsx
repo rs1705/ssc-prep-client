@@ -1,5 +1,6 @@
 "use client";
 
+import { playFeedback } from "@/features/games/feedback";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, Puzzle, Timer, X, Zap } from "lucide-react";
@@ -8,7 +9,7 @@ import { GameFrame } from "@/features/games/GameFrame";
 import { GameLobby } from "@/features/games/GameLobby";
 import { ResultSummary } from "@/features/games/ResultSummary";
 import { DeckPicker } from "@/features/games/DeckPicker";
-import { GAME_TONE } from "@/features/games/tone";
+import { GAME_TONE, type GameTone } from "@/features/games/tone";
 import { useBestScore } from "@/features/games/useBestScore";
 import { useLazyGetFilteredCardsQuery } from "@/redux/FlashcardApiSlice";
 import { readStored, writeStored } from "@/lib/storage";
@@ -27,27 +28,47 @@ import {
   type Pair,
   type Side,
 } from "./game";
-import { MATCH_DECKS, deckById, type MatchDeckId } from "./decks";
+import { shuffle } from "@/lib/shuffle";
+import { MATCH_DECKS, type MatchDeck, type MatchDeckId } from "./decks";
 
-const DECK_KEY = "ssc:match:deck";
-const tone = GAME_TONE.english;
+interface MatchGameProps {
+  decks?: MatchDeck[];
+  title?: string;
+  /** Short line under the title in the lobby. */
+  blurb?: string;
+  tone?: GameTone;
+  backHref?: string;
+  backLabel?: string;
+  /** Prefix for remembered deck and best scores. */
+  storagePrefix?: string;
+}
 
-export function MatchGame() {
+export function MatchGame({
+  decks = MATCH_DECKS,
+  title = "Match the Following",
+  blurb = "Tap a word, then its partner. Clear all five pairs to move to the next round.",
+  tone: toneKey = "english",
+  backHref = "/SSC/english/games",
+  backLabel = "Back to all games",
+  storagePrefix = "ssc:match",
+}: MatchGameProps = {}) {
+  const tone = GAME_TONE[toneKey];
+  const DECK_KEY = `${storagePrefix}:deck`;
   const [state, dispatch] = useReducer(matchReducer, initialState);
-  const [deckId, setDeckId] = useState<MatchDeckId>("meanings");
+  const [deckId, setDeckId] = useState<MatchDeckId>(decks[0].id);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fetchCards] = useLazyGetFilteredCardsQuery();
-  const { best, isNewBest, submit, clearNewBest } = useBestScore(`ssc:match:${deckId}:best`);
+  const { best, isNewBest, submit, clearNewBest } = useBestScore(`${storagePrefix}:${deckId}:best`);
   const reduceMotion = useReducedMotion();
-  const deck = deckById(deckId);
+  const deck = decks.find((d) => d.id === deckId) ?? decks[0];
   const round = state.rounds[state.round] ?? [];
   const byId = new Map(round.map((p) => [p.id, p]));
 
   useEffect(() => {
-    const saved = readStored<string>(DECK_KEY, "meanings");
-    if (MATCH_DECKS.some((d) => d.id === saved)) setDeckId(saved as MatchDeckId);
-  }, []);
+    const saved = readStored<string>(DECK_KEY, decks[0].id);
+    if (decks.some((d) => d.id === saved)) setDeckId(saved);
+  }, [DECK_KEY, decks]);
 
   const chooseDeck = (id: MatchDeckId) => {
     setDeckId(id);
@@ -60,8 +81,14 @@ export function MatchGame() {
     setError(null);
     setLoading(true);
     try {
-      const cards = await fetchCards(deck.query).unwrap();
-      const pairs = cards.map(deck.toPair).filter((p): p is Pair => p !== null);
+      let pairs: Pair[];
+      if (deck.local) {
+        pairs = shuffle(deck.local());
+      } else {
+        const cards = await fetchCards(deck.query ?? {}).unwrap();
+        const toPair = deck.toPair ?? (() => null);
+        pairs = cards.map(toPair).filter((p): p is Pair => p !== null);
+      }
       const rounds = buildRounds(pairs);
       if (rounds.length === 0) throw new Error("not enough cards");
       dispatch({ type: "START", rounds });
@@ -94,6 +121,19 @@ export function MatchGame() {
     const id = window.setTimeout(() => dispatch({ type: "NEXT_ROUND" }), ROUND_CLEAR_MS);
     return () => window.clearTimeout(id);
   }, [state.matched.length, state.phase]);
+
+  // Sound + vibration for every pair, and a short fanfare at the end.
+  useEffect(() => {
+    if (state.matchedTotal > 0) playFeedback("correct");
+  }, [state.matchedTotal]);
+
+  useEffect(() => {
+    if (state.wrong) playFeedback("wrong");
+  }, [state.wrong]);
+
+  useEffect(() => {
+    if (state.phase === "over") playFeedback("finish");
+  }, [state.phase]);
 
   useEffect(() => {
     if (state.phase === "over") submit(state.score);
@@ -166,12 +206,13 @@ export function MatchGame() {
       : 0;
 
   return (
-    <GameFrame title="Match the Following" subtitle={deck.label} best={best}>
+    <GameFrame title={title} subtitle={deck.label} best={best} tone={toneKey} backHref={backHref} backLabel={backLabel}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<Puzzle aria-hidden="true" strokeWidth={1.6} />}
-          title="Match the Following"
-          blurb="Tap a word, then its partner. Clear all five pairs to move to the next round."
+          title={title}
+          blurb={blurb}
+          tone={toneKey}
           rules={[
             { icon: Timer, text: `${RUN_SECONDS} seconds for ${state.rounds.length || 5} rounds` },
             { icon: Zap, text: "Matches in a row raise your points multiplier" },
@@ -183,7 +224,8 @@ export function MatchGame() {
         >
           <DeckPicker
             label="Practise"
-            options={MATCH_DECKS.map((d) => ({ id: d.id, label: d.label }))}
+            options={decks.map((d) => ({ id: d.id, label: d.label }))}
+            tone={toneKey}
             value={deckId}
             onChange={chooseDeck}
           />
@@ -192,7 +234,7 @@ export function MatchGame() {
       )}
 
       {state.phase === "playing" && (
-        <section aria-label="Match the Following" className="flex min-h-0 w-full flex-1 flex-col gap-3">
+        <section aria-label={title} className="flex min-h-0 w-full flex-1 flex-col gap-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-baseline gap-1.5">
               <span className="section-label">Score</span>
@@ -241,6 +283,8 @@ export function MatchGame() {
       {state.phase === "over" && (
         <ResultSummary
           kicker={state.clearedAll ? `All rounds cleared · +${state.timeLeft * TIME_BONUS} time bonus` : "Time's up"}
+          result={{ correct: state.matchedTotal, total: state.matchedTotal + state.mistakes }}
+          mistakes={state.missed.map((p) => ({ prompt: p.left, answer: p.right }))}
           rank={rankTitle(state.score)}
           score={state.score}
           best={best}
@@ -251,6 +295,9 @@ export function MatchGame() {
             { label: "Best streak", value: String(state.bestStreak) },
           ]}
           onPlayAgain={() => void start()}
+          tone={toneKey}
+          allHref={backHref}
+          allLabel="Back"
         >
           <div className="flex flex-col gap-2">
             <h3 className="section-label">{state.missed.length > 0 ? "Pairs to review" : "No wrong pairs!"}</h3>

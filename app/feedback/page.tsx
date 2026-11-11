@@ -5,10 +5,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter, usePathname } from "next/navigation";
-import { 
-  MessageSquare, CheckCircle2, Loader2, Send, Bug, Lightbulb, 
-  BookOpen, HelpCircle, Rocket, Sparkles, Clock, ArrowRight,
-  ShieldCheck, HeartHandshake, ChevronRight, Check, Compass
+import {
+  MessageSquare,
+  CheckCircle2,
+  Loader2,
+  Send,
+  Bug,
+  Lightbulb,
+  BookOpen,
+  Rocket,
+  Sparkles,
+  Clock,
+  HeartHandshake,
+  Check,
+  Compass,
 } from "lucide-react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/config";
@@ -82,7 +92,7 @@ const ROADMAP_ITEMS = [
   {
     title: "Speed Math Practice Engine",
     desc: "Timed arithmetic, percentage fractions & BODMAS chains",
-    status: "Active Sprint",
+    status: "Live",
     statusColor: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: Rocket,
   },
@@ -95,9 +105,9 @@ const ROADMAP_ITEMS = [
   },
   {
     title: "Interactive English Vocab Games",
-    desc: "Crosswords, sentence anagrams & rapid root words",
-    status: "Planned",
-    statusColor: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-500/20",
+    desc: "Match the Following, Fill in the Blanks, Hangman and more",
+    status: "Live",
+    statusColor: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     icon: Sparkles,
   },
   {
@@ -370,7 +380,7 @@ export default function FeedbackPage() {
                       <Input
                         id="name"
                         type="text"
-                        placeholder="e.g. Rahul Sharma"
+                        placeholder="Your name"
                         {...form.register("name")}
                         className="h-12 rounded-2xl border-2 border-border bg-card backdrop-blur-md px-4 text-sm font-medium focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all"
                       />
@@ -425,11 +435,11 @@ export default function FeedbackPage() {
               <div className="flex items-center gap-2">
                 <Rocket className="w-4 h-4 text-brand-700 dark:text-brand-400" />
                 <h3 className="font-extrabold text-sm text-foreground tracking-tight">
-                  Public Engineering Roadmap
+                  Roadmap
                 </h3>
               </div>
-              <span className="text-xs font-mono font-bold uppercase text-muted-foreground">
-                Sprint 4
+              <span className="text-xs font-bold text-muted-foreground">
+                What&apos;s next
               </span>
             </div>
 

@@ -3,7 +3,7 @@ import type { FlashcardFilters } from "@/redux/FlashcardApiSlice";
 import type { Pair } from "./game";
 
 /** Which kind of pairs a Match run uses. Each is built from the flashcard database. */
-export type MatchDeckId = "meanings" | "synonyms" | "antonyms" | "idioms" | "ows";
+export type MatchDeckId = string;
 
 export interface MatchDeck {
   id: MatchDeckId;
@@ -11,8 +11,11 @@ export interface MatchDeck {
   /** Column headings, shown above the tiles. */
   leftLabel: string;
   rightLabel: string;
-  query: FlashcardFilters;
-  toPair: (card: FlashCardInterface) => Pair | null;
+  /** Server-backed decks: which flashcards to fetch and how to pair them. */
+  query?: FlashcardFilters;
+  toPair?: (card: FlashCardInterface) => Pair | null;
+  /** Local decks: build the pairs in the browser (no network). */
+  local?: () => Pair[];
 }
 
 /** Meanings can be long; keep the first clause so a tile stays readable. */

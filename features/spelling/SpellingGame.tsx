@@ -1,5 +1,6 @@
 "use client";
 
+import { playFeedback } from "@/features/games/feedback";
 import { useCallback, useEffect, useReducer } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, SpellCheck, Timer, X, Zap } from "lucide-react";
@@ -48,6 +49,15 @@ export function SpellingGame() {
     const id = window.setTimeout(() => dispatch({ type: "ADVANCE" }), FEEDBACK_MS);
     return () => window.clearTimeout(id);
   }, [state.feedback, state.phase]);
+
+  // Sound + vibration for every answer, and a short fanfare at the end.
+  useEffect(() => {
+    if (state.feedback) playFeedback(state.feedback.correct ? "correct" : "wrong");
+  }, [state.feedback]);
+
+  useEffect(() => {
+    if (state.phase === "over") playFeedback("finish");
+  }, [state.phase]);
 
   useEffect(() => {
     if (state.phase === "over") submit(state.score);
@@ -194,6 +204,12 @@ export function SpellingGame() {
       {state.phase === "over" && (
         <ResultSummary
           kicker="Time's up"
+          result={{ correct: state.correctCount, total: state.answeredCount }}
+          mistakes={state.misses.map((m) => ({
+            prompt: `Spelled as "${m.chosen}"`,
+            answer: m.correct,
+            detail: "Correct spelling",
+          }))}
           rank={rankTitle(state.score)}
           score={state.score}
           best={best}

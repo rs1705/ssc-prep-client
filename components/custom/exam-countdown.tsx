@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { CalendarDays, Pencil } from "lucide-react";
 import { readStored, writeStored } from "@/lib/storage";
 
-const STORAGE_KEY = "ssc:exam-date";
+export const EXAM_DATE_KEY = "ssc:exam-date";
+const STORAGE_KEY = EXAM_DATE_KEY;
+/** Fired when the date changes, so every countdown on screen stays in step. */
+export const EXAM_DATE_EVENT = "ssc:exam-date-updated";
 
-function todayIso(): string {
+export function todayIso(): string {
   const now = new Date();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
@@ -14,14 +17,14 @@ function todayIso(): string {
 }
 
 /** Whole days from today (local) to an ISO date. Negative when it has passed. */
-function daysUntil(iso: string): number {
+export function daysUntil(iso: string): number {
   const [y, m, d] = iso.split("-").map(Number);
   const now = new Date();
   const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   return Math.round((Date.UTC(y, m - 1, d) - today) / 86_400_000);
 }
 
-function formatDate(iso: string): string {
+export function formatDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
   return new Date(y, m - 1, d).toLocaleDateString(undefined, {
     day: "numeric",
@@ -46,9 +49,14 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const saved = readStored<string | null>(STORAGE_KEY, null);
-    if (saved && /^\d{4}-\d{2}-\d{2}$/.test(saved)) setDate(saved);
-    setReady(true);
+    const load = () => {
+      const saved = readStored<string | null>(STORAGE_KEY, null);
+      setDate(saved && /^\d{4}-\d{2}-\d{2}$/.test(saved) ? saved : null);
+      setReady(true);
+    };
+    load();
+    window.addEventListener(EXAM_DATE_EVENT, load);
+    return () => window.removeEventListener(EXAM_DATE_EVENT, load);
   }, []);
 
   const save = (value: string) => {
@@ -56,6 +64,7 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
     setDate(value);
     writeStored(STORAGE_KEY, value);
     setEditing(false);
+    window.dispatchEvent(new Event(EXAM_DATE_EVENT));
   };
 
   const days = date ? daysUntil(date) : null;

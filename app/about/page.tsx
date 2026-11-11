@@ -2,9 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
-import { 
-  Target, BookOpen, Trophy, Zap, Brain, Flame, 
-  ArrowRight, ShieldCheck, Sparkles, Swords, Clock, CheckCircle2, XCircle
+import {
+  Zap,
+  Brain,
+  Flame,
+  ArrowRight,
+  ShieldCheck,
+  Sparkles,
+  Swords,
+  CheckCircle2,
+  XCircle,
 } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { Button } from "@/components/ui/button";
@@ -35,7 +42,7 @@ const PILLARS = [
   },
   {
     title: "Exam Pressure Simulation",
-    tag: "Sprint Drills",
+    tag: "Timed drills",
     desc: "High scores are made under pressure. Our timed blitz drills and gamified challenges condition your mind to execute high-accuracy decisions without second-guessing.",
     icon: Flame,
     theme: "text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/20",
@@ -236,10 +243,10 @@ export default function AboutPage() {
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-extrabold text-foreground">
-                Continuous Sprint Development for SSC CGL 2026
+                Built continuously for SSC CGL
               </h4>
               <p className="text-xs text-muted-foreground font-medium">
-                New calculation formulas, memory drills, and PYQ sets are pushed to the live database weekly.
+                New formulas, drills and PYQ sets are added regularly.
               </p>
             </div>
           </div>

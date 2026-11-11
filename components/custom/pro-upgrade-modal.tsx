@@ -1,7 +1,12 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, ShieldCheck, Rocket, Zap, Lock } from "lucide-react";
+import {
+  Check,
+  X,
+  Rocket,
+  Lock,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 

@@ -1,4 +1,5 @@
 import {
+  Settings,
   Bookmark,
   Brain,
   Calculator,
@@ -60,6 +61,7 @@ export const PLAY_NAV: NavItem[] = [
 export const SUPPORT_NAV: NavItem[] = [
   { to: "/feedback", label: "Feedback", icon: MessageSquare },
   { to: "/about", label: "About", icon: Info },
+  { to: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function navGroups(isSignedIn: boolean): NavGroup[] {

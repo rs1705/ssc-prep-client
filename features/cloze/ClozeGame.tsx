@@ -1,5 +1,6 @@
 "use client";
 
+import { playFeedback } from "@/features/games/feedback";
 import { cn } from "@/lib/utils";
 import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useReducer, useState } from "react";
@@ -63,6 +64,16 @@ export function ClozeGame() {
 
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
   const next = useCallback(() => dispatch({ type: "NEXT" }), []);
+
+  // Sound + vibration for every answer, and a short fanfare at the end.
+  const answerResult = state.chosen === null ? null : state.chosen === q?.answer ? "correct" : "wrong";
+  useEffect(() => {
+    if (answerResult) playFeedback(answerResult);
+  }, [answerResult, state.index]);
+
+  useEffect(() => {
+    if (state.phase === "over") playFeedback("finish");
+  }, [state.phase]);
 
   useEffect(() => {
     if (state.phase === "over") submit(state.score);
@@ -212,6 +223,12 @@ export function ClozeGame() {
       {state.phase === "over" && (
         <ResultSummary
           kicker={`${state.correctCount} of ${state.questions.length} correct`}
+          result={{ correct: state.correctCount, total: state.questions.length }}
+          mistakes={state.misses.map((m) => ({
+            prompt: `${m.before}____${m.after}`.trim(),
+            answer: m.answer,
+            detail: m.meaning,
+          }))}
           rank={rankTitle(state.correctCount, state.questions.length)}
           score={state.score}
           best={best}

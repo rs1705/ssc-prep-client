@@ -208,6 +208,10 @@ export const SSC_PERCENTAGES: readonly SSCPercentageConfig[] = [
 ];
 
 const uniqueQuestionGenerator = (
+  // Kept loose on purpose: the percentage, ratio and mixed generators can return
+  // an incomplete question (or undefined) today. Typing this strictly needs those
+  // generators fixed first; until then `any` preserves the current behaviour.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   generatorFn: () => any,
   exclusions: string[],
   maxRetries = 30,
@@ -495,15 +499,15 @@ const generateSimplificationQuestion = (difficulty: string) => {
     targetDiff = tiers[getRandomInt(0, tiers.length - 1)];
   }
 
-  let opsAllowed: string[] = ["+", "-", "*", "/"];
+  const opsAllowed: string[] = ["+", "-", "*", "/"];
   let equation = "";
   let engineEquation = "";
   let displayEquation = "";
 
   if (targetDiff === DIFFICULTY.EASY) {
-    let operands = 3;
-    let terms: Term[] = [];
-    let ops: string[] = [];
+    const operands = 3;
+    const terms: Term[] = [];
+    const ops: string[] = [];
     for (let i = 0; i < operands; i++) {
       const num = getRandomIntByDifficulty(
         DIFFICULTY.EASY,
@@ -513,7 +517,7 @@ const generateSimplificationQuestion = (difficulty: string) => {
     }
 
     for (let i = 0; i < operands - 1; i++) {
-      let op = opsAllowed[getRandomInt(0, opsAllowed.length - 1)];
+      const op = opsAllowed[getRandomInt(0, opsAllowed.length - 1)];
       ops.push(op);
     }
 
@@ -722,9 +726,9 @@ const generatePercentageQuestion = (difficulty: string) => {
 
     if (archetype === 1) {
       // 1. Standard Direct Calculation: P% of N
-      let NUMBERS = Array.from({ length: 20 }, (_, i) => (i + 1) * 5);
+      const NUMBERS = Array.from({ length: 20 }, (_, i) => (i + 1) * 5);
 
-      let percentage = NUMBERS[getRandomInt(0, NUMBERS.length - 1)];
+      const percentage = NUMBERS[getRandomInt(0, NUMBERS.length - 1)];
       const base = 20 * getRandomInt(1, 25);
 
       correctAnswer = (percentage * base) / 100;
@@ -848,7 +852,7 @@ const generateRatioQuestion = (difficulty: string) => {
   if (targetDiff === DIFFICULTY.EASY) {
     const archetype = getRandomInt(1, 3);
     if (archetype === 1) {
-      let multiplier = getRandomInt(2, 20);
+      const multiplier = getRandomInt(2, 20);
       let a = getRandomInt(2, 20);
       let b = getRandomInt(2, 20);
 
@@ -998,10 +1002,10 @@ const generateRatioQuestion = (difficulty: string) => {
       aRatio /= div;
       bRatio /= div;
 
-      let x = getRandomInt(1, 4);
-      let y = getRandomInt(1, 4);
+      const x = getRandomInt(1, 4);
+      const y = getRandomInt(1, 4);
       let z = getRandomInt(3, 6);
-      let w = getRandomInt(1, 3);
+      const w = getRandomInt(1, 3);
       if (z * aRatio <= w * bRatio)
         z = Math.floor((w * bRatio) / aRatio) + getRandomInt(1, 3);
 
@@ -1060,7 +1064,7 @@ const generateRatioQuestion = (difficulty: string) => {
       const lcmB = (bRatio1 * bRatio2) / gcd(bRatio1, bRatio2);
       let A = aRatio * (lcmB / bRatio1);
       let B = lcmB;
-      let C = cRatio1 * (lcmB / bRatio2);
+      const C = cRatio1 * (lcmB / bRatio2);
 
       const lcmC = (C * cRatio2) / gcd(C, cRatio2);
       A = A * (lcmC / C);
@@ -1111,7 +1115,7 @@ const BLITZ_TOPICS = [
   TOPIC_ID.RATIO,
 ];
 const BLITZ_DIFFICULTIES = ["EASY", "MEDIUM", "HARD"];
-let blitzHistory: string[] = [];
+const blitzHistory: string[] = [];
 
 export const generateMixedBlitzQuestion = () => {
   // TODO: Mentorship Task - Implement the Mix Blitz Router logic here!

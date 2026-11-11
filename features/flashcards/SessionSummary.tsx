@@ -19,9 +19,18 @@ interface SessionSummaryProps {
   primary?: { label: string; onClick: () => void };
   onRestart?: () => void;
   onShuffle?: () => void;
+  backHref?: string;
 }
 
-export function SessionSummary({ title, subtitle, stats, primary, onRestart, onShuffle }: SessionSummaryProps) {
+export function SessionSummary({
+  title,
+  subtitle,
+  stats,
+  primary,
+  onRestart,
+  onShuffle,
+  backHref = "/SSC/english/flashcards",
+}: SessionSummaryProps) {
   return (
     <div className="surface-card flex w-full flex-col items-center gap-5 rounded-3xl px-5 py-8 text-center sm:px-8">
       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-700 dark:text-fuchsia-300">
@@ -72,7 +81,7 @@ export function SessionSummary({ title, subtitle, stats, primary, onRestart, onS
           )}
         </div>
         <Link
-          href="/SSC/english/flashcards"
+          href={backHref}
           className="py-2 text-sm font-semibold text-muted-foreground hover:text-foreground"
         >
           Back to flashcards

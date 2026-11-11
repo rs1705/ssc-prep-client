@@ -1,7 +1,9 @@
 "use client";
 
+import { describeRoute, logActivity, logMistakes } from "@/lib/activity-log";
+import { recordPlanActivity } from "@/lib/today-plan";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import confetti from "canvas-confetti";
 import { LayoutGrid, RotateCcw, Trophy } from "lucide-react";
@@ -30,6 +32,10 @@ interface ResultSummaryProps {
   note?: string;
   /** Fire confetti even without a new best (e.g. a perfect run). */
   celebrate?: boolean;
+  /** Right answers out of total, for the dashboard. */
+  result?: { correct: number; total: number };
+  /** What the player got wrong, saved for the dashboard's mistakes card. */
+  mistakes?: { prompt: string; answer: string; detail?: string }[];
 }
 
 export function ResultSummary({
@@ -46,7 +52,23 @@ export function ResultSummary({
   allLabel = "All games",
   note,
   celebrate = false,
+  result,
+  mistakes = [],
 }: ResultSummaryProps) {
+  // A finished game counts towards today's plan, exactly once per results screen.
+  const counted = useRef(false);
+  useEffect(() => {
+    if (counted.current) return;
+    counted.current = true;
+    recordPlanActivity("game");
+    const path = window.location.pathname;
+    const route = describeRoute(path);
+    logActivity({ kind: "game", subject: route.subject, label: route.label, href: path, ...result });
+    logMistakes(mistakes.map((m) => ({ ...m, subject: route.subject, source: route.label, href: path })));
+    // Logged once, when the results first appear.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (!isNewBest && !celebrate) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

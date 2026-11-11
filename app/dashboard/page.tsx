@@ -1,453 +1,68 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/custom/ProtectedRoute";
-
-import Link from "next/link";
-import { useState, useEffect } from "react";
 import { useAuth } from "@/context/auth";
-import {
-  Flame,
-  ArrowUpRight,
-  Calculator,
-  Sigma,
-  Languages,
-  Newspaper,
-  Zap,
-  Target,
-  ChevronRight,
-  History,
-  Gamepad2,
-} from "lucide-react";
-import { ProgressBar } from "@/components/custom/ProgressBar";
-import type { DashboardStats, RecentSession } from "@/lib/types";
-import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
+import { TodayPlanHero } from "@/features/dashboard/TodayPlanHero";
+import { HeaderCountdown } from "@/features/dashboard/HeaderCountdown";
+import { ContinueCard, MistakesCard, SubjectsStanding, WeekCard } from "@/features/dashboard/ActivityCards";
+import { useActivityLog } from "@/lib/activity-log";
 
-const EMPTY_STATS: DashboardStats = {
-  streak: 0,
-  xp: 0,
-  dailyGoal: 30,
-  solvedToday: 0,
-  activeDays: [false, false, false, false, false, false, false],
-};
-
-const SUBJECT_ICONS = {
-  maths: Calculator,
-  english: Languages,
-  reasoning: Sigma,
-  gk: Newspaper,
-} as const;
-
-function RecentSessionsList({
-  sessions,
-  compact = false,
-}: {
-  sessions: RecentSession[];
-  compact?: boolean;
-}) {
-  if (sessions.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center text-center gap-3 p-6 h-full min-h-[180px]">
-        <div className="w-10 h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 flex items-center justify-center ring-1 ring-border/40">
-          <History className="w-4 h-4" />
-        </div>
-        <div className="text-sm font-bold text-foreground">No drills yet</div>
-        <p className="text-xs text-muted-foreground max-w-[200px]">
-          Finish a drill and it will show up here with your score and XP.
-        </p>
-        <Link
-          href="/SSC/maths/mental-maths"
-          className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 flex items-center gap-1 transition-colors"
-        >
-          Start a drill <ChevronRight className="w-3 h-3" />
-        </Link>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      {sessions.map((session) => {
-        const Icon = SUBJECT_ICONS[session.subject];
-        return (
-          <div
-            key={session.id}
-            className="flex items-center justify-between p-3 hover:bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] rounded-2xl transition-all duration-300 group border-2 border-transparent hover:border-brand-500/20 hover:shadow-sm"
-          >
-            <div className={`flex items-center ${compact ? "gap-3" : "gap-3.5"}`}>
-              <div className="w-10 h-10 rounded-xl bg-background border-2 border-border flex items-center justify-center shrink-0 group-hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] group-hover:border-brand-500/30 transition-all duration-300 ease-out group-hover:scale-110 shadow-inner">
-                <Icon className="w-4 h-4 text-muted-foreground group-hover:text-brand-600 transition-colors" />
-              </div>
-              <div>
-                <div className="font-bold text-xs sm:text-sm text-foreground group-hover:text-brand-500 transition-colors">
-                  {session.title}
-                </div>
-                <div className="text-xs font-mono text-muted-foreground mt-0.5">
-                  {session.result}
-                </div>
-              </div>
-            </div>
-            <div className="text-right flex flex-col items-end gap-1">
-              <div className="font-mono font-black text-emerald-500 text-xs sm:text-sm">
-                {Math.round(session.accuracy)}%
-              </div>
-              <div className="text-xs leading-none font-mono font-bold tracking-wider text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-1.5 py-0.5 rounded border border-brand-500/20">
-                +{session.xpEarned} XP
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </>
-  );
+function greetingFor(hour: number) {
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
 }
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { activities, mistakes, ready } = useActivityLog();
+  const [now, setNow] = useState<number | null>(null);
 
-  const [greeting, setGreeting] = useState("Good morning");
-
+  // Time-based text is set after mount so server and client markup agree.
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 17) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
-  }, []);
+    setNow(Date.now());
+    const id = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(id);
+  }, [activities, mistakes]);
 
-  // No data source is wired up yet: render honest empty states instead of fake numbers.
-  // Swap these two for fetched data when the stats/sessions endpoints exist.
-  const stats: DashboardStats = EMPTY_STATS;
-  const recentSessions: RecentSession[] = [];
-  const goalPercent = Math.min(
-    100,
-    Math.round((stats.solvedToday / stats.dailyGoal) * 100),
-  );
-  const questionsLeft = Math.max(0, stats.dailyGoal - stats.solvedToday);
-
-
-  const subjects = [
-    {
-      icon: Calculator,
-      name: "Quant",
-      status: "Speed Math live",
-      live: true,
-      to: "/SSC/maths",
-      subject: "maths" as SubjectKey,
-    },
-    {
-      icon: Sigma,
-      name: "Reasoning",
-      status: "Coming soon",
-      live: false,
-      to: "/SSC/reasoning",
-      subject: "reasoning" as SubjectKey,
-    },
-    {
-      icon: Languages,
-      name: "English",
-      status: "Flashcards & Hangman live",
-      live: true,
-      to: "/SSC/english",
-      subject: "english" as SubjectKey,
-    },
-    {
-      icon: Newspaper,
-      name: "GK / GS",
-      status: "Coming soon",
-      live: false,
-      to: "/SSC/gk",
-      subject: "gk" as SubjectKey,
-    },
-  ];
-
-  const quickActions = [
-    { icon: Zap, label: "Speed Math", to: "/SSC/maths/mental-maths" },
-    {
-      icon: Target,
-      label: "Daily Flashcards",
-      to: "/SSC/english/flashcards/fsrs",
-    },
-    { icon: Gamepad2, label: "Hangman", to: "/SSC/english/hangman" },
-  ];
+  const greeting = now === null ? "Welcome back" : greetingFor(new Date(now).getHours());
+  const loaded = ready && now !== null;
 
   return (
     <ProtectedRoute>
-      <div className="w-full h-full space-y-8 pb-4 overflow-x-hidden max-w-[1400px] mx-auto">
-        {/* Hero Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground mb-1">
-              {greeting},{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground">
-                {user?.displayName?.split(" ")[0] || "Champ"}
-              </span>
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-6 overflow-x-hidden pb-10 sm:gap-8">
+        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="mb-1 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
+              {greeting}, {user?.displayName?.split(" ")[0] || "Champ"}
             </h1>
-            <p className="text-muted-foreground text-sm max-w-2xl font-medium">
-              Consistency builds champions. Let&apos;s crush today&apos;s target.
-            </p>
+            <p className="text-sm font-medium text-muted-foreground">Fifteen focused minutes a day. Your plan is below.</p>
           </div>
-        </div>
+          <HeaderCountdown />
+        </header>
 
-        {/* Top Row: Target & Resume */}
-        <div className="grid lg:grid-cols-2 gap-5 mb-10">
-          {/* Streak / Target Card */}
-          <div
-            className="rounded-3xl bg-card backdrop-blur-2xl border-2 border-brand-500/30 p-6 sm:p-7 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-            style={{ animationDelay: "100ms", animationFillMode: "both" }}
-          >
-            <div className="flex items-center justify-between mb-4 relative z-10">
-              <div className="flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground bg-background px-3 py-1 rounded-full border-2 border-border">
-                <Flame
-                  className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400 animate-pulse"
-                  strokeWidth={2.5}
-                />
-                Streak · {stats.streak} {stats.streak === 1 ? "day" : "days"}
-              </div>
-              <div className="text-right">
-                <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
-                  XP EARNED
-                </div>
-                <div className="text-lg font-black font-mono text-brand-700 dark:text-brand-400">
-                  {stats.xp.toLocaleString()}
-                </div>
-              </div>
+        <TodayPlanHero />
+
+        {loaded ? (
+          <>
+            <div className="grid gap-6 lg:grid-cols-2">
+              <ContinueCard activities={activities} now={now} />
+              <WeekCard activities={activities} now={now} />
             </div>
-
-            <div className="text-xl sm:text-2xl font-black tracking-tight mb-4 text-foreground relative z-10">
-              Today&apos;s Target ·{" "}
-              <span className="font-mono text-brand-700 dark:text-brand-400">
-                {stats.dailyGoal}
-              </span>{" "}
-              Qs
-            </div>
-
-            {/* Progress bar inside its own container */}
-            <ProgressBar
-              value={goalPercent}
-              className="h-3.5 mb-3.5 relative z-10"
-              barClassName="bg-gradient-to-r from-brand-500 via-brand-alt-500 to-brand-600 transition-all duration-500"
-            />
-
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 relative z-10">
-              <div className="inline-flex items-center gap-2 whitespace-nowrap bg-foreground text-background text-xs font-mono font-bold tracking-widest uppercase px-4 py-2 rounded-full">
-                <span>
-                  {stats.solvedToday} / {stats.dailyGoal} SOLVED
-                </span>
-                <span className="text-brand-500">({goalPercent}%)</span>
-              </div>
-              <span className="text-xs font-mono font-semibold text-muted-foreground">
-                {questionsLeft === 0
-                  ? "Daily goal reached"
-                  : `${questionsLeft} Qs to daily goal`}
-              </span>
-            </div>
-
-            {/* Week tracker pills */}
-            <div className="mt-5 grid grid-cols-7 gap-1.5 relative z-10">
-              {["M", "T", "W", "T", "F", "S", "S"].map((day, i) => (
-                <div key={i} className="flex flex-col items-center gap-1">
-                  <div
-                    className={`h-2.5 w-full rounded-full transition-all ${
-                      stats.activeDays[i] ? "bg-brand-500" : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))]"
-                    }`}
-                  />
-                  <span className="text-xs font-mono font-bold text-muted-foreground">
-                    {day}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <SubjectsStanding activities={activities} now={now} />
+            <MistakesCard mistakes={mistakes} now={now} />
+          </>
+        ) : (
+          <div className="grid gap-6 lg:grid-cols-2" aria-hidden="true">
+            <div className="surface-card h-72 rounded-3xl" />
+            <div className="surface-card h-72 rounded-3xl" />
           </div>
+        )}
 
-          {/* Quick Resume Card with 2px Outer Border */}
-          <Link
-            href="/SSC/maths/mental-maths"
-            className="group rounded-3xl bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white p-6 sm:p-7 flex flex-col justify-between hover:-translate-y-0.5 transition-all duration-300 shadow-xl shadow-brand-500/20 hover:shadow-2xl hover:shadow-brand-500/30 cursor-pointer border-2 border-brand-500/50 relative overflow-hidden animate-in fade-in slide-in-from-bottom-4 zoom-in-95"
-            style={{ animationDelay: "150ms", animationFillMode: "both" }}
-          >
-            <div className="flex items-start justify-between relative z-10">
-              <div>
-                <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest uppercase bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white mb-2">
-                  <Zap className="w-3 h-3" /> Quick Start
-                </div>
-                <div className="text-2xl sm:text-3xl font-black tracking-tight text-white mt-1">
-                  Speed Math
-                </div>
-                <div className="text-white/80 text-xs sm:text-sm font-medium mt-1">
-                  Mathematics · Mental Maths drills
-                </div>
-              </div>
-              <div className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-105 transition-all duration-300 shadow-sm shrink-0">
-                <ArrowUpRight className="w-5 h-5 text-white" />
-              </div>
-            </div>
-
-            <div className="relative z-10 mt-6 text-xs font-mono font-bold uppercase tracking-wider text-white/90">
-              Pick a topic and start your first drill
-            </div>
-          </Link>
-        </div>
-
-        {/* Main Bottom Section */}
-        <div className="flex flex-col xl:flex-row gap-8 xl:gap-10 mb-10 items-stretch">
-          {/* Left Column (Main Content) */}
-          <div className="flex-1 flex flex-col gap-10 min-w-0">
-            {/* Subjects Row with 2px borders, Mastery progress bars, and subtle hover color fill */}
-            <div
-              className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-              style={{ animationDelay: "200ms", animationFillMode: "both" }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-2">
-                  <span>Subject Command Centers</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                </div>
-                <Link
-                  href="/practice"
-                  className="py-2 text-xs font-mono font-bold tracking-widest uppercase text-brand-700 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 flex items-center gap-1 transition-colors"
-                >
-                  All Practice <ArrowUpRight className="w-3 h-3" />
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5">
-                {subjects.map((s) => {
-                  const colors = subjectTheme(s.subject);
-                  return (
-                    <Link
-                      key={s.name}
-                      href={s.to}
-                      className={`group rounded-3xl bg-card border-2 border-border p-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-full relative overflow-hidden ${colors.hoverBorder} ${colors.hoverBg}`}
-                    >
-                      <div className="flex items-start justify-between mb-4 relative z-10">
-                        <div
-                          className={`w-12 h-12 rounded-2xl ${colors.iconWrap} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40`}
-                        >
-                          <s.icon
-                            className={`w-5 h-5 ${colors.text}`}
-                            strokeWidth={2.2}
-                          />
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                      </div>
-
-                      <div className="relative z-10">
-                        <div className="font-extrabold text-lg tracking-tight text-foreground group-hover:text-brand-500 transition-colors">
-                          {s.name}
-                        </div>
-                        <div className="text-xs font-mono font-semibold text-muted-foreground mt-0.5">
-                          {s.status}
-                        </div>
-
-                        <div className="mt-4 pt-3 border-t-2 border-border flex items-center justify-between gap-2 whitespace-nowrap text-xs font-mono font-bold">
-                          <span className="text-muted-foreground">
-                            Mastery
-                          </span>
-                          <span
-                            className={
-                              s.live ? colors.text : "text-muted-foreground/60"
-                            }
-                          >
-                            {s.live ? "Soon" : "—"}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Quick Actions (Wide Screen Only) */}
-            <div
-              className="hidden xl:block animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-              style={{ animationDelay: "300ms", animationFillMode: "both" }}
-            >
-              <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground mb-4">
-                Fast Drills & Tools
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                {quickActions.map((q) => (
-                  <Link
-                    key={q.label}
-                    href={q.to}
-                    className="rounded-2xl surface-card p-4.5 flex items-center gap-4 hover:border-brand-500/40 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] transition-all cursor-pointer group"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
-                      <q.icon className="w-4 h-4" strokeWidth={2} />
-                    </div>
-                    <div className="font-bold text-sm text-foreground group-hover:text-brand-500 transition-colors">
-                      {q.label}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Second Row for Medium Screens */}
-            <div className="xl:hidden flex flex-col gap-8">
-              {/* Quick Actions */}
-              <div
-                className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-                style={{ animationDelay: "400ms", animationFillMode: "both" }}
-              >
-                <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground mb-3">
-                  Fast Drills & Tools
-                </div>
-                <div className="grid grid-cols-3 gap-2.5 sm:gap-4 h-full">
-                  {quickActions.map((q) => (
-                    <Link
-                      key={q.label}
-                      href={q.to}
-                      className="flex-1 rounded-2xl surface-card p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 hover:border-brand-500/40 hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] transition-all cursor-pointer justify-center text-center sm:text-left group"
-                    >
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40">
-                        <q.icon
-                          className="w-3.5 h-3.5 sm:w-4 sm:h-4"
-                          strokeWidth={2}
-                        />
-                      </div>
-                      <div className="font-bold text-foreground text-xs sm:text-xs leading-tight">
-                        {q.label}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Recent Sessions */}
-              <div
-                className="flex flex-col min-w-0 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-                style={{ animationDelay: "500ms", animationFillMode: "both" }}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground">
-                    Recent Drill Feed
-                  </div>
-                </div>
-
-                <div className="surface-card rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
-                  <RecentSessionsList sessions={recentSessions} compact />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Recent Sessions (Wide Screen Only) */}
-          <div
-            className="hidden xl:flex w-[280px] shrink-0 flex-col animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-            style={{ animationDelay: "400ms", animationFillMode: "both" }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-xs font-mono font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-1.5">
-                <History className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400" />
-                Recent Drill Feed
-              </div>
-            </div>
-
-            <div className="surface-card rounded-3xl p-2.5 flex flex-col h-full justify-between gap-1 shadow-sm">
-              <RecentSessionsList sessions={recentSessions} />
-            </div>
-          </div>
-        </div>
+        <p className="text-center text-xs text-muted-foreground">
+          Your progress is saved on this device for now. It will sync to your account in a later update.
+        </p>
       </div>
     </ProtectedRoute>
   );

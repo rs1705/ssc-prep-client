@@ -1,4 +1,11 @@
 "use client";
+import { describeRoute, logActivity, logMistakes } from "@/lib/activity-log";
+import { recordPlanActivity } from "@/lib/today-plan";
+import { playFeedback } from "@/features/games/feedback";
+import { DrillLobby } from "@/features/speed-maths/DrillLobby";
+import { DUO } from "@/features/games/buttons";
+import { GAME_TONE } from "@/features/games/tone";
+import { cn } from "@/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
@@ -16,19 +23,15 @@ import {
   Trophy,
   Check,
   Minus,
-  CheckCircle2,
   XCircle,
-  HelpCircle,
   AlertTriangle,
-  MinusCircle,
   X,
   Zap,
   Flame,
   Pause,
   Play,
   Swords,
-  RotateCcw,
-  ArrowLeft,
+  ChevronLeft,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -288,6 +291,47 @@ export default function MentalMathsPractice() {
   const [settingsLoaded, setSettingsLoaded] = useState<boolean>(false);
   const engine = useMentalMathsEngine(topic, showQuitConfirm || isManuallyPaused);
   const gameState = engine.state.status;
+
+  // Sound + vibration for every answer, and a short fanfare at the end.
+  useEffect(() => {
+    const status = engine.state.currentAnswerStatus;
+    if (status === "correct" || status === "wrong") playFeedback(status);
+  }, [engine.state.currentAnswerStatus, engine.state.questionIndex]);
+
+  const drillLogged = useRef(false);
+  useEffect(() => {
+    if (gameState !== "game_over") {
+      drillLogged.current = false;
+      return;
+    }
+    if (drillLogged.current) return;
+    drillLogged.current = true;
+    playFeedback("finish");
+    recordPlanActivity("drill");
+    const path = window.location.pathname;
+    const route = describeRoute(path);
+    logActivity({
+      kind: "drill",
+      subject: "maths",
+      label: route.label,
+      href: path,
+      correct: engine.state.correctAnswers,
+      total: engine.state.attemptedQuestionsCount,
+    });
+    logMistakes(
+      engine.state.history
+        .filter((h) => h.status === "wrong")
+        .map((h) => ({
+          subject: "maths" as const,
+          source: route.label,
+          prompt: h.questionText,
+          answer: String(h.correctAnswer),
+          href: path,
+        })),
+    );
+    // Logged once per finished drill; engine values are read at that moment.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const confettiCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -669,30 +713,39 @@ export default function MentalMathsPractice() {
       centerContent={true}
     >
       <div
-        className="relative w-full flex flex-col surface-card rounded-3xl select-none transition-all duration-300 p-4 sm:p-5 md:p-6 flex-1 min-h-[570px] min-[390px]:min-h-[610px] md:min-h-[580px] lg:min-h-[600px] max-h-[calc(92dvh-3.5rem)] md:max-h-[calc(90dvh-4.5rem)] overflow-hidden my-auto"
+        className={`relative w-full flex flex-col surface-card rounded-3xl select-none transition-all duration-300 p-4 sm:p-5 md:p-6 flex-1 min-h-[570px] min-[390px]:min-h-[610px] md:min-h-[580px] lg:min-h-[600px] max-h-[calc(92dvh-3.5rem)] md:max-h-[calc(90dvh-4.5rem)] my-auto ${gameState === "game_over" ? "overflow-y-auto [scrollbar-width:thin]" : "overflow-hidden"}`}
       >
-        {gameState === "active" && (
-          <div className="flex justify-end gap-2 w-full shrink-0 -mt-1 -mr-1 sm:-mt-1.5 sm:-mr-1.5 z-50">
+        <header className="mb-3 flex shrink-0 items-center justify-between gap-3 border-b-2 border-border pb-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                gameState === "active" ? setShowQuitConfirm(true) : router.push("/SSC/maths/mental-maths")
+              }
+              aria-label={gameState === "active" ? "Quit drill" : "Back to all drills"}
+              className={DUO.icon}
+            >
+              {gameState === "active" ? <X className="h-5 w-5" aria-hidden="true" /> : <ChevronLeft className="h-5 w-5" aria-hidden="true" />}
+            </button>
+            <div className="min-w-0 leading-tight">
+              <h1 className="truncate text-base font-extrabold capitalize text-foreground sm:text-lg">
+                {topic.replace(/[-_]/g, " ")} drill
+              </h1>
+              <p className={`truncate text-xs font-semibold ${GAME_TONE.maths.text}`}>Speed Maths</p>
+            </div>
+          </div>
+          {gameState === "active" && (
             <button
               type="button"
               onClick={() => setIsManuallyPaused(true)}
-              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0"
-              title="Pause (P)"
               aria-label="Pause drill"
+              title="Pause (P)"
+              className={DUO.icon}
             >
-              <Pause className="w-4 h-4" strokeWidth={2.2} />
+              <Pause className="h-5 w-5" aria-hidden="true" />
             </button>
-            <button
-              type="button"
-              onClick={() => setShowQuitConfirm(true)}
-              className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0"
-              title="Quit"
-              aria-label="Quit drill"
-            >
-              <X className="w-4 h-4" strokeWidth={2.2} />
-            </button>
-          </div>
-        )}
+          )}
+        </header>
 
         {gameState === "active" && isManuallyPaused && !showQuitConfirm && (
           <div
@@ -708,7 +761,7 @@ export default function MentalMathsPractice() {
             <Button
               autoFocus
               onClick={() => setIsManuallyPaused(false)}
-              className="h-11 px-7 rounded-2xl text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white border-0 flex items-center gap-2"
+              className={cn(DUO.primary, "px-7")}
             >
               <Play className="w-4 h-4" /> Resume
               <kbd className="hidden md:inline rounded bg-white/20 px-1.5 py-0.5 text-xs">
@@ -720,266 +773,22 @@ export default function MentalMathsPractice() {
 
         {/* Master Layout Wrapper */}
         <div className="relative w-full flex flex-col flex-1 min-h-0">
-          {/* 1. LOBBY CONFIGURATION SCREEN */}
           {gameState === "idle" && (
-            <div className="w-full flex flex-col flex-1 justify-between py-0.5 sm:py-1.5 md:py-2 animate-in fade-in slide-in-from-bottom-3 min-h-0">
-              {/* Header: Back & Title in one clean bar */}
-              <div className="flex items-center justify-between w-full shrink-0 mb-1 sm:mb-1.5">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="flex items-center gap-1.5 h-8 px-2.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider"
-                  title="Back"
-                  aria-label="Back to topics"
-                >
-                  <ArrowLeft className="w-4 h-4" strokeWidth={2.2} />
-                  <span>Back</span>
-                </button>
-                <div className="flex items-center gap-1.5">
-                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight capitalize text-foreground">
-                    {topic.replace("-", " ")} Drill
-                  </h2>
-                </div>
-                <div className="w-10 sm:w-12" /> {/* Spacer */}
-              </div>
-
-              <div className="flex flex-col justify-evenly flex-1 gap-2.5 sm:gap-4 md:gap-5 px-0.5 py-1 sm:py-2 min-h-0">
-                {/* 1. Difficulty Card */}
-                {topic !== "mixed" && (
-                  <div className="surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 border-2 border-brand-500/20 font-mono text-xs font-bold">
-                        1
-                      </span>
-                      <h3 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground">
-                        Select Difficulty
-                      </h3>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
-                      {(["easy", "medium", "hard", "all"] as const).map((d) => {
-                        const isSelected = d === engine.state.difficulty;
-                        const label =
-                          d === "easy"
-                            ? "Easy"
-                            : d === "medium"
-                              ? "Medium"
-                              : d === "hard"
-                                ? "Hard"
-                                : "All";
-                        return (
-                          <button
-                            key={d}
-                            type="button"
-                            onClick={() => handleDifficultyChange(d)}
-                            className={`rounded-xl sm:rounded-2xl h-8.5 sm:h-9 md:h-9.5 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border-2 select-none ${
-                              isSelected
-                                ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                                : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <div className="flex items-start gap-1.5 mt-2.5 text-xs italic text-muted-foreground border-l-2 border-brand-400/60 pl-2">
-                      <Zap className="w-3.5 h-3.5 text-brand-700  shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-xs leading-snug font-medium break-words">
-                        {getDifficultyDescription(
-                          topic,
-                          engine.state.difficulty,
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* 2. Practice Mode Card */}
-                <div className="surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] text-brand-700  border-2 border-brand-400/30 font-mono text-xs font-bold">
-                      2
-                    </span>
-                    <h3 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground">
-                      Practice Mode & Limit
-                    </h3>
-                  </div>
-                  {topic !== "mixed" && (
-                    <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-2.5 sm:mb-3">
-                      <button
-                        type="button"
-                        onClick={() => handleModeChange("timed")}
-                        className={`rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[92px] sm:min-h-[100px] md:min-h-[104px] transition-all duration-75 cursor-pointer border-2 select-none p-2.5 sm:p-3 ${
-                          engine.state.mode === "timed"
-                            ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[4px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
-                            : "bg-card border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[3px]"
-                        }`}
-                      >
-                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "timed" ? "bg-[color-mix(in_oklab,var(--brand-500)_20%,var(--card))] text-brand-600 dark:text-brand-300" : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] text-muted-foreground"}`}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col text-center">
-                          <span className={`font-bold font-mono text-xs sm:text-sm ${engine.state.mode === "timed" ? "text-brand-600 dark:text-brand-300" : "text-foreground"}`}>
-                            Timed
-                          </span>
-                          <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
-                            Race the clock
-                          </span>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleModeChange("freestyle")}
-                        className={`rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[92px] sm:min-h-[100px] md:min-h-[104px] transition-all duration-75 cursor-pointer border-2 select-none p-2.5 sm:p-3 ${
-                          engine.state.mode === "freestyle"
-                            ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[4px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[3px]"
-                            : "bg-card border-border/60 border-b-[4px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[3px]"
-                        }`}
-                      >
-                        <div className={`p-1.5 sm:p-2 rounded-xl sm:rounded-2xl ${engine.state.mode === "freestyle" ? "bg-[color-mix(in_oklab,var(--brand-500)_20%,var(--card))] text-brand-600 dark:text-brand-300" : "bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] text-muted-foreground"}`}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 sm:w-5.5 sm:h-5.5 shrink-0"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col text-center">
-                          <span className={`font-bold font-mono text-xs sm:text-sm ${engine.state.mode === "freestyle" ? "text-brand-600 dark:text-brand-300" : "text-foreground"}`}>
-                            Freestyle
-                          </span>
-                          <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
-                            No pressure
-                          </span>
-                        </div>
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Mode Limits */}
-                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-                    {engine.state.mode === "timed"
-                      ? (topic === "mixed" ? [60, 120, 300] : [30, 60, 90]).map(
-                          (t) => {
-                            const isSelected = t === engine.state.timeLimit;
-                            return (
-                              <button
-                                key={t}
-                                type="button"
-                                onClick={() => handleTimerLimitChange(t)}
-                                className={`rounded-xl sm:rounded-2xl h-8.5 sm:h-9 md:h-9.5 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border-2 select-none ${
-                                  isSelected
-                                    ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                                    : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
-                                }`}
-                              >
-                                {t}s
-                              </button>
-                            );
-                          },
-                        )
-                      : [10, 20, 30].map((q) => {
-                          const isSelected = q === engine.state.questionLimit;
-                          return (
-                            <button
-                              key={q}
-                              type="button"
-                              onClick={() => handleQuestionLimitChange(q)}
-                              className={`rounded-xl sm:rounded-2xl h-8.5 sm:h-9 md:h-9.5 flex items-center justify-center font-bold font-mono text-xs sm:text-sm transition-all duration-75 cursor-pointer border-2 select-none ${
-                                isSelected
-                                  ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 shadow-2xs active:border-b-[1px] active:translate-y-[2px]"
-                                  : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 text-foreground active:border-b-[1px] active:translate-y-[2px]"
-                              }`}
-                            >
-                              {q} Qs
-                            </button>
-                          );
-                        })}
-                  </div>
-                </div>
-
-                {/* 3. Input Layout Card */}
-                <div className="surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-3.5 shadow-sm shadow-black/5">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="flex items-center justify-center w-5.5 h-5.5 rounded-full bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] text-brand-700  border-2 border-brand-400/30 font-mono text-xs font-bold">
-                      3
-                    </span>
-                    <h3 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-widest text-muted-foreground">
-                      Input Layout
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
-                    <button
-                      type="button"
-                      onClick={() => setInputLayout("mcq")}
-                      className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13.5 sm:h-14 md:h-14 transition-all duration-75 cursor-pointer border-2 select-none p-2 sm:p-2.5 ${
-                        inputLayout === "mcq"
-                          ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
-                          : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[2px]"
-                      }`}
-                    >
-                      <span
-                        className={`font-bold font-mono text-xs sm:text-sm ${inputLayout === "mcq" ? "text-brand-600 dark:text-brand-300" : "text-foreground"}`}
-                      >
-                        MCQS
-                      </span>
-                      <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
-                        Pick 1 of 4 options
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setInputLayout("keys")}
-                      className={`rounded-xl sm:rounded-2xl flex flex-col items-center justify-center h-13.5 sm:h-14 md:h-14 transition-all duration-75 cursor-pointer border-2 select-none p-2 sm:p-2.5 ${
-                        inputLayout === "keys"
-                          ? "bg-[color-mix(in_oklab,var(--brand-400)_20%,var(--card))] dark:bg-[color-mix(in_oklab,var(--brand-400)_15%,var(--card))] border-brand-400/60 dark:border-brand-400/50 border-b-[3px] border-b-brand-500 text-brand-600 dark:text-brand-300 font-semibold shadow-xs active:border-b-[1px] active:translate-y-[2px]"
-                          : "bg-card border-border/60 border-b-[3px] border-b-border/80 hover:bg-card hover:border-brand-400/40 active:border-b-[1px] active:translate-y-[2px]"
-                      }`}
-                    >
-                      <span
-                        className={`font-bold font-mono text-xs sm:text-sm ${inputLayout === "keys" ? "text-brand-600 dark:text-brand-300" : "text-foreground"}`}
-                      >
-                        NUMPAD
-                      </span>
-                      <span className="text-xs sm:text-xs text-muted-foreground font-medium mt-0.5">
-                        Type it out fast
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Start Button */}
-              <div className="flex w-full shrink-0 mt-1 sm:mt-1.5">
-                <Button
-                  className="w-full h-11.5 sm:h-12 md:h-12.5 rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white shadow-md shadow-brand-500/20 border-0 border-b-[4px] border-b-brand-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center group"
-                  onClick={handleStartPractice}
-                >
-                  <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
-                  Launch Practice Drill
-                </Button>
-              </div>
-            </div>
+            <DrillLobby
+              isMixed={topic === "mixed"}
+              difficulty={engine.state.difficulty}
+              difficultyNote={getDifficultyDescription(topic, engine.state.difficulty) ?? ""}
+              mode={engine.state.mode}
+              timeLimit={engine.state.timeLimit}
+              questionLimit={engine.state.questionLimit}
+              inputLayout={inputLayout}
+              onDifficulty={handleDifficultyChange}
+              onMode={handleModeChange}
+              onTimeLimit={handleTimerLimitChange}
+              onQuestionLimit={handleQuestionLimitChange}
+              onInputLayout={setInputLayout}
+              onStart={handleStartPractice}
+            />
           )}
 
           {/* OTHER GAME STATES */}
@@ -995,7 +804,7 @@ export default function MentalMathsPractice() {
                       animate={{ scale: 1.2, opacity: 1 }}
                       exit={{ scale: 0.8, opacity: 0 }}
                       transition={{ duration: 0.4, ease: "backOut" }}
-                      className="text-8xl font-black text-brand-400 dark:text-brand-300 drop-shadow-[0_0_35px_rgba(251,191,36,0.6)] font-mono"
+                      className="text-8xl font-black tabular-nums text-sky-600 dark:text-sky-300"
                     >
                       {engine.state.countdownTick}
                     </motion.div>
@@ -1019,7 +828,7 @@ export default function MentalMathsPractice() {
                   <div className="flex items-center justify-between w-full pb-1.5 gap-2">
                     {/* Left: Topic Icon + Name & Tags */}
                     <div className="flex items-center gap-2 min-w-0">
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] rounded-2xl text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20">
+                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] rounded-2xl text-sky-700 dark:text-sky-300 flex items-center justify-center border-2 border-sky-500/25">
                         {renderTopicIcon(
                           topic,
                           "w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 shrink-0",
@@ -1154,7 +963,7 @@ export default function MentalMathsPractice() {
                   {/* Question Box */}
                   <div
                     className={`
-                            my-0.5 sm:my-1.5 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-3 sm:py-4 md:py-6 lg:py-7 px-4 sm:px-6 md:px-8 min-h-[110px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[165px] overflow-hidden border-2 transition-all duration-200 ease-in-out select-none relative
+                            my-0.5 sm:my-1.5 flex-1 flex flex-col items-center justify-center rounded-2xl sm:rounded-3xl py-3 sm:py-4 md:py-6 lg:py-7 px-4 sm:px-6 md:px-8 min-h-[96px] sm:min-h-[110px] md:min-h-[120px] lg:min-h-[130px] overflow-hidden border-2 transition-all duration-200 ease-in-out select-none relative
                             ${engine.state.currentAnswerStatus === "correct" ? "border-emerald-500/60 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-300" : ""}
                             ${engine.state.currentAnswerStatus === "wrong" ? "border-rose-500/60 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-600 dark:text-rose-300" : ""}
                             ${engine.state.currentAnswerStatus === "skipped" ? "border-brand-500/60 bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-600 dark:text-brand-300" : ""}
@@ -1191,7 +1000,7 @@ export default function MentalMathsPractice() {
                   </div>
 
                   {/* Wrapper for Inputs & Keypad */}
-                  <div className="w-full shrink-0 relative flex flex-col justify-end pb-0.5 h-[255px] sm:h-[280px] md:h-[300px] lg:h-[320px]">
+                  <div className="w-full shrink-0 relative flex flex-col justify-end pb-0.5 h-[230px] sm:h-[240px] md:h-[250px] lg:h-[260px]">
                     <AnimatePresence mode="wait">
                       {inputLayout === "keys" ? (
                         <motion.div
@@ -1224,7 +1033,7 @@ export default function MentalMathsPractice() {
                             />
                             <Button
                               type="submit"
-                              className="h-9 sm:h-10 md:h-11 w-20 sm:w-24 md:w-28 flex-shrink-0 rounded-2xl text-xs sm:text-sm font-mono font-black uppercase tracking-wider bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white border-0 border-b-[4px] border-b-brand-600 active:translate-y-[2px] hover:brightness-105 transition-all duration-75 cursor-pointer shadow-md shadow-brand-500/25"
+                              className={cn(DUO.primary, "h-11 min-h-11 w-24 shrink-0 px-0 sm:w-28")}
                               onClick={() => handleEnterSubmit(userInput)}
                             >
                               Enter
@@ -1232,7 +1041,7 @@ export default function MentalMathsPractice() {
                             <Button
                               type="button"
                               variant="ghost"
-                              className="h-9 sm:h-10 md:h-11 rounded-2xl px-3 sm:px-4 flex-shrink-0 text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground surface-card hover:bg-card border-b-[3px] border-b-border active:translate-y-[1px] transition-all duration-75 cursor-pointer select-none"
+                              className={cn(DUO.secondary, "h-11 min-h-11 shrink-0 px-4")}
                               onClick={() => handleEnterSubmit("skip")}
                             >
                               Skip
@@ -1240,7 +1049,7 @@ export default function MentalMathsPractice() {
                           </form>
 
                           {/* Tactile 3D Keypad */}
-                          <div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 sm:p-2 md:p-2.5 surface-card rounded-2xl sm:rounded-3xl shadow-inner h-full min-h-0 w-full">
+                          <div className="grid h-full min-h-0 w-full flex-1 grid-cols-3 gap-2">
                             {[
                               "1",
                               "2",
@@ -1266,13 +1075,15 @@ export default function MentalMathsPractice() {
                                       : btn
                                 }
                                 onClick={() => handleNumClick(btn)}
-                                className={`w-full h-full font-black rounded-xl sm:rounded-2xl border-2 transition-all duration-75 ease-out outline-none select-none cursor-pointer font-mono ${
+                                className={cn(
+                                  DUO.option,
+                                  "h-full w-full select-none font-mono font-black outline-none",
                                   btn === "Clear"
-                                    ? "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-600 dark:text-rose-400 hover:bg-[color-mix(in_oklab,var(--color-rose-500)_25%,var(--card))] border-rose-500/40 border-b-[4px] border-b-rose-600/70 active:translate-y-[2px] text-xs sm:text-sm font-bold uppercase font-mono shadow-xs"
+                                    ? "border-rose-500 bg-[color-mix(in_oklab,var(--color-rose-500)_12%,var(--card))] text-xs font-extrabold uppercase text-rose-700 hover:bg-[color-mix(in_oklab,var(--color-rose-500)_20%,var(--card))] dark:text-rose-300 sm:text-sm"
                                     : btn === "⌫"
-                                      ? "bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] text-foreground hover:bg-muted border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-base sm:text-lg md:text-xl font-sans shadow-xs"
-                                      : "bg-card text-foreground hover:bg-card hover:border-brand-400/60 hover:border-b-brand-500 border-border/60 border-b-[4px] border-b-border/80 active:translate-y-[2px] text-lg sm:text-xl md:text-2xl shadow-xs"
-                                }`}
+                                      ? cn(DUO.idle, "bg-muted font-sans text-lg sm:text-xl")
+                                      : cn(DUO.idle, "text-xl sm:text-2xl"),
+                                )}
                               >
                                 {btn}
                               </button>
@@ -1294,23 +1105,17 @@ export default function MentalMathsPractice() {
                               (option, idx) => {
                                 const isSelected = selectedOption === option;
                                 const status = engine.state.currentAnswerStatus;
-                                let highlightClass =
-                                  "border-border/60 border-b-[5px] border-b-border/80 bg-card text-foreground hover:bg-card hover:border-brand-400/60 hover:border-b-brand-500 shadow-sm";
+                                let highlightClass: string = DUO.idle;
                                 if (isSelected) {
-                                  if (status === "correct") {
-                                    highlightClass =
-                                      "border-emerald-500/70 border-b-[5px] border-b-emerald-600 bg-[color-mix(in_oklab,var(--color-emerald-500)_20%,var(--card))] text-emerald-600 dark:text-emerald-400 shadow-emerald-500/10";
-                                  } else if (status === "wrong") {
-                                    highlightClass =
-                                      "border-rose-500/70 border-b-[5px] border-b-rose-600 bg-[color-mix(in_oklab,var(--color-rose-500)_20%,var(--card))] text-rose-600 dark:text-rose-400 shadow-rose-500/10";
-                                  }
+                                  if (status === "correct") highlightClass = DUO.correct;
+                                  else if (status === "wrong") highlightClass = DUO.wrong;
                                 }
                                 return (
                                   <button
                                     key={idx}
                                     type="button"
                                     aria-label={`Option ${idx + 1}: ${option}`}
-                                    className={`relative w-full h-full font-bold rounded-2xl sm:rounded-3xl border-2 transition-all duration-75 ease-out flex flex-col items-center justify-center p-2 sm:p-2.5 md:p-3 active:translate-y-[2px] cursor-pointer select-none backdrop-blur-md group ${highlightClass}`}
+                                    className={cn(DUO.option, "group relative flex h-full w-full select-none flex-col items-center justify-center p-2 font-bold sm:p-3", highlightClass)}
                                     onClick={() => {
                                       if (
                                         engine.state.currentAnswerStatus !==
@@ -1321,7 +1126,7 @@ export default function MentalMathsPractice() {
                                       handleEnterSubmit(option);
                                     }}
                                   >
-                                    <span className="absolute top-2 left-2.5 px-1.5 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-muted-foreground group-hover:text-foreground font-mono text-xs sm:text-xs md:text-xs font-bold tracking-wider transition-colors">
+                                    <span className="absolute top-2 left-2.5 px-1.5 py-0.5 rounded-lg bg-muted text-muted-foreground group-hover:text-foreground font-mono text-xs sm:text-xs md:text-xs font-bold tracking-wider transition-colors">
                                       {idx + 1}
                                     </span>
                                     <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mt-1">
@@ -1337,7 +1142,7 @@ export default function MentalMathsPractice() {
                             <button
                               type="button"
                               onClick={() => handleEnterSubmit("skip")}
-                              className="h-8 sm:h-8.5 text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground surface-card hover:bg-card rounded-xl px-7 border-b-[3px] border-b-border active:translate-y-[1px] transition-all duration-75 cursor-pointer flex items-center justify-center gap-2 select-none"
+                              className={cn(DUO.secondary, "h-10 min-h-10 px-7 text-xs")}
                             >
                               Skip
                               <kbd className="hidden md:inline rounded bg-muted px-1.5 py-0.5 text-xs normal-case">
@@ -1446,15 +1251,6 @@ export default function MentalMathsPractice() {
                             </p>
                           </div>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setShowQuitConfirm(true)}
-                          className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer shrink-0"
-                          title="Quit"
-                          aria-label="Quit session"
-                        >
-                          <X className="w-4 h-4" strokeWidth={2.2} />
-                        </button>
                       </div>
 
                       {/* Mobile View Tab Switcher */}
@@ -1484,7 +1280,7 @@ export default function MentalMathsPractice() {
                       </div>
 
                       {/* Main Dual-Column Layout: Side-by-side on desktop, tabbed on mobile */}
-                      <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch my-2 sm:my-3 flex-1 min-h-0">
+                      <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch my-2 sm:my-3 flex-1 shrink-0">
                         {/* LEFT COLUMN: Overview Stats & Pacing (5 cols on md/lg) */}
                         <div className={`md:col-span-5 flex-col gap-3 sm:gap-4 h-full min-h-0 ${resultTab === "overview" ? "flex" : "hidden md:flex"}`}>
                           {/* Accuracy Gauge & Stacked Counts Box */}
@@ -1566,7 +1362,7 @@ export default function MentalMathsPractice() {
                             const midY = Math.round(topY / 2);
 
                             return (
-                              <div className="surface-card rounded-2xl p-3 sm:p-3.5 md:p-4 flex flex-col flex-1 min-h-0 justify-between">
+                              <div className="surface-card rounded-2xl p-3 sm:p-3.5 md:p-4 flex flex-col flex-1 min-h-[210px] shrink-0 justify-between">
                                 {/* Header */}
                                 <div className="flex justify-between items-center mb-2 shrink-0">
                                   <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground tracking-widest uppercase">
@@ -1790,22 +1586,22 @@ export default function MentalMathsPractice() {
                         </div>
                       </div>
 
-                      {/* Footer Actions: Tactile 3D Buttons & Guest Prompt */}
-                      <div className="w-full flex flex-col gap-2.5 sm:gap-3 pt-2 shrink-0">
+                      {/* Footer actions stay pinned while the stats scroll */}
+                      <div className="sticky bottom-0 z-10 -mb-1 flex w-full shrink-0 flex-col gap-2.5 border-t-2 border-border bg-card pb-1 pt-3 sm:gap-3">
                         <div className="w-full flex gap-3">
                           <button
                             type="button"
                             onClick={() => router.push("/SSC/maths/mental-maths")}
-                            className="flex-[3] h-11 sm:h-12 flex items-center justify-center rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase surface-card text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] border-b-[4px] border-b-border/80 active:border-b-[1px] active:translate-y-[3px] transition-all duration-75 cursor-pointer select-none"
+                            className={cn(DUO.secondary, "flex-[3] px-3")}
                           >
-                            Topics
+                            All drills
                           </button>
                           <Button
                             onClick={engine.resetSession}
-                            className="flex-[7] h-11 sm:h-12 px-4 sm:px-6 rounded-2xl text-xs sm:text-sm font-mono font-bold tracking-wider uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white border-0 border-b-[4px] border-b-brand-600 active:border-b-[1px] active:translate-y-[3px] hover:brightness-105 transition-all duration-75 cursor-pointer flex items-center justify-center shadow-lg shadow-brand-500/25 group"
+                            className={cn(DUO.primary, "group h-12 flex-[7] px-4")}
                           >
                             <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
-                            Practice Again
+                            Practise again
                           </Button>
                         </div>
 

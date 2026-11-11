@@ -1,5 +1,6 @@
 "use client";
 
+import { playFeedback } from "@/features/games/feedback";
 import { useCallback, useEffect, useReducer } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, Lightbulb, Timer, X, Zap, type LucideIcon } from "lucide-react";
@@ -76,6 +77,15 @@ export function SprintGame({
     );
     return () => window.clearTimeout(id);
   }, [state.feedback, state.phase]);
+
+  // Sound + vibration for every answer, and a short fanfare at the end.
+  useEffect(() => {
+    if (state.feedback) playFeedback(state.feedback.correct ? "correct" : "wrong");
+  }, [state.feedback]);
+
+  useEffect(() => {
+    if (state.phase === "over") playFeedback("finish");
+  }, [state.phase]);
 
   useEffect(() => {
     if (state.phase === "over") submit(state.score);
@@ -205,6 +215,12 @@ export function SprintGame({
       {state.phase === "over" && (
         <ResultSummary
           kicker="Time's up"
+          result={{ correct: state.correctCount, total: state.answeredCount }}
+          mistakes={state.misses.map((m) => ({
+            prompt: m.display ? `${m.prompt} ${m.display}` : m.prompt,
+            answer: m.answer,
+            detail: m.explain,
+          }))}
           rank={rankTitle(state.score)}
           score={state.score}
           best={best}

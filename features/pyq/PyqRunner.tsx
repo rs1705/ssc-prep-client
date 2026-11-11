@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useReducer, useState } from "react";
+import { describeRoute, logActivity, logMistakes, plainText } from "@/lib/activity-log";
+import { recordPlanActivity } from "@/lib/today-plan";
+import { useEffect, useReducer, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -66,6 +68,38 @@ export function PyqRunner({
   const unanswered = state.questions.length - answeredCount;
   const result = computeResult(state);
   const practiceDone = mode === "practice" && isPracticeComplete(state);
+
+  // Count a finished set towards today's plan (once per set).
+  const counted = useRef(false);
+  useEffect(() => {
+    if ((state.submitted || practiceDone) && !counted.current) {
+      counted.current = true;
+      recordPlanActivity("pyq");
+      const path = window.location.pathname;
+      logActivity({
+        kind: "pyq",
+        subject,
+        label: describeRoute(path).label,
+        href: path,
+        correct: result.correct,
+        total: state.questions.length,
+      });
+      logMistakes(
+        state.questions
+          .filter((q) => state.answers[q.id] && state.answers[q.id] !== q.answer)
+          .map((q) => ({
+            subject,
+            source: `${q.topic} PYQ`,
+            prompt: plainText(q.question),
+            answer: plainText(q.options.find((o) => o.label === q.answer)?.text ?? q.answer, 80),
+            detail: q.topic,
+            href: path,
+          })),
+      );
+    }
+    // Logged once when the set finishes; the values are read at that moment.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.submitted, practiceDone]);
 
   // Exam clock.
   useEffect(() => {

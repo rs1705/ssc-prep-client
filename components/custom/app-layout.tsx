@@ -20,9 +20,11 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     if (path.includes('/hangman')) return true;
     if (path.includes('/fsrs')) return true;
     if (path.includes('/freestyle')) return true;
+    if (path.endsWith('/maths/flashcards')) return true;
     // Individual games live under /games/<name>; the /games hub itself is a normal page.
     if (/\/games\/.+/.test(path)) return true;
     if (/\/speed-drills\/.+/.test(path)) return true;
+    if (/\/(maths|reasoning)\/match$/.test(path)) return true;
     
     // Trigger on specific topics inside mental-maths, but NOT the topic list page itself
     const isMentalMathsTopic = path.includes('/mental-maths/') && path.split('/mental-maths/')[1]?.length > 0;
@@ -35,9 +37,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   // Games that lay themselves out to exactly the viewport height (and scroll internally if
   // they must). Other focus routes keep their natural height and scroll the column instead.
   const fitsViewport =
-    pathname.includes("/hangman") || /\/games\/.+/.test(pathname) || /\/speed-drills\/.+/.test(pathname);
+    pathname.includes("/hangman") || /\/games\/.+/.test(pathname) || /\/speed-drills\/.+/.test(pathname) || /\/(maths|reasoning)\/match$/.test(pathname);
   const isAuthRoute = pathname.startsWith("/signin") || pathname.startsWith("/signup");
-  const isDashboard = pathname === "/dashboard";
   const sidebarWidthClass = isCollapsed
     ? "md:w-[72px]"
     : "md:w-56 lg:w-64";

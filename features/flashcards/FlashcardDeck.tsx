@@ -1,5 +1,6 @@
 "use client";
 
+import { recordPlanActivity } from "@/lib/today-plan";
 import { cn } from "@/lib/utils";
 import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -15,8 +16,18 @@ import { SessionSummary } from "./SessionSummary";
 
 export type { ActionType } from "./ratings";
 
-interface FlashcardDeckProps {
-  deck: FlashCardInterface[];
+/** Anything the deck can show: it only needs an id (and review times in study mode). */
+export interface DeckItem {
+  _id: string;
+  nextReview?: Record<"1" | "2" | "3" | "4", string>;
+}
+
+interface FlashcardDeckProps<T extends DeckItem> {
+  deck: T[];
+  /** Draws one card. Defaults to the vocabulary flashcard. */
+  renderCard?: (card: T, flipped: boolean, onFlip: () => void) => React.ReactNode;
+  /** Where the end-of-deck screen's back link goes. */
+  backHref?: string;
   mode: "freestyle" | "study";
   /** Changing this starts the deck again (new tab, new filters...). */
   resetKey?: string;
@@ -43,8 +54,16 @@ function isTyping(target: EventTarget | null) {
   );
 }
 
-export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, onPosition }: FlashcardDeckProps) {
-  const [order, setOrder] = useState<FlashCardInterface[]>(() => (shuffled ? shuffle(deck) : deck));
+export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
+  deck,
+  mode,
+  resetKey,
+  shuffled = false,
+  onPosition,
+  renderCard,
+  backHref,
+}: FlashcardDeckProps<T>) {
+  const [order, setOrder] = useState<T[]>(() => (shuffled ? shuffle(deck) : deck));
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [direction, setDirection] = useState(1);
@@ -56,7 +75,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
   const shownAt = useRef(0);
   const dragging = useRef(false);
 
-  const start = (cards: FlashCardInterface[]) => {
+  const start = (cards: T[]) => {
     setOrder(cards);
     setIndex(0);
     setFlipped(false);
@@ -111,6 +130,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
     (value: Mark) => {
       if (!card) return;
       setMarks((m) => ({ ...m, [card._id]: value }));
+      recordPlanActivity("cards");
       next();
     },
     [card, next],
@@ -120,6 +140,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
     (rating: 1 | 2 | 3 | 4) => {
       if (!card) return;
       setRatings((r) => ({ ...r, [card._id]: rating }));
+      recordPlanActivity("cards");
       const timeTaken = Math.round((Date.now() - shownAt.current) / 1000);
       saveReview({ cardId: card._id, rating, timeTaken })
         .unwrap()
@@ -181,6 +202,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
       const due = formatInterval(nextDue ?? undefined);
       return (
         <SessionSummary
+          backHref={backHref}
           title="Today's review is done"
           subtitle={`${Object.keys(ratings).length} cards reviewed.${due ? ` The first one comes back in ${due}.` : ""}`}
           stats={counts}
@@ -191,6 +213,7 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
     const learning = order.filter((c) => marks[c._id] === "learning");
     return (
       <SessionSummary
+          backHref={backHref}
         title="End of the deck"
         subtitle={`${order.length} cards. ${order.length - known - learning.length} skipped without marking.`}
         stats={[
@@ -235,13 +258,19 @@ export default function FlashcardDeck({ deck, mode, resetKey, shuffled = false, 
             }}
             className="absolute inset-0"
           >
-            <Flashcard
-              card={card}
-              flipped={flipped}
-              onFlip={() => {
+            {renderCard ? (
+              renderCard(card, flipped, () => {
                 if (!dragging.current) flip();
-              }}
-            />
+              })
+            ) : (
+              <Flashcard
+                card={card as unknown as FlashCardInterface}
+                flipped={flipped}
+                onFlip={() => {
+                  if (!dragging.current) flip();
+                }}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
