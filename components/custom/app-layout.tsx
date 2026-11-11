@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/custom/sidebar";
 import { TopBar } from "@/components/custom/topbar";
 import { MobileTabBar } from "@/components/custom/mobile-tab-bar";
+import { PlanStepToast } from "@/features/dashboard/PlanStepToast";
 import { useAuth } from "@/context/auth";
 import { SidebarProvider, useSidebar } from "@/components/custom/sidebar-context";
 
@@ -71,6 +72,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       {user && !isFocusMode && !isAuthRoute && <MobileTabBar />}
+      {!isAuthRoute && <PlanStepToast />}
     </div>
   );
 }

@@ -27,6 +27,18 @@ export type PlanProgress = Record<PlanStepId, number>;
 const PROGRESS_PREFIX = "ssc:plan:";
 const STREAK_KEY = "ssc:plan-streak";
 export const PLAN_EVENT = "ssc:plan-updated";
+/** Fired once, at the moment a step goes from not done to done. */
+export const PLAN_STEP_DONE_EVENT = "ssc:plan-step-done";
+
+export interface PlanStepDoneDetail {
+  step: PlanStep;
+  done: number;
+  total: number;
+  /** The step to do next, or null when the whole plan is finished. */
+  next: PlanStep | null;
+  complete: boolean;
+  streak: number;
+}
 
 const EMPTY: PlanProgress = { drill: 0, pyq: 0, cards: 0, game: 0 };
 
@@ -167,6 +179,20 @@ export function recordPlanActivity(step: PlanStepId, amount = 1, date = new Date
     writeStored<StreakRecord>(STREAK_KEY, { last: today, count });
   }
   window.dispatchEvent(new Event(PLAN_EVENT));
+
+  const stepDef = plan.find((s) => s.id === step);
+  if (stepDef && !isStepDone(stepDef, before) && isStepDone(stepDef, after)) {
+    const done = plan.filter((s) => isStepDone(s, after)).length;
+    const detail: PlanStepDoneDetail = {
+      step: stepDef,
+      done,
+      total: plan.length,
+      next: plan.find((s) => !isStepDone(s, after)) ?? null,
+      complete: done === plan.length,
+      streak: readStreak(date),
+    };
+    window.dispatchEvent(new CustomEvent(PLAN_STEP_DONE_EVENT, { detail }));
+  }
 }
 
 /** Today's plan, live: re-reads when activity is recorded (also from other tabs). */

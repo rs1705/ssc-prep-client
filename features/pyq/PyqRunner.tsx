@@ -13,6 +13,7 @@ import {
   Flag,
   RotateCcw,
   X,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/custom/ProgressBar";
@@ -362,29 +363,6 @@ export function PyqRunner({
               : ""}
           </p>
 
-          {revealed && (
-            <div className="rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] p-4">
-              <p className="mb-2 flex items-center gap-2 text-sm font-bold text-foreground">
-                {!chosen ? (
-                  <span className="text-muted-foreground">Not attempted · Answer: {question.answer}</span>
-                ) : chosen === question.answer ? (
-                  <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
-                    <Check className="h-4 w-4" aria-hidden="true" /> Correct
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1.5 text-rose-700 dark:text-rose-300">
-                    <X className="h-4 w-4" aria-hidden="true" /> Answer: {question.answer}
-                  </span>
-                )}
-              </p>
-              {question.explanation ? (
-                <RichText text={question.explanation} className="text-sm leading-relaxed text-foreground/90" />
-              ) : (
-                <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
-              )}
-            </div>
-          )}
-
           {/* Controls */}
           <div className="flex flex-wrap items-center justify-between gap-2 border-t-2 border-border/70 pt-4">
             <Button
@@ -442,6 +420,39 @@ export function PyqRunner({
               )}
             </div>
           </div>
+
+          {revealed && (
+            <details
+              key={question.id}
+              className="group rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))]"
+            >
+              <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground [&::-webkit-details-marker]:hidden">
+                {!chosen ? (
+                  <span className="text-muted-foreground">Not attempted · Answer: {question.answer}</span>
+                ) : chosen === question.answer ? (
+                  <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
+                    <Check className="h-4 w-4" aria-hidden="true" /> Correct
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1.5 text-rose-700 dark:text-rose-300">
+                    <X className="h-4 w-4" aria-hidden="true" /> Answer: {question.answer}
+                  </span>
+                )}
+                <span className="ml-auto flex items-center gap-1 text-xs font-semibold text-brand-700 dark:text-brand-400">
+                  <span className="group-open:hidden">Show explanation</span>
+                  <span className="hidden group-open:inline">Hide explanation</span>
+                  <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+                </span>
+              </summary>
+              <div className="border-t-2 border-border px-4 py-3">
+                {question.explanation ? (
+                  <RichText text={question.explanation} className="text-sm leading-relaxed text-foreground/90" />
+                ) : (
+                  <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
+                )}
+              </div>
+            </details>
+          )}
 
           {confirming && (
             <div role="alertdialog" aria-label="Submit test?" className="rounded-2xl border-2 border-brand-500/40 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] p-4">

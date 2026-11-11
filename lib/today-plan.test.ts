@@ -1,15 +1,21 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { buildPlan, dayKey, isStepDone, readProgress, readStreak, recordPlanActivity } from "./today-plan";
+import { PLAN_STEP_DONE_EVENT, buildPlan, dayKey, isStepDone, readProgress, readStreak, recordPlanActivity, type PlanStepDoneDetail } from "./today-plan";
 
 // Minimal browser stand-ins: the plan only needs localStorage and events.
 const store = new Map<string, string>();
+const events: Event[] = [];
+const stepDone = () =>
+  events.filter((e) => e.type === PLAN_STEP_DONE_EVENT).map((e) => (e as CustomEvent<PlanStepDoneDetail>).detail);
 Object.assign(globalThis, {
   window: {
     localStorage: {
       getItem: (k: string) => store.get(k) ?? null,
       setItem: (k: string, v: string) => void store.set(k, v),
     },
-    dispatchEvent: () => true,
+    dispatchEvent: (e: Event) => {
+      events.push(e);
+      return true;
+    },
   },
 });
 
@@ -23,7 +29,10 @@ function finishAll(date: Date) {
   recordPlanActivity("game", 1, date);
 }
 
-beforeEach(() => store.clear());
+beforeEach(() => {
+  store.clear();
+  events.length = 0;
+});
 
 describe("buildPlan", () => {
   it("is the same all day and changes the next day", () => {
@@ -90,5 +99,30 @@ describe("plan streak", () => {
     recordPlanActivity("game", 1, DAY);
     finishAll(DAY);
     expect(readStreak(DAY)).toBe(1);
+  });
+});
+
+describe("step-done announcement", () => {
+  it("fires once when a step is completed, with the next step", () => {
+    recordPlanActivity("cards", 4, DAY);
+    expect(stepDone()).toHaveLength(0);
+    recordPlanActivity("cards", 6, DAY);
+    const [d] = stepDone();
+    expect(d.step.id).toBe("cards");
+    expect(d.done).toBe(1);
+    expect(d.next?.id).toBe("drill");
+    expect(d.complete).toBe(false);
+    recordPlanActivity("cards", 3, DAY); // extra practice: no second announcement
+    expect(stepDone()).toHaveLength(1);
+  });
+
+  it("marks the last step as completing the plan, with the streak", () => {
+    finishAll(DAY);
+    const all = stepDone();
+    expect(all).toHaveLength(4);
+    const last = all[3];
+    expect(last.complete).toBe(true);
+    expect(last.next).toBeNull();
+    expect(last.streak).toBe(1);
   });
 });
