@@ -39,7 +39,7 @@ export function dayKey(date = new Date()): string {
 }
 
 /** Days since 1970 in local time: a stable index for rotating content. */
-function dayNumber(date: Date): number {
+export function dayNumber(date: Date): number {
   return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000);
 }
 

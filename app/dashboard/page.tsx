@@ -7,12 +7,7 @@ import { TodayPlanHero } from "@/features/dashboard/TodayPlanHero";
 import { HeaderCountdown } from "@/features/dashboard/HeaderCountdown";
 import { ContinueCard, MistakesCard, SubjectsStanding, WeekCard } from "@/features/dashboard/ActivityCards";
 import { useActivityLog } from "@/lib/activity-log";
-
-function greetingFor(hour: number) {
-  if (hour < 12) return "Good morning";
-  if (hour < 17) return "Good afternoon";
-  return "Good evening";
-}
+import { greetingFor, quoteFor } from "@/lib/greetings";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -26,7 +21,8 @@ export default function Dashboard() {
     return () => window.clearInterval(id);
   }, [activities, mistakes]);
 
-  const greeting = now === null ? "Welcome back" : greetingFor(new Date(now).getHours());
+  const greeting = now === null ? "Welcome back" : greetingFor(new Date(now));
+  const quote = now === null ? null : quoteFor(new Date(now));
   const loaded = ready && now !== null;
 
   return (
@@ -37,7 +33,16 @@ export default function Dashboard() {
             <h1 className="mb-1 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
               {greeting}, {user?.displayName?.split(" ")[0] || "Champ"}
             </h1>
-            <p className="text-sm font-medium text-muted-foreground">Fifteen focused minutes a day. Your plan is below.</p>
+            {quote ? (
+              <figure className="max-w-2xl">
+                <blockquote className="text-sm font-medium text-muted-foreground sm:text-base">
+                  &ldquo;{quote.text}&rdquo;
+                </blockquote>
+                {quote.by && <figcaption className="mt-0.5 text-xs font-semibold text-muted-foreground/80">— {quote.by}</figcaption>}
+              </figure>
+            ) : (
+              <p className="h-5" aria-hidden="true" />
+            )}
           </div>
           <HeaderCountdown />
         </header>
@@ -46,11 +51,11 @@ export default function Dashboard() {
 
         {loaded ? (
           <>
+            <SubjectsStanding activities={activities} now={now} />
             <div className="grid gap-6 lg:grid-cols-2">
               <ContinueCard activities={activities} now={now} />
               <WeekCard activities={activities} now={now} />
             </div>
-            <SubjectsStanding activities={activities} now={now} />
             <MistakesCard mistakes={mistakes} now={now} />
           </>
         ) : (
