@@ -6,7 +6,8 @@
  *    from the brand-* tokens in globals.css. Subjects avoid indigo and violet
  *    so a subject never looks like a primary action.
  *  - Subjects are cool jewel tones that sit with indigo: maths sky,
- *    english fuchsia, reasoning pink, gk teal.
+ *    english fuchsia, gk teal, plus warm orange for reasoning (indigo's
+ *    complement; pink was too close to rose and read like an error).
  *  - Emerald = correct / success, rose = wrong / destructive. Subjects must
  *    never use those, otherwise a subject card reads like feedback.
  *  - Each subject owns one hue, used identically on every screen.
@@ -21,6 +22,7 @@ export type Hue =
   | "violet"
   | "fuchsia"
   | "pink"
+  | "orange"
   | "teal"
   | "amber"
   | "brand"
@@ -59,6 +61,17 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     dot: "bg-sky-500",
     bar: "from-sky-400 to-blue-600",
     solid: "border-sky-600 bg-sky-600 text-white shadow-md shadow-sky-600/25",
+  },
+  orange: {
+    iconWrap: "bg-[color-mix(in_oklab,var(--color-orange-500)_12%,var(--card))] text-orange-600 dark:text-orange-400",
+    text: "text-orange-600 dark:text-orange-400",
+    chip: "bg-[color-mix(in_oklab,var(--color-orange-500)_10%,var(--card))] text-orange-700 dark:text-orange-300 border-orange-500/25",
+    hoverBorder: "hover:border-orange-500/50",
+    hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-orange-500)_5%,var(--card))]",
+    banner: "bg-card from-orange-500/10 to-orange-500/[0.03] border-orange-500/25",
+    dot: "bg-orange-500",
+    bar: "from-orange-400 to-orange-600",
+    solid: "border-orange-600 bg-orange-600 text-white shadow-md shadow-orange-600/25",
   },
   violet: {
     iconWrap: "bg-[color-mix(in_oklab,var(--color-violet-500)_10%,var(--card))] text-violet-600 dark:text-violet-400",
@@ -164,7 +177,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
 export const SUBJECT_HUE: Record<SubjectKey, Hue> = {
   maths: "sky",
   english: "fuchsia",
-  reasoning: "pink",
+  reasoning: "orange",
   gk: "teal",
 };
 

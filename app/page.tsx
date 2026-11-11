@@ -102,7 +102,7 @@ function AnimatedCounter({
 const SUBJECT_LINKS = [
   { id: "maths", label: "Mathematics", icon: Calculator, href: "/SSC/maths", tone: "text-sky-600 dark:text-sky-400" },
   { id: "english", label: "English", icon: Languages, href: "/SSC/english", tone: "text-fuchsia-700 dark:text-fuchsia-400" },
-  { id: "reasoning", label: "Reasoning", icon: Brain, href: "/SSC/reasoning", tone: "text-pink-600 dark:text-pink-400" },
+  { id: "reasoning", label: "Reasoning", icon: Brain, href: "/SSC/reasoning", tone: "text-orange-600 dark:text-orange-400" },
   { id: "gk", label: "General Knowledge", icon: Globe2, href: "/SSC/gk", tone: "text-teal-600 dark:text-teal-400" },
 ];
 

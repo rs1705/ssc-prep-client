@@ -1,6 +1,6 @@
 /**
  * Subject colour for the shared game chrome (frame, lobby, results).
- * English games are fuchsia, Reasoning drills are pink, Maths drills are sky.
+ * English games are fuchsia, Reasoning drills are orange, Maths drills are sky.
  * Class strings are written out in full so Tailwind can see them.
  */
 export type GameTone = "english" | "reasoning" | "maths";
@@ -35,15 +35,15 @@ export const GAME_TONE: Record<GameTone, ToneClasses> = {
     timer: "from-fuchsia-500 to-pink-500",
   },
   reasoning: {
-    text: "text-pink-800 dark:text-pink-300",
-    icon: "text-pink-700 dark:text-pink-400",
-    iconWrap: "bg-[color-mix(in_oklab,var(--color-pink-500)_10%,var(--card))] text-pink-700 dark:text-pink-400",
-    border: "border-pink-500/25",
+    text: "text-orange-800 dark:text-orange-300",
+    icon: "text-orange-700 dark:text-orange-400",
+    iconWrap: "bg-[color-mix(in_oklab,var(--color-orange-500)_12%,var(--card))] text-orange-700 dark:text-orange-400",
+    border: "border-orange-500/25",
     optionHover:
-      "hover:border-pink-500/50 hover:bg-[color-mix(in_oklab,var(--color-pink-500)_10%,var(--card))]",
+      "hover:border-orange-500/50 hover:bg-[color-mix(in_oklab,var(--color-orange-500)_10%,var(--card))]",
     selected:
-      "border-pink-600 bg-[color-mix(in_oklab,var(--color-pink-500)_14%,var(--card))] text-pink-900 dark:text-pink-100",
-    timer: "from-pink-500 to-fuchsia-500",
+      "border-orange-600 bg-[color-mix(in_oklab,var(--color-orange-500)_14%,var(--card))] text-orange-900 dark:text-orange-100",
+    timer: "from-orange-400 to-orange-600",
   },
   maths: {
     text: "text-sky-800 dark:text-sky-300",
