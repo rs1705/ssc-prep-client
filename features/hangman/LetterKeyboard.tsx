@@ -2,14 +2,8 @@
 
 import { cn } from "@/lib/utils";
 
-/** Larger screens: QWERTY, matching the physical keyboard you can also type on. */
+/** QWERTY, matching the physical keyboard you can also type on. */
 const QWERTY = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"].map((row) => row.split(""));
-/**
- * Phones: A-Z in rows of seven. Hangman is about picking letters, not typing,
- * and seven columns give each key about 40px of width on a 360px screen
- * instead of the ~26px a ten-key QWERTY row allows.
- */
-const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 interface LetterKeyboardProps {
   word: string;
@@ -53,19 +47,15 @@ export function LetterKeyboard({ word, guessed, disabled = false, onGuess }: Let
 
   return (
     <div role="group" aria-label="Letter keyboard" className="mx-auto w-full max-w-xl">
-      {/* Phones: 7 columns, wide keys, generous gaps; reaches the card's edges for extra room. */}
-      <div className="-mx-1.5 grid grid-cols-7 gap-1.5 sm:hidden [@media(max-height:760px)]:gap-y-1">
-        {ALPHA.map((letter, i) =>
-          key(letter, (i === 21 ? "col-start-2 " : "") + "h-11 rounded-xl text-lg [@media(max-height:760px)]:h-10 [@media(max-height:700px)]:h-9 [@media(max-height:620px)]:h-8 [@media(max-height:700px)]:text-base"),
-        )}
-      </div>
-
-      {/* Tablets and up: QWERTY. */}
-      <div className="hidden flex-col gap-2.5 sm:flex">
+      {/* Phones: the keyboard reaches past the card padding and gaps stay tight so each key is as wide as possible. */}
+      <div className="-mx-2 flex flex-col gap-1.5 sm:mx-0 sm:gap-2.5">
         {QWERTY.map((row, rowIndex) => (
-          <div key={rowIndex} className="flex w-full justify-center gap-1.5">
+          <div key={rowIndex} className="flex w-full justify-center gap-1 sm:gap-1.5">
             {row.map((letter) =>
-              key(letter, "h-16 w-[calc((100%-3.375rem)/10)] shrink-0 rounded-xl text-xl [@media(max-height:700px)]:h-12"),
+              key(
+                letter,
+                "h-12 w-[calc((100%-2.25rem)/10)] shrink-0 rounded-lg text-lg sm:h-16 sm:w-[calc((100%-3.375rem)/10)] sm:rounded-xl sm:text-xl [@media(max-height:700px)]:h-10 sm:[@media(max-height:700px)]:h-12",
+              ),
             )}
           </div>
         ))}
