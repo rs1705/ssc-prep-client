@@ -7,9 +7,10 @@ import { HangmanBoard } from "@/features/hangman/HangmanBoard";
 import { LobbyScreen } from "@/features/hangman/LobbyScreen";
 import { ResultScreen } from "@/features/hangman/ResultScreen";
 import { useHangmanGame } from "@/features/hangman/useHangmanGame";
+import { useWordBanks } from "@/features/games/wordBank";
 
 export default function HangmanPage() {
-  const { state, word, best, isNewBest, start, guess, hint, next, replaySet, retryMistakes, retryCount } = useHangmanGame();
+  const { state, word, best, isNewBest, start, guess, hint, next, replaySet, retryMistakes, retryCount } = useHangmanGame({ bank: useWordBanks().hangman });
   const previous = useRef({ phase: state.phase, index: state.index, wrong: 0, guessed: 0 });
 
   // Sound + vibration per guess (prefilled letters at a word's start stay silent).

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { WORD_OF_DAY_BANK } from "@/lib/wordle-words";
 import { readStored, writeStored } from "@/lib/storage";
 import { markSeen, orderFresh } from "@/features/games/seenPool";
+import { useWordBanks } from "@/features/games/wordBank";
 import { GameFrame } from "@/features/games/GameFrame";
 import {
   EMPTY_STATS,
@@ -163,11 +164,12 @@ export function WordleGame() {
     if (state.shortCount > 0) flash("Not enough letters");
   }, [state.shortCount, flash]);
 
+  const bonusBank = useWordBanks().wordle;
   const playBonus = useCallback(() => {
     // Bonus words: one you haven't had yet, before any repeat.
     const pool = orderFresh(
       "wordle-bonus",
-      WORD_OF_DAY_BANK.filter((w) => w.word !== wordForDay(day).word),
+      bonusBank.filter((w) => w.word !== wordForDay(day).word),
       { idOf: (w) => w.word, count: 1 },
     );
     markSeen("wordle-bonus", [pool[0].word]);
@@ -175,7 +177,7 @@ export function WordleGame() {
     setAnimating(null);
     setCopied(false);
     dispatch({ type: "LOAD", mode: "bonus", answer: pool[0], guesses: [] });
-  }, [day]);
+  }, [day, bonusBank]);
 
   // Physical keyboard.
   useEffect(() => {

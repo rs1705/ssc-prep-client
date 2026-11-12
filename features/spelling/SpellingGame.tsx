@@ -6,7 +6,7 @@ import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/se
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, SpellCheck, Timer, X, Zap } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
-import { SPELLING_WORDS } from "@/lib/spelling-words";
+import { useWordBanks } from "@/features/games/wordBank";
 import { missedLabels, orderFresh, useMarkSeen } from "@/features/games/seenPool";
 import { GameFrame } from "@/features/games/GameFrame";
 import { GameLobby } from "@/features/games/GameLobby";
@@ -40,17 +40,18 @@ export function SpellingGame() {
   );
 
   useMarkSeen("spelling", question?.word.correct);
+  const spellingBank = useWordBanks().spelling;
 
   // The run plays until time runs out: unseen words lead, misses are mixed in.
   const start = useCallback(() => {
-    const ordered = orderFresh("spelling", SPELLING_WORDS, {
+    const ordered = orderFresh("spelling", spellingBank, {
       idOf: (w) => w.correct,
       labelsOf: (w) => [w.correct],
       missed: missedLabels(window.location.pathname),
       count: 20,
     });
     begin(buildQueue(ordered, 2, false));
-  }, [begin]);
+  }, [begin, spellingBank]);
 
   const replay = useReplayRequest();
   useEffect(() => {
