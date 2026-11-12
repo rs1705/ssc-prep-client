@@ -9,7 +9,7 @@ import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { WORD_OF_DAY_BANK } from "@/lib/wordle-words";
 import { readStored, writeStored } from "@/lib/storage";
-import { shuffle } from "@/lib/shuffle";
+import { markSeen, orderFresh } from "@/features/games/seenPool";
 import { GameFrame } from "@/features/games/GameFrame";
 import {
   EMPTY_STATS,
@@ -164,7 +164,13 @@ export function WordleGame() {
   }, [state.shortCount, flash]);
 
   const playBonus = useCallback(() => {
-    const pool = shuffle(WORD_OF_DAY_BANK.filter((w) => w.word !== wordForDay(day).word));
+    // Bonus words: one you haven't had yet, before any repeat.
+    const pool = orderFresh(
+      "wordle-bonus",
+      WORD_OF_DAY_BANK.filter((w) => w.word !== wordForDay(day).word),
+      { idOf: (w) => w.word, count: 1 },
+    );
+    markSeen("wordle-bonus", [pool[0].word]);
     prevGuesses.current = 0;
     setAnimating(null);
     setCopied(false);

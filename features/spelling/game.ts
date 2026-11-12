@@ -56,10 +56,10 @@ export const initialState: SpellingState = {
 };
 
 /** Every word once, shuffled, then reshuffled again if the player outlasts the bank. */
-export function buildQueue(bank: SpellingWord[], rounds = 2): Question[] {
+export function buildQueue(bank: SpellingWord[], rounds = 2, shuffleFirst = true): Question[] {
   const out: Question[] = [];
   for (let r = 0; r < rounds; r++) {
-    for (const word of shuffle(bank)) {
+    for (const word of r === 0 && !shuffleFirst ? bank : shuffle(bank)) {
       out.push({ word, options: shuffle([word.correct, ...word.wrong]) });
     }
   }

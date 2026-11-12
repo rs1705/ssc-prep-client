@@ -4,6 +4,7 @@ import { onStoredChange, readStored, removeStored, writeStored } from "@/lib/sto
 import { ACTIVITY_EVENT, MISTAKES_REMOVED_KEY } from "@/lib/activity-log";
 import { PLAN_EVENT } from "@/lib/today-plan";
 import { UNFINISHED_PREFIX, UNFINISHED_REMOVED_KEY } from "@/features/games/unfinished";
+import { SEEN_KEY, type SeenRecord } from "@/features/games/seenPool";
 import { EXAM_DATE_AT_KEY, EXAM_DATE_EVENT, EXAM_DATE_KEY } from "@/components/custom/exam-countdown";
 
 /**
@@ -38,6 +39,8 @@ export interface ProgressDoc {
   unfinished: Record<string, { at: number; path: string }>;
   unfinishedRemoved: { path: string; at: number }[];
   examDate: { value: string | null; at: number };
+  /** Game word pools: what has been shown, per pool and cycle. */
+  seen?: SeenRecord;
 }
 
 function localKeys(): string[] {
@@ -59,6 +62,7 @@ export function isSyncedKey(key: string): boolean {
     key === UNFINISHED_REMOVED_KEY ||
     key === EXAM_DATE_KEY ||
     key === EXAM_DATE_AT_KEY ||
+    key === SEEN_KEY ||
     key.startsWith(PLAN_PREFIX) ||
     key.startsWith(UNFINISHED_PREFIX)
   );
@@ -89,6 +93,7 @@ export function buildLocalDoc(): ProgressDoc {
     unfinishedRemoved: readStored(UNFINISHED_REMOVED_KEY, []),
     // A date set before sync existed has no time: treat it as old so a newer choice wins.
     examDate: { value: examDate, at: readStored<number>(EXAM_DATE_AT_KEY, examDate ? 1 : 0) },
+    seen: readStored<SeenRecord>(SEEN_KEY, {}),
   };
 }
 
@@ -105,6 +110,7 @@ export function applyDoc(doc: ProgressDoc): void {
     for (const [day, steps] of Object.entries(doc.plan)) writeStored(PLAN_PREFIX + day, steps);
     writeStored(STREAK_KEY, doc.planStreak);
     writeStored(UNFINISHED_REMOVED_KEY, doc.unfinishedRemoved);
+    if (doc.seen) writeStored(SEEN_KEY, doc.seen);
     for (const key of localKeys()) {
       if (key.startsWith(UNFINISHED_PREFIX) && !doc.unfinished[key.slice(UNFINISHED_PREFIX.length)]) removeStored(key);
     }

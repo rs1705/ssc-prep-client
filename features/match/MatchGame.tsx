@@ -16,6 +16,7 @@ import { readStored, writeStored } from "@/lib/storage";
 import {
   ROUND_CLEAR_MS,
   ROUND_SIZE,
+  ROUNDS,
   RUN_SECONDS,
   TIME_BONUS,
   WRONG_FLASH_MS,
@@ -29,6 +30,7 @@ import {
   type Side,
 } from "./game";
 import { shuffle } from "@/lib/shuffle";
+import { markSeen, missedLabels, orderFresh } from "@/features/games/seenPool";
 import { loadSet, saveSet, useReplayRequest } from "@/features/games/sessionSet";
 import { MATCH_DECKS, type MatchDeck, type MatchDeckId } from "./decks";
 
@@ -65,6 +67,13 @@ export function MatchGame({
   const deck = decks.find((d) => d.id === deckId) ?? decks[0];
   const round = state.rounds[state.round] ?? [];
   const byId = new Map(round.map((p) => [p.id, p]));
+  const seenPoolKey = `${storagePrefix}:${deckId}`;
+
+  // Each round's pairs count as seen once they're on screen.
+  const roundIds = round.map((p) => p.id).join(",");
+  useEffect(() => {
+    if (state.phase === "playing" && roundIds) markSeen(seenPoolKey, roundIds.split(","));
+  }, [state.phase, roundIds, seenPoolKey]);
 
   useEffect(() => {
     const saved = readStored<string>(DECK_KEY, decks[0].id);
@@ -124,19 +133,27 @@ export function MatchGame({
     try {
       let pairs: Pair[];
       if (deck.local) {
-        pairs = shuffle(deck.local());
+        pairs = deck.local();
       } else {
-        const cards = await fetchCards(deck.query ?? {}).unwrap();
+        // The whole deck (the server caches it), so unseen pairs can be chosen here.
+        const { limit: _limit, random: _random, ...query } = deck.query ?? {};
+        const cards = await fetchCards(query).unwrap();
         const toPair = deck.toPair ?? (() => null);
         pairs = cards.map(toPair).filter((p): p is Pair => p !== null);
       }
-      if (!begin(pairs)) throw new Error("not enough cards");
+      const ordered = orderFresh(seenPoolKey, pairs, {
+        idOf: (p) => p.id,
+        labelsOf: (p) => [p.left, p.right],
+        missed: missedLabels(window.location.pathname),
+        count: ROUND_SIZE * ROUNDS,
+      });
+      if (!begin(ordered.slice(0, ROUND_SIZE * ROUNDS + 15))) throw new Error("not enough cards");
     } catch {
       setError("Couldn't reach the practice server. Please try again in a moment.");
     } finally {
       setLoading(false);
     }
-  }, [loading, clearNewBest, fetchCards, deck, begin]);
+  }, [loading, clearNewBest, fetchCards, deck, begin, seenPoolKey]);
 
   const pick = (side: Side, id: string) => dispatch({ type: "PICK", side, id });
 

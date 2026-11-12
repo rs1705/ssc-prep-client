@@ -22,6 +22,7 @@ import { GAME_TONE } from "@/features/games/tone";
 import { useBestScore } from "@/features/games/useBestScore";
 import { useLazyGetFilteredCardsQuery } from "@/redux/FlashcardApiSlice";
 import { readStored, writeStored } from "@/lib/storage";
+import { missedLabels, orderFresh, useMarkSeen } from "@/features/games/seenPool";
 import { QUESTIONS_PER_RUN, buildQuestions, clozeReducer, initialState, rankTitle, streakMultiplier } from "./game";
 
 type ClozeDeck = "vocab" | "ows" | "idiom";
@@ -41,6 +42,7 @@ export function ClozeGame() {
   const [fetchCards] = useLazyGetFilteredCardsQuery();
   const { best, isNewBest, submit, clearNewBest } = useBestScore(`ssc:cloze:${deck}:best`);
   const q = state.questions[state.index];
+  useMarkSeen(`cloze:${deck}`, state.phase === "playing" ? q?.id : null);
   const answered = state.chosen !== null;
 
   useEffect(() => {
@@ -116,8 +118,15 @@ export function ClozeGame() {
     setError(null);
     setLoading(true);
     try {
-      const cards = await fetchCards({ type: deck, random: true, limit: 40 }).unwrap();
-      const questions = buildQuestions(cards);
+      // The whole deck (cached on the server); unseen sentences lead, misses are mixed in.
+      const cards = await fetchCards({ type: deck }).unwrap();
+      const ordered = orderFresh(`cloze:${deck}`, cards, {
+        idOf: (c) => c._id,
+        labelsOf: (c) => [c.front.text],
+        missed: missedLabels(window.location.pathname),
+        count: QUESTIONS_PER_RUN,
+      });
+      const questions = buildQuestions(ordered);
       if (questions.length === 0) throw new Error("no questions");
       begin(questions);
     } catch {

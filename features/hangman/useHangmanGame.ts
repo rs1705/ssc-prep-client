@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { HANGMAN_WORDS, type HangmanWord } from "@/lib/hangman-words";
 import { readStored, writeStored } from "@/lib/storage";
+import { missedLabels, orderFresh, useMarkSeen } from "@/features/games/seenPool";
 import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
 import {
   REVEAL_MS,
   currentWord,
   hangmanReducer,
   initialState,
-  shuffleQueue,
+  WORDS_PER_RUN,
 } from "./game";
 
 const BEST_KEY = "ssc:hangman:best";
@@ -69,7 +70,18 @@ export function useHangmanGame({ bank = HANGMAN_WORDS }: Options = {}) {
     dispatch({ type: "START", queue });
   }, []);
 
-  const start = useCallback(() => begin(shuffleQueue(bank)), [bank, begin]);
+  useMarkSeen("hangman", word?.word);
+
+  // Unseen words first, with a few past misses mixed in.
+  const start = useCallback(() => {
+    const ordered = orderFresh("hangman", bank, {
+      idOf: (w) => w.word,
+      labelsOf: (w) => [w.word, w.meaning],
+      missed: missedLabels(window.location.pathname),
+      count: WORDS_PER_RUN,
+    });
+    begin(ordered.slice(0, WORDS_PER_RUN));
+  }, [bank, begin]);
 
   const replaySet = useCallback(() => {
     const saved = loadSet<HangmanWord[]>(window.location.pathname);
