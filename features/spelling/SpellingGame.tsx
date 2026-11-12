@@ -198,13 +198,14 @@ export function SpellingGame() {
             </span>
           </div>
 
-          <div className="flex flex-1 flex-col items-center justify-center gap-1 rounded-2xl border-2 border-fuchsia-500/25 bg-card px-4 py-5 [@media(max-height:480px)_and_(min-width:560px)]:py-3 text-center">
-            <SpellCheck className="h-6 w-6 text-fuchsia-700 dark:text-fuchsia-400" aria-hidden="true" />
-            <p className="text-base font-extrabold text-foreground sm:text-lg">Which is spelled correctly?</p>
-            <p className="text-xs font-semibold text-muted-foreground">Tap an option or press 1–4</p>
-          </div>
+          {/* The question never changes, so it stays a slim line and the options get the room. */}
+          <p className="flex items-center justify-center gap-2 text-center text-sm font-extrabold text-foreground sm:text-base">
+            <SpellCheck className="h-4 w-4 shrink-0 text-fuchsia-700 dark:text-fuchsia-400" aria-hidden="true" />
+            Which is spelled correctly?
+            <span className="hidden text-xs font-semibold text-muted-foreground sm:inline">(press 1–4)</span>
+          </p>
 
-          <div role="group" aria-label="Spellings" className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-2 [@media(max-height:480px)_and_(min-width:560px)]:col-start-2 [@media(max-height:480px)_and_(min-width:560px)]:row-start-1 [@media(max-height:480px)_and_(min-width:560px)]:row-span-3 [@media(max-height:480px)_and_(min-width:560px)]:grid-cols-1 [@media(max-height:480px)_and_(min-width:560px)]:gap-1.5">
+          <div role="group" aria-label="Spellings" className="grid grid-cols-1 gap-2.5 [@media(max-height:480px)_and_(min-width:560px)]:col-start-2 [@media(max-height:480px)_and_(min-width:560px)]:row-start-1 [@media(max-height:480px)_and_(min-width:560px)]:row-span-3 [@media(max-height:480px)_and_(min-width:560px)]:grid-cols-1 [@media(max-height:480px)_and_(min-width:560px)]:gap-1.5">
             {question.options.map((option, i) => {
               const fb = state.feedback;
               const isChosen = fb?.chosen === option;
@@ -217,7 +218,7 @@ export function SpellingGame() {
                   disabled={!!fb}
                   onClick={() => answer(option)}
                   aria-label={`Option ${i + 1}: ${option}`}
-                  className={`flex min-h-14 [@media(max-height:480px)_and_(min-width:560px)]:min-h-10 items-center gap-3 rounded-2xl border-2 border-b-4 px-3 py-2 [@media(max-height:480px)_and_(min-width:560px)]:py-1 text-left font-mono text-base font-bold transition-all active:translate-y-[2px] active:border-b-2 disabled:cursor-default sm:text-lg ${
+                  className={`flex min-h-16 w-full [@media(max-height:480px)_and_(min-width:560px)]:min-h-10 items-center gap-3 rounded-2xl border-2 border-b-4 px-3 py-2 [@media(max-height:480px)_and_(min-width:560px)]:py-1 text-left font-mono text-base font-bold transition-all active:translate-y-[2px] active:border-b-2 disabled:cursor-default sm:text-lg ${
                     showRight
                       ? "border-emerald-500/60 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-800 dark:text-emerald-200"
                       : isChosen
@@ -228,7 +229,7 @@ export function SpellingGame() {
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-muted text-xs font-black text-muted-foreground">
                     {i + 1}
                   </span>
-                  <span className="min-w-0 flex-1 break-all">{option}</span>
+                  <span className="min-w-0 flex-1 break-words text-lg sm:text-xl">{option}</span>
                   {showRight && <Check className="h-4 w-4 shrink-0" aria-hidden="true" />}
                   {isChosen && !isRight && <X className="h-4 w-4 shrink-0" aria-hidden="true" />}
                 </button>
