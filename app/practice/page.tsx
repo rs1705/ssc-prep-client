@@ -6,12 +6,12 @@ import { ArrowUpRight, Brain, Calculator, Globe2, Languages } from "lucide-react
 import { AnimatePresence, motion } from "framer-motion";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { ExamPatternStrip } from "@/components/custom/subject-overview";
+import { ExamPatternLink } from "@/components/custom/subject-overview";
 import { SUBJECT_SECTIONS } from "@/lib/subject-data";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 
 const TABS: { id: SubjectKey; short: string; icon: typeof Calculator }[] = [
-  { id: "maths", short: "Maths", icon: Calculator },
+  { id: "maths", short: "Quant", icon: Calculator },
   { id: "english", short: "English", icon: Languages },
   { id: "reasoning", short: "Reasoning", icon: Brain },
   { id: "gk", short: "GK", icon: Globe2 },
@@ -39,7 +39,7 @@ export default function PracticeHomePage() {
       title="Practice Hub"
       description="Every subject in one place. Pick a section of the paper and jump straight into a drill, a deck or a game."
     >
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex w-full flex-col gap-6 sm:gap-8">
         {/* Subject tabs: the selected tab takes its subject's colour. */}
         <div
           role="tablist"
@@ -92,7 +92,7 @@ export default function PracticeHomePage() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="flex w-full flex-col gap-5"
           >
-            <ExamPatternStrip subject={activeTab} />
+            <ExamPatternLink subject={activeTab} />
 
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 className="text-lg font-extrabold text-foreground">Practice modes</h2>

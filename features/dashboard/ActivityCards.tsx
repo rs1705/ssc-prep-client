@@ -232,13 +232,13 @@ export function WeekCard({ activities, now }: { activities: ActivityEntry[]; now
         ))}
       </div>
 
-      <ol className="grid grid-cols-7 gap-1.5" aria-label="Days practised this week">
+      <ol className="grid grid-cols-7 gap-1.5" aria-label="Days practiced this week">
         {stats.activeDays.map((active, i) => {
           const future = i > todayIndex;
           return (
             <li key={i} className="flex flex-col items-center gap-1.5">
               <span
-                title={`${DAY_NAMES[i]}: ${future ? "still to come" : active ? "practised" : "no practice"}`}
+                title={`${DAY_NAMES[i]}: ${future ? "still to come" : active ? "practiced" : "no practice"}`}
                 className={cn(
                   "flex aspect-square w-full max-w-11 items-center justify-center rounded-xl border-2",
                   active
@@ -251,7 +251,7 @@ export function WeekCard({ activities, now }: { activities: ActivityEntry[]; now
               >
                 {active && <Check className="h-4 w-4" aria-hidden="true" />}
                 <span className="sr-only">
-                  {DAY_NAMES[i]}: {future ? "still to come" : active ? "practised" : "no practice"}
+                  {DAY_NAMES[i]}: {future ? "still to come" : active ? "practiced" : "no practice"}
                 </span>
               </span>
               <span
@@ -436,7 +436,7 @@ export function MistakesCard({ mistakes, now }: { mistakes: MistakeEntry[]; now:
                     href={m.href}
                     className="group/again mt-2 inline-flex items-center gap-1 text-xs font-bold text-brand-700 dark:text-brand-400"
                   >
-                    Practise again
+                    Practice again
                     <ArrowRight className="h-3 w-3 transition-transform group-hover/again:translate-x-1" aria-hidden="true" />
                   </Link>
                 </div>

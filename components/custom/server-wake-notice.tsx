@@ -30,8 +30,8 @@ export function ServerWakeNotice() {
               <circle cx="24" cy="24" r="20" strokeWidth="6" strokeLinecap="round" strokeDasharray="38 126" className="stroke-brand-500" />
             </svg>
             <div className="min-w-0">
-              <p className="text-sm font-bold text-foreground">Waking up the server…</p>
-              <p className="text-xs text-muted-foreground">The first load can take up to a minute. Hang on.</p>
+              <p className="text-sm font-bold text-foreground">Still connecting…</p>
+              <p className="text-xs text-muted-foreground">The server is taking longer than usual. Retrying automatically.</p>
             </div>
           </motion.div>
         )}

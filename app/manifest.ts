@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "EptSsc · SSC CGL preparation",
-    short_name: "EptSsc",
+    name: "EptSSC · SSC CGL preparation",
+    short_name: "EptSSC",
     description: "Real SSC CGL PYQs, speed drills, flashcards and word games.",
     start_url: "/practice",
     scope: "/",

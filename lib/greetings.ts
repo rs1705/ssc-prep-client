@@ -50,7 +50,7 @@ export const QUOTES: Quote[] = [
   { text: "When it feels hard, you are getting better. Keep going." },
   { text: "One more set. One more card. One step closer to the name on the list." },
   { text: "Consistency is the quiet superpower behind every selection." },
-  { text: "Doubt kills more dreams than failure ever will. Practise anyway." },
+  { text: "Doubt kills more dreams than failure ever will. Practice anyway." },
   { text: "The best time to prepare was yesterday. The next best time is right now." },
   { text: "Make your family proud on result day by making yourself proud today." },
   { text: "Focus on progress, not perfection. Perfection never cleared a cut-off." },
@@ -67,11 +67,11 @@ export const QUOTES: Quote[] = [
   { text: "You are one good habit away from a different result." },
   { text: "Show up today, even for fifteen minutes. Showing up is the whole secret." },
   { text: "Great things are done by a series of small things brought together." },
-  { text: "Believe you can, then practise until you know you can." },
+  { text: "Believe you can, then practice until you know you can." },
   { text: "Rank is just a number until you earn it. Earn it today." },
   { text: "Tough syllabus? Tougher you." },
   { text: "Success is the sum of small efforts, repeated day in and day out." },
-  { text: "Bet on yourself. Then practise like the bet depends on it." },
+  { text: "Bet on yourself. Then practice like the bet depends on it." },
   { text: "The government job you want is waiting. Go and get it." },
 ];
 

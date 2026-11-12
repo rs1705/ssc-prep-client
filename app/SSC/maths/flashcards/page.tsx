@@ -46,7 +46,7 @@ export default function MathsFlashcardsPage() {
               <Layers className="h-4 w-4 shrink-0 text-sky-600 dark:text-sky-400" aria-hidden="true" />
               <span className="text-sm font-extrabold uppercase tracking-tight text-foreground sm:text-base">Flashcards</span>
               <span className="text-xs text-muted-foreground/60">•</span>
-              <span className="truncate text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">Maths</span>
+              <span className="truncate text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">Quant</span>
             </div>
             <Link
               href="/SSC/maths"

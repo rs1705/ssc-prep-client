@@ -19,7 +19,7 @@ export default function AnalyticsPage() {
           "Your three weakest topics, each with a one-tap practice set",
         ]}
         actions={[
-          { label: "Practise PYQs", href: "/practice" },
+          { label: "Practice PYQs", href: "/practice" },
           { label: "Speed drills", href: "/SSC/maths/mental-maths" },
         ]}
       />

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CalendarDays, Pencil } from "lucide-react";
 import { readStored, writeStored } from "@/lib/storage";
 import {
+  EXAM_DATE_AT_KEY,
   EXAM_DATE_EVENT,
   EXAM_DATE_KEY,
   daysUntil,
@@ -36,6 +37,7 @@ export function HeaderCountdown() {
   const save = (value: string) => {
     if (!ISO.test(value)) return;
     writeStored(EXAM_DATE_KEY, value);
+    writeStored(EXAM_DATE_AT_KEY, Date.now());
     setDate(value);
     setEditing(false);
     window.dispatchEvent(new Event(EXAM_DATE_EVENT));

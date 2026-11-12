@@ -19,4 +19,34 @@ export function writeStored<T>(key: string, value: T): void {
   } catch {
     // Storage unavailable or full: preferences just won't persist.
   }
+  notifyChange(key);
+}
+
+type ChangeListener = (key: string) => void;
+const listeners = new Set<ChangeListener>();
+
+/** Hear about every write or removal made through these helpers (used by account sync). */
+export function onStoredChange(listener: ChangeListener): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function notifyChange(key: string) {
+  for (const listener of listeners) {
+    try {
+      listener(key);
+    } catch {
+      // A listener must never break a save.
+    }
+  }
+}
+
+export function removeStored(key: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Storage unavailable: nothing to remove.
+  }
+  notifyChange(key);
 }

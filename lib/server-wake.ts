@@ -8,7 +8,7 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolk
 
 export const SERVER_WAKE_EVENT = "ssc:server-wake";
 /** Show the notice once a request has been waiting this long. */
-export const SLOW_AFTER_MS = 2500;
+export const SLOW_AFTER_MS = 6000;
 /** Waits between retries: about 75 seconds in total, enough for a cold start. */
 export const RETRY_DELAYS_MS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
 

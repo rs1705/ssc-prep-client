@@ -45,6 +45,13 @@ export const MASTERY_DAYS = 2;
 const ACTIVITY_KEY = "ssc:activity";
 const MISTAKES_KEY = "ssc:mistakes";
 const MASTERED_KEY = "ssc:mistakes-mastered";
+/** Mistakes removed by hand or by mastery, remembered so other devices drop them too. */
+export const MISTAKES_REMOVED_KEY = "ssc:mistakes-removed";
+
+function rememberRemoved(prompt: string, at: number) {
+  const list = readStored<{ prompt: string; at: number }[]>(MISTAKES_REMOVED_KEY, []).filter((r) => r.prompt !== prompt);
+  writeStored(MISTAKES_REMOVED_KEY, [{ prompt, at }, ...list].slice(0, 1000));
+}
 export const ACTIVITY_EVENT = "ssc:activity-updated";
 const MAX_ACTIVITY = 300;
 const MAX_MISTAKES = 150;
@@ -68,7 +75,7 @@ export function describeRoute(path: string): { label: string; subject: SubjectKe
     [/word-of-the-day/, "Word of the Day"],
     [/odd-link/, "Odd Link"],
     [/hangman/, "Hangman"],
-    [/\/maths\/match/, "Maths Match the Pairs"],
+    [/\/maths\/match/, "Quant Match the Pairs"],
     [/\/reasoning\/match/, "Reasoning Match the Pairs"],
     [/topic-pyqs/, "Topic-wise PYQs"],
     [/sectional-pyqs/, "Sectional PYQs"],
@@ -135,6 +142,7 @@ export function recordReview(id: string, correct: boolean, date = new Date()): b
     MISTAKES_KEY,
     mastered ? list.filter((m) => m.id !== id) : list.map((m) => (m.id === id ? { ...m, rightDays } : m)),
   );
+  if (mastered) rememberRemoved(entry.prompt, date.getTime());
   if (mastered) writeStored(MASTERED_KEY, [date.getTime(), ...readStored<number[]>(MASTERED_KEY, [])].slice(0, 500));
   notify();
   return mastered;
@@ -160,10 +168,13 @@ export function pickForReview(list: MistakeEntry[], count = 10, date = new Date(
     .slice(0, count);
 }
 
-export function dismissMistake(id: string): void {
+export function dismissMistake(id: string, at = Date.now()): void {
+  const list = readMistakes();
+  const entry = list.find((m) => m.id === id);
+  if (entry) rememberRemoved(entry.prompt, at);
   writeStored(
     MISTAKES_KEY,
-    readMistakes().filter((m) => m.id !== id),
+    list.filter((m) => m.id !== id),
   );
   notify();
 }
@@ -181,7 +192,7 @@ export interface WeekStats {
   questions: number;
   correct: number;
   accuracy: number | null;
-  /** Monday..Sunday: practised that day? */
+  /** Monday..Sunday: practiced that day? */
   activeDays: boolean[];
 }
 

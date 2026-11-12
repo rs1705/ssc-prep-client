@@ -115,7 +115,7 @@ export function shareText(state: WordleState, day: number): string {
   );
   const score = state.status === "won" ? `${state.guesses.length}/${MAX_GUESSES}` : `X/${MAX_GUESSES}`;
   const label = state.mode === "daily" ? `#${day}` : "bonus";
-  return `EptSsc Word of the Day ${label} ${score}\n${rows.join("\n")}`;
+  return `EptSSC Word of the Day ${label} ${score}\n${rows.join("\n")}`;
 }
 
 export interface WordleStats {

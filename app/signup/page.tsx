@@ -30,11 +30,11 @@ const SignupPage = () => {
       {/* Background Ambient Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] rounded-full blur-3xl pointer-events-none" />
 
-      <div className="w-full max-w-[460px] surface-card p-6 sm:p-8 rounded-3xl shadow-2xl shadow-black/10 flex flex-col gap-4 relative overflow-hidden">
+      <div className="w-full max-w-[460px] surface-card rounded-3xl shadow-2xl shadow-black/10 flex flex-col gap-4 relative overflow-hidden p-4 sm:p-6">
         <div className="relative z-10">
           <div className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-widest text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-3 py-1 rounded-full border-2 border-brand-500/25 w-fit mb-3">
             <Sparkles className="w-3 h-3" />
-            Join EptSsc
+            Join EptSSC
           </div>
           <SignUpForm />
           

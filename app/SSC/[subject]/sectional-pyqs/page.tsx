@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { useState } from "react";
 import { ArrowRight, CircleMinus, Clock, FileText, Loader2, Target } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
@@ -120,12 +122,12 @@ export default function SectionalPyqsPage() {
               type="button"
               autoFocus
               onClick={() => setStarted(true)}
-              className="h-12 gap-2 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-7 text-sm font-bold text-white"
+              className={cn(DUO.primary, "px-7")}
             >
               Start test
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
-            <Button type="button" variant="outline" onClick={() => setPaper(null)} className="h-12 rounded-full px-7 text-sm font-bold">
+            <Button type="button" variant="outline" onClick={() => setPaper(null)} className={cn(DUO.secondary, "px-7")}>
               Choose another paper
             </Button>
           </div>
@@ -184,7 +186,7 @@ export default function SectionalPyqsPage() {
                         <span>{p.questionCount * MARKS_CORRECT} marks</span>
                       </span>
                     </span>
-                    <span className="inline-flex h-10 shrink-0 items-center gap-1.5 self-start rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-xs font-bold uppercase tracking-wider text-white sm:self-center">
+                    <span className={cn(DUO.primary, "pointer-events-none min-h-10 self-start px-4 text-xs")}>
                       {pending === p.id ? "Opening" : "Open"}
                       {pending === p.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />

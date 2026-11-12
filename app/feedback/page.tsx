@@ -14,16 +14,13 @@ import {
   Lightbulb,
   BookOpen,
   Rocket,
-  Sparkles,
-  Clock,
-  HeartHandshake,
   Check,
-  Compass,
 } from "lucide-react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { useAuth } from "@/context/auth";
-import { Button } from "@/components/ui/button";
+import { DUO } from "@/features/games/buttons";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
@@ -42,82 +39,36 @@ const feedbackSchema = z.object({
 type FeedbackFormValues = z.infer<typeof feedbackSchema>;
 
 const CATEGORIES = [
-  { 
-    id: "bug", 
-    label: "Bug Report", 
-    desc: "Something is broken or acting up",
-    icon: Bug, 
-    badge: "Fix",
-    color: "text-rose-500 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/20",
-    activeColor: "border-rose-500/50 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-500 shadow-rose-500/10"
-  },
-  { 
-    id: "feature", 
-    label: "Feature Request", 
-    desc: "New tool, drill, or trick idea",
-    icon: Lightbulb, 
-    badge: "Idea",
-    color: "text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/20",
-    activeColor: "border-brand-500/50 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 shadow-brand-500/10"
-  },
-  { 
-    id: "content", 
-    label: "Content Accuracy", 
-    desc: "Question, formula, or typo issue",
-    icon: BookOpen, 
-    badge: "QA",
-    color: "text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/20",
-    activeColor: "border-fuchsia-500/50 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-600 dark:text-fuchsia-400 shadow-fuchsia-500/10"
-  },
-  { 
-    id: "other", 
-    label: "General Feedback", 
-    desc: "Thoughts, praise, or suggestions",
-    icon: MessageSquare, 
-    badge: "Note",
-    color: "text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/20",
-    activeColor: "border-emerald-500/50 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-500 shadow-emerald-500/10"
-  },
+  { id: "content", label: "Mistake in a question", desc: "Wrong answer, typo or unclear explanation", icon: BookOpen },
+  { id: "bug", label: "Something broke", desc: "A screen, button or game misbehaved", icon: Bug },
+  { id: "feature", label: "An idea", desc: "A drill, topic or feature you would like", icon: Lightbulb },
+  { id: "other", label: "Anything else", desc: "Thoughts, praise or suggestions", icon: MessageSquare },
 ] as const;
 
 const RATING_EMOJIS = [
-  { value: 1, emoji: "😠", label: "Frustrating", desc: "1/5" },
-  { value: 2, emoji: "😐", label: "Needs Work", desc: "2/5" },
-  { value: 3, emoji: "😊", label: "Good", desc: "3/5" },
-  { value: 4, emoji: "🤩", label: "Great", desc: "4/5" },
-  { value: 5, emoji: "🚀", label: "Superb", desc: "5/5" },
+  { value: 1, emoji: "😠", label: "Frustrating" },
+  { value: 2, emoji: "😐", label: "Needs work" },
+  { value: 3, emoji: "😊", label: "Good" },
+  { value: 4, emoji: "🤩", label: "Great" },
+  { value: 5, emoji: "🚀", label: "Superb" },
 ];
 
-const ROADMAP_ITEMS = [
-  {
-    title: "Speed Math Practice Engine",
-    desc: "Timed arithmetic, percentage fractions & BODMAS chains",
-    status: "Live",
-    statusColor: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-    icon: Rocket,
-  },
-  {
-    title: "PYQ Shift Vault (2018–2024)",
-    desc: "Filterable authentic Tier 1 & Tier 2 exam papers",
-    status: "In Progress",
-    statusColor: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-600 dark:text-brand-400 border-brand-500/20",
-    icon: Clock,
-  },
-  {
-    title: "Interactive English Vocab Games",
-    desc: "Match the Following, Fill in the Blanks, Hangman and more",
-    status: "Live",
-    statusColor: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-    icon: Sparkles,
-  },
-  {
-    title: "AI Weakness Radar & Diagnostics",
-    desc: "Pinpoints sub-topic accuracy leaks across sectional tests",
-    status: "Planned",
-    statusColor: "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-600 dark:text-rose-400 border-rose-500/20",
-    icon: Compass,
-  },
+type Status = "Live" | "Next" | "Planned";
+
+const ROADMAP: { title: string; desc: string; status: Status }[] = [
+  { title: "Topic-wise and sectional PYQs", desc: "Real Tier 1 questions with explanations, in all four sections", status: "Live" },
+  { title: "Speed drills, flashcards and games", desc: "Quant and Reasoning drills, spaced-repetition cards, word games", status: "Live" },
+  { title: "Progress synced to your account", desc: "History, mistakes and daily plan on every device", status: "Live" },
+  { title: "More past papers", desc: "More shifts and years in the question bank", status: "Next" },
+  { title: "Analytics", desc: "Accuracy and time per topic from your saved answers", status: "Planned" },
+  { title: "Bookmarks and leaderboard", desc: "Save questions; weekly points with friends", status: "Planned" },
 ];
+
+const STATUS_STYLE: Record<Status, string> = {
+  Live: "border-emerald-500/30 bg-[color-mix(in_oklab,var(--color-emerald-500)_12%,var(--card))] text-emerald-700 dark:text-emerald-300",
+  Next: "border-brand-500/30 bg-[color-mix(in_oklab,var(--brand-500)_12%,var(--card))] text-brand-700 dark:text-brand-300",
+  Planned: "border-border bg-muted text-muted-foreground",
+};
 
 export default function FeedbackPage() {
   const { user } = useAuth();
@@ -169,7 +120,7 @@ export default function FeedbackPage() {
         particleCount: 50,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ["#6366f1", "#10b981", "#d946ef"]
+        colors: ["#6366f1", "#3b82f6", "#d946ef"]
       });
     } catch (error) {
       console.error("Failed to submit feedback:", error);
@@ -181,309 +132,207 @@ export default function FeedbackPage() {
 
   return (
     <TopicPageLayout
-      title="Feedback & Roadmap"
-      description="Help us build the highest-converting SSC CGL prep system. Your bug reports, speed math ideas, and suggestions go directly into the next sprint."
+      title="Feedback"
+      description="Found a mistake in a question, hit a bug, or have an idea? Tell us. Every message is read."
       contentMaxWidthClass="w-full max-w-[1400px]"
     >
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-2">
-        {/* Left Column: Form / Success Card */}
-        <div 
-          className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-          style={{ animationDelay: "200ms", animationFillMode: "both" }}
-        >
-          <div className="surface-card rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl shadow-black/5 relative overflow-hidden">
-            {/* Ambient Lighting Mesh */}
-            <div className="absolute -top-12 -right-12 w-44 h-44 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] rounded-full blur-3xl pointer-events-none" />
-
-            <AnimatePresence mode="wait">
-              {isSuccess ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex flex-col items-center text-center py-8 relative z-10"
-                >
-                  <div className="w-16 h-16 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] border-2 border-emerald-500/30 rounded-3xl flex items-center justify-center text-emerald-500 mb-6 shadow-lg shadow-emerald-500/10">
-                    <CheckCircle2 className="w-8 h-8 animate-bounce" />
+      <div className="grid w-full grid-cols-1 items-start gap-6 sm:gap-8 lg:grid-cols-12">
+        <div className="surface-card rounded-3xl p-4 sm:p-6 lg:col-span-7 xl:col-span-8">
+          <AnimatePresence mode="wait">
+            {isSuccess ? (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex flex-col items-center py-8 text-center"
+              >
+                <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-emerald-500 text-white">
+                  <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
+                </span>
+                <h2 className="text-2xl font-extrabold text-foreground">Thank you!</h2>
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
+                  Your feedback has been sent. Mistakes in questions are fixed first.
+                </p>
+                <div className="mt-6 flex w-full max-w-md flex-col gap-2 sm:flex-row">
+                  <button type="button" onClick={() => router.push("/dashboard")} className={cn(DUO.primary, "flex-1")}>
+                    Back to dashboard
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSuccess(false);
+                      form.reset({ category: "feature", rating: 5, message: "", name: user?.displayName || "" });
+                    }}
+                    className={cn(DUO.secondary, "flex-1")}
+                  >
+                    Send another
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.form
+                key="form"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-6"
+              >
+                <fieldset className="flex flex-col">
+                  <legend className="section-label mb-2.5">What is it about?</legend>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {CATEGORIES.map((cat) => {
+                      const isSelected = selectedCategory === cat.id;
+                      const Icon = cat.icon;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          aria-pressed={isSelected}
+                          onClick={() => form.setValue("category", cat.id)}
+                          className={cn(
+                            DUO.option,
+                            isSelected
+                              ? "border-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))]"
+                              : DUO.idle,
+                            "flex items-start gap-3 p-3 text-left",
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl",
+                              isSelected ? "bg-brand-500 text-white" : "bg-muted text-muted-foreground",
+                            )}
+                          >
+                            <Icon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="flex items-center justify-between gap-2 text-sm font-bold text-foreground">
+                              {cat.label}
+                              {isSelected && <Check className="h-4 w-4 text-brand-600 dark:text-brand-400" aria-hidden="true" />}
+                            </span>
+                            <span className="mt-0.5 block text-xs text-muted-foreground">{cat.desc}</span>
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-500 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] px-3 py-1 rounded-full border-2 border-emerald-500/20 mb-3">
-                    Feedback Received
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                    Thank You for Shaping EptSsc!
-                  </h2>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-3 max-w-md leading-relaxed font-medium">
-                    We review every community submission to optimize sprint priorities. Your insight directly improves the CGL 2026 prep experience.
-                  </p>
+                </fieldset>
 
-                  <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-md">
-                    <Button
-                      onClick={() => router.push("/dashboard")}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95 transition-all duration-200 cursor-pointer border-0"
-                    >
-                      Return to Dashboard
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setIsSuccess(false);
-                        form.reset({
-                          category: "feature",
-                          rating: 5,
-                          message: "",
-                          name: user?.displayName || "",
-                        });
-                      }}
-                      className="flex-1 h-12 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase border-2 border-border hover:bg-card text-foreground cursor-pointer transition-all"
-                    >
-                      Submit Another
-                    </Button>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="relative z-10"
-                >
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b-2 border-border/40">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-700 dark:text-brand-400 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
-                        <MessageSquare className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-foreground">
-                          Direct Feedback Portal
-                        </h2>
-                        <p className="text-xs text-muted-foreground font-medium">
-                          Submitted directly to the core engineering team
-                        </p>
-                      </div>
-                    </div>
-                    <span className="hidden sm:inline-flex text-xs font-mono font-bold text-brand-700 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-1 rounded-full border-2 border-brand-500/20">
-                      Tier 1 Focused
+                <fieldset className="flex flex-col">
+                  <div className="mb-2.5 flex items-center justify-between">
+                    <legend className="section-label">How is the app so far?</legend>
+                    <span className="text-xs font-bold text-brand-700 dark:text-brand-400">
+                      {RATING_EMOJIS.find((r) => r.value === selectedRating)?.label}
                     </span>
                   </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    {RATING_EMOJIS.map((rating) => {
+                      const isSelected = selectedRating === rating.value;
+                      return (
+                        <button
+                          key={rating.value}
+                          type="button"
+                          aria-label={rating.label}
+                          aria-pressed={isSelected}
+                          onClick={() => form.setValue("rating", rating.value)}
+                          className={cn(
+                            DUO.option,
+                            isSelected
+                              ? "border-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))]"
+                              : DUO.idle,
+                            "flex min-h-14 items-center justify-center text-2xl sm:text-3xl",
+                          )}
+                        >
+                          <span aria-hidden="true">{rating.emoji}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {form.formState.errors.rating && (
+                    <p className="mt-2 text-xs font-medium text-rose-600">{form.formState.errors.rating.message}</p>
+                  )}
+                </fieldset>
 
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    {/* Category Selection */}
-                    <div className="space-y-2.5">
-                      <Label className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
-                        1. Select Category
-                      </Label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {CATEGORIES.map((cat) => {
-                          const isSelected = selectedCategory === cat.id;
-                          const Icon = cat.icon;
-                          return (
-                            <button
-                              key={cat.id}
-                              type="button"
-                              onClick={() => form.setValue("category", cat.id)}
-                              className={`p-3.5 rounded-2xl border-2 text-left transition-all duration-200 cursor-pointer flex items-start gap-3 relative overflow-hidden ${
-                                isSelected
-                                  ? `${cat.activeColor} shadow-md`
-                                  : "border-border/50 bg-card hover:bg-card hover:border-border text-foreground"
-                              }`}
-                            >
-                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border-2 ${cat.color}`}>
-                                <Icon className="w-4 h-4" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center justify-between">
-                                  <span className="text-xs font-extrabold text-foreground tracking-tight">
-                                    {cat.label}
-                                  </span>
-                                  {isSelected && (
-                                    <Check className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400" />
-                                  )}
-                                </div>
-                                <p className="text-xs text-muted-foreground leading-snug mt-0.5 truncate">
-                                  {cat.desc}
-                                </p>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="message" className="section-label">
+                    Tell us more
+                  </Label>
+                  <textarea
+                    id="message"
+                    placeholder="Which question or screen, what happened, and what you expected…"
+                    {...form.register("message")}
+                    rows={4}
+                    className="min-h-[120px] w-full resize-none rounded-2xl border-2 border-border bg-card p-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                  />
+                  {form.formState.errors.message && (
+                    <p className="text-xs font-medium text-rose-600">{form.formState.errors.message.message}</p>
+                  )}
+                </div>
 
-                    {/* Rating Selection */}
-                    <div className="space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
-                          2. Overall App Experience
-                        </Label>
-                        <span className="text-xs font-mono font-bold text-brand-700 dark:text-brand-400">
-                          {RATING_EMOJIS.find(r => r.value === selectedRating)?.label || "Select rating"}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-5 gap-2 p-2 surface-card rounded-2xl">
-                        {RATING_EMOJIS.map((rating) => {
-                          const isSelected = selectedRating === rating.value;
-                          return (
-                            <button
-                              key={rating.value}
-                              type="button"
-                              onClick={() => form.setValue("rating", rating.value)}
-                              className={`flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
-                                isSelected 
-                                  ? "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] border-2 border-brand-500/30 scale-105 shadow-sm shadow-brand-500/10" 
-                                  : "hover:bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] opacity-70 hover:opacity-100"
-                              }`}
-                            >
-                              <span className="text-2xl sm:text-3xl select-none transition-transform duration-200">
-                                {rating.emoji}
-                              </span>
-                              <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isSelected ? "text-brand-700 dark:text-brand-400" : "text-muted-foreground"}`}>
-                                {rating.desc}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {form.formState.errors.rating && (
-                        <p className="text-xs font-medium text-rose-500">
-                          {form.formState.errors.rating.message}
-                        </p>
-                      )}
-                    </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="name" className="section-label flex items-center justify-between">
+                    <span>Your name</span>
+                    <span className="normal-case tracking-normal text-muted-foreground/70">optional</span>
+                  </Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Your name"
+                    {...form.register("name")}
+                    className="h-12 rounded-2xl border-2 border-border bg-card px-4 text-sm focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/20"
+                  />
+                  {form.formState.errors.name && (
+                    <p className="text-xs font-medium text-rose-600">{form.formState.errors.name.message}</p>
+                  )}
+                </div>
 
-                    {/* Message / Details */}
-                    <div className="space-y-2">
-                      <Label htmlFor="message" className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
-                        3. Details & Explanation
-                      </Label>
-                      <textarea
-                        id="message"
-                        placeholder="Tell us exactly what happened, what formula was off, or what feature would supercharge your preparation..."
-                        {...form.register("message")}
-                        rows={4}
-                        className="w-full rounded-2xl surface-card p-4 text-sm font-medium shadow-inner transition-all focus:outline-none focus:border-brand-500/60 focus:ring-2 focus:ring-brand-500/20 placeholder:text-muted-foreground/50 resize-none min-h-[120px]"
-                      />
-                      {form.formState.errors.message && (
-                        <p className="text-xs font-medium text-rose-500">
-                          {form.formState.errors.message.message}
-                        </p>
-                      )}
-                    </div>
+                {errorMsg && (
+                  <p className="rounded-2xl border-2 border-rose-500/30 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] p-3 text-center text-sm font-semibold text-rose-700 dark:text-rose-300">
+                    {errorMsg}
+                  </p>
+                )}
 
-                    {/* Name / Identifier Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest flex items-center justify-between">
-                        <span>4. Aspirant Name</span>
-                        <span className="text-muted-foreground/50 normal-case font-normal">(optional)</span>
-                      </Label>
-                      <Input
-                        id="name"
-                        type="text"
-                        placeholder="Your name"
-                        {...form.register("name")}
-                        className="h-12 rounded-2xl border-2 border-border bg-card backdrop-blur-md px-4 text-sm font-medium focus-visible:border-brand-500/60 focus-visible:ring-2 focus-visible:ring-brand-500/20 transition-all"
-                      />
-                      {form.formState.errors.name && (
-                        <p className="text-xs font-medium text-rose-500">
-                          {form.formState.errors.name.message}
-                        </p>
-                      )}
-                    </div>
-
-                    {errorMsg && (
-                      <div className="text-xs font-mono font-bold text-rose-500 text-center p-3 rounded-xl bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-2 border-rose-500/20">
-                        {errorMsg}
-                      </div>
-                    )}
-
-                    {/* Submit Button */}
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full h-12 sm:h-13 px-6 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Transmitting to Engineering Queue...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300" />
-                          Transmit Feedback
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                <button type="submit" disabled={isSubmitting} className={cn(DUO.primary, "w-full")}>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                      Sending…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" aria-hidden="true" />
+                      Send feedback
+                    </>
+                  )}
+                </button>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Right Column: Roadmap & Developer SLA (Desktop Rail) */}
-        <div 
-          className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-700"
-          style={{ animationDelay: "300ms", animationFillMode: "both" }}
-        >
-          {/* Upcoming Roadmap Card */}
-          <div className="surface-card rounded-3xl p-6 shadow-xl shadow-black/5 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] rounded-full blur-3xl pointer-events-none" />
-            
-            <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-border/40">
-              <div className="flex items-center gap-2">
-                <Rocket className="w-4 h-4 text-brand-700 dark:text-brand-400" />
-                <h3 className="font-extrabold text-sm text-foreground tracking-tight">
-                  Roadmap
-                </h3>
-              </div>
-              <span className="text-xs font-bold text-muted-foreground">
-                What&apos;s next
-              </span>
-            </div>
-
-            <div className="space-y-3.5">
-              {ROADMAP_ITEMS.map((item, idx) => (
-                <div 
-                  key={idx}
-                  className="p-3.5 rounded-2xl surface-card hover:border-brand-500/30 transition-all flex flex-col gap-1.5"
-                >
+        <aside className="flex flex-col gap-6 lg:col-span-5 xl:col-span-4">
+          <section aria-labelledby="roadmap-heading" className="surface-card rounded-3xl p-4 sm:p-6">
+            <h2 id="roadmap-heading" className="section-label mb-3 flex items-center gap-2">
+              <Rocket className="h-3.5 w-3.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />
+              Roadmap
+            </h2>
+            <ul className="flex flex-col gap-2">
+              {ROADMAP.map((item) => (
+                <li key={item.title} className="rounded-2xl border-2 border-border bg-card p-3">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2 font-bold text-xs text-foreground">
-                      <item.icon className="w-3.5 h-3.5 text-brand-700 dark:text-brand-400 shrink-0" />
-                      <span>{item.title}</span>
-                    </div>
-                    <span className={`text-xs font-mono font-bold uppercase px-2 py-0.5 rounded-full border-2 shrink-0 ${item.statusColor}`}>
+                    <span className="text-sm font-bold text-foreground">{item.title}</span>
+                    <span className={cn("shrink-0 rounded-full border-2 px-2 py-0.5 text-xs font-bold", STATUS_STYLE[item.status])}>
                       {item.status}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed pl-5.5">
-                    {item.desc}
-                  </p>
-                </div>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{item.desc}</p>
+                </li>
               ))}
-            </div>
-          </div>
-
-          {/* Developer Commitment Card */}
-          <div className="bg-card backdrop-blur-2xl border-2 border-emerald-500/20 rounded-3xl p-6 shadow-xl shadow-emerald-500/5 relative overflow-hidden">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-500 flex items-center justify-center border-2 border-emerald-500/20">
-                <HeartHandshake className="w-4.5 h-4.5" />
-              </div>
-              <div>
-                <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-foreground">
-                  Our Community Promise
-                </h4>
-                <p className="text-xs font-mono text-emerald-500">24-Hour Review SLA</p>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed font-medium">
-              Every bug and feature idea logged here is triaged by our team. If you report a calculation discrepancy or question typo, we correct the database within hours!
-            </p>
-          </div>
-        </div>
+            </ul>
+          </section>
+        </aside>
       </div>
     </TopicPageLayout>
   );

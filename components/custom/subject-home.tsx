@@ -2,7 +2,7 @@
 
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { ExamPatternStrip, SyllabusMap } from "@/components/custom/subject-overview";
+import { ExamPatternLink } from "@/components/custom/subject-overview";
 import { SUBJECT_SECTIONS } from "@/lib/subject-data";
 import { SUBJECT_LABEL, type SubjectKey } from "@/lib/subject-theme";
 
@@ -11,15 +11,15 @@ interface SubjectHomeProps {
   description: string;
 }
 
-/** Shared landing page for a subject: exam pattern, practice modes, syllabus. */
+/** Shared landing page for a subject: a one-line exam pattern link, then practice modes. */
 export function SubjectHome({ subject, description }: SubjectHomeProps) {
   const sections = SUBJECT_SECTIONS[subject];
   const live = sections.filter((s) => s.linkTo !== "#").length;
 
   return (
     <TopicPageLayout title={SUBJECT_LABEL[subject]} description={description}>
-      <div className="flex w-full flex-col gap-8">
-        <ExamPatternStrip subject={subject} />
+      <div className="flex w-full flex-col gap-6 sm:gap-8">
+        <ExamPatternLink subject={subject} />
 
         <section aria-labelledby={`modes-${subject}`} className="flex flex-col gap-3">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -35,7 +35,6 @@ export function SubjectHome({ subject, description }: SubjectHomeProps) {
           <SectionCardGrid sections={sections} />
         </section>
 
-        <SyllabusMap subject={subject} />
       </div>
     </TopicPageLayout>
   );

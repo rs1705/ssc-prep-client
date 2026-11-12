@@ -88,7 +88,7 @@ export default function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
       className="h-full w-full cursor-pointer select-none rounded-3xl outline-none [perspective:1200px] focus-visible:ring-4 focus-visible:ring-brand-500/30"
     >
       <div
-        className="relative h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] [transform-style:preserve-3d] motion-reduce:transition-none"
+        className="relative h-full w-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform [transform-style:preserve-3d] motion-reduce:transition-none"
         style={{ transform: flipped ? "rotateY(-180deg)" : "rotateY(0deg)" }}
       >
         {/* ── Front ── */}

@@ -6,7 +6,7 @@ import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, RotateCcw } from "lucide-react";
-import posthog from "posthog-js";
+import { track } from "@/lib/analytics";
 import type { FlashCardInterface } from "@/lib/types";
 import { shuffle } from "@/lib/shuffle";
 import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice";
@@ -106,7 +106,7 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
 
   useEffect(() => {
     if (deck.length > 0) {
-      posthog.capture("flashcard_session_started", { mode, deckSize: deck.length });
+      track("flashcard_session_started", { mode, deckSize: deck.length });
     }
   }, [deck, mode]);
 
@@ -151,7 +151,7 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
         .catch(() => {
           // The review stays counted locally; the next session will resend due cards.
         });
-      posthog.capture("flashcard_rated", { rating, mode, cardId: card._id });
+      track("flashcard_rated", { rating, mode, cardId: card._id });
       next();
     },
     [card, mode, next, saveReview],
@@ -182,7 +182,7 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
 
   if (order.length === 0) {
     return (
-      <div className="surface-card flex w-full flex-col items-center gap-2 rounded-3xl px-6 py-14 text-center">
+      <div className="surface-card flex w-full flex-col items-center gap-2 rounded-3xl text-center px-4 py-12 sm:px-6">
         <p className="text-lg font-bold text-foreground">No cards here</p>
         <p className="max-w-xs text-sm text-muted-foreground">
           {mode === "study"
@@ -257,6 +257,10 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
               if (offset.x < -60 || velocity.x < -500) next();
               else if (offset.x > 60 || velocity.x > 500) prev();
             }}
+            // Stay on one GPU layer for the card's whole life: when the slide ends the
+            // transform resets, and without this phones rebuild the layer and the 3D
+            // flip faces flash for a moment.
+            style={{ willChange: "transform, opacity", backfaceVisibility: "hidden" }}
             className="absolute inset-0"
           >
             {renderCard ? (

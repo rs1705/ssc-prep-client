@@ -89,7 +89,7 @@ export function TopBar() {
               </div>
               <div className="leading-tight">
                 <div className="font-display text-base font-extrabold tracking-tight text-foreground">
-                  Ept<span className="text-brand-600 dark:text-brand-400">Ssc</span>
+                  Ept<span className="text-brand-600 dark:text-brand-400">SSC</span>
                 </div>
                 <div className="text-xs font-medium text-muted-foreground">Elite Prep Training</div>
               </div>

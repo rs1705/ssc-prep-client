@@ -43,7 +43,7 @@ export const PRIMARY_NAV: NavItem[] = [
 ];
 
 export const SUBJECT_NAV: NavItem[] = [
-  { to: "/SSC/maths", label: "Mathematics", icon: Calculator, subject: "maths" },
+  { to: "/SSC/maths", label: "Quant", icon: Calculator, subject: "maths" },
   { to: "/SSC/english", label: "English", icon: Languages, subject: "english" },
   { to: "/SSC/reasoning", label: "Reasoning", icon: Brain, subject: "reasoning" },
   { to: "/SSC/gk", label: "General Knowledge", icon: Globe2, subject: "gk" },

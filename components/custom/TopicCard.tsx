@@ -1,4 +1,6 @@
 import React from "react";
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { Button } from "@/components/ui/button";
 import { Swords, BookOpen, Loader2 } from "lucide-react";
 import { RevisionDialog } from "./revision-dialog";
@@ -157,7 +159,7 @@ export const TopicCard = ({
               trigger={
                 <Button
                   variant="ghost"
-                  className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1 text-muted-foreground hover:text-foreground bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] hover:bg-muted border-2 border-border active:scale-95 transition-all cursor-pointer"
+                  className={cn(DUO.secondary, "min-h-10 px-3 text-xs")}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   Revise
@@ -169,7 +171,7 @@ export const TopicCard = ({
             onClick={onStartClick}
             disabled={startDisabled}
             aria-busy={isStarting}
-            className="px-4 h-10 rounded-xl text-xs font-mono font-bold tracking-wider uppercase gap-1.5 bg-gradient-to-r from-brand-500 to-brand-alt-400 text-white shadow-xs hover:shadow-md hover:shadow-brand-500/20 active:scale-95 transition-all hover:cursor-pointer border-0 group/btn"
+            className={cn(DUO.primary, "group/btn min-h-10 px-4 text-xs")}
           >
             {isStarting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" />

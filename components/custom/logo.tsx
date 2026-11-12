@@ -20,7 +20,7 @@ export const Logo = ({ className = "", onClick }: LogoProps) => {
       </div>
       <div className="font-bold text-2xl tracking-tight">
         <span className="text-foreground font-extrabold">Ept</span>
-        <span className="text-brand-alt-500 font-extrabold">Ssc</span>
+        <span className="text-brand-alt-500 font-extrabold">SSC</span>
       </div>
     </Link>
   );

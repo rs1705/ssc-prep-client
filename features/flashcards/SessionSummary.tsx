@@ -32,7 +32,7 @@ export function SessionSummary({
   backHref = "/SSC/english/flashcards",
 }: SessionSummaryProps) {
   return (
-    <div className="surface-card flex w-full flex-col items-center gap-5 rounded-3xl px-5 py-8 text-center sm:px-8">
+    <div className="surface-card flex w-full flex-col items-center gap-5 rounded-3xl text-center p-4 sm:p-6">
       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-700 dark:text-fuchsia-300">
         <PartyPopper className="h-7 w-7" aria-hidden="true" />
       </div>

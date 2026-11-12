@@ -17,7 +17,7 @@ export const TIER1_PATTERN = {
 
 export interface SyllabusTopic {
   name: string;
-  /** Present when there is something to practise for this topic today. */
+  /** Present when there is something to practice for this topic today. */
   href?: string;
 }
 

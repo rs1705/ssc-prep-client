@@ -35,7 +35,7 @@ export interface DashboardStats {
   xp: number;
   dailyGoal: number;
   solvedToday: number;
-  /** Seven entries Mon..Sun; true when the user practised that day. */
+  /** Seven entries Mon..Sun; true when the user practiced that day. */
   activeDays: boolean[];
 }
 

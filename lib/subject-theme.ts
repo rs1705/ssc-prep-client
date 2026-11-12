@@ -182,7 +182,7 @@ export const SUBJECT_HUE: Record<SubjectKey, Hue> = {
 };
 
 export const SUBJECT_LABEL: Record<SubjectKey, string> = {
-  maths: "Mathematics",
+  maths: "Quant",
   english: "English",
   reasoning: "Reasoning",
   gk: "General Knowledge",

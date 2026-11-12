@@ -342,7 +342,7 @@ function TopicPager({
         className="flex items-center justify-center gap-2 rounded-xl py-2 text-sm font-bold text-brand-700 hover:underline dark:text-brand-300"
       >
         <Target className="h-4 w-4" aria-hidden="true" />
-        Use them on real Maths PYQs
+        Use them on real Quant PYQs
       </Link>
     </div>
   );

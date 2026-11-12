@@ -169,3 +169,10 @@ export const SUBJECT_SECTIONS: Record<string, SectionCardProps[]> = {
     },
   ],
 };
+
+// Real past-paper practice comes first on every subject: Topic-wise PYQs, then
+// Sectional PYQs, then the other modes in their listed order.
+const PYQ_ORDER = (linkTo: string) => (linkTo.endsWith("/topic-pyqs") ? 0 : linkTo.endsWith("/sectional-pyqs") ? 1 : 2);
+for (const list of Object.values(SUBJECT_SECTIONS)) {
+  list.sort((a, b) => PYQ_ORDER(a.linkTo) - PYQ_ORDER(b.linkTo));
+}

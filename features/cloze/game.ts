@@ -112,7 +112,7 @@ export function rankTitle(correct: number, total: number): string {
   if (ratio === 1) return "Flawless";
   if (ratio >= 0.8) return "Sharp";
   if (ratio >= 0.6) return "Getting there";
-  return "Keep practising";
+  return "Keep practicing";
 }
 
 export function clozeReducer(state: ClozeState, action: ClozeAction): ClozeState {

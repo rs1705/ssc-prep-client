@@ -146,7 +146,7 @@ export default function TopicPyqsPage() {
           description="There are no previous-year questions for this subject yet."
         />
       ) : (
-        <div className="flex w-full flex-col gap-6">
+        <div className="flex w-full flex-col gap-6 sm:gap-8">
           {unfinished && (
             <section
               aria-label="Unfinished set"
@@ -195,7 +195,7 @@ export default function TopicPyqsPage() {
                 </span>
               </span>
             </div>
-            <span className="inline-flex h-10 shrink-0 items-center gap-1.5 self-start rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-xs font-bold uppercase tracking-wider text-white sm:self-auto">
+            <span className={cn(DUO.primary, "pointer-events-none min-h-10 self-start px-4 text-xs")}>
               {pending === "__mixed" ? "Loading" : "Start"}
               {pending === "__mixed" ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
@@ -240,7 +240,7 @@ export default function TopicPyqsPage() {
                       </span>
                     )}
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-sm font-bold text-brand-700 dark:text-brand-400">
-                      {pending === topic.topic ? "Loading questions" : `Practise ${Math.min(SET_SIZE, topic.count)} questions`}
+                      {pending === topic.topic ? "Loading questions" : `Practice ${Math.min(SET_SIZE, topic.count)} questions`}
                       {pending === topic.topic ? (
                         <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                       ) : (

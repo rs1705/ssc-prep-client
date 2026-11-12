@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
-import posthog from "posthog-js";
+import { track } from "@/lib/analytics";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
@@ -629,7 +629,7 @@ export default function MentalMathsPractice() {
   useEffect(() => {
     if (gameState === "game_over") {
       const total = correctVal + wrongVal + skippedVal;
-      posthog.capture("mental_maths_session_completed", {
+      track("mental_maths_session_completed", {
         topic,
         difficulty: engine.state.difficulty,
         mode: engine.state.mode,
@@ -1601,7 +1601,7 @@ export default function MentalMathsPractice() {
                             className={cn(DUO.primary, "group h-12 flex-[7] px-4")}
                           >
                             <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
-                            Practise again
+                            Practice again
                           </Button>
                         </div>
 
@@ -1629,7 +1629,7 @@ export default function MentalMathsPractice() {
       </div>
 
       <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-        <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl p-5 shadow-2xl">
+        <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl shadow-2xl p-4 sm:p-6">
           <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
             <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />

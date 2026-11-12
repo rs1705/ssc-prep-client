@@ -262,7 +262,7 @@ export function MatchGame({
           startLabel={loading ? "Loading words…" : "Start"}
         >
           <DeckPicker
-            label="Practise"
+            label="Practice"
             options={decks.map((d) => ({ id: d.id, label: d.label }))}
             tone={toneKey}
             value={deckId}

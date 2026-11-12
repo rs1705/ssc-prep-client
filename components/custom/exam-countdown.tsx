@@ -7,6 +7,8 @@ import { readStored, writeStored } from "@/lib/storage";
 export const EXAM_DATE_KEY = "ssc:exam-date";
 const STORAGE_KEY = EXAM_DATE_KEY;
 /** Fired when the date changes, so every countdown on screen stays in step. */
+/** When the date was last changed, so the newest choice wins across devices. */
+export const EXAM_DATE_AT_KEY = "ssc:exam-date-at";
 export const EXAM_DATE_EVENT = "ssc:exam-date-updated";
 
 export function todayIso(): string {
@@ -63,6 +65,7 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return;
     setDate(value);
     writeStored(STORAGE_KEY, value);
+    writeStored(EXAM_DATE_AT_KEY, Date.now());
     setEditing(false);
     window.dispatchEvent(new Event(EXAM_DATE_EVENT));
   };

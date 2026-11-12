@@ -1,341 +1,26 @@
 "use client";
 
+import { ArrowRight, Brain, Zap, BookOpen, Gamepad2, Rocket, CheckCircle2, Check, Activity, Map, Dumbbell, Trophy, RefreshCw, Crosshair, Tag, Timer } from "lucide-react";
+import { useRef } from "react";
+import { motion, useInView, type Variants, useScroll } from "framer-motion";
 import Link from "next/link";
-import { 
-  ArrowRight, Brain, Zap, BookOpen, Target, Gamepad2, BarChart3, Rocket, 
-  CheckCircle2, Check, Flame, Activity, Map, Dumbbell, Trophy, 
-  ChevronDown, RefreshCw, Crosshair, Tag, ScrollText, 
-  BrainCircuit, Sparkles, Timer, RotateCw, CheckCircle,
-  TrendingUp, HelpCircle, Layers, Calculator, Languages, Globe2
-} from "lucide-react";
-import { useEffect, useState, useRef } from "react";
-import { 
-  motion, useMotionValue, useTransform, animate, useInView, Variants, useScroll, AnimatePresence 
-} from "framer-motion";
-import confetti from "canvas-confetti";
 import { useAuth } from "@/context/auth";
+import dynamic from "next/dynamic";
+import { SNAPPY_SPRING, SNAPPY_EASE } from "@/features/landing/motion";
+import { TryQuestion } from "@/features/landing/TryQuestion";
+import { HeroCopy } from "@/features/landing/HeroCopy";
+import { SubjectCards } from "@/features/landing/SubjectCards";
+import { DUO } from "@/features/games/buttons";
+import { cn } from "@/lib/utils";
 
-/* ─── Snappy Spring & Ease Presets ─── */
-const SNAPPY_SPRING = { type: "spring", stiffness: 400, damping: 28 } as const;
-const SNAPPY_EASE = [0.16, 1, 0.3, 1] as const;
+// Below the fold: separate chunks, still rendered on the server for search engines.
+const SyllabusMatrixSection = dynamic(() => import("@/features/landing/SyllabusMatrix"));
+const AspirantFaqSection = dynamic(() => import("@/features/landing/Faq"));
+
 
 /* ─── Typewriter Shimmer Headline ─── */
-const WORDS = ["Dominating.", "Outranking.", "Excelling.", "Conquering."];
-
-function TypewriterHeroText() {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [text, setText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const currentWord = WORDS[wordIndex];
-    let timeout: NodeJS.Timeout;
-
-    if (!isDeleting && text === currentWord) {
-      timeout = setTimeout(() => {
-        setIsDeleting(true);
-      }, 2000);
-    } else if (isDeleting && text === "") {
-      setIsDeleting(false);
-      setWordIndex((prev) => (prev + 1) % WORDS.length);
-      timeout = setTimeout(() => {}, 350);
-    } else {
-      const nextCharCount = isDeleting ? text.length - 1 : text.length + 1;
-      const delta = isDeleting ? 50 : 95;
-      timeout = setTimeout(() => {
-        setText(currentWord.substring(0, nextCharCount));
-      }, delta);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [text, isDeleting, wordIndex]);
-
-  return (
-    <span className="inline-flex items-baseline min-h-[1.1em]">
-      <span
-        className="bg-clip-text text-transparent bg-[length:200%_auto] animate-shimmer inline-block"
-        style={{ 
-          backgroundImage: "linear-gradient(90deg, var(--brand-500), var(--brand-alt-500), var(--brand-hot), var(--brand-alt-500), var(--brand-500), var(--brand-alt-500), var(--brand-hot), var(--brand-alt-500), var(--brand-500))" 
-        }}
-      >
-        {text || "\u00A0"}
-      </span>
-      <span
-        className="inline-block w-[3px] sm:w-[4px] md:w-[5px] h-[0.82em] bg-gradient-to-b from-brand-500 via-brand-alt-500 to-rose-500 ml-1.5 translate-y-[2px] rounded-full shrink-0 shadow-sm shadow-brand-500/50 animate-[cursor-blink_0.9s_step-end_infinite]"
-      />
-    </span>
-  );
-}
-
-/* ─── Snappy Animated Counter ─── */
-function AnimatedCounter({ 
-  target, 
-  suffix = "", 
-  prefix = "", 
-  className = "", 
-  delay = 0, 
-  duration = 1.0 
-}: { 
-  target: number; 
-  suffix?: string; 
-  prefix?: string; 
-  className?: string; 
-  delay?: number; 
-  duration?: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const count = useMotionValue(0);
-  const display = useTransform(count, (v) => `${prefix}${Math.round(v)}${suffix}`);
-
-  useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, target, { duration, ease: SNAPPY_EASE, delay });
-      return controls.stop;
-    }
-  }, [isInView, count, target, delay, duration]);
-
-  return <motion.span ref={ref} className={className}>{display}</motion.span>;
-}
-
-/* ─── Exam Categories Selector ─── */
-const SUBJECT_LINKS = [
-  { id: "maths", label: "Mathematics", icon: Calculator, href: "/SSC/maths", tone: "text-sky-600 dark:text-sky-400" },
-  { id: "english", label: "English", icon: Languages, href: "/SSC/english", tone: "text-fuchsia-700 dark:text-fuchsia-400" },
-  { id: "reasoning", label: "Reasoning", icon: Brain, href: "/SSC/reasoning", tone: "text-orange-600 dark:text-orange-400" },
-  { id: "gk", label: "General Knowledge", icon: Globe2, href: "/SSC/gk", tone: "text-teal-600 dark:text-teal-400" },
-];
-
 /* ─── Speed Sprint Demo Questions (7 Varied Categories) ─── */
-const SPRINT_QUESTIONS = [
-  {
-    level: "Rapid Multiplication",
-    tag: "Level 1",
-    num1: "48",
-    op: "×",
-    num2: "7",
-    answer: 336,
-    options: [326, 336, 346, 356],
-    tip: "Shortcut: (50 − 2) × 7 = 350 − 14 = 336",
-  },
-  {
-    level: "Fast Squaring",
-    tag: "Level 2",
-    num1: "65",
-    op: "²",
-    num2: "",
-    answer: 4225,
-    options: [4125, 4225, 4275, 4325],
-    tip: "Ends in 5: (6 × 7) = 42, append 25 = 4225",
-  },
-  {
-    level: "Mental Percentage",
-    tag: "Level 3",
-    num1: "15%",
-    op: "of",
-    num2: "240",
-    answer: 36,
-    options: [32, 34, 36, 38],
-    tip: "Shortcut: 10% is 24 + 5% is 12 = 36",
-  },
-  {
-    level: "Rapid Subtraction",
-    tag: "Level 4",
-    num1: "1000",
-    op: "−",
-    num2: "374",
-    answer: 626,
-    options: [616, 626, 636, 726],
-    tip: "All from 9, last from 10: 9-3=6, 9-7=2, 10-4=6 = 626",
-  },
-  {
-    level: "Multiply by 11",
-    tag: "Level 5",
-    num1: "74",
-    op: "×",
-    num2: "11",
-    answer: 814,
-    options: [804, 814, 824, 714],
-    tip: "Shortcut: 7 _ 4, sum 7+4=11 -> carry 1 into 7 = 814",
-  },
-  {
-    level: "Cube Shortcuts",
-    tag: "Level 6",
-    num1: "13",
-    op: "³",
-    num2: "",
-    answer: 2197,
-    options: [2187, 2197, 2287, 2297],
-    tip: "Frequent SSC cube: 13³ = 2,197",
-  },
-  {
-    level: "Rapid Division",
-    tag: "Level 7",
-    num1: "504",
-    op: "÷",
-    num2: "7",
-    answer: 72,
-    options: [68, 72, 74, 78],
-    tip: "Shortcut: 490 ÷ 7 = 70, 14 ÷ 7 = 2 -> 70 + 2 = 72",
-  },
-];
 
-/* ─── High-Yield Flashcard Demos with Authentic SSC Content ─── */
-const FLASHCARD_DEMOS = [
-  {
-    type: "vocab" as const,
-    category: "SSC English Vocab",
-    subtag: "High-Frequency Tier 1 Word",
-    word: "Ephemeral",
-    phonetic: "/ɪˈfɛm(ə)rəl/ • Adjective",
-    definition: "Lasting for a very short time; transient or fleeting.",
-    example: '"Fame in the digital age is often ephemeral."',
-    examReference: "Appeared in CGL 2022, CHSL 2023",
-    synonyms: ["Transient", "Fleeting", "Evanescent", "Momentary"],
-    antonyms: ["Permanent", "Eternal", "Perpetual", "Enduring"]
-  },
-  {
-    type: "idiom" as const,
-    category: "Idioms & Phrases",
-    subtag: "Previous Year Question",
-    word: "Spill the beans",
-    phonetic: "Idiom • Common Phrasal Meaning",
-    definition: "To disclose confidential or secret information prematurely or indiscreetly.",
-    example: '"Trusting him with the surprise plan was a mistake; he spilled the beans."',
-    examReference: "SSC CGL 2023 Tier 1 (Shift 2)",
-    related: ["Let the cat out of the bag", "Blow the gaff", "Divulge secret"],
-    origin: "Ancient Greek voting system with colored beans"
-  },
-  {
-    type: "polity" as const,
-    category: "Indian Polity & Constitution",
-    subtag: "Fundamental Rights (Part III)",
-    word: "Article 32 — Constitutional Remedies",
-    phonetic: "Supreme Court Writ Jurisdiction",
-    definition: "Empowers citizens to move the Supreme Court directly for enforcement of Fundamental Rights via 5 Prerogative Writs.",
-    example: "Habeas Corpus, Mandamus, Prohibition, Quo-Warranto & Certiorari.",
-    examReference: "SSC CGL 2021, 2023 & CPO 2024",
-    landmarkNote: "Dr. B.R. Ambedkar called Article 32 the 'Heart and Soul of the Constitution'.",
-    scope: "Direct SC access without exhausting High Court remedies"
-  },
-  {
-    type: "history" as const,
-    category: "Medieval Indian History",
-    subtag: "Key Battles & Treaties",
-    word: "Battle of Chausa (1539 CE)",
-    phonetic: "Sher Shah Suri vs Humayun",
-    definition: "Decisive military engagement fought near Buxar, Bihar between Sher Khan (Sher Shah Suri) and Mughal Emperor Humayun.",
-    example: "Humayun was defeated and escaped across the Ganges with the help of a water-carrier (Nizam).",
-    examReference: "SSC MTS 2023 & CHSL 2024",
-    impact: "Sher Khan assumed the royal title 'Farid al-Din Sher Shah'.",
-    sequel: "Led to the Battle of Kannauj (1540 CE) and the establishment of the Sur Empire."
-  }
-];
-
-/* ─── Comprehensive SSC Syllabus Matrix ─── */
-const SYLLABUS_SECTIONS = [
-  {
-    id: "quant",
-    title: "Quantitative Aptitude",
-    icon: Zap,
-    color: "text-brand-500",
-    badge: "25 Qs / 50 Marks",
-    desc: "Speed, accuracy, and shortcut mechanics across Arithmetic & Advanced Mathematics.",
-    topics: [
-      { name: "Number Systems & Divisibility", weight: "High", pyqs: "850+ Qs" },
-      { name: "Percentages, Profit, Loss & Discount", weight: "High", pyqs: "1,240+ Qs" },
-      { name: "Ratio, Proportion & Partnerships", weight: "Medium", pyqs: "620+ Qs" },
-      { name: "Time, Work & Pipes/Cisterns", weight: "High", pyqs: "780+ Qs" },
-      { name: "Speed, Time, Distance & Trains", weight: "High", pyqs: "810+ Qs" },
-      { name: "Simple & Compound Interest", weight: "Medium", pyqs: "540+ Qs" },
-      { name: "Algebra & Polynomial Identities", weight: "High", pyqs: "920+ Qs" },
-      { name: "Geometry & Coordinate Geometry", weight: "High", pyqs: "1,150+ Qs" },
-      { name: "Trigonometry & Heights/Distances", weight: "High", pyqs: "980+ Qs" },
-      { name: "Mensuration (2D & 3D Solids)", weight: "High", pyqs: "890+ Qs" },
-      { name: "Data Interpretation (DI)", weight: "Medium", pyqs: "650+ Qs" },
-    ],
-  },
-  {
-    id: "reasoning",
-    title: "General Intelligence & Reasoning",
-    icon: Target,
-    color: "text-blue-500",
-    badge: "25 Qs / 50 Marks",
-    desc: "Analytical deduction, pattern recognition, and rapid elimination techniques.",
-    topics: [
-      { name: "Analogy & Semantic Classification", weight: "High", pyqs: "940+ Qs" },
-      { name: "Coding-Decoding & Substitution", weight: "High", pyqs: "820+ Qs" },
-      { name: "Number & Alphabet Series", weight: "High", pyqs: "1,050+ Qs" },
-      { name: "Syllogisms & Venn Diagrams", weight: "High", pyqs: "760+ Qs" },
-      { name: "Blood Relations & Family Tree", weight: "Medium", pyqs: "480+ Qs" },
-      { name: "Direction Sense & Cardinal Positions", weight: "Medium", pyqs: "390+ Qs" },
-      { name: "Linear & Circular Seating Order", weight: "Medium", pyqs: "410+ Qs" },
-      { name: "Non-Verbal: Mirror & Paper Folding", weight: "High", pyqs: "890+ Qs" },
-      { name: "Embedded Figures & Cube/Dice", weight: "Medium", pyqs: "530+ Qs" },
-    ],
-  },
-  {
-    id: "english",
-    title: "English Comprehension",
-    icon: BookOpen,
-    color: "text-emerald-500",
-    badge: "25 Qs / 50 Marks",
-    desc: "Vocabulary mastery, grammar rules, active recall flashcards, and reading passages.",
-    topics: [
-      { name: "One Word Substitution (OWS)", weight: "High", pyqs: "1,120+ Qs" },
-      { name: "Idioms & Phrasal Verbs", weight: "High", pyqs: "980+ Qs" },
-      { name: "Repeated Synonyms & Antonyms", weight: "High", pyqs: "1,450+ Qs" },
-      { name: "Spotting Errors & Sentence Correction", weight: "High", pyqs: "1,280+ Qs" },
-      { name: "Active / Passive Voice Rules", weight: "High", pyqs: "720+ Qs" },
-      { name: "Direct & Indirect Narration", weight: "High", pyqs: "690+ Qs" },
-      { name: "Cloze Test & Passage Reading", weight: "High", pyqs: "860+ Qs" },
-      { name: "Spelling Correction (Common Traps)", weight: "Medium", pyqs: "510+ Qs" },
-    ],
-  },
-  {
-    id: "gk",
-    title: "General Awareness & Static GK",
-    icon: BrainCircuit,
-    color: "text-fuchsia-600 dark:text-fuchsia-400",
-    badge: "25 Qs / 50 Marks",
-    desc: "High-yield Indian Polity, History, Geography, Science, and recurring Static GK facts.",
-    topics: [
-      { name: "Indian Polity (Articles, Amendments, Acts)", weight: "High", pyqs: "890+ Qs" },
-      { name: "Ancient, Medieval & Modern History", weight: "High", pyqs: "1,150+ Qs" },
-      { name: "Geography: Rivers, Dams, Mountains, Biospheres", weight: "High", pyqs: "920+ Qs" },
-      { name: "Indian Economy, Five Year Plans & Budget", weight: "Medium", pyqs: "610+ Qs" },
-      { name: "General Science (Bio, Chem, Physics)", weight: "High", pyqs: "1,340+ Qs" },
-      { name: "Art, Classical Dances, Festivals & Awards", weight: "High", pyqs: "880+ Qs" },
-      { name: "Static GK: Books, Authors, Days & Capitals", weight: "Medium", pyqs: "730+ Qs" },
-    ],
-  },
-];
-
-/* ─── Aspirant FAQs ─── */
-const SSC_FAQS = [
-  {
-    question: "Are these real previous year questions?",
-    answer: "Yes. The questions come from official SSC CGL Tier 1 papers (currently shifts from 2024 and 2025). Each one is tagged by topic and comes with a step-by-step explanation. Questions that need a figure are left out for now, and more papers are being added."
-  },
-  {
-    question: "How does the Mental Maths Arena help me score higher in Quant?",
-    answer: "SSC Tier 1 requires solving 25 Quant questions in roughly 15–18 minutes. Writing manual scratch work for basic calculations (like 65², 15% of 240, or 74 × 11) bleeds 3–5 seconds per question. Our timed calculation arena builds instant calculation reflex so you finish the Quant section with minutes to spare."
-  },
-  {
-    question: "How do Smart Flashcards work for English vocabulary?",
-    answer: "Instead of rereading static PDF lists, flashcards use spaced repetition. After each card you rate how well you knew it, and the algorithm brings hard cards back sooner and easy ones later. That is what moves words, idioms and one-word substitutions into long-term memory."
-  },
-  {
-    question: "How does EptSsc differ from regular test series or PDF compilations?",
-    answer: "PDF compilations are passive, and a generic test series only gives you a score at the end. EptSsc is built for active practice: timed speed drills, real PYQs with an explanation after every answer, and spaced repetition, so you find and fix weak spots while you practise."
-  },
-  {
-    question: "Can I practice on mobile phones and tablets?",
-    answer: "Yes. Every drill, flashcard deck, game and PYQ test is built mobile-first and works on phones, tablets and desktops."
-  }
-];
-
-/* ─── Scroll-Driven Timeline Line ─── */
 function ScrollTimelineLine() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -380,804 +65,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 }
 
 /* ─── Interactive Hero Live Dashboard (3 Modes) ─── */
-function InteractiveHeroDashboard() {
-  const [activeTab, setActiveTab] = useState<"analytics" | "maths" | "flashcards">("analytics");
-  
-  // Maths Sprint State
-  const [currentSprintIndex, setCurrentSprintIndex] = useState(0);
-  const [selectedMathAnswer, setSelectedMathAnswer] = useState<number | null>(null);
-  const [mathSolved, setMathSolved] = useState(false);
-  const [sprintStreak, setSprintStreak] = useState(0);
 
-  const currentQ = SPRINT_QUESTIONS[currentSprintIndex];
-
-  const handleMathChoice = (val: number) => {
-    setSelectedMathAnswer(val);
-    if (val === currentQ.answer) {
-      setMathSolved(true);
-      setSprintStreak((s) => s + 1);
-      confetti({
-        particleCount: 45,
-        spread: 60,
-        origin: { y: 0.6 },
-        colors: ["#6366f1", "#10b981", "#d946ef"]
-      });
-    }
-  };
-
-  const nextSprintQuestion = () => {
-    setSelectedMathAnswer(null);
-    setMathSolved(false);
-    setCurrentSprintIndex((prev) => (prev + 1) % SPRINT_QUESTIONS.length);
-  };
-
-  const resetMathDemo = () => {
-    setSelectedMathAnswer(null);
-    setMathSolved(false);
-  };
-
-  // Flashcard State
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [cardFlipped, setCardFlipped] = useState(false);
-  const [ratedInterval, setRatedInterval] = useState<string | null>(null);
-
-  const currentCard = FLASHCARD_DEMOS[currentCardIndex];
-
-  const handleRating = (interval: string) => {
-    setRatedInterval(interval);
-    setTimeout(() => {
-      setCardFlipped(false);
-      setRatedInterval(null);
-      setCurrentCardIndex((prev) => (prev + 1) % FLASHCARD_DEMOS.length);
-    }, 1400);
-  };
-
-  return (
-    <div className="w-full relative">
-      {/* Background Glow — Desktop only */}
-      <div className="hidden md:block absolute -inset-10 bg-gradient-to-b from-brand-500/20 via-brand-alt-500/10 to-brand-500/15 blur-[90px] rounded-full pointer-events-none" />
-
-      {/* Floating Ambient Badges */}
-      <motion.div 
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card backdrop-blur-xl border-2 border-brand-500/30 shadow-xl shadow-brand-500/10 absolute -top-5 -left-6 z-30 font-mono text-xs font-bold text-foreground"
-      >
-        <Flame className="w-4 h-4 text-brand-500 animate-pulse" />
-        <span>14-Day Streak 🔥</span>
-      </motion.div>
-
-      <motion.div 
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-card backdrop-blur-xl border-2 border-emerald-500/30 shadow-xl shadow-emerald-500/10 absolute -bottom-4 -right-6 z-30 font-mono text-xs font-bold text-foreground"
-      >
-        <TrendingUp className="w-4 h-4 text-emerald-500" />
-        <span>+18 Marks in Quant 📈</span>
-      </motion.div>
-
-      {/* Main Glassmorphic Window */}
-      <div className="relative rounded-2xl sm:rounded-3xl border-2 border-brand-500/25 bg-card md:bg-card backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-2xl shadow-brand-500/10 flex flex-col">
-        
-        {/* Window Chrome Header & Interactive Tabs */}
-        <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4 border-b-2 border-border/40 bg-background">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-[color-mix(in_oklab,var(--color-rose-500)_80%,var(--card))]" />
-              <div className="w-3 h-3 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_80%,var(--card))]" />
-              <div className="w-3 h-3 rounded-full bg-[color-mix(in_oklab,var(--color-emerald-500)_80%,var(--card))]" />
-            </div>
-            <span className="text-xs font-mono font-semibold text-muted-foreground ml-2 hidden sm:inline">eptssc.live/demo</span>
-          </div>
-
-          {/* Interactive Mode Pills */}
-          <div className="flex items-center gap-1 bg-background p-1 rounded-xl border-2 border-border shadow-inner">
-            {[
-              { id: "analytics", label: "AI Analytics", icon: BarChart3 },
-              { id: "maths", label: "Speed Maths", icon: Zap },
-              { id: "flashcards", label: "Flashcards", icon: Brain },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                    isActive 
-                      ? "bg-brand-500 text-on-brand shadow-md shadow-brand-500/20" 
-                      : "text-muted-foreground hover:text-foreground hover:bg-card"
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="hidden lg:flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-2 border-emerald-500/20 px-2.5 py-1 rounded-full">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            LIVE SIMULATION
-          </div>
-        </div>
-
-        {/* Tab Contents */}
-        <div className="p-4 sm:p-6 min-h-[300px] sm:min-h-[360px] flex flex-col justify-center">
-          <AnimatePresence mode="wait">
-            
-            {/* ─── 1. Analytics Tab ─── */}
-            {activeTab === "analytics" && (
-              <motion.div
-                key="analytics"
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.25, ease: SNAPPY_EASE }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-4"
-              >
-                {/* Column 1: Sectional Split */}
-                <div className="rounded-xl bg-background backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
-                      <BarChart3 className="w-3.5 h-3.5 text-brand-500" /> Sectional Accuracy
-                    </span>
-                    <span className="text-xs font-mono bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-500 px-1.5 py-0.5 rounded font-bold">Today</span>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {[
-                      { label: "Quantitative Aptitude", val: 92, color: "bg-emerald-500" },
-                      { label: "General Intelligence", val: 88, color: "bg-brand-500" },
-                      { label: "English Comprehension", val: 76, color: "bg-fuchsia-500" },
-                      { label: "General Awareness", val: 64, color: "bg-rose-500" }
-                    ].map((s, i) => (
-                      <div key={s.label}>
-                        <div className="flex justify-between text-xs font-mono font-bold mb-1">
-                          <span className="text-foreground/70">{s.label}</span>
-                          <span className="text-foreground">{s.val}%</span>
-                        </div>
-                        <div className="w-full h-1.5 rounded-full bg-[color-mix(in_oklab,var(--border)_40%,var(--card))] overflow-hidden">
-                          <motion.div 
-                            className={`h-full rounded-full ${s.color}`}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${s.val}%` }}
-                            transition={{ duration: 0.8, ease: SNAPPY_EASE, delay: i * 0.08 }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Column 2: Accuracy Trend */}
-                <div className="rounded-xl bg-background backdrop-blur-sm border-2 border-border p-4 flex flex-col justify-between">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs font-mono font-bold uppercase text-muted-foreground flex items-center gap-1">
-                      <Activity className="w-3.5 h-3.5 text-brand-500" /> 7-Shift Mastery Curve
-                    </span>
-                    <span className="text-xs font-mono text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] px-1.5 py-0.5 rounded font-bold">+32% Net Trajectory</span>
-                  </div>
-
-                  <div className="w-full h-32 relative mt-1 select-none">
-                    <svg className="w-full h-full" viewBox="0 0 280 110" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="trendAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="var(--brand-500)" stopOpacity="0.25" />
-                          <stop offset="80%" stopColor="var(--brand-500)" stopOpacity="0.03" />
-                          <stop offset="100%" stopColor="var(--brand-500)" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-
-                      {/* Horizontal Graph Lines (Gridlines) */}
-                      {[
-                        { y: 14, label: "95%" },
-                        { y: 38, label: "85%" },
-                        { y: 62, label: "75%" },
-                        { y: 86, label: "65%" },
-                      ].map((grid) => (
-                        <g key={grid.y}>
-                          <text 
-                            x="2" 
-                            y={grid.y + 3} 
-                            className="fill-muted-foreground/60 text-[10px] font-mono font-bold"
-                          >
-                            {grid.label}
-                          </text>
-                          <line 
-                            x1="24" 
-                            y1={grid.y} 
-                            x2="276" 
-                            y2={grid.y} 
-                            stroke="currentColor" 
-                            className="stroke-border/40" 
-                            strokeDasharray="3 3" 
-                            strokeWidth="0.8" 
-                          />
-                        </g>
-                      ))}
-
-                      {/* Vertical Shift Gridlines */}
-                      {[32, 72, 112, 152, 192, 232, 270].map((x) => (
-                        <line 
-                          key={x} 
-                          x1={x} 
-                          y1="10" 
-                          x2={x} 
-                          y2="96" 
-                          stroke="currentColor" 
-                          className="stroke-border/20" 
-                          strokeDasharray="2 3" 
-                          strokeWidth="0.7" 
-                        />
-                      ))}
-
-                      {/* Realistic Area Fill with Ups & Dips */}
-                      <path 
-                        fill="url(#trendAreaGrad)" 
-                        d="M 32 93 L 72 59 L 112 78 L 152 40 L 192 55 L 232 28 L 270 16 L 270 96 L 32 96 Z" 
-                      />
-
-                      {/* Realistic Trend Line with Fluctuations */}
-                      <motion.path 
-                        fill="none" 
-                        stroke="var(--brand-500)" 
-                        strokeWidth="2.5" 
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M 32 93 L 72 59 L 112 78 L 152 40 L 192 55 L 232 28 L 270 16"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 1.2, ease: SNAPPY_EASE }}
-                      />
-
-                      {/* Data Point Nodes with Tooltips */}
-                      {[
-                        { shift: "Shift 1", val: "62%", x: 32, y: 93 },
-                        { shift: "Shift 2", val: "76%", x: 72, y: 59 },
-                        { shift: "Shift 3", val: "68%", x: 112, y: 78, isDip: true },
-                        { shift: "Shift 4", val: "84%", x: 152, y: 40 },
-                        { shift: "Shift 5", val: "78%", x: 192, y: 55, isDip: true },
-                        { shift: "Shift 6", val: "89%", x: 232, y: 28 },
-                        { shift: "Shift 7", val: "94%", x: 270, y: 16, isPeak: true },
-                      ].map((pt, i, arr) => {
-                        const isLatest = i === arr.length - 1;
-                        return (
-                          <g key={i} className="group/dot cursor-pointer">
-                            {isLatest && (
-                              <circle cx={pt.x} cy={pt.y} r="7" fill="var(--brand-500)" opacity="0.3" className="animate-ping" />
-                            )}
-                            <circle
-                              cx={pt.x}
-                              cy={pt.y}
-                              r={isLatest ? "4.5" : "3"}
-                              className="fill-background"
-                              stroke={pt.isDip ? "#f43f5e" : "var(--brand-500)"}
-                              strokeWidth="2"
-                            />
-                            <circle
-                              cx={pt.x}
-                              cy={pt.y}
-                              r="1.5"
-                              fill={pt.isDip ? "#f43f5e" : "var(--brand-500)"}
-                            />
-                          </g>
-                        );
-                      })}
-                    </svg>
-                  </div>
-                  <div className="flex justify-between text-xs font-mono text-muted-foreground mt-1 px-1">
-                    <span>Shift 1 (62%)</span>
-                    <span className="text-rose-400 font-semibold">Shift 3 (68% Dip)</span>
-                    <span className="text-rose-400 font-semibold">Shift 5 (78%)</span>
-                    <span className="text-brand-500 font-bold">Shift 7 (94% Peak)</span>
-                  </div>
-                </div>
-
-                {/* Column 3: Overall Rank Metric */}
-                <div className="rounded-xl bg-background backdrop-blur-sm border-2 border-border p-4 flex flex-col items-center justify-center text-center">
-                  <span className="text-xs font-mono font-bold uppercase text-muted-foreground mb-3 flex items-center gap-1">
-                    <Target className="w-3.5 h-3.5 text-brand-500" /> Overall Accuracy
-                  </span>
-                  <div className="relative w-24 h-24 rounded-full bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] flex items-center justify-center mb-3">
-                    <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="44" fill="none" className="stroke-border/50" strokeWidth="8" />
-                      <motion.circle 
-                        cx="50" cy="50" r="44" fill="none" stroke="#10b981" strokeWidth="8" strokeLinecap="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 0.86 }}
-                        transition={{ duration: 1.2, ease: SNAPPY_EASE }}
-                      />
-                    </svg>
-                    <span className="text-2xl font-black font-mono text-foreground">86%</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 w-full">
-                    <div className="surface-card rounded p-1.5">
-                      <div className="text-xs font-black font-mono text-foreground">164.5</div>
-                      <div className="text-[10px] font-mono uppercase text-muted-foreground">Proj. Score</div>
-                    </div>
-                    <div className="surface-card rounded p-1.5">
-                      <div className="text-xs font-black font-mono text-brand-500">42s</div>
-                      <div className="text-[10px] font-mono uppercase text-muted-foreground">Avg / Q</div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {/* ─── 2. Mental Maths Sprint Tab ─── */}
-            {activeTab === "maths" && (
-              <motion.div
-                key={`maths-${currentSprintIndex}`}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.25, ease: SNAPPY_EASE }}
-                className="max-w-xl mx-auto w-full flex flex-col items-center text-center p-2"
-              >
-                {/* Header with question indicators and streak */}
-                <div className="flex flex-wrap items-center justify-between gap-2 w-full mb-3 px-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2.5 py-1 rounded-full border-2 border-brand-500/20 flex items-center gap-1.5">
-                      <Timer className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "6s" }} /> Speed Maths
-                    </span>
-                    <span className="text-xs font-mono text-muted-foreground hidden sm:inline">{currentQ.level}</span>
-                  </div>
-
-                  {/* Question Pills */}
-                  <div className="flex items-center gap-1 bg-background p-1 rounded-xl border-2 border-border">
-                    {SPRINT_QUESTIONS.map((q, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          setCurrentSprintIndex(idx);
-                          setSelectedMathAnswer(null);
-                          setMathSolved(false);
-                        }}
-                        className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center transition-all ${
-                          currentSprintIndex === idx
-                            ? "bg-brand-500 text-on-brand font-black shadow-xs"
-                            : "text-muted-foreground hover:text-foreground hover:bg-card"
-                        }`}
-                      >
-                        {idx + 1}
-                      </button>
-                    ))}
-                  </div>
-
-                  {sprintStreak > 0 && (
-                    <span className="text-xs font-mono font-bold text-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2 py-0.5 rounded-full border-2 border-brand-500/20 flex items-center gap-1">
-                      🔥 {sprintStreak}
-                    </span>
-                  )}
-                </div>
-
-                {/* Question Expression */}
-                <div className="text-3xl sm:text-4xl font-black font-mono text-foreground my-3 tracking-wider flex items-center justify-center gap-3 min-h-[48px]">
-                  <span>{currentQ.num1}</span>
-                  {currentQ.op && <span className="text-brand-500">{currentQ.op}</span>}
-                  {currentQ.num2 && <span>{currentQ.num2}</span>}
-                  <span className="text-muted-foreground">=</span>
-                  <span className="text-brand-500 underline decoration-dashed underline-offset-8">
-                    {selectedMathAnswer !== null ? selectedMathAnswer : "?"}
-                  </span>
-                </div>
-
-                {/* Choices */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full mt-2">
-                  {currentQ.options.map((option) => {
-                    const isSelected = selectedMathAnswer === option;
-                    const isCorrect = option === currentQ.answer;
-                    let btnStyle = "bg-background hover:bg-card border-border/50 text-foreground";
-                    
-                    if (isSelected) {
-                      btnStyle = isCorrect 
-                        ? "bg-emerald-500 text-zinc-950 border-emerald-400 shadow-lg shadow-emerald-500/30 scale-105" 
-                        : "bg-rose-500 text-white border-rose-400 shadow-lg shadow-rose-500/30";
-                    }
-
-                    return (
-                      <motion.button
-                        key={option}
-                        whileHover={{ scale: 1.04 }}
-                        whileTap={{ scale: 0.96 }}
-                        onClick={() => handleMathChoice(option)}
-                        className={`py-3 rounded-xl border-2 text-base font-mono font-black transition-all ${btnStyle}`}
-                      >
-                        {option}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-
-                {/* Feedback message & Next Drill */}
-                {mathSolved && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-mono w-full bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] p-2.5 rounded-xl border-2 border-emerald-500/20 text-emerald-400 font-bold"
-                  >
-                    <div className="flex items-center gap-2 text-left">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <div>
-                        <div>Correct! +15 Elo points gained.</div>
-                        <div className="text-xs text-muted-foreground font-normal">{currentQ.tip}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button 
-                        onClick={resetMathDemo} 
-                        className="px-2 py-1 rounded bg-background text-foreground hover:text-brand-400 flex items-center gap-1 text-xs"
-                      >
-                        <RotateCw className="w-3 h-3" /> Retry
-                      </button>
-                      <button 
-                        onClick={nextSprintQuestion} 
-                        className="px-3 py-1 rounded bg-brand-500 text-on-brand font-bold hover:bg-brand-400 flex items-center gap-1 text-xs shadow-sm"
-                      >
-                        Next Drill <ArrowRight className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-                {!mathSolved && (
-                  <p className="text-xs text-muted-foreground mt-3 font-mono">
-                    💡 Click the correct answer to experience the instant feedback loop. (Question {currentSprintIndex + 1} of {SPRINT_QUESTIONS.length})
-                  </p>
-                )}
-              </motion.div>
-            )}
-
-            {/* ─── 3. Flashcard Tab ─── */}
-            {activeTab === "flashcards" && (
-              <motion.div
-                key={`flashcards-${currentCardIndex}`}
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.25, ease: SNAPPY_EASE }}
-                className="max-w-xl mx-auto w-full flex flex-col items-center p-1 sm:p-2"
-              >
-                {/* Header with Card Topic Selector */}
-                <div className="flex flex-wrap items-center justify-between gap-2 w-full mb-3 px-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-fuchsia-600 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] px-2.5 py-1 rounded-full border-2 border-fuchsia-500/20 flex items-center gap-1.5">
-                      <Brain className="w-3.5 h-3.5" /> Spaced Recall
-                    </span>
-                    <span className="text-xs font-mono text-muted-foreground hidden sm:inline">
-                      {currentCard.category}
-                    </span>
-                  </div>
-
-                  {/* 4 Card Selector Pills */}
-                  <div className="flex items-center gap-1 bg-background p-1 rounded-xl border-2 border-border">
-                    {FLASHCARD_DEMOS.map((card, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          setCurrentCardIndex(idx);
-                          setCardFlipped(false);
-                          setRatedInterval(null);
-                        }}
-                        className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-mono font-bold transition-all ${
-                          currentCardIndex === idx
-                            ? "bg-fuchsia-600 text-white font-black shadow-xs"
-                            : "text-muted-foreground hover:text-foreground hover:bg-card"
-                        }`}
-                      >
-                        Deck {idx + 1}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 3D Flip Card */}
-                <div 
-                  onClick={() => setCardFlipped(!cardFlipped)}
-                  className="w-full min-h-[190px] sm:min-h-[200px] rounded-2xl bg-background border-2 border-fuchsia-500/30 p-5 sm:p-6 flex flex-col justify-between cursor-pointer hover:border-fuchsia-500/60 transition-all shadow-xl shadow-fuchsia-500/10 relative group select-none"
-                >
-                  <div className="flex justify-between items-center text-xs font-mono text-muted-foreground">
-                    <div className="flex items-center gap-1.5">
-                      <span className="bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-600 dark:text-fuchsia-400 px-2 py-0.5 rounded font-bold">
-                        {currentCard.subtag}
-                      </span>
-                      <span className="text-xs text-brand-500/90 hidden sm:inline">
-                        • {currentCard.examReference}
-                      </span>
-                    </div>
-                    <span className="group-hover:text-foreground transition-colors flex items-center gap-1 text-fuchsia-600 dark:text-fuchsia-400 font-bold">
-                      <RotateCw className="w-3 h-3" /> {cardFlipped ? "Flip to Front" : "Tap to Reveal"}
-                    </span>
-                  </div>
-
-                  <div className="flex-1 flex flex-col items-center justify-center text-center my-3">
-                    {!cardFlipped ? (
-                      <div>
-                        <div className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
-                          {currentCard.word}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1 font-mono italic">
-                          {currentCard.phonetic}
-                        </div>
-                      </div>
-                    ) : (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-1 text-left sm:text-center w-full">
-                        <div className="text-xs sm:text-sm font-bold text-emerald-400 leading-relaxed mb-2">
-                          {currentCard.definition}
-                        </div>
-                        <div className="text-xs text-foreground/80 italic mb-2.5">
-                          {currentCard.example}
-                        </div>
-
-                        {/* Subject-Specific Metadata Box */}
-                        {currentCard.type === "vocab" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
-                            <div>
-                              <span className="text-emerald-400 font-bold">Synonyms: </span>
-                              <span className="text-muted-foreground">{currentCard.synonyms.join(", ")}</span>
-                            </div>
-                            <div>
-                              <span className="text-rose-400 font-bold">Antonyms: </span>
-                              <span className="text-muted-foreground">{currentCard.antonyms.join(", ")}</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {currentCard.type === "idiom" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
-                            <div>
-                              <span className="text-brand-400 font-bold">Related: </span>
-                              <span className="text-muted-foreground">{currentCard.related.join(", ")}</span>
-                            </div>
-                            <div>
-                              <span className="text-cyan-400 font-bold">Origin: </span>
-                              <span className="text-muted-foreground">{currentCard.origin}</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {currentCard.type === "polity" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
-                            <div className="sm:col-span-2">
-                              <span className="text-brand-400 font-bold">Key Note: </span>
-                              <span className="text-muted-foreground">{currentCard.landmarkNote}</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {currentCard.type === "history" && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono surface-card p-2.5 rounded-xl">
-                            <div>
-                              <span className="text-brand-400 font-bold">Impact: </span>
-                              <span className="text-muted-foreground">{currentCard.impact}</span>
-                            </div>
-                            <div>
-                              <span className="text-emerald-400 font-bold">Sequel: </span>
-                              <span className="text-muted-foreground">{currentCard.sequel}</span>
-                            </div>
-                          </div>
-                        )}
-                      </motion.div>
-                    )}
-                  </div>
-
-                  <div className="text-xs font-mono text-center text-muted-foreground/60">
-                    {cardFlipped ? "Rate your recall ease below to adjust review schedule" : "Tap anywhere on card to reveal definition & exam notes"}
-                  </div>
-                </div>
-
-                {/* Spaced Repetition Flashcard Rating Buttons */}
-                {cardFlipped && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="grid grid-cols-4 gap-2 w-full mt-3"
-                  >
-                    {[
-                      { label: "Again", time: "<1 min", color: "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-400 border-rose-500/30" },
-                      { label: "Hard", time: "12 hrs", color: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-400 border-brand-500/30" },
-                      { label: "Good", time: "3 days", color: "bg-[color-mix(in_oklab,var(--color-blue-500)_15%,var(--card))] text-blue-400 border-blue-500/30" },
-                      { label: "Easy", time: "8 days", color: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-400 border-emerald-500/30" },
-                    ].map((b) => (
-                      <button
-                        key={b.label}
-                        onClick={() => handleRating(b.label)}
-                        className={`p-2 rounded-xl border-2 flex flex-col items-center justify-center transition-all hover:scale-102 cursor-pointer ${b.color}`}
-                      >
-                        <span className="text-xs font-bold font-mono">{b.label}</span>
-                        <span className="text-xs opacity-75 font-mono">{b.time}</span>
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-
-                {ratedInterval && (
-                  <div className="mt-2 text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
-                    <Check className="w-3.5 h-3.5" /> Scheduled next review in {ratedInterval === "Easy" ? "8 days" : ratedInterval === "Good" ? "3 days" : ratedInterval === "Hard" ? "12 hours" : "1 minute"} • Advancing to next card...
-                  </div>
-                )}
-              </motion.div>
-            )}
-
-          </AnimatePresence>
-        </div>
-
-      </div>
-    </div>
-  );
-}
-
-/* ─── Comprehensive SSC Syllabus Matrix Section ─── */
-function SyllabusMatrixSection() {
-  const [selectedSection, setSelectedSection] = useState("quant");
-  const section = SYLLABUS_SECTIONS.find((s) => s.id === selectedSection) || SYLLABUS_SECTIONS[0];
-  const Icon = section.icon;
-
-  return (
-    <section className="w-full py-16 sm:py-24 relative z-10 bg-background border-t-2 border-border/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
-            <Layers className="w-3.5 h-3.5 text-brand-500" /> Complete Exam Blueprint
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
-            Syllabus &amp; Weightage Breakdown
-          </h2>
-          <p className="text-foreground/70 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
-            Every chapter mapped to recent TCS question frequency, topic weightages, and Tier 1 &amp; Tier 2 marks.
-          </p>
-        </div>
-
-        {/* 4 Section Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
-          {SYLLABUS_SECTIONS.map((sec) => {
-            const SIcon = sec.icon;
-            const isSelected = sec.id === selectedSection;
-            return (
-              <button
-                key={sec.id}
-                type="button"
-                onClick={() => setSelectedSection(sec.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold font-mono transition-all border-2 cursor-pointer ${
-                  isSelected
-                    ? "bg-brand-500 text-on-brand border-brand-400 shadow-md shadow-brand-500/20 font-black"
-                    : "bg-card border-border/40 text-foreground/80 hover:bg-card hover:text-foreground"
-                }`}
-              >
-                <SIcon className="w-4 h-4" />
-                <span>{sec.title.split(" ")[0]}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-sans ${isSelected ? "bg-zinc-950/20 text-zinc-950 font-bold" : "bg-muted text-muted-foreground"}`}>
-                  {sec.badge}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Selected Section Header & Topics Grid */}
-        <div className="surface-card rounded-3xl p-6 sm:p-8 shadow-xl shadow-black/5">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b-2 border-border/40">
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-brand-500 flex items-center justify-center border-2 border-brand-500/20 shadow-inner">
-                <Icon className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-black text-foreground tracking-tight flex items-center gap-2">
-                  {section.title}
-                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-500 border-2 border-brand-500/20">
-                    {section.badge}
-                  </span>
-                </h3>
-                <p className="text-xs text-muted-foreground mt-0.5">{section.desc}</p>
-              </div>
-            </div>
-
-            <Link href="/practice" className="shrink-0">
-              <button className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] hover:bg-[color-mix(in_oklab,var(--brand-500)_20%,var(--card))] text-brand-500 border-2 border-brand-500/30 text-xs font-mono font-bold transition-all cursor-pointer">
-                <span>Practice {section.title.split(" ")[0]} PYQs</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </Link>
-          </div>
-
-          {/* Topics Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            {section.topics.map((t, idx) => (
-              <div
-                key={idx}
-                className="p-3.5 sm:p-4 rounded-2xl surface-card hover:border-brand-500/30 transition-all flex items-center justify-between gap-3 group"
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-2 h-2 rounded-full bg-brand-500 shrink-0" />
-                  <span className="text-xs sm:text-sm font-semibold text-foreground truncate group-hover:text-brand-500 transition-colors">
-                    {t.name}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0 font-mono">
-                  <span className="text-xs text-muted-foreground font-medium">{t.pyqs}</span>
-                  <span
-                    className={`text-xs font-bold px-2 py-0.5 rounded-full border-2 ${
-                      t.weight === "High"
-                        ? "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-500 border-rose-500/20"
-                        : "bg-[color-mix(in_oklab,var(--color-blue-500)_10%,var(--card))] text-blue-500 border-blue-500/20"
-                    }`}
-                  >
-                    {t.weight}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Aspirant FAQ Section ─── */
-function AspirantFaqSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  return (
-    <section id="faq" className="w-full py-16 sm:py-24 relative z-10 bg-background scroll-mt-24">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
-            <HelpCircle className="w-3.5 h-3.5 text-brand-500" /> Aspirant Knowledge Base
-          </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-foreground/70 text-sm sm:text-base max-w-xl mx-auto font-normal leading-relaxed">
-            Everything you need to know about our questions, speed training methodology, and study system.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-3.5">
-          {SSC_FAQS.map((faq, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div
-                key={i}
-                className={`rounded-2xl border-2 transition-all overflow-hidden ${
-                  isOpen 
-                    ? "bg-card border-brand-500/30 shadow-lg shadow-brand-500/5" 
-                    : "bg-card border-border/40 hover:border-border/70"
-                }`}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
-                >
-                  <span className="font-bold text-sm sm:text-base text-foreground tracking-tight">
-                    {faq.question}
-                  </span>
-                  <div className={`w-7 h-7 rounded-xl bg-card border-2 border-border/40 flex items-center justify-center shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180 text-brand-500" : "text-muted-foreground"}`}>
-                    <ChevronDown className="w-4 h-4" />
-                  </div>
-                </button>
-
-                {isOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="px-4 sm:px-5 pb-4 sm:pb-5 pt-0 text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal border-t-2 border-border/20 mt-1"
-                  >
-                    <p className="pt-3">{faq.answer}</p>
-                  </motion.div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Main Landing Page ─── */
 export default function LandingPage() {
   const { user, signInWithGoogle } = useAuth();
 
@@ -1202,10 +90,10 @@ export default function LandingPage() {
       desc: "Timed calculation sprints, from tables and squares to percentages and ratios, at three difficulty levels.",
       badge: "12 drills",
       href: "/SSC/maths/mental-maths",
-      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))]",
-      iconText: "text-brand-600 dark:text-brand-400",
-      auraBg: "from-brand-500/25 via-brand-500/10 to-transparent",
-      borderHover: "hover:border-brand-500/40",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-sky-500)_15%,var(--card))]",
+      iconText: "text-sky-600 dark:text-sky-400",
+      auraBg: "from-sky-500/25 via-sky-500/10 to-transparent",
+      borderHover: "hover:border-sky-500/40",
       preview: "Timed or freestyle"
     },
     {
@@ -1214,10 +102,10 @@ export default function LandingPage() {
       desc: "Real SSC CGL questions grouped by topic. Answer, see if you were right, and read the explanation straight away.",
       badge: "Real papers",
       href: "/SSC/maths/topic-pyqs",
-      iconBg: "bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))]",
-      iconText: "text-emerald-600 dark:text-emerald-400",
-      auraBg: "from-emerald-500/25 via-emerald-500/10 to-transparent",
-      borderHover: "hover:border-emerald-500/40",
+      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))]",
+      iconText: "text-brand-600 dark:text-brand-400",
+      auraBg: "from-brand-500/25 via-brand-500/10 to-transparent",
+      borderHover: "hover:border-brand-500/40",
       preview: "Explanation for every question"
     },
     {
@@ -1226,10 +114,10 @@ export default function LandingPage() {
       desc: "Sit one section of a past paper against the clock with exam marking, then review every answer.",
       badge: "+2 / −0.5",
       href: "/SSC/english/sectional-pyqs",
-      iconBg: "bg-[color-mix(in_oklab,var(--color-blue-500)_15%,var(--card))]",
-      iconText: "text-blue-600 dark:text-blue-400",
-      auraBg: "from-blue-500/25 via-blue-500/10 to-transparent",
-      borderHover: "hover:border-blue-500/40",
+      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))]",
+      iconText: "text-brand-600 dark:text-brand-400",
+      auraBg: "from-brand-500/25 via-brand-500/10 to-transparent",
+      borderHover: "hover:border-brand-500/40",
       preview: "Submits itself when time is up"
     },
     {
@@ -1250,22 +138,22 @@ export default function LandingPage() {
       desc: "Match the Following, Fill in the Blanks, Hangman, Odd Link, Word of the Day and Spelling Check. Two-minute games that make vocabulary stick.",
       badge: "4 games",
       href: "/SSC/english/games",
-      iconBg: "bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))]",
-      iconText: "text-rose-600 dark:text-rose-400",
-      auraBg: "from-rose-500/25 via-rose-500/10 to-transparent",
-      borderHover: "hover:border-rose-500/40",
+      iconBg: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))]",
+      iconText: "text-fuchsia-700 dark:text-fuchsia-400",
+      auraBg: "from-fuchsia-500/25 via-fuchsia-500/10 to-transparent",
+      borderHover: "hover:border-fuchsia-500/40",
       preview: "No sign-in needed"
     },
     {
       icon: Map,
       title: "Syllabus Map",
-      desc: "Each section laid out as on the paper: questions, marks, negative marking and the topics you can practise today.",
+      desc: "Each section laid out as on the paper: questions, marks, negative marking and the topics you can practice today.",
       badge: "4 subjects",
       href: "/practice",
-      iconBg: "bg-[color-mix(in_oklab,var(--color-cyan-500)_15%,var(--card))]",
-      iconText: "text-cyan-600 dark:text-cyan-400",
-      auraBg: "from-cyan-500/25 via-cyan-500/10 to-transparent",
-      borderHover: "hover:border-cyan-500/40",
+      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))]",
+      iconText: "text-brand-600 dark:text-brand-400",
+      auraBg: "from-brand-500/25 via-brand-500/10 to-transparent",
+      borderHover: "hover:border-brand-500/40",
       preview: "Exam pattern at a glance"
     },
   ];
@@ -1276,21 +164,8 @@ export default function LandingPage() {
       {/* ─── Ambient Glow Blobs — Lightweight on mobile, animated on desktop ─── */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10" aria-hidden="true">
         <div className="hidden md:block">
-          <motion.div 
-            animate={{ y: [0, -30, 0], x: [0, 20, 0], scale: [1, 1.15, 1], opacity: [0.15, 0.28, 0.15] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[12%] -left-20 w-[45vw] h-[45vw] max-w-[600px] max-h-[600px] bg-[color-mix(in_oklab,var(--brand-500)_30%,var(--card))] blur-[120px] rounded-full"
-          />
-          <motion.div 
-            animate={{ y: [0, 40, 0], x: [0, -30, 0], scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-[20%] -right-20 w-[45vw] h-[45vw] max-w-[700px] max-h-[700px] bg-[color-mix(in_oklab,var(--brand-alt-500)_25%,var(--card))] blur-[140px] rounded-full"
-          />
-          <motion.div 
-            animate={{ y: [0, 25, 0], x: [0, -15, 0], opacity: [0.06, 0.14, 0.06] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute top-[60%] left-[20%] w-[25vw] h-[25vw] max-w-[400px] max-h-[400px] bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] blur-[100px] rounded-full"
-          />
+          <div className="absolute -left-20 top-[8%] h-[45vw] max-h-[600px] w-[45vw] max-w-[600px] rounded-full bg-[color-mix(in_oklab,var(--brand-500)_22%,var(--card))] opacity-60 blur-[120px]" />
+          <div className="absolute -right-20 top-[30%] h-[45vw] max-h-[650px] w-[45vw] max-w-[650px] rounded-full bg-[color-mix(in_oklab,var(--brand-alt-500)_20%,var(--card))] opacity-50 blur-[140px]" />
         </div>
         {/* Zero-overhead static ambient backdrop for mobile phones */}
         <div className="block md:hidden absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(192,38,211,0.12),transparent_70%)]" />
@@ -1306,7 +181,7 @@ export default function LandingPage() {
             </div>
             <div className="leading-tight">
               <div className="font-bold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
-                <span>Ept<span className="text-brand-600 dark:text-brand-400">Ssc</span></span>
+                <span>Ept<span className="text-brand-600 dark:text-brand-400">SSC</span></span>
               </div>
             </div>
           </Link>
@@ -1349,130 +224,28 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* ─── Hero Section ─── */}
-      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-16 md:pt-16 md:pb-24 flex flex-col items-center text-center relative z-10">
+      {/* ─── Hero ─── */}
+      <main className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-14 pt-8 sm:px-6 md:pb-20 md:pt-14">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-12">
+          <HeroCopy />
 
-        {/* Hero Badge */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9, y: 10 }} 
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ ...SNAPPY_SPRING, delay: 0.05 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-card backdrop-blur-md border-2 border-brand-500/30 text-xs sm:text-xs font-bold tracking-wider uppercase text-foreground/90 mb-6 font-mono shadow-md shadow-brand-500/10"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-brand-500" />
-          <span>Built around the SSC CGL Tier 1 paper</span>
-        </motion.div>
-
-        {/* Headline with Dynamic Word Cycler */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: SNAPPY_EASE, delay: 0.1 }}
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-5 max-w-5xl text-foreground"
-        >
-          Stop Guessing.{" "}
-          <br />
-          <span className="inline-block whitespace-nowrap">
-            <span className="text-foreground">Start </span>
-            <TypewriterHeroText />
-          </span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p 
-          initial={{ opacity: 0, y: 16 }} 
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: SNAPPY_EASE, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mb-8 font-normal leading-relaxed px-2 sm:px-0"
-        >
-          Real past-paper questions with explanations, speed-maths drills, spaced-repetition flashcards and two-minute word games. Free to start, no sign-up needed to try.
-        </motion.p>
-
-        {/* CTAs with Snappy Physics */}
-        <motion.div 
-          initial={{ opacity: 0, y: 16 }} 
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: SNAPPY_EASE, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto px-2 sm:px-0 mb-10"
-        >
-          <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }} transition={SNAPPY_SPRING} className="w-full sm:w-auto">
-            <Link 
-              href="/practice" 
-              className="group flex items-center justify-center gap-3 px-7 py-3.5 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white text-base sm:text-lg font-bold shadow-2xl shadow-brand-500/30 w-full sm:w-auto"
-            >
-              <span>Start Practicing — Free</span>
-              <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
-            </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: SNAPPY_EASE, delay: 0.1 }}
+          >
+            <TryQuestion />
           </motion.div>
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={SNAPPY_SPRING} className="w-full sm:w-auto">
-            <a 
-              href="#how-it-works" 
-              className="group flex items-center justify-center gap-2 px-6 py-3.5 rounded-full surface-card hover:bg-muted hover:border-border/70 text-foreground text-base sm:text-lg font-semibold transition-all w-full sm:w-auto"
-            >
-              See How It Works <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
-            </a>
-          </motion.div>
-        </motion.div>
-
-        {/* ─── Exam Category Pills (Clean Names Only) ─── */}
-        <motion.div 
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: SNAPPY_EASE, delay: 0.4 }}
-          className="flex flex-wrap justify-center items-center gap-2 sm:gap-2.5 max-w-3xl mb-12"
-        >
-          {SUBJECT_LINKS.map((subject) => {
-            const Icon = subject.icon;
-            return (
-              <Link
-                key={subject.id}
-                href={subject.href}
-                className="flex min-h-10 items-center gap-2 px-4 rounded-full text-sm font-semibold surface-card text-foreground/90 hover:-translate-y-0.5 hover:border-brand-500/40 transition-all"
-              >
-                <Icon className={`w-4 h-4 shrink-0 ${subject.tone}`} />
-                <span>{subject.label}</span>
-              </Link>
-            );
-          })}
-        </motion.div>
-
-        {/* ─── Trust Stats ─── */}
-        <motion.div 
-          initial={{ opacity: 0, y: 16 }} 
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.5, ease: SNAPPY_EASE }}
-          className="w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 py-4 mb-10"
-        >
-          {[
-            { value: 200, suffix: "", label: "Real PYQs, explained", icon: ScrollText, color: "text-brand-500" },
-            { value: 637, suffix: "", label: "Vocabulary flashcards", icon: Brain, color: "text-fuchsia-600 dark:text-fuchsia-400" },
-            { value: 12, suffix: "", label: "Speed-maths drills", icon: Zap, color: "text-sky-500" },
-            { value: 4, suffix: "", label: "Word games", icon: Gamepad2, color: "text-emerald-500" },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              whileHover={{ y: -3, scale: 1.02 }}
-              transition={SNAPPY_SPRING}
-              className="rounded-2xl p-4 sm:p-5 surface-card shadow-sm flex flex-col items-center justify-center text-center"
-            >
-              <stat.icon className={`w-5 h-5 ${stat.color} mb-2`} />
-              <div className="text-2xl sm:text-3xl font-black font-mono text-foreground">
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} delay={0.5 + i * 0.1} />
-              </div>
-              <div className="text-xs text-muted-foreground font-medium mt-0.5">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* ─── Interactive Live Hero Dashboard ─── */}
-        <div className="w-full max-w-5xl mt-6 relative mx-auto">
-          <InteractiveHeroDashboard />
         </div>
 
+        <div className="mt-12 md:mt-16">
+          <p className="section-label mb-3">Pick a section</p>
+          <SubjectCards />
+        </div>
       </main>
 
       {/* ─── How It Works ─── */}
-      <section id="how-it-works" className="w-full py-16 sm:py-24 relative z-10 bg-background">
+      <section id="how-it-works" className="w-full py-12 sm:py-20 relative z-10 bg-background">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div 
@@ -1481,7 +254,7 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full surface-card text-xs sm:text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-4 font-mono">
-              <RefreshCw className="w-3 h-3 text-brand-500" /> The EptSsc Loop
+              <RefreshCw className="w-3 h-3 text-brand-500" /> The EptSSC Loop
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
               A Simple Loop That Works
@@ -1505,7 +278,7 @@ export default function LandingPage() {
                   <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Sit a Real Section</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Pick a section from a past SSC CGL Tier 1 paper and attempt it against the clock, with the real +2 / −0.5 marking.</p>
                 </div>
-                <TimelineIcon baseClass="ring-blue-500/20 text-blue-500" activeClass="scale-110 bg-blue-500 text-white shadow-lg shadow-blue-500/20">
+                <TimelineIcon baseClass="ring-sky-500/20 text-sky-600" activeClass="scale-110 bg-sky-500 text-white shadow-lg shadow-sky-500/20">
                   <Activity className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
@@ -1574,7 +347,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Features Arsenal ─── */}
-      <section id="features" className="w-full py-16 sm:py-24 relative z-10 scroll-mt-24">
+      <section id="features" className="w-full py-12 sm:py-20 relative z-10 scroll-mt-24">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <motion.div 
@@ -1586,7 +359,7 @@ export default function LandingPage() {
               <Crosshair className="w-3 h-3 text-brand-500" /> Built for Serious Aspirants
             </motion.div>
             <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground mb-3">
-              Everything You Can Practise Today
+              Everything You Can Practice Today
             </motion.h2>
             <motion.p variants={itemVariants} className="text-foreground/70 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
               Six tools, all live. Tap any card to try it, no account needed.
@@ -1650,7 +423,7 @@ export default function LandingPage() {
 
 
       {/* ─── Pricing / Subscription Section ─── */}
-      <section className="w-full py-20 sm:py-24 relative z-10 bg-background">
+      <section className="w-full py-12 sm:py-20 relative z-10 bg-background">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <motion.div 
@@ -1715,7 +488,7 @@ export default function LandingPage() {
                 
                 <div className="mb-6 relative z-10">
                   <h3 className="text-2xl font-black text-white mb-1 flex items-center gap-2">
-                    EptSsc <span className="bg-gradient-to-r from-brand-400 to-brand-alt-500 text-on-brand px-2 py-0.5 rounded text-xs font-mono font-bold shadow-md">PRO</span>
+                    EptSSC <span className="bg-gradient-to-r from-brand-400 to-brand-alt-500 text-on-brand px-2 py-0.5 rounded text-xs font-mono font-bold shadow-md">PRO</span>
                   </h3>
                   <p className="text-zinc-400 text-xs font-medium">Planned: more papers, deeper analytics and custom tests.</p>
                   <div className="mt-5 flex items-baseline gap-1">
@@ -1764,8 +537,8 @@ export default function LandingPage() {
       <footer className="w-full pt-16 pb-8 relative z-10">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
         
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 mb-16 text-center relative">
-          <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] blur-[130px] rounded-full pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 mb-16 text-center relative isolate">
+          <div className="hidden md:block absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] blur-[130px] rounded-full pointer-events-none" aria-hidden="true" />
           
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
             Your selection{" "}
@@ -1782,9 +555,9 @@ export default function LandingPage() {
           <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }} transition={SNAPPY_SPRING}>
             <Link 
               href="/practice" 
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white text-base font-bold shadow-xl shadow-brand-500/25"
+              className={cn(DUO.primary, "px-8 text-base")}
             >
-              <span>Start Practicing — Free</span>
+              <span>Start practicing, free</span>
               <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
@@ -1797,7 +570,7 @@ export default function LandingPage() {
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-500 to-brand-alt-500 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
                 <Rocket className="w-3.5 h-3.5" />
               </div>
-              <span className="font-bold text-base tracking-tight text-foreground group-hover:text-brand-500 transition-colors">EptSsc</span>
+              <span className="font-bold text-base tracking-tight text-foreground group-hover:text-brand-500 transition-colors">EptSSC</span>
             </Link>
             <p className="text-muted-foreground text-xs leading-relaxed max-w-xs">
               Exam preparation built around the SSC CGL Tier 1 paper: real questions, speed drills, flashcards and games.
@@ -1805,7 +578,7 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Practise</h4>
+            <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Practice</h4>
             <Link href="/practice" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Practice Hub</Link>
             <Link href="/SSC/maths/mental-maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Speed Math</Link>
             <Link href="/SSC/english/flashcards" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Flashcards</Link>
@@ -1813,7 +586,7 @@ export default function LandingPage() {
           </div>
           <div className="flex flex-col gap-2">
             <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider font-mono">Subjects</h4>
-            <Link href="/SSC/maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Mathematics</Link>
+            <Link href="/SSC/maths" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Quant</Link>
             <Link href="/SSC/english" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">English</Link>
             <Link href="/SSC/reasoning" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">Reasoning</Link>
             <Link href="/SSC/gk" className="inline-block py-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">General Knowledge</Link>
@@ -1829,7 +602,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-5 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left relative">
           <div className="absolute top-0 left-4 right-4 sm:left-6 sm:right-6 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
           <div className="text-muted-foreground text-xs font-medium">
-            © {new Date().getFullYear()} EptSsc. Built for SSC Aspirants.
+            © {new Date().getFullYear()} EptSSC. Built for SSC Aspirants.
           </div>
           <div className="text-xs font-medium text-muted-foreground/70">
             Engineered for students who refuse to settle.
@@ -1840,3 +613,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

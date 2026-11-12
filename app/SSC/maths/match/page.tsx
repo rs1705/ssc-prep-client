@@ -11,7 +11,7 @@ export default function MathsMatchPage() {
       blurb="Tap a number, then its partner. Squares, cubes, roots and fractions until they're instant."
       tone="maths"
       backHref="/SSC/maths"
-      backLabel="Back to Maths"
+      backLabel="Back to Quant"
       storagePrefix="ssc:maths-match"
     />
   );

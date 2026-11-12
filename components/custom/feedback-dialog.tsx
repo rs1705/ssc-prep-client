@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -140,7 +142,7 @@ export default function FeedbackDialog() {
             </DialogDescription>
             <Button
               onClick={() => onOpenChange(false)}
-              className="mt-6 w-full h-11 rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--primary)_90%,var(--card))] shadow-md active:scale-98 transition-transform"
+              className={cn(DUO.primary, "mt-6 w-full")}
             >
               Close
             </Button>
@@ -309,14 +311,14 @@ export default function FeedbackDialog() {
                   type="button"
                   variant="outline"
                   onClick={() => onOpenChange(false)}
-                  className="flex-1 h-11 rounded-xl font-semibold border-border hover:bg-muted text-muted-foreground"
+                  className={cn(DUO.secondary, "flex-1")}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 h-11 rounded-xl font-bold bg-primary text-primary-foreground hover:bg-[color-mix(in_oklab,var(--primary)_90%,var(--card))] shadow-md active:scale-98 transition-all flex items-center justify-center gap-1.5"
+                  className={cn(DUO.primary, "flex-1")}
                 >
                   {isSubmitting ? (
                     <>

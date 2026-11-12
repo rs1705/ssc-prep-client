@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-6 overflow-x-hidden pb-10 sm:gap-8">
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-6 overflow-x-hidden sm:gap-8">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <h1 className="mb-1 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
@@ -62,8 +62,8 @@ export default function Dashboard() {
           </>
         ) : (
           <div className="grid gap-6 lg:grid-cols-2" aria-hidden="true">
-            <div className="surface-card h-72 rounded-3xl" />
-            <div className="surface-card h-72 rounded-3xl" />
+            <div className="surface-card h-72 rounded-3xl p-4 sm:p-6" />
+            <div className="surface-card h-72 rounded-3xl p-4 sm:p-6" />
           </div>
         )}
 

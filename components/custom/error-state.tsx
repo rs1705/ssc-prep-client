@@ -1,4 +1,6 @@
 import React from "react";
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { AlertCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -17,7 +19,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
 }) => {
   return (
     <div className={`w-full max-w-md mx-auto transition-all duration-300 ease-out animate-in fade-in slide-in-from-bottom-2 ${className}`}>
-      <div className="flex flex-col items-center justify-center text-center p-8 rounded-3xl surface-card shadow-xs hover:shadow-sm hover:border-border/80 transition-all duration-300">
+      <div className="flex flex-col items-center justify-center text-center rounded-3xl surface-card shadow-xs hover:shadow-sm hover:border-border/80 transition-all duration-300 p-4 sm:p-6">
         <div className="w-12 h-12 rounded-2xl bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 select-none">
           <AlertCircle className="w-6 h-6" strokeWidth={2} />
         </div>
@@ -28,7 +30,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
         {onRetry && (
           <Button 
             onClick={onRetry}
-            className="h-10 px-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full shadow-xs hover:shadow-md hover:shadow-brand-500/20 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white active:scale-[0.98] transition-all flex items-center gap-2 hover:cursor-pointer border-0"
+            className={cn(DUO.primary, "min-h-11 px-6")}
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Try Again

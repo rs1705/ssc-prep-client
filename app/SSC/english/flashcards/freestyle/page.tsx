@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -291,14 +293,14 @@ const FreestylePage = () => {
 
                     <SheetFooter className="mt-auto pt-4 border-t-2 border-border/40 flex-row gap-3">
                       <Button
-                        className="flex-1 h-11 rounded-xl font-semibold hover:cursor-pointer transition-all"
+                        className={cn(DUO.secondary, "flex-1")}
                         variant="outline"
                         onClick={handleFilterResetClick}
                       >
                         Clear Filters
                       </Button>
                       <Button
-                        className="flex-1 h-11 rounded-xl font-bold hover:cursor-pointer transition-all shadow-sm"
+                        className={cn(DUO.primary, "flex-1")}
                         onClick={handleFilterSetClick}
                       >
                         Apply Filters
@@ -360,7 +362,7 @@ const FreestylePage = () => {
               {/* Absolute Loading Overlay during fetches */}
               {isFetching && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] flex items-center justify-center pointer-events-none">
-                  <div className="surface-card px-8 py-5 rounded-3xl shadow-2xl flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="surface-card rounded-3xl shadow-2xl flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200 p-4 sm:p-6">
                     <Loader size="md" />
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1 animate-pulse">
                       Syncing Cards...
@@ -375,7 +377,7 @@ const FreestylePage = () => {
     </TopicPageLayout>
 
     <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-      <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl p-5 shadow-2xl">
+      <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl shadow-2xl p-4 sm:p-6">
         <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
           <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />

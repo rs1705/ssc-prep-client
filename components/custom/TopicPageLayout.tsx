@@ -17,7 +17,7 @@ interface TopicPageLayoutProps {
 
 const ROUTE_NAMES: Record<string, string> = {
   ssc: "SSC",
-  maths: "Mathematics",
+  maths: "Quant",
   "mental-maths": "Speed Math",
   english: "English",
   flashcards: "Flashcards",
@@ -93,7 +93,7 @@ export const TopicPageLayout = ({
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
         <div
           aria-label="Breadcrumb"
-          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground select-none mb-4 shrink-0 flex-wrap`}
+          className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground select-none mb-1 shrink-0 flex-wrap`}
         >
           <Link
             href={user ? "/dashboard" : "/"}
@@ -129,7 +129,7 @@ export const TopicPageLayout = ({
 
       {/* Sub-section Header */}
       {title && (
-        <div className={`mb-6 w-full flex flex-col items-start text-left gap-1.5 shrink-0 ${contentMaxWidthClass}`}>
+        <div className={`mb-4 sm:mb-6 w-full flex flex-col items-start text-left gap-1 shrink-0 ${contentMaxWidthClass}`}>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
             {title}
           </h1>

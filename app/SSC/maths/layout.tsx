@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Maths",
-  description: "Maths section",
+  title: "Quant",
+  description: "Quantitative Aptitude section",
 };
 
 export default function RootLayout({

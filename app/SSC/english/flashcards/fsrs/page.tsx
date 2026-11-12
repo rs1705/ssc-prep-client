@@ -59,7 +59,7 @@ const FsrsPage = () => {
     return (
       <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
         <div className="w-full max-w-[500px] mx-auto transition-all duration-300 ease-in-out animate-in fade-in">
-          <div className="flex flex-col items-center justify-center text-center p-8 min-h-[320px] rounded-3xl surface-card shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center min-h-[320px] rounded-3xl surface-card shadow-sm p-4 sm:p-6">
             <span className="text-5xl mb-4 select-none animate-pulse">🔒</span>
             <h3 className="text-lg font-bold text-foreground mb-1.5">
               Sign In Required
@@ -157,7 +157,7 @@ const FsrsPage = () => {
     </TopicPageLayout>
     
       <AlertDialog open={showQuitConfirm} onOpenChange={setShowQuitConfirm}>
-        <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl p-5 shadow-2xl">
+        <AlertDialogContent className="sm:w-full max-w-sm surface-card rounded-3xl shadow-2xl p-4 sm:p-6">
           <AlertDialogHeader className="pb-3 border-b-2 border-border/40">
             <AlertDialogTitle className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />

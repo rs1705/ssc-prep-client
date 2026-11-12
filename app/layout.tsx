@@ -32,10 +32,10 @@ const displayFont = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "EptSsc · Elite Prep Training",
+  title: "EptSSC · Elite Prep Training",
   description: "Elite Prep Training & Precision Transformation for SSC CGL Aspirants",
-  applicationName: "EptSsc",
-  appleWebApp: { capable: true, title: "EptSsc", statusBarStyle: "default" },
+  applicationName: "EptSSC",
+  appleWebApp: { capable: true, title: "EptSSC", statusBarStyle: "default" },
   icons: { apple: "/apple-touch-icon.png" },
 };
 

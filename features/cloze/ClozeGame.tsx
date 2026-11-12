@@ -189,7 +189,7 @@ export function ClozeGame() {
           onStart={() => void start()}
           startLabel={loading ? "Loading sentences…" : "Start"}
         >
-          <DeckPicker label="Practise" options={DECKS} value={deck} onChange={chooseDeck} />
+          <DeckPicker label="Practice" options={DECKS} value={deck} onChange={chooseDeck} />
           {error && <p role="alert" className="text-sm font-semibold text-rose-600 dark:text-rose-400">{error}</p>}
         </GameLobby>
       )}

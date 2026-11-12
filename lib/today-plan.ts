@@ -5,7 +5,7 @@ import { readStored, writeStored } from "@/lib/storage";
 
 /**
  * "Today's 15 minutes": a small daily plan that rotates by date and ticks
- * itself off as the student practises. Everything is kept on this device for
+ * itself off as the student practices. Everything is kept on this device for
  * now; the same shape can later come from the server.
  */
 
@@ -66,7 +66,7 @@ const DRILLS = [
 ];
 
 const PYQ_SUBJECTS = [
-  { id: "maths", name: "Maths" },
+  { id: "maths", name: "Quant" },
   { id: "english", name: "English" },
   { id: "reasoning", name: "Reasoning" },
   { id: "gk", name: "General Knowledge" },
@@ -81,7 +81,7 @@ const GAMES = [
   { href: "/SSC/english/games/match-the-following", name: "Match the Following" },
   { href: "/SSC/reasoning/speed-drills/coding-decoding", name: "Coding-Decoding drill" },
   { href: "/SSC/english/games/fill-in-the-blanks", name: "Fill in the Blanks" },
-  { href: "/SSC/maths/match", name: "Maths Match the Pairs" },
+  { href: "/SSC/maths/match", name: "Quant Match the Pairs" },
   { href: "/SSC/english/hangman", name: "Hangman" },
   { href: "/SSC/reasoning/speed-drills/number-series", name: "Number Series drill" },
   { href: "/SSC/english/games/spelling-sprint", name: "Spelling Check" },

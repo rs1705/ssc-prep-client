@@ -6,11 +6,11 @@ import "katex/dist/katex.min.css";
 
 /**
  * Renders the small subset of Markdown the question bank uses (bold, italics,
- * bullet lines, line breaks) plus inline/display LaTeX. Everything except the
+ * <u>underline</u>, bullet lines, line breaks) plus inline/display LaTeX. Everything except the
  * KaTeX output is built as React nodes, so question text can never inject HTML.
  */
 
-const INLINE = /(\$\$[^$]+\$\$|\$[^$\n]+\$|\*\*[^*\n]+\*\*|\*[^*\s][^*\n]*\*)/g;
+const INLINE = /(\$\$[^$]+\$\$|\$[^$\n]+\$|<u>[^<\n]+<\/u>|\*\*[^*\n]+\*\*|\*[^*\s][^*\n]*\*)/g;
 const BULLET = /^\s*(?:[-*•])\s+/;
 
 function Tex({ tex, display }: { tex: string; display: boolean }) {
@@ -35,6 +35,14 @@ function renderInline(text: string, keyPrefix: string): React.ReactNode[] {
     }
     if (part.startsWith("$") && part.endsWith("$") && part.length > 2) {
       return <Tex key={key} tex={part.slice(1, -1)} display={false} />;
+    }
+    // Papers underline the word a question is about (e.g. "the underlined word").
+    if (part.startsWith("<u>") && part.endsWith("</u>")) {
+      return (
+        <u key={key} className="decoration-2 underline-offset-4">
+          {part.slice(3, -4)}
+        </u>
+      );
     }
     if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
       return (

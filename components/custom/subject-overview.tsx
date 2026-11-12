@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, CircleMinus, Clock, FileText, Target } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CircleMinus, Clock, FileText, Target } from "lucide-react";
 import { SUBJECT_META, TIER1_PATTERN } from "@/lib/exam-pattern";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 
@@ -98,5 +98,31 @@ export function SyllabusMap({ subject }: { subject: SubjectKey }) {
         )}
       </ul>
     </section>
+  );
+}
+
+/**
+ * One-line version of the exam facts for subject and practice pages, linking to
+ * the full syllabus page. Keeps the practice modes near the top on phones.
+ */
+export function ExamPatternLink({ subject }: { subject: SubjectKey }) {
+  const theme = subjectTheme(subject);
+  const meta = SUBJECT_META[subject];
+  return (
+    <Link
+      href={`/SSC/${subject}/syllabus`}
+      className={`group flex items-center gap-3 rounded-2xl border-2 bg-gradient-to-br px-3.5 py-2.5 transition-colors ${theme.banner} ${theme.hoverBorder}`}
+    >
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-extrabold text-foreground">{meta.paperSection}</p>
+        <p className="truncate font-mono text-xs font-semibold text-muted-foreground">
+          {TIER1_PATTERN.questionsPerSection} Qs · {TIER1_PATTERN.marksPerSection} marks · −{TIER1_PATTERN.negativeMark.toFixed(2)} per wrong
+        </p>
+      </div>
+      <span className={`flex shrink-0 items-center gap-1 text-xs font-bold ${theme.text}`}>
+        Syllabus
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+      </span>
+    </Link>
   );
 }

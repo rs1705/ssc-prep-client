@@ -5,7 +5,7 @@ import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { TopicCard, type RevisionConfig } from "@/components/custom/TopicCard";
 import { TOPIC_ID } from "@/lib/mathGenerator";
 import { useRouter } from "next/navigation";
-import posthog from "posthog-js";
+import { track } from "@/lib/analytics";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface MathTopic {
@@ -368,7 +368,7 @@ const MentalMaths = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
 
   const handleStart = (topicId: string) => {
-    posthog.capture("mental_maths_topic_selected", { topic: topicId });
+    track("mental_maths_topic_selected", { topic: topicId });
     setLoadingTopic(topicId);
     router.push(`/SSC/maths/mental-maths/${topicId}`);
   };
@@ -379,7 +379,7 @@ const MentalMaths = () => {
       description="Spend 10 minutes daily here to build instinctive calculation speed so you can attempt every question before the sectional timer expires."
       contentMaxWidthClass="w-full"
     >
-      <div className="flex flex-col xl:flex-row gap-8 w-full">
+      <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 w-full">
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col gap-6 w-full min-w-0">
 
@@ -486,7 +486,7 @@ const MentalMaths = () => {
         {/* Right Rail - Stats & Streak Panel (Desktop Only) */}
         <div className="hidden xl:flex w-80 flex-col gap-6 shrink-0 animate-in fade-in slide-in-from-right-4 duration-500">
           {/* Quant on the real paper */}
-          <div className="surface-card rounded-3xl p-6 flex flex-col gap-4">
+          <div className="surface-card rounded-3xl flex flex-col gap-4 p-4 sm:p-6">
             <h3 className="section-label">Quant in SSC CGL Tier 1</h3>
             <dl className="grid grid-cols-3 gap-2 text-center">
               {[
@@ -509,7 +509,7 @@ const MentalMaths = () => {
           </div>
 
           {/* How drills work */}
-          <div className="surface-card rounded-3xl p-6 flex flex-col gap-4">
+          <div className="surface-card rounded-3xl flex flex-col gap-4 p-4 sm:p-6">
             <h3 className="section-label">How drills work</h3>
             <ul className="flex flex-col gap-3 text-sm text-foreground">
               {[

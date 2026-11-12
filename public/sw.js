@@ -1,4 +1,4 @@
-/* EptSsc service worker: makes the app installable and keeps visited
+/* EptSSC service worker: makes the app installable and keeps visited
    pages, scripts and public study data available offline. */
 const VERSION = "v1";
 const STATIC = `static-${VERSION}`;

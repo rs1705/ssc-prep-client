@@ -28,7 +28,7 @@ interface ComingSoonProps {
 export default function ComingSoon({
   pageTitle,
   title = "Coming soon",
-  description = "This part of EptSsc is being built.",
+  description = "This part of EptSSC is being built.",
   icon: Icon = Clock3,
   features = [],
   actions = [{ label: "Go to Practice", href: "/practice" }],

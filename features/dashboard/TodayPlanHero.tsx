@@ -43,7 +43,7 @@ function ProgressRing({ done, total }: { done: number; total: number }) {
   );
 }
 
-/** Dashboard hero: today's short plan, ticking itself off as the student practises. */
+/** Dashboard hero: today's short plan, ticking itself off as the student practices. */
 export function TodayPlanHero() {
   const { plan, progress, streak, done, total, next, minutesLeft } = useTodayPlan();
   const complete = done === total;
@@ -51,7 +51,7 @@ export function TodayPlanHero() {
 
   const heading = complete ? "Plan complete!" : done === 0 ? "Your 15 minutes for today" : `${done} of ${total} done`;
   const sub = complete
-    ? "Great work. Come back tomorrow for a fresh plan, or keep practising."
+    ? "Great work. Come back tomorrow for a fresh plan, or keep practicing."
     : done === 0
       ? "Four short steps across the paper. Each one ticks itself off when you finish it."
       : `About ${minutesLeft} minutes left. Keep going.`;
@@ -59,7 +59,7 @@ export function TodayPlanHero() {
   return (
     <section
       aria-labelledby="today-plan-heading"
-      className="surface-card grid gap-6 rounded-3xl p-5 sm:p-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-8"
+      className="surface-card grid gap-6 rounded-3xl lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-8 p-4 sm:p-6"
     >
       {/* Ring, streak */}
       <div className="flex items-center gap-5 lg:flex-col lg:justify-center lg:gap-4 lg:border-r-2 lg:border-border lg:pr-8">
@@ -152,7 +152,7 @@ export function TodayPlanHero() {
             </Link>
           ) : (
             <Link href="/practice" className={cn(DUO.success, "w-full sm:w-auto")}>
-              Keep practising
+              Keep practicing
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           )}

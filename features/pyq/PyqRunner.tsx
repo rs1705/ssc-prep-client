@@ -17,7 +17,6 @@ import {
   Repeat,
   Target,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { DUO } from "@/features/games/buttons";
 import { replayHref, shuffle } from "@/features/games/sessionSet";
 import { cn } from "@/lib/utils";
@@ -291,17 +290,17 @@ export function PyqRunner({
                 Same set again
               </button>
             )}
-            <Button
+            <button
               type="button"
               onClick={onRestart}
-              className="h-11 gap-2 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-6 text-sm font-bold text-white"
+              className={cn(DUO.primary, "min-h-11 px-5")}
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" />
               {restartLabel}
-            </Button>
-            <Button type="button" variant="outline" onClick={onExit} className="h-11 rounded-full px-6 text-sm font-bold">
+            </button>
+            <button type="button" onClick={onExit} className={cn(DUO.secondary, "min-h-11 px-5")}>
               Back
-            </Button>
+            </button>
           </div>
         </section>
       )}
@@ -352,17 +351,16 @@ export function PyqRunner({
             {question.options.map((option) => {
               const isChosen = chosen === option.label;
               const isAnswer = option.label === question.answer;
-              let tone =
-                "border-border bg-card text-foreground hover:border-primary/40 hover:bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))]";
-              if (revealed && isAnswer) {
-                tone = "border-emerald-500/60 bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-foreground";
-              } else if (revealed && isChosen) {
-                tone = "border-rose-500/60 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-foreground";
-              } else if (isChosen) {
-                tone = "border-primary bg-[color-mix(in_oklab,var(--primary)_5%,var(--card))] text-foreground";
-              } else if (revealed) {
-                tone = "border-border bg-card text-muted-foreground";
-              }
+              const tone =
+                revealed && isAnswer
+                  ? DUO.correct
+                  : revealed && isChosen
+                    ? DUO.wrong
+                    : isChosen
+                      ? "border-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-foreground"
+                      : revealed
+                        ? DUO.faded
+                        : DUO.idle;
 
               return (
                 <button
@@ -372,7 +370,7 @@ export function PyqRunner({
                   aria-checked={isChosen}
                   disabled={revealed}
                   onClick={() => dispatch({ type: "SELECT", label: option.label })}
-                  className={`flex min-h-12 items-center gap-3 rounded-2xl border-2 px-3 py-2.5 text-left text-sm font-medium transition-colors disabled:cursor-default sm:text-base ${tone}`}
+                  className={cn(DUO.option, tone, "flex min-h-12 items-center gap-3 px-3 py-2.5 text-left text-sm font-medium sm:text-base")}
                 >
                   <span
                     className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-black ${
@@ -405,58 +403,55 @@ export function PyqRunner({
 
           {/* Controls */}
           <div className="flex flex-wrap items-center justify-between gap-2 border-t-2 border-border/70 pt-4">
-            <Button
+            <button
               type="button"
-              variant="outline"
               disabled={state.index === 0}
               onClick={() => dispatch({ type: "GOTO", index: state.index - 1 })}
-              className="h-11 gap-1.5 rounded-full px-4 text-sm font-bold"
+              className={cn(DUO.secondary, "min-h-11 px-4")}
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Previous</span>
-            </Button>
+            </button>
 
             <div className="flex flex-wrap items-center justify-end gap-2">
               {mode === "test" && !state.submitted && chosen && (
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
                   onClick={() => dispatch({ type: "CLEAR" })}
-                  className="h-11 gap-1.5 rounded-full px-4 text-sm font-bold text-muted-foreground"
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-bold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 >
                   <Eraser className="h-4 w-4" aria-hidden="true" />
                   Clear
-                </Button>
+                </button>
               )}
               {mode === "test" && !state.submitted && (
-                <Button
+                <button
                   type="button"
-                  variant={isLast ? "default" : "outline"}
                   onClick={() => setConfirming(true)}
-                  className="h-11 gap-1.5 rounded-full px-5 text-sm font-bold"
+                  className={cn(isLast ? DUO.primary : DUO.secondary, "min-h-11 px-4")}
                 >
                   <Flag className="h-4 w-4" aria-hidden="true" />
                   Submit test
-                </Button>
+                </button>
               )}
               {practiceDone && !state.submitted && (
-                <Button
+                <button
                   type="button"
                   onClick={() => dispatch({ type: "SUBMIT" })}
-                  className="h-11 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-sm font-bold text-white"
+                  className={cn(DUO.success, "min-h-11 px-5")}
                 >
                   See results
-                </Button>
+                </button>
               )}
               {!isLast && (
-                <Button
+                <button
                   type="button"
                   onClick={() => dispatch({ type: "GOTO", index: state.index + 1 })}
-                  className="h-11 gap-1.5 rounded-full px-5 text-sm font-bold"
+                  className={cn(DUO.primary, "min-h-11 px-5")}
                 >
                   Next
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Button>
+                </button>
               )}
             </div>
           </div>
@@ -505,27 +500,27 @@ export function PyqRunner({
                   : "You have answered every question."}
               </p>
               <div className="mt-3 flex gap-2">
-                <Button
+                <button
                   type="button"
                   autoFocus
                   onClick={() => {
                     setConfirming(false);
                     dispatch({ type: "SUBMIT" });
                   }}
-                  className="h-10 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-sm font-bold text-white"
+                  className={cn(DUO.primary, "min-h-11 px-5")}
                 >
                   Yes, submit
-                </Button>
-                <Button type="button" variant="outline" onClick={() => setConfirming(false)} className="h-10 rounded-full px-5 text-sm font-bold">
+                </button>
+                <button type="button" onClick={() => setConfirming(false)} className={cn(DUO.secondary, "min-h-11 px-5")}>
                   Keep going
-                </Button>
+                </button>
               </div>
             </div>
           )}
         </article>
 
         {/* Question palette */}
-        <nav aria-label="Questions" className="surface-card rounded-3xl p-4 lg:sticky lg:top-24 lg:w-64 lg:shrink-0">
+        <nav aria-label="Questions" className="surface-card rounded-3xl lg:sticky lg:top-24 lg:w-64 lg:shrink-0 p-4 sm:p-6">
           <p className="section-label mb-3">
             Questions · {answeredCount}/{state.questions.length} answered
           </p>

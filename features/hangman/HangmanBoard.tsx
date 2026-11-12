@@ -58,7 +58,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
   return (
     <section
       aria-label="Hangman game"
-      className="flex min-h-0 w-full flex-1 flex-col gap-2.5 overflow-y-auto pb-1 [scrollbar-width:none] sm:gap-3.5 [@media(max-height:600px)]:gap-1.5 [@media(max-height:480px)_and_(min-width:560px)]:grid [@media(max-height:480px)_and_(min-width:560px)]:grid-cols-2 [@media(max-height:480px)_and_(min-width:560px)]:content-start [@media(max-height:480px)_and_(min-width:560px)]:gap-x-4 [@media(max-height:480px)_and_(min-width:560px)]:gap-y-1.5"
+      className="flex min-h-0 w-full flex-1 flex-col gap-2.5 overflow-y-auto pb-1 [scrollbar-width:none] sm:gap-3.5 [@media(max-height:700px)]:gap-2 [@media(max-height:600px)]:gap-1.5 [@media(max-height:480px)_and_(min-width:560px)]:grid [@media(max-height:480px)_and_(min-width:560px)]:grid-cols-2 [@media(max-height:480px)_and_(min-width:560px)]:content-start [@media(max-height:480px)_and_(min-width:560px)]:gap-x-4 [@media(max-height:480px)_and_(min-width:560px)]:gap-y-1.5"
     >
       {/* Status row */}
       <div className="flex items-center justify-between gap-2">
@@ -149,7 +149,7 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
           className="h-[clamp(48px,11dvh,128px)] w-auto [@media(max-height:480px)_and_(min-width:560px)]:hidden"
         />
         <WordTiles word={word.word} guessed={state.guessed} revealAll={revealing} />
-        <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground [@media(max-height:600px)]:hidden">
+        <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground [@media(max-height:700px)]:hidden">
           {state.wrong} / {MAX_STRIKES} strikes
         </p>
       </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { readStored, writeStored } from "@/lib/storage";
+import { readStored, removeStored, writeStored } from "@/lib/storage";
 import { ACTIVITY_EVENT } from "@/lib/activity-log";
 import type { SubjectKey } from "@/lib/subject-theme";
 
@@ -11,7 +11,8 @@ import type { SubjectKey } from "@/lib/subject-theme";
  * don't use this: a paused clock would make the score meaningless.
  */
 
-const PREFIX = "ssc:unfinished:";
+export const UNFINISHED_PREFIX = "ssc:unfinished:";
+const PREFIX = UNFINISHED_PREFIX;
 /** Older than this, an unfinished session is dropped. */
 export const UNFINISHED_MAX_AGE_MS = 3 * 86_400_000;
 export const RESUME_PARAM = "resume";
@@ -44,12 +45,14 @@ export function loadUnfinished<T>(path: string, now = Date.now()): Unfinished<T>
   return entry;
 }
 
-export function clearUnfinished(path: string): void {
-  try {
-    window.localStorage.removeItem(key(path));
-  } catch {
-    // Storage blocked: nothing to clear.
-  }
+/** Removed sessions, remembered so another device's copy doesn't come back. */
+export const UNFINISHED_REMOVED_KEY = "ssc:unfinished-removed";
+
+export function clearUnfinished(path: string, at = Date.now()): void {
+  const clean = path.split("?")[0];
+  const removed = readStored<{ path: string; at: number }[]>(UNFINISHED_REMOVED_KEY, []).filter((r) => r.path !== clean);
+  writeStored(UNFINISHED_REMOVED_KEY, [{ path: clean, at }, ...removed].slice(0, 200));
+  removeStored(key(path));
   notify();
 }
 
