@@ -38,6 +38,15 @@ const GROUPS = FORMULA_CATEGORIES.map((category) => ({
 const MATH_CLASS =
   "[&_.katex-display]:my-1 [&_.katex-display]:overflow-x-auto [&_.katex-display]:overflow-y-hidden [&_.katex-display]:py-1";
 
+// Inside the formula panel, a bulleted list reads as separate formula rows split by hairlines.
+const ROWS_CLASS =
+  "[&_ul]:list-none [&_ul]:gap-0 [&_ul]:pl-0 [&_li]:border-b [&_li]:border-dashed [&_li]:border-border [&_li]:py-2 [&_li:first-child]:pt-0.5 [&_li:last-child]:border-b-0 [&_li:last-child]:pb-0.5";
+
+const FIELD_CLASS =
+  "h-11 w-full rounded-[10px] border border-border bg-card text-sm font-medium text-foreground outline-none focus-visible:border-brand-500/60 focus-visible:ring-4 focus-visible:ring-brand-500/15";
+
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
 function matches(entry: FormulaEntry, query: string): boolean {
   const topic = TOPIC_BY_ID.get(entry.topic)?.name ?? "";
   return [entry.title, entry.body, entry.note ?? "", entry.example ?? "", topic]
@@ -96,7 +105,7 @@ export default function FormulasPage() {
             <select
               value={topic.id}
               onChange={(e) => openTopic(e.target.value, false)}
-              className="h-11 w-full appearance-none rounded-xl border-2 border-border bg-card pl-3.5 pr-10 text-sm font-bold text-foreground outline-none focus-visible:border-brand-500/60"
+              className={`${FIELD_CLASS} appearance-none pl-3.5 pr-10 font-semibold`}
             >
               {GROUPS.map((group) => (
                 <optgroup key={group.id} label={group.label}>
@@ -154,20 +163,26 @@ export default function FormulasPage() {
             <SearchResults query={query} results={results} onOpenTopic={openTopic} onClear={() => setQuery("")} />
           ) : (
             <>
-              <header className="flex flex-wrap items-end justify-between gap-3 border-b-2 border-border pb-4">
-                <div>
-                  <p className="section-label">{CATEGORY_LABEL.get(topic.category)}</p>
-                  <h2 className="mt-1 text-2xl font-extrabold text-foreground">{topic.name}</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {entries.length - tricks} formulas
-                    {tricks > 0 && ` · ${tricks} ${tricks === 1 ? "trick" : "tricks"}`}
+              <header className="flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                <div className="min-w-0">
+                  <p className="section-label text-muted-foreground">
+                    {CATEGORY_LABEL.get(topic.category)}
+                    <span className="mx-1.5 opacity-50">/</span>
+                    Topic {index + 1} of {FORMULA_TOPICS.length}
                   </p>
+                  <h2 className="mt-1.5 font-display text-2xl font-extrabold tracking-tight text-foreground">
+                    {topic.name}
+                  </h2>
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    <CountChip n={entries.length - tricks} word="formula" />
+                    {tricks > 0 && <CountChip n={tricks} word="trick" />}
+                  </div>
                 </div>
                 <button
                   type="button"
                   aria-pressed={hideFormulas}
                   onClick={() => setHideFormulas((v) => !v)}
-                  className={`flex min-h-10 items-center gap-2 rounded-xl border-2 px-3.5 text-sm font-bold transition-colors ${
+                  className={`flex min-h-10 items-center gap-2 rounded-[10px] border px-3.5 text-sm font-semibold transition-colors ${
                     hideFormulas
                       ? "border-brand-600 bg-brand-600 text-on-brand"
                       : "border-border bg-card text-foreground hover:bg-muted"
@@ -185,9 +200,9 @@ export default function FormulasPage() {
               )}
 
               <ol className="flex flex-col gap-3">
-                {entries.map((entry) => (
+                {entries.map((entry, i) => (
                   <li key={`${topic.id}-${entry.id}-${hideFormulas}`}>
-                    <FormulaCard entry={entry} startHidden={hideFormulas} />
+                    <FormulaCard entry={entry} number={i + 1} startHidden={hideFormulas} />
                   </li>
                 ))}
               </ol>
@@ -214,7 +229,7 @@ function SearchBox({ value, onChange }: { value: string; onChange: (v: string) =
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search all formulas"
         aria-label="Search all formulas"
-        className="h-11 w-full rounded-xl border-2 border-border bg-card pl-10 pr-10 text-sm font-medium text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-brand-500/60 focus-visible:ring-4 focus-visible:ring-brand-500/15"
+        className={`${FIELD_CLASS} pl-10 pr-10 placeholder:text-muted-foreground`}
       />
       {value && (
         <button
@@ -230,59 +245,82 @@ function SearchBox({ value, onChange }: { value: string; onChange: (v: string) =
   );
 }
 
-function FormulaCard({ entry, startHidden }: { entry: FormulaEntry; startHidden: boolean }) {
+function CountChip({ n, word }: { n: number; word: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 text-xs text-muted-foreground">
+      <span className="font-mono font-bold tabular-nums text-foreground">{n}</span>
+      {n === 1 ? word : `${word}s`}
+    </span>
+  );
+}
+
+function FormulaCard({
+  entry,
+  number,
+  startHidden,
+}: {
+  entry: FormulaEntry;
+  number: number;
+  startHidden: boolean;
+}) {
   const [hidden, setHidden] = useState(startHidden);
-  const [open, setOpen] = useState(false);
-  const hasMore = Boolean(entry.note || entry.example);
+  const isTrick = entry.kind === "trick";
 
   return (
-    <article className="surface-card rounded-2xl p-4 sm:p-5">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-base font-bold leading-snug text-foreground">{entry.title}</h3>
-        {entry.kind === "trick" && (
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] px-2 py-0.5 text-[11px] font-bold text-brand-700 dark:text-brand-300">
+    <article className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="flex items-start gap-3 px-4 pt-4 sm:px-5">
+        <span className="mt-[3px] font-mono text-xs font-bold tabular-nums text-muted-foreground">
+          {pad2(number)}
+        </span>
+        <h3 className="min-w-0 flex-1 text-base font-bold leading-snug text-foreground">{entry.title}</h3>
+        {isTrick ? (
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-[color-mix(in_oklab,var(--brand-500)_12%,var(--card))] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-brand-700 dark:text-brand-300">
             <Lightbulb className="h-3 w-3" aria-hidden="true" />
             Trick
+          </span>
+        ) : (
+          <span className="shrink-0 rounded-md border border-border px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            Formula
           </span>
         )}
       </div>
 
-      {hidden ? (
-        <button
-          type="button"
-          onClick={() => setHidden(false)}
-          className="mt-3 flex min-h-16 w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border text-sm font-bold text-muted-foreground transition-colors hover:border-brand-500/50 hover:text-foreground"
-        >
-          <Eye className="h-4 w-4" aria-hidden="true" />
-          Tap to reveal
-        </button>
-      ) : (
-        <div className={`mt-3 text-[0.95rem] leading-relaxed text-foreground ${MATH_CLASS}`}>
-          <RichText text={entry.body} />
-        </div>
-      )}
-
-      {hasMore && !hidden && (
-        <div className="mt-3">
+      <div className="px-4 pb-4 pt-3 sm:px-5">
+        {hidden ? (
           <button
             type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:underline dark:text-brand-300"
+            onClick={() => setHidden(false)}
+            className="flex min-h-20 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-[color-mix(in_oklab,var(--muted)_35%,var(--card))] text-sm font-semibold text-muted-foreground transition-colors hover:border-brand-500/50 hover:text-foreground"
           >
-            {open ? "Hide example" : entry.example ? "Show example" : "Show note"}
-            <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+            <Eye className="h-4 w-4" aria-hidden="true" />
+            Tap to reveal
           </button>
-          {open && (
-            <div className={`mt-2 flex flex-col gap-2 rounded-xl bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] p-3 text-sm leading-relaxed text-muted-foreground ${MATH_CLASS}`}>
-              {entry.note && <p>{entry.note}</p>}
-              {entry.example && (
-                <div className="text-foreground">
-                  <RichText text={entry.example} />
-                </div>
-              )}
-            </div>
-          )}
+        ) : (
+          <div
+            className={`rounded-xl border border-border bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] px-4 py-3 text-[0.95rem] leading-relaxed text-foreground ${MATH_CLASS} ${ROWS_CLASS}`}
+          >
+            <RichText text={entry.body} />
+          </div>
+        )}
+
+        {entry.note && !hidden && (
+          <p className="mt-3 flex gap-2 text-sm leading-relaxed text-muted-foreground">
+            <span className="mt-[3px] shrink-0 font-mono text-[10px] font-bold uppercase tracking-wider text-foreground/70">
+              Remember
+            </span>
+            <span className="min-w-0">{entry.note}</span>
+          </p>
+        )}
+      </div>
+
+      {entry.example && !hidden && (
+        <div className="border-t border-dashed border-border px-4 py-3 sm:px-5">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+            Example
+          </p>
+          <div className={`mt-1 text-sm leading-relaxed text-foreground ${MATH_CLASS}`}>
+            <RichText text={entry.example} />
+          </div>
         </div>
       )}
     </article>
@@ -299,13 +337,13 @@ function TopicPager({
   onOpen: (id: string) => void;
 }) {
   return (
-    <div className="mt-2 flex flex-col gap-3 border-t-2 border-border pt-5">
+    <div className="mt-2 flex flex-col gap-3 border-t border-border pt-5">
       <div className="grid grid-cols-2 gap-3">
         {prev ? (
           <button
             type="button"
             onClick={() => onOpen(prev.id)}
-            className="surface-card flex min-h-16 flex-col items-start justify-center rounded-xl px-4 py-2 text-left transition-colors hover:border-brand-500/40"
+            className="flex min-h-16 flex-col items-start justify-center rounded-xl border border-border bg-card px-4 py-2 text-left transition-colors hover:border-brand-500/40"
           >
             <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" /> Previous
@@ -319,7 +357,7 @@ function TopicPager({
           <button
             type="button"
             onClick={() => onOpen(next.id)}
-            className="surface-card flex min-h-16 flex-col items-end justify-center rounded-xl px-4 py-2 text-right transition-colors hover:border-brand-500/40"
+            className="flex min-h-16 flex-col items-end justify-center rounded-xl border border-border bg-card px-4 py-2 text-right transition-colors hover:border-brand-500/40"
           >
             <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
               Next <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -361,13 +399,13 @@ function SearchResults({
 }) {
   if (results.length === 0) {
     return (
-      <div className="surface-card flex flex-col items-center gap-3 rounded-2xl px-6 py-14 text-center">
+      <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card px-6 py-14 text-center">
         <Search className="h-7 w-7 text-muted-foreground" aria-hidden="true" />
         <p className="font-bold text-foreground">Nothing matches &ldquo;{query}&rdquo;</p>
         <button
           type="button"
           onClick={onClear}
-          className="rounded-xl border-2 border-border bg-card px-4 py-2 text-sm font-bold hover:bg-muted"
+          className="rounded-[10px] border border-border bg-card px-4 py-2 text-sm font-semibold hover:bg-muted"
         >
           Clear search
         </button>
@@ -398,7 +436,11 @@ function SearchResults({
           <ol className="flex flex-col gap-3">
             {items.map((entry) => (
               <li key={entry.id}>
-                <FormulaCard entry={entry} startHidden={false} />
+                <FormulaCard
+                  entry={entry}
+                  number={(ENTRIES_BY_TOPIC.get(topic.id) ?? []).indexOf(entry) + 1}
+                  startHidden={false}
+                />
               </li>
             ))}
           </ol>
