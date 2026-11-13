@@ -61,7 +61,9 @@ export function ReviewSession() {
     setPhase(picked.length > 0 ? "playing" : "empty");
   }, []);
 
-  useEffect(() => begin(), [begin]);
+  useEffect(() => {
+    begin();
+  }, [begin]);
 
   const card = cards[index];
   const theme = card ? subjectTheme(card.mistake.subject) : null;

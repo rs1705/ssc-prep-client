@@ -17,6 +17,8 @@ interface TopicPageLayoutProps {
 
 const ROUTE_NAMES: Record<string, string> = {
   ssc: "SSC",
+  "mock-tests": "Mock Tests",
+  attempt: "Test",
   maths: "Quant",
   "mental-maths": "Speed Math",
   english: "English",

@@ -17,7 +17,7 @@ export function MobileTabBar() {
       className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t-2 border-border/40 bg-background backdrop-blur-xl pb-[env(safe-area-inset-bottom)]"
     >
       <ul className="mx-auto flex max-w-lg items-stretch justify-around">
-        {PRIMARY_NAV.map(({ to, label, icon: Icon }) => {
+        {PRIMARY_NAV.map(({ to, label, shortLabel, icon: Icon }) => {
           const active = pathname === to || pathname.startsWith(`${to}/`);
           return (
             <li key={to} className="flex-1">
@@ -35,7 +35,7 @@ export function MobileTabBar() {
                   strokeWidth={active ? 2.4 : 1.8}
                   aria-hidden="true"
                 />
-                <span className="truncate">{label}</span>
+                <span className="truncate">{shortLabel ?? label}</span>
               </Link>
             </li>
           );

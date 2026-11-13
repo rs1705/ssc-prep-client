@@ -41,6 +41,22 @@ export interface SectionalPaper extends PyqPaper {
   questions: Pyq[];
 }
 
+export interface MockPaperSummary extends PyqPaper {
+  sections: { subject: SubjectKey; count: number }[];
+}
+
+export interface MockSection {
+  subject: SubjectKey;
+  questions: Pyq[];
+}
+
+/** A full-length Tier 1 test: a real past paper or a generated mock. */
+export interface FullMock extends PyqPaper {
+  kind: "paper" | "mock";
+  durationSeconds: number;
+  sections: MockSection[];
+}
+
 // Shares the Nest base URL and auth header set up for flashcards.
 export const pyqApi = flashcardApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -63,6 +79,17 @@ export const pyqApi = flashcardApi.injectEndpoints({
     getSectionalPaper: builder.query<SectionalPaper, { paperId: string; subject: SubjectKey }>({
       query: ({ paperId, subject }) => `/pyqs/papers/${paperId}?subject=${subject}`,
     }),
+    getMockPapers: builder.query<MockPaperSummary[], void>({
+      query: () => "/mocks/papers",
+    }),
+    getMockPaper: builder.query<FullMock, string>({
+      query: (id) => `/mocks/papers/${id}`,
+    }),
+    getNewMock: builder.query<FullMock, void>({
+      query: () => "/mocks/new",
+      // Every mock is freshly drawn, so never reuse a cached one.
+      keepUnusedDataFor: 0,
+    }),
   }),
 });
 
@@ -71,4 +98,7 @@ export const {
   useLazyGetPyqSetQuery,
   useGetPyqPapersQuery,
   useLazyGetSectionalPaperQuery,
+  useGetMockPapersQuery,
+  useLazyGetMockPaperQuery,
+  useLazyGetNewMockQuery,
 } = pyqApi;

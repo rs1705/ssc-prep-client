@@ -24,7 +24,9 @@ function PageViews() {
 }
 
 export default function PostHogProvider({ children }: { children: React.ReactNode }) {
-  useEffect(() => initAnalytics(), []);
+  useEffect(() => {
+    initAnalytics();
+  }, []);
 
   return (
     <>

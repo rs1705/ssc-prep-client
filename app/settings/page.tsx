@@ -88,7 +88,9 @@ export default function SettingsPage() {
   const { prefs, update } = usePreferences();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const set = <K extends keyof Preferences>(key: K) => (value: Preferences[K]) => update({ [key]: value } as Partial<Preferences>);
 

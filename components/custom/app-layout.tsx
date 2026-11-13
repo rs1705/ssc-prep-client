@@ -19,6 +19,18 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
+  // A running mock test takes the whole screen, like the real CBT: no sidebar,
+  // top bar or tab bar. Sync and the wake notice still run.
+  if (pathname.startsWith("/mock-tests/attempt")) {
+    return (
+      <>
+        {children}
+        <ServerWakeNotice />
+        <ProgressSync />
+      </>
+    );
+  }
+
   const isGameRoute = (path: string) => {
     if (path.includes('/hangman')) return true;
     if (path.includes('/fsrs')) return true;

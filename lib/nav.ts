@@ -2,6 +2,7 @@ import {
   Settings,
   Bookmark,
   Brain,
+  ClipboardCheck,
   Calculator,
   ChartNoAxesCombined,
   Dumbbell,
@@ -19,6 +20,8 @@ import type { SubjectKey } from "@/lib/subject-theme";
 export interface NavItem {
   to: string;
   label: string;
+  /** Shorter label for the phone tab bar, where six tabs share the width. */
+  shortLabel?: string;
   icon: LucideIcon;
   /** Hidden from guests (the page itself is protected). */
   requiresAuth?: boolean;
@@ -37,6 +40,7 @@ export interface NavGroup {
 export const PRIMARY_NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: Home, requiresAuth: true },
   { to: "/practice", label: "Practice", icon: Dumbbell },
+  { to: "/mock-tests", label: "Mock Tests", shortLabel: "Mocks", icon: ClipboardCheck },
   { to: "/analytics", label: "Analytics", icon: ChartNoAxesCombined, requiresAuth: true },
   { to: "/bookmarks", label: "Bookmarks", icon: Bookmark, requiresAuth: true },
   { to: "/leaderboard", label: "Leaderboard", icon: Trophy, requiresAuth: true },
