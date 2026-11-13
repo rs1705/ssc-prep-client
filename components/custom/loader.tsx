@@ -3,12 +3,8 @@ import { cn } from "@/lib/utils";
 
 interface LoaderProps {
   className?: string;
-  size?: "sm" | "md" | "lg";
   text?: string;
 }
-
-// Even pixel sizes so the centre never falls on a half pixel.
-const SIZE = { sm: "h-6 w-6", md: "h-10 w-10", lg: "h-14 w-14" } as const;
 
 // Circle of radius 20 in a 48 box: circumference ≈ 125.7. The arc is ~30% of it.
 const R = 20;
@@ -20,14 +16,15 @@ const CIRCUMFERENCE = 2 * Math.PI * R;
  * SVG sits on its own compositing layer so the rotation never snaps a pixel up
  * or down.
  */
-export const Loader = ({ className = "", size = "md", text }: LoaderProps) => {
+/** One size app-wide (40px ring, the mock-test loader): every screen waits the same way. */
+export const Loader = ({ className = "", text }: LoaderProps) => {
   return (
     <div className={cn("flex flex-col items-center justify-center gap-4", className)}>
       <svg
         viewBox="0 0 48 48"
         fill="none"
         aria-hidden="true"
-        className={cn("block shrink-0 animate-spin [transform-origin:50%_50%] will-change-transform", SIZE[size])}
+        className={cn("block shrink-0 animate-spin [transform-origin:50%_50%] will-change-transform", "h-10 w-10")}
         style={{ animationDuration: "0.9s" }}
       >
         <circle cx="24" cy="24" r={R} strokeWidth="5" className="stroke-[color-mix(in_oklab,var(--brand-500)_18%,var(--card))]" />

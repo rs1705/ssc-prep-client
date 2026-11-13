@@ -4,7 +4,7 @@ import Loader from "./loader";
 const LoadingOverlay = () => {
   return (
     <div className="fixed inset-0 w-screen h-[100dvh] flex flex-col items-center justify-center bg-background backdrop-blur-md z-[9999] animate-in fade-in duration-200">
-      <Loader size="lg" text="EptSSC is loading..." />
+      <Loader text="EptSSC is loading…" />
     </div>
   );
 };

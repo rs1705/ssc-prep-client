@@ -12,7 +12,7 @@ export function PageLoader({ text = "Loading", className = "" }: { text?: string
       aria-live="polite"
       className={`flex min-h-[50dvh] w-full flex-1 items-center justify-center py-10 ${className}`}
     >
-      <Loader size="lg" text={text} />
+      <Loader text={text} />
     </div>
   );
 }

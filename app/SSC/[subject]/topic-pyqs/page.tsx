@@ -132,7 +132,7 @@ export default function TopicPyqsPage() {
     >
       {isLoading ? (
         <div className="flex min-h-[40dvh] items-center justify-center">
-          <Loader size="lg" text="Loading topics" />
+          <Loader text="Loading topics…" />
         </div>
       ) : isError || !topics ? (
         <ErrorState

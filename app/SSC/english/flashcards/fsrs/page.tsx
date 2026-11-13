@@ -46,9 +46,7 @@ const FsrsPage = () => {
     return (
       <TopicPageLayout hideBreadcrumbs={true} centerContent={true}>
         <div className="flex-1 w-full h-full min-h-[50dvh] flex flex-col items-center justify-center">
-          <Loader
-            size="lg"
-            text="Checking auth session..."
+          <Loader text="Checking your account…"
           />
         </div>
       </TopicPageLayout>
@@ -136,9 +134,7 @@ const FsrsPage = () => {
         <div className="w-full flex-1 flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px]">
           {isLoading ? (
             <div className="flex-1 w-full h-full min-h-[45dvh] flex flex-col items-center justify-center py-8">
-              <Loader
-                size="lg"
-                text="Syncing study deck..."
+              <Loader text="Syncing study deck…"
               />
             </div>
           ) : isError ? (

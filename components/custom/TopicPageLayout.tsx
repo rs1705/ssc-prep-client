@@ -93,13 +93,13 @@ export const TopicPageLayout = ({
     <div className={`flex flex-col items-center w-full mx-auto ${hideBreadcrumbs ? 'pb-0' : 'pb-4'} h-full flex-1 ${centerContent ? 'justify-center' : 'justify-start pt-0'}`}>
       {/* Dynamic Breadcrumbs */}
       {!hideBreadcrumbs && breadcrumbSegments.length > 0 && (
-        <div
+        <nav
           aria-label="Breadcrumb"
           className={`${contentMaxWidthClass} flex items-center justify-start gap-1.5 text-xs font-mono font-semibold text-muted-foreground select-none mb-1 shrink-0 flex-wrap`}
         >
           <Link
             href={user ? "/dashboard" : "/"}
-            className="py-1.5 hover:text-foreground transition-colors"
+            className="-mx-1 -my-2 inline-flex min-h-9 items-center rounded px-1 transition-colors hover:text-foreground"
           >
             Home
           </Link>
@@ -118,7 +118,7 @@ export const TopicPageLayout = ({
                 ) : (
                   <Link
                     href={path}
-                    className="py-1.5 hover:text-foreground transition-colors"
+                    className="-mx-1 -my-2 inline-flex min-h-9 items-center rounded px-1 transition-colors hover:text-foreground"
                   >
                     {label}
                   </Link>
@@ -126,7 +126,7 @@ export const TopicPageLayout = ({
               </React.Fragment>
             );
           })}
-        </div>
+        </nav>
       )}
 
       {/* Sub-section Header */}

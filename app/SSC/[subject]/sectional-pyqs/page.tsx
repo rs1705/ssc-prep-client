@@ -66,7 +66,7 @@ export default function SectionalPyqsPage() {
 
         {isLoading ? (
           <div className="flex min-h-[30dvh] items-center justify-center">
-            <Loader size="lg" text="Loading papers" />
+            <Loader text="Loading papers…" />
           </div>
         ) : isError || !papers ? (
           <ErrorState

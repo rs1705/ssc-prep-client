@@ -335,7 +335,7 @@ const FreestylePage = () => {
         <div className="relative w-full flex-1 flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px]">
           {isLoading ? (
             <div className="flex-1 w-full h-full min-h-[45dvh] flex flex-col justify-center items-center py-8">
-              <Loader size="lg" text="Loading flashcards..." />
+              <Loader text="Loading flashcards…" />
             </div>
           ) : isError ? (
             <div className="flex flex-1 justify-center items-center min-h-[350px] p-6 w-full">
@@ -363,7 +363,7 @@ const FreestylePage = () => {
               {isFetching && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] flex items-center justify-center pointer-events-none">
                   <div className="surface-card rounded-3xl shadow-2xl flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in-95 duration-200 p-4 sm:p-6">
-                    <Loader size="md" />
+                    <Loader />
                     <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1 animate-pulse">
                       Syncing Cards...
                     </span>
