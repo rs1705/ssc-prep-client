@@ -6,14 +6,33 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Loader } from "@/components/custom/loader";
 import { BTN, MockRunner } from "@/features/mock/MockRunner";
-import { useLazyGetMockPaperQuery, useLazyGetNewMockQuery, type FullMock } from "@/redux/PyqApi";
+import { SUBJECT_LABEL, type SubjectKey } from "@/lib/subject-theme";
+import {
+  useLazyGetMockPaperQuery,
+  useLazyGetNewMockQuery,
+  useLazyGetSectionalPaperQuery,
+  type FullMock,
+} from "@/redux/PyqApi";
 
-/** /mock-tests/attempt?paper=<paper id | new>: the full-screen test. */
+const SUBJECTS: SubjectKey[] = ["maths", "english", "reasoning", "gk"];
+
+/**
+ * The full-screen test.
+ *   ?paper=new                  a fresh 100-question mock
+ *   ?paper=<id>                 a whole past paper
+ *   ?paper=<id>&section=maths   one section of a past paper (Sectional PYQs)
+ */
 function Attempt() {
   const router = useRouter();
-  const paper = useSearchParams().get("paper") ?? "new";
+  const params = useSearchParams();
+  const paper = params.get("paper") ?? "new";
+  const sectionParam = params.get("section");
+  const section = SUBJECTS.find((s) => s === sectionParam) ?? null;
+  const homeHref = section ? `/SSC/${section}/sectional-pyqs` : "/mock-tests";
+
   const [fetchPaper] = useLazyGetMockPaperQuery();
   const [fetchMock] = useLazyGetNewMockQuery();
+  const [fetchSection] = useLazyGetSectionalPaperQuery();
   const [mock, setMock] = useState<FullMock | null>(null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -22,15 +41,36 @@ function Attempt() {
     setMock(null);
     setFailed(false);
     try {
-      const result = paper === "new" ? await fetchMock(undefined, false) : await fetchPaper(paper, true);
-      if (result.data) {
-        setMock(result.data);
+      let next: FullMock | undefined;
+      if (section && paper !== "new") {
+        const { data } = await fetchSection({ paperId: paper, subject: section }, true);
+        if (data) {
+          next = {
+            kind: "section",
+            id: data.id,
+            title: `${data.title} · ${SUBJECT_LABEL[section]}`,
+            year: data.year,
+            shift: data.shift,
+            date: data.date,
+            questionCount: data.questionCount,
+            durationSeconds: data.durationSeconds,
+            sections: [{ subject: section, questions: data.questions }],
+          };
+        }
+      } else {
+        const { data } = paper === "new" ? await fetchMock(undefined, false) : await fetchPaper(paper, true);
+        next = data;
+      }
+      if (next) {
+        setMock(next);
         setAttempt((n) => n + 1);
-      } else setFailed(true);
+      } else {
+        setFailed(true);
+      }
     } catch {
       setFailed(true);
     }
-  }, [paper, fetchMock, fetchPaper]);
+  }, [paper, section, fetchMock, fetchPaper, fetchSection]);
 
   useEffect(() => {
     void load();
@@ -39,13 +79,13 @@ function Attempt() {
   if (failed) {
     return (
       <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 bg-background p-6 text-center">
-        <p className="text-lg font-extrabold text-foreground">Couldn&apos;t load the test</p>
+        <p className="text-lg font-bold text-foreground">Couldn&apos;t load the test</p>
         <p className="max-w-sm text-sm text-muted-foreground">The server may be waking up. Please try again in a moment.</p>
         <div className="flex gap-2">
           <button type="button" onClick={() => void load()} className={BTN.primary}>
             Try again
           </button>
-          <Link href="/mock-tests" className={BTN.outline}>
+          <Link href={homeHref} className={BTN.outline}>
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Back
           </Link>
@@ -66,9 +106,11 @@ function Attempt() {
     <MockRunner
       key={`${mock.id}-${attempt}`}
       mock={mock}
-      restartLabel={paper === "new" ? "New mock test" : "Retake this paper"}
+      homeHref={homeHref}
+      exitLabel={section ? "All papers" : "All tests"}
+      restartLabel={paper === "new" ? "New mock test" : section ? "Retake this section" : "Retake this paper"}
       onRestart={() => (paper === "new" ? void load() : setAttempt((n) => n + 1))}
-      onExit={() => router.push("/mock-tests")}
+      onExit={() => router.push(homeHref)}
     />
   );
 }

@@ -52,7 +52,8 @@ export interface MockSection {
 
 /** A full-length Tier 1 test: a real past paper or a generated mock. */
 export interface FullMock extends PyqPaper {
-  kind: "paper" | "mock";
+  /** "section" = one subject of a past paper (Sectional PYQs). */
+  kind: "paper" | "mock" | "section";
   durationSeconds: number;
   sections: MockSection[];
 }

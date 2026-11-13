@@ -40,6 +40,15 @@ interface MockRunnerProps {
   onExit: () => void;
   onRestart: () => void;
   restartLabel: string;
+  /** Where the test lives, for the history entry (defaults to the Mock Tests page). */
+  homeHref?: string;
+  /** Label for the button back to that page. */
+  exitLabel?: string;
+}
+
+/** "Mock test", "Previous year paper" or "Sectional test". */
+function kindLabel(kind: FullMock["kind"]) {
+  return kind === "mock" ? "Mock test" : kind === "section" ? "Sectional test" : "Previous year paper";
 }
 
 /* Plain exam-style buttons: the CBT look, not the app's chunky game buttons. */
@@ -77,7 +86,7 @@ const ZOOM = ["text-[15px]", "text-base", "text-lg", "text-xl"];
 
 function StatusChip({ status, children, className }: { status: PaletteStatus; children?: React.ReactNode; className?: string }) {
   return (
-    <span className={cn("relative inline-flex items-center justify-center rounded-full border font-mono text-xs font-bold", STATUS_STYLE[status], className)}>
+    <span className={cn("relative inline-flex items-center justify-center rounded-lg border font-mono text-xs font-bold", STATUS_STYLE[status], className)}>
       {children}
       {status === "answered-marked" && (
         <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-card bg-emerald-500" aria-hidden="true" />
@@ -177,7 +186,7 @@ function Instructions({ mock, onExit, onBegin }: MockRunnerProps & { onBegin: ()
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-600 font-mono text-xs font-bold text-white" aria-hidden="true">
             E
           </span>
-          <p className="truncate text-sm font-semibold text-foreground">EptSSC · {mock.kind === "mock" ? "Mock test" : "Previous year paper"}</p>
+          <p className="truncate text-sm font-semibold text-foreground">EptSSC · {kindLabel(mock.kind)}</p>
         </div>
         <button type="button" onClick={onExit} className={BTN.ghost}>
           <X className="h-4 w-4" aria-hidden="true" />
@@ -202,14 +211,16 @@ function Instructions({ mock, onExit, onBegin }: MockRunnerProps & { onBegin: ()
           </dl>
 
           <section>
-            <h2 className="mb-3 text-sm font-bold text-foreground">The four sections run one after another</h2>
+            <h2 className="mb-3 text-sm font-bold text-foreground">
+              {mock.sections.length > 1 ? `The ${mock.sections.length} sections run one after another` : "The section"}
+            </h2>
             <ol className="relative flex flex-col gap-0 border-l-2 border-border pl-5">
               {mock.sections.map((s, i) => (
                 <li key={s.subject} className="relative pb-3 last:pb-0">
                   <span className={cn("absolute -left-[27px] top-1 h-3 w-3 rounded-full ring-4 ring-background", subjectTheme(s.subject).dot)} aria-hidden="true" />
                   <p className="text-sm font-semibold text-foreground">{SECTION_NAME[s.subject]}</p>
                   <p className="text-xs text-muted-foreground">
-                    {s.questions.length} questions · {SECTION_SECONDS / 60} minutes{i === 0 ? " · starts first" : ""}
+                    {s.questions.length} questions · {SECTION_SECONDS / 60} minutes{i === 0 && mock.sections.length > 1 ? " · starts first" : ""}
                   </p>
                 </li>
               ))}
@@ -218,10 +229,18 @@ function Instructions({ mock, onExit, onBegin }: MockRunnerProps & { onBegin: ()
 
           <section className="flex flex-col gap-2 text-sm leading-relaxed text-foreground/85">
             <h2 className="text-sm font-bold text-foreground">How the clock works</h2>
-            <p>
-              Each section gets its own {`${SECTION_SECONDS / 60} minutes`}. Time you don&apos;t use is not added to the next section. When a
-              section&apos;s clock runs out, or you finish it early, it locks and you can&apos;t return to it. The test ends with the last section.
-            </p>
+            {mock.sections.length > 1 ? (
+              <p>
+                Each section gets its own {`${SECTION_SECONDS / 60} minutes`}, as in the real exam. Time you don&apos;t use is not added to the next
+                section. When a section&apos;s clock runs out, or you finish it early, it locks and you can&apos;t return to it. The test ends with
+                the last section.
+              </p>
+            ) : (
+              <p>
+                You get {`${SECTION_SECONDS / 60} minutes`}, the same time this section gets in the real exam. When the clock runs out, the test is
+                submitted automatically. You can also submit early.
+              </p>
+            )}
           </section>
 
           <section className="flex flex-col gap-2 text-sm leading-relaxed text-foreground/85">
@@ -398,7 +417,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
         ))}
       </ul>
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-        <ol className="grid grid-cols-5 gap-2.5">
+        <ol className="grid grid-cols-[repeat(5,2.5rem)] justify-center gap-2">
           {state.questions.slice(sec.start, sec.end).map((q, i) => {
             const index = sec.start + i;
             const status = paletteStatus(state, q.id);
@@ -412,11 +431,11 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
                   }}
                   aria-label={`Question ${i + 1}: ${status.replace(/-/g, " ")}`}
                   aria-current={index === state.index ? "true" : undefined}
-                  className="block w-full"
+                  className="flex"
                 >
                   <StatusChip
                     status={status}
-                    className={cn("aspect-square w-full text-sm", index === state.index && "ring-2 ring-foreground ring-offset-2 ring-offset-card")}
+                    className={cn("h-10 w-10 text-sm", index === state.index && "ring-2 ring-foreground ring-offset-2 ring-offset-card")}
                   >
                     {i + 1}
                   </StatusChip>
@@ -599,7 +618,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
         </main>
 
         {/* Palette on the right; a drawer on smaller screens */}
-        <aside aria-label="Question palette" className="hidden w-80 shrink-0 flex-col border-l border-border bg-muted/30 lg:flex">
+        <aside aria-label="Question palette" className="hidden w-[16.5rem] shrink-0 flex-col border-l border-border bg-muted/30 lg:flex">
           {palette}
         </aside>
         {paletteOpen && (
@@ -717,7 +736,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
 
 /* -------------------------------- Review --------------------------------- */
 
-function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps & { exam: ExamState }) {
+function Review({ mock, exam, onExit, onRestart, restartLabel, homeHref = "/mock-tests", exitLabel = "All tests" }: MockRunnerProps & { exam: ExamState }) {
   const [index, setIndex] = useState(0);
   // Mark the saved answers with the usual PYQ rules (+2 / -0.5).
   const asSession = (questions: Pyq[]) => ({ ...createSession("test", questions), answers: exam.answers, submitted: true });
@@ -732,7 +751,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
     if (logged.current) return;
     logged.current = true;
     recordPlanActivity("pyq");
-    const path = "/mock-tests";
+    const path = homeHref;
     for (const s of exam.sections) {
       const qs = exam.questions.slice(s.start, s.end);
       const res = computeResult(asSession(qs));
@@ -740,7 +759,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
       logActivity({
         kind: "pyq",
         subject: s.subject,
-        label: `${mock.kind === "mock" ? "Mock test" : "Full paper"} · ${SUBJECT_LABEL[s.subject]}`,
+        label: `${kindLabel(mock.kind)} · ${SUBJECT_LABEL[s.subject]}`,
         href: path,
         correct: res.correct,
         total: qs.length,
@@ -776,7 +795,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
         </div>
         <button type="button" onClick={onExit} className={BTN.ghost}>
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          <span className="hidden sm:inline">All tests</span>
+          <span className="hidden sm:inline">{exitLabel}</span>
         </button>
       </header>
 
@@ -798,7 +817,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
                   {restartLabel}
                 </button>
                 <button type="button" onClick={onExit} className={BTN.outline}>
-                  All tests
+                  {exitLabel}
                 </button>
               </div>
             </div>
@@ -914,7 +933,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
               </div>
             </article>
 
-            <nav aria-label="Review questions" className="rounded-xl border border-border bg-card p-4 lg:sticky lg:top-4 lg:w-80 lg:shrink-0">
+            <nav aria-label="Review questions" className="rounded-xl border border-border bg-card p-4 lg:sticky lg:top-4 lg:w-[16.5rem] lg:shrink-0">
               <div className="mb-3 grid grid-cols-4 gap-1.5">
                 {exam.sections.map((s) => (
                   <button
@@ -930,7 +949,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
                   </button>
                 ))}
               </div>
-              <ol className="grid grid-cols-5 gap-2">
+              <ol className="grid grid-cols-[repeat(5,2.5rem)] justify-center gap-2">
                 {exam.questions.slice(sec.start, sec.end).map((q, i) => {
                   const a = exam.answers[q.id];
                   return (
@@ -940,7 +959,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
                         onClick={() => setIndex(sec.start + i)}
                         aria-label={`Question ${i + 1}`}
                         className={cn(
-                          "flex aspect-square w-full items-center justify-center rounded-full border font-mono text-sm font-bold",
+                          "flex h-10 w-10 items-center justify-center rounded-lg border font-mono text-sm font-bold",
                           !a ? "border-border bg-muted text-muted-foreground" : a === q.answer ? "border-emerald-700 bg-emerald-600 text-white" : "border-rose-600 bg-rose-500 text-white",
                           sec.start + i === index && "ring-2 ring-amber-400 ring-offset-2 ring-offset-card",
                         )}
@@ -952,9 +971,9 @@ function Review({ mock, exam, onExit, onRestart, restartLabel }: MockRunnerProps
                 })}
               </ol>
               <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
-                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-emerald-600" />Right</li>
-                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-rose-500" />Wrong</li>
-                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full border border-border bg-muted" />Not answered</li>
+                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-emerald-600" />Right</li>
+                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-rose-500" />Wrong</li>
+                <li className="flex items-center gap-1.5"><span className="h-3 w-3 rounded border border-border bg-muted" />Not answered</li>
               </ul>
             </nav>
           </div>

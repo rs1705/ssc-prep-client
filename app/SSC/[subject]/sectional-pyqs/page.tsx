@@ -1,45 +1,28 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { DUO } from "@/features/games/buttons";
-import { useState } from "react";
-import { ArrowRight, CircleMinus, Clock, FileText, Loader2, Target } from "lucide-react";
+import Link from "next/link";
+import { ChevronRight, Clock, Lock, Target } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
 import { Loader } from "@/components/custom/loader";
-import { Button } from "@/components/ui/button";
-import { PyqRunner } from "@/features/pyq/PyqRunner";
+import { SECTION_SECONDS } from "@/features/mock/examSession";
 import { MARKS_CORRECT, MARKS_WRONG } from "@/features/pyq/session";
 import { useSubjectParam } from "@/features/pyq/useSubjectParam";
 import { SUBJECT_META } from "@/lib/exam-pattern";
 import { subjectTheme } from "@/lib/subject-theme";
-import {
-  useGetPyqPapersQuery,
-  useLazyGetSectionalPaperQuery,
-  type SectionalPaper,
-} from "@/redux/PyqApi";
+import { cn } from "@/lib/utils";
+import { useGetPyqPapersQuery } from "@/redux/PyqApi";
 
 function formatPaperDate(iso: string | null): string | null {
   if (!iso) return null;
-  return new Date(iso).toLocaleDateString(undefined, {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
 }
+
+const MINUTES = SECTION_SECONDS / 60;
 
 export default function SectionalPyqsPage() {
   const subject = useSubjectParam();
-  const { data: papers, isLoading, isError, refetch } = useGetPyqPapersQuery(subject ?? "maths", {
-    skip: !subject,
-  });
-  const [fetchPaper, { isFetching: isLoadingPaper, isError: isPaperError }] =
-    useLazyGetSectionalPaperQuery();
-  const [paper, setPaper] = useState<SectionalPaper | null>(null);
-  /** Paper being fetched, for the spinner on its card. */
-  const [pending, setPending] = useState<string | null>(null);
-  const [started, setStarted] = useState(false);
-  const [attempt, setAttempt] = useState(0);
+  const { data: papers, isLoading, isError, refetch } = useGetPyqPapersQuery(subject ?? "maths", { skip: !subject });
 
   if (!subject) {
     return (
@@ -52,155 +35,69 @@ export default function SectionalPyqsPage() {
   const theme = subjectTheme(subject);
   const section = SUBJECT_META[subject].paperSection;
 
-  const open = async (paperId: string) => {
-    setPending(paperId);
-    try {
-      const result = await fetchPaper({ paperId, subject }, true);
-      if (result.data) {
-        setPaper(result.data);
-        setStarted(false);
-      }
-    } finally {
-      setPending(null);
-    }
-  };
-
-  if (paper && started) {
-    return (
-      <TopicPageLayout hideBreadcrumbs>
-        <PyqRunner
-          key={`${paper.id}-${attempt}`}
-          subject={subject}
-          mode="test"
-          title={`${section} · ${paper.title}`}
-          questions={paper.questions}
-          durationSeconds={paper.durationSeconds}
-          restartLabel="Retake this section"
-          onRestart={() => setAttempt((n) => n + 1)}
-          onExit={() => {
-            setPaper(null);
-            setStarted(false);
-          }}
-        />
-      </TopicPageLayout>
-    );
-  }
-
-  if (paper) {
-    const minutes = Math.round(paper.durationSeconds / 60);
-    const rules = [
-      { icon: FileText, value: String(paper.questionCount), label: "Questions" },
-      { icon: Clock, value: `${minutes} min`, label: "On the clock" },
-      { icon: Target, value: `+${MARKS_CORRECT}`, label: "Per correct" },
-      { icon: CircleMinus, value: String(MARKS_WRONG), label: "Per wrong" },
-    ];
-    return (
-      <TopicPageLayout title="Before you start" description={`${section} · ${paper.title}${paper.shift ? ` · ${paper.shift}` : ""}`}>
-        <div className={`flex w-full max-w-3xl flex-col gap-5 rounded-3xl border-2 p-5 sm:p-6 ${theme.banner}`}>
-          <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {rules.map(({ icon: Icon, value, label }) => (
-              <div key={label} className="flex flex-col gap-1 rounded-2xl border-2 border-border bg-card px-3.5 py-3">
-                <Icon className={`h-4 w-4 ${theme.text}`} aria-hidden="true" />
-                <dd className="font-mono text-lg font-black tabular-nums leading-none text-foreground">{value}</dd>
-                <dt className="text-xs font-medium text-muted-foreground">{label}</dt>
-              </div>
-            ))}
-          </dl>
-          <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm leading-relaxed text-foreground/90">
-            <li>The clock starts as soon as you begin and the test submits itself when time runs out.</li>
-            <li>You can change or clear an answer any time before you submit.</li>
-            <li>Answers and explanations are shown only after you submit.</li>
-            {paper.questionCount < 25 && (
-              <li>
-                This section has {paper.questionCount} of 25 questions here. Questions that need a
-                figure are left out for now.
-              </li>
-            )}
-          </ul>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              type="button"
-              autoFocus
-              onClick={() => setStarted(true)}
-              className={cn(DUO.primary, "px-7")}
-            >
-              Start test
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Button>
-            <Button type="button" variant="outline" onClick={() => setPaper(null)} className={cn(DUO.secondary, "px-7")}>
-              Choose another paper
-            </Button>
-          </div>
-        </div>
-      </TopicPageLayout>
-    );
-  }
-
   return (
     <TopicPageLayout
       title="Sectional PYQs"
-      description={`Sit the ${section} section of a real SSC CGL Tier 1 paper against the clock, with exam marking.`}
+      description={`Sit the ${section} section of a real SSC CGL Tier 1 paper in the exam interface. It opens full-screen.`}
     >
-      {isLoading ? (
-        <div className="flex min-h-[40dvh] items-center justify-center">
-          <Loader size="lg" text="Loading papers" />
-        </div>
-      ) : isError || !papers ? (
-        <ErrorState
-          title="Couldn't load papers"
-          description="The question bank didn't respond. Check that the server is running and try again."
-          onRetry={refetch}
-        />
-      ) : papers.length === 0 ? (
-        <ErrorState title="No papers yet" description="There are no past papers for this subject yet." />
-      ) : (
-        <div className="flex w-full flex-col gap-3">
-          {isPaperError && (
-            <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300">
-              Couldn&apos;t open that paper. Please try again.
-            </p>
-          )}
-          <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="flex w-full flex-col gap-6">
+        <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+          <li className="flex items-center gap-2">
+            <Clock className="h-4 w-4" aria-hidden="true" />
+            {MINUTES} minutes, as in the real exam
+          </li>
+          <li className="flex items-center gap-2">
+            <Target className="h-4 w-4" aria-hidden="true" />+{MARKS_CORRECT} right, {MARKS_WRONG} wrong
+          </li>
+          <li className="flex items-center gap-2">
+            <Lock className="h-4 w-4" aria-hidden="true" />
+            Answers and explanations after you submit
+          </li>
+        </ul>
+
+        {isLoading ? (
+          <div className="flex min-h-[30dvh] items-center justify-center">
+            <Loader size="lg" text="Loading papers" />
+          </div>
+        ) : isError || !papers ? (
+          <ErrorState
+            title="Couldn't load papers"
+            description="The question bank didn't respond. Please try again in a moment."
+            onRetry={refetch}
+          />
+        ) : papers.length === 0 ? (
+          <ErrorState title="No papers yet" description="There are no past papers for this subject yet." />
+        ) : (
+          <ul className="surface-card divide-y-2 divide-border overflow-hidden rounded-3xl">
             {papers.map((p) => {
               const date = formatPaperDate(p.date);
               return (
                 <li key={p.id}>
-                  <button
-                    type="button"
-                    disabled={isLoadingPaper}
-                    onClick={() => open(p.id)}
-                    className={`surface-card group flex h-full w-full flex-col gap-4 rounded-3xl p-5 text-left transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 sm:flex-row sm:items-center ${theme.hoverBorder}`}
+                  <Link
+                    href={`/mock-tests/attempt?paper=${encodeURIComponent(p.id)}&section=${subject}`}
+                    className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-muted/60"
                   >
-                    <span className={`flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-2xl font-mono ring-1 ring-border/60 ${theme.iconWrap}`}>
-                      <span className="text-xs font-bold uppercase leading-none opacity-80">CGL</span>
-                      <span className="text-base font-black leading-tight">{p.year}</span>
+                    <span className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl font-mono text-sm font-black", theme.iconWrap)}>
+                      {p.year}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-lg font-extrabold text-foreground">{p.title}</span>
-                      <span className="block text-sm text-muted-foreground">
-                        {[date, p.shift].filter(Boolean).join(" · ")}
+                      <span className="block truncate font-bold text-foreground">
+                        {p.title} · {section}
                       </span>
-                      <span className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs font-bold text-muted-foreground">
-                        <span>{p.questionCount} questions</span>
-                        <span>{Math.round((p.questionCount * 36) / 60)} min</span>
-                        <span>{p.questionCount * MARKS_CORRECT} marks</span>
+                      <span className="block truncate text-sm text-muted-foreground">
+                        {[date, p.shift, `${p.questionCount} questions`].filter(Boolean).join(" · ")}
+                        {p.questionCount < 25 ? " (diagram questions left out)" : ""}
                       </span>
                     </span>
-                    <span className={cn(DUO.primary, "pointer-events-none min-h-10 self-start px-4 text-xs")}>
-                      {pending === p.id ? "Opening" : "Open"}
-                      {pending === p.id ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-                      ) : (
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-                      )}
-                    </span>
-                  </button>
+                    <span className="hidden text-sm font-bold text-brand-700 dark:text-brand-400 sm:inline">Start</span>
+                    <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                  </Link>
                 </li>
               );
             })}
           </ul>
-        </div>
-      )}
+        )}
+      </div>
     </TopicPageLayout>
   );
 }
