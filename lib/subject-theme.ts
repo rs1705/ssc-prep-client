@@ -59,7 +59,7 @@ export const HUE_THEME: Record<Hue, HueTheme> = {
     hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))]",
     banner: "bg-card from-sky-500/10 to-sky-500/[0.03] border-sky-500/25",
     dot: "bg-sky-500",
-    bar: "from-sky-400 to-blue-600",
+    bar: "from-sky-400 to-sky-600",
     solid: "border-sky-600 bg-sky-600 text-white shadow-md shadow-sky-600/25",
   },
   orange: {

@@ -351,7 +351,7 @@ export function SubjectsStanding({ activities, now }: { activities: ActivityEntr
                     aria-valuenow={st.accuracy ?? 0}
                   >
                     <div
-                      className={cn("h-full rounded-full bg-gradient-to-r", weak ? "from-amber-400 to-amber-500" : theme.bar)}
+                      className={cn("h-full rounded-full bg-gradient-to-r", theme.bar)}
                       style={{ width: `${st.accuracy ?? 0}%` }}
                     />
                   </div>

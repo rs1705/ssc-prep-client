@@ -34,7 +34,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     label: "🔥 Ultimate Challenge",
     description:
       "The final frontier. A relentless, randomized onslaught of questions across all topics and difficulties.",
-    theme: "amber",
+    theme: "sky",
     badge: "✨ NEW",
     topics: [
       {
@@ -65,7 +65,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     id: "arithmetic",
     label: "⚡ Arithmetic",
     description: "Core speed — add, subtract, multiply, divide under pressure.",
-    theme: "emerald",
+    theme: "sky",
     topics: [
       {
         id: TOPIC_ID.ADDITION,
@@ -162,7 +162,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     label: "🔢 Powers & Roots",
     description:
       "Instant recall of squares, cubes, and their inverses — the backbone of Geometry & Mensuration.",
-    theme: "violet",
+    theme: "sky",
     topics: [
       {
         id: TOPIC_ID.SQUARES,
@@ -277,7 +277,7 @@ const MENTAL_MATHS_SECTIONS: MathTopicSection[] = [
     label: "📊 Applied Math",
     description:
       "BODMAS chains, percentage shortcuts, and ratio splits — the skills that win SSC CGL.",
-    theme: "rose",
+    theme: "sky",
     badge: "✨ NEW",
     topics: [
       {
@@ -537,7 +537,7 @@ const MentalMaths = () => {
             <div className="space-y-2 z-10">
               <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">
                 Daily Warm-Up
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-bold tracking-wider bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-600 dark:text-emerald-300 uppercase border-2 border-emerald-500/20">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-bold tracking-wider bg-[color-mix(in_oklab,var(--color-sky-500)_15%,var(--card))] text-sky-700 dark:text-sky-300 uppercase border-2 border-sky-500/25">
                   10 Mins
                 </span>
               </h4>
