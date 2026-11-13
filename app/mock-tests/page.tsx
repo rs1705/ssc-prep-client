@@ -7,6 +7,7 @@ import ErrorState from "@/components/custom/error-state";
 import { SECTION_SECONDS } from "@/features/mock/examSession";
 import { BTN } from "@/features/mock/MockRunner";
 import { AttemptList } from "@/features/mock/AttemptList";
+import { ScoreTrend } from "@/features/mock/ScoreTrend";
 import { useAttempts } from "@/features/mock/attempts";
 import { MARKS_CORRECT, MARKS_WRONG } from "@/features/pyq/session";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
@@ -91,6 +92,8 @@ export default function MockTestsPage() {
             <FileText className="h-4 w-4" aria-hidden="true" />+{MARKS_CORRECT} right, {MARKS_WRONG} wrong
           </li>
         </ul>
+
+        <ScoreTrend attempts={attempts} />
 
         <AttemptList attempts={attempts} />
 
