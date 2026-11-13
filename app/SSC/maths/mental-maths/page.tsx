@@ -23,7 +23,7 @@ interface MathTopicSection {
   id: string;
   label: string;
   description: string;
-  theme: "emerald" | "violet" | "rose" | "amber" | "sky";
+  theme: "sky";
   badge?: string;
   topics: MathTopic[];
 }
@@ -530,9 +530,9 @@ const MentalMaths = () => {
           </div>
 
           {/* Daily Warm-up Pro-Tip Banner */}
-          <div className="bg-card rounded-3xl border-2 border-emerald-500/25 bg-gradient-to-br from-emerald-500/10 to-transparent p-6 flex flex-col gap-4">
+          <div className="rounded-3xl border-2 border-sky-500/25 bg-[color-mix(in_oklab,var(--color-sky-500)_6%,var(--card))] p-6 flex flex-col gap-4">
             <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <span className="text-emerald-500 text-base">💡</span> Pro Tip
+              <span className="text-base">💡</span> Pro Tip
             </h3>
             <div className="space-y-2 z-10">
               <h4 className="text-sm font-bold tracking-tight text-foreground flex items-center gap-2">

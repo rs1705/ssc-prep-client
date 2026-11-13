@@ -73,7 +73,7 @@ export function PlanStepToast() {
               <span
                 className={cn(
                   "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white",
-                  info.complete ? "bg-gradient-to-br from-emerald-500 to-teal-500" : "bg-emerald-500",
+                  "bg-emerald-500",
                 )}
               >
                 {info.complete ? <PartyPopper className="h-5 w-5" aria-hidden="true" /> : <Check className="h-6 w-6" aria-hidden="true" />}

@@ -32,7 +32,7 @@ export const GAME_TONE: Record<GameTone, ToneClasses> = {
       "hover:border-fuchsia-500/50 hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))]",
     selected:
       "border-fuchsia-600 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_14%,var(--card))] text-fuchsia-900 dark:text-fuchsia-100",
-    timer: "from-fuchsia-500 to-pink-500",
+    timer: "from-fuchsia-400 to-fuchsia-600",
   },
   reasoning: {
     text: "text-orange-800 dark:text-orange-300",
@@ -54,6 +54,6 @@ export const GAME_TONE: Record<GameTone, ToneClasses> = {
       "hover:border-sky-500/50 hover:bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))]",
     selected:
       "border-sky-600 bg-[color-mix(in_oklab,var(--color-sky-500)_14%,var(--card))] text-sky-900 dark:text-sky-100",
-    timer: "from-sky-500 to-blue-500",
+    timer: "from-sky-400 to-sky-600",
   },
 };

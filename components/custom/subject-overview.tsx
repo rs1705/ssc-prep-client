@@ -18,7 +18,7 @@ export function ExamPatternStrip({ subject }: { subject: SubjectKey }) {
   return (
     <section
       aria-label={`${meta.paperSection} in ${TIER1_PATTERN.exam}`}
-      className={`relative overflow-hidden rounded-3xl border-2 bg-gradient-to-br p-4 sm:p-6 ${theme.banner}`}
+      className={`relative overflow-hidden rounded-3xl border-2 p-4 sm:p-6 ${theme.banner}`}
     >
       <div className="flex flex-col gap-3 sm:gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0 max-w-xl">
@@ -111,7 +111,7 @@ export function ExamPatternLink({ subject }: { subject: SubjectKey }) {
   return (
     <Link
       href={`/SSC/${subject}/syllabus`}
-      className={`group flex items-center gap-3 rounded-2xl border-2 bg-gradient-to-br px-3.5 py-2.5 transition-colors ${theme.banner} ${theme.hoverBorder}`}
+      className={`group flex items-center gap-3 rounded-2xl border-2 px-3.5 py-2.5 transition-colors ${theme.banner} ${theme.hoverBorder}`}
     >
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-extrabold text-foreground">{meta.paperSection}</p>

@@ -315,7 +315,7 @@ export default function LandingPage() {
                   <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Drill Daily in Minutes</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Speed Math sprints, topic-wise PYQ sets, flashcards and word games. Short sessions that fit into any day.</p>
                 </div>
-                <TimelineIcon baseClass="ring-emerald-500/20 text-emerald-500" activeClass="scale-110 bg-emerald-500 text-white shadow-lg shadow-emerald-500/20">
+                <TimelineIcon baseClass="ring-brand-500/20 text-brand-500" activeClass="scale-110 bg-brand-500 text-white shadow-lg shadow-brand-500/20">
                   <Dumbbell className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">

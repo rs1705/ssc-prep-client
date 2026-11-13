@@ -70,7 +70,7 @@ const FsrsPage = () => {
               session!
             </p>
             <Link href="/signin">
-              <Button className="h-10 px-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full shadow-xs hover:shadow-md hover:shadow-brand-500/20 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white active:scale-95 transition-all hover:cursor-pointer border-0 flex items-center gap-2">
+              <Button className="h-10 px-6 text-xs font-mono font-bold tracking-wider uppercase rounded-full shadow-xs hover:shadow-md hover:shadow-brand-500/20 bg-brand-500 hover:bg-brand-600 text-white active:scale-95 transition-all hover:cursor-pointer border-0 flex items-center gap-2">
                 <LogIn className="w-4 h-4" />
                 Sign In
               </Button>
@@ -127,7 +127,7 @@ const FsrsPage = () => {
               </div>
               <ProgressBar
                 value={(currentCardNumber / totalCards) * 100}
-                barClassName="bg-gradient-to-r from-brand-500 to-brand-alt-500"
+                barClassName="bg-brand-500 hover:bg-brand-600"
               />
             </div>
           )}

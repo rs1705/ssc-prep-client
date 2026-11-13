@@ -14,9 +14,6 @@ interface FlashcardProps {
 const FACE =
   "absolute inset-0 flex flex-col overflow-hidden rounded-3xl border-2 border-border bg-card shadow-[var(--shadow-card)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]";
 
-/** Soft English-coloured wash at the top of each face (on top of the solid card). */
-const WASH =
-  "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-fuchsia-500/[0.08] to-transparent";
 
 function capitalise(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -93,7 +90,6 @@ export default function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
       >
         {/* ── Front ── */}
         <div className={FACE} aria-hidden={flipped}>
-          <div className={WASH} />
           <div className="relative flex items-center justify-between p-4">
             <TypeChip type={card.type} />
             <SpeakButton text={card.front.text} />
@@ -109,7 +105,6 @@ export default function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
 
         {/* ── Back ── */}
         <div className={`${FACE} [transform:rotateY(180deg)]`} aria-hidden={!flipped}>
-          <div className={WASH} />
           <div className="relative flex items-center justify-between gap-3 border-b-2 border-border px-4 py-3">
             <div className="min-w-0">
               <p className="truncate text-lg font-extrabold text-foreground">{word}</p>

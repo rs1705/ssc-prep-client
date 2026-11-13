@@ -673,21 +673,21 @@ export default function MentalMathsPractice() {
       ? engine.state.timeRemaining
       : null;
 
-  let barColorClass = "bg-gradient-to-r from-brand-500 to-brand-alt-500";
+  let barColorClass = "bg-gradient-to-r from-sky-400 to-sky-600";
   let timerTextColorClass = "text-muted-foreground";
 
   if (isTimedMode && sec !== null) {
     if (sec <= 3) {
-      barColorClass = "from-red-500 to-rose-600 animate-pulse";
+      barColorClass = "from-rose-500 to-rose-600 animate-pulse";
       timerTextColorClass = "text-rose-500 dark:text-rose-400 font-extrabold";
     } else if (sec <= 5) {
-      barColorClass = "from-red-500 to-rose-600 transition-colors duration-500";
+      barColorClass = "from-rose-500 to-rose-600 transition-colors duration-500";
       timerTextColorClass = "text-rose-500 dark:text-rose-400 font-extrabold";
     } else if (sec <= 10) {
       barColorClass =
-        "from-brand-alt-500 to-brand-500 transition-colors duration-500";
+        "from-amber-400 to-amber-500 transition-colors duration-500";
       timerTextColorClass =
-        "text-brand-alt-500 dark:text-brand-alt-400 font-extrabold";
+        "text-amber-700 dark:text-amber-300 font-extrabold";
     }
   }
 
@@ -1185,22 +1185,22 @@ export default function MentalMathsPractice() {
                   const getAccuracyColorClasses = (acc: number) => {
                     if (acc >= 90)
                       return {
-                        text: "text-green-600 dark:text-green-400",
+                        text: "text-emerald-700 dark:text-emerald-300",
                         stroke: "stroke-emerald-500",
                       };
                     if (acc >= 75)
                       return {
-                        text: "text-brand-alt-500 dark:text-brand-alt-400",
-                        stroke: "stroke-brand-alt-500",
+                        text: "text-sky-700 dark:text-sky-300",
+                        stroke: "stroke-sky-500",
                       };
                     if (acc >= 50)
                       return {
-                        text: "text-yellow-500 dark:text-yellow-400",
-                        stroke: "stroke-yellow-500",
+                        text: "text-amber-700 dark:text-amber-300",
+                        stroke: "stroke-amber-500",
                       };
                     return {
-                      text: "text-red-500 dark:text-red-400",
-                      stroke: "stroke-red-500",
+                      text: "text-rose-700 dark:text-rose-300",
+                      stroke: "stroke-rose-500",
                     };
                   };
                   const accuracyColors = getAccuracyColorClasses(accuracy);

@@ -36,7 +36,7 @@ export interface TopicCardProps {
   startDisabled?: boolean;
   index?: number;
   cols?: number;
-  colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
+  colorTheme?: "sky";
   revisionConfig?: RevisionConfig;
   stats?: string;
   badge?: string;
@@ -52,12 +52,12 @@ export const TopicCard = ({
   startDisabled = false,
   index = 0,
   cols = 3,
-  colorTheme = "amber",
+  colorTheme = "sky",
   revisionConfig,
   stats = "Practice",
   badge,
 }: TopicCardProps) => {
-  const theme = colorTheme || "amber";
+  const theme = colorTheme;
   const themeMap: Record<
     string,
     {
@@ -72,39 +72,9 @@ export const TopicCard = ({
       hoverBorder: "hover:border-sky-500/50",
       hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))]",
     },
-    emerald: {
-      iconWrapper:
-        "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-600 dark:text-emerald-400 shadow-[0_2px_8px_rgba(16,185,129,0.05)]",
-      hoverBorder: "hover:border-emerald-500/50",
-      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_5%,var(--card))]",
-    },
-    rose: {
-      iconWrapper:
-        "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-600 dark:text-rose-400 shadow-[0_2px_8px_rgba(244,63,94,0.05)]",
-      hoverBorder: "hover:border-rose-500/50",
-      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-rose-500)_5%,var(--card))]",
-    },
-    amber: {
-      iconWrapper:
-        "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
-      hoverBorder: "hover:border-brand-500/50",
-      hoverBg: "hover:bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))]",
-    },
-    indigo: {
-      iconWrapper:
-        "bg-[color-mix(in_oklab,var(--color-indigo-500)_10%,var(--card))] text-indigo-600 dark:text-indigo-400 shadow-[0_2px_8px_rgba(99,102,241,0.05)]",
-      hoverBorder: "hover:border-indigo-500/50",
-      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-indigo-500)_5%,var(--card))]",
-    },
-    violet: {
-      iconWrapper:
-        "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] text-fuchsia-700 dark:text-fuchsia-400 shadow-[0_2px_8px_rgba(192,38,211,0.05)]",
-      hoverBorder: "hover:border-fuchsia-500/50",
-      hoverBg: "hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_5%,var(--card))]",
-    },
   };
 
-  const currentTheme = themeMap[theme] || themeMap.amber;
+  const currentTheme = themeMap[theme] ?? themeMap.sky;
   const canRevise = !!revisionConfig;
 
   return (
@@ -124,7 +94,7 @@ export const TopicCard = ({
             {emoji}
           </div>
           {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 border-2 border-brand-500/25 select-none">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase border-2 border-border bg-muted text-muted-foreground select-none">
               {badge}
             </span>
           )}
@@ -132,7 +102,7 @@ export const TopicCard = ({
 
         {/* Title & Description: Full card width */}
         <div className="flex flex-col flex-1">
-          <h3 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors">
+          <h3 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight">
             {name}
           </h3>
           <p className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed mt-1.5 font-normal">
@@ -155,7 +125,7 @@ export const TopicCard = ({
               name={name}
               emoji={emoji}
               revisionConfig={revisionConfig}
-              colorTheme="amber"
+              colorTheme={theme}
               trigger={
                 <Button
                   variant="ghost"

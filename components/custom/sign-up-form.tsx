@@ -114,7 +114,7 @@ const SignUpForm = () => {
             )}
           />
           <div className="pt-2">
-            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
+            <Button type="submit" className="w-full h-12 px-5 py-2.5 rounded-full text-xs font-mono font-bold tracking-widest uppercase gap-2 bg-brand-500 hover:bg-brand-600 text-white shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 hover:cursor-pointer flex items-center justify-center border-0 group">
               <UserPlus className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
               Create Account
             </Button>

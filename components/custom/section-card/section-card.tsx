@@ -29,10 +29,11 @@ const SectionCard: React.FC<SectionCardProps> = ({
   meta,
   icon,
   index = 0,
-  colorTheme = "indigo",
+  colorTheme = "brand",
 }: SectionCardProps) => {
+  // Colour lives in the icon tile only; the button is neutral since the whole card is the link.
   const isLive = linkTo !== "#";
-  const theme = HUE_THEME[colorTheme] ?? HUE_THEME.indigo;
+  const theme = HUE_THEME[colorTheme] ?? HUE_THEME.brand;
   const style = { animationDelay: `${index * 70}ms`, animationFillMode: "both" as const };
 
   const body = (
@@ -69,7 +70,7 @@ const SectionCard: React.FC<SectionCardProps> = ({
           {meta ?? (isLive ? "Ready to practice" : "In development")}
         </span>
         {isLive && (
-          <span className={cn(DUO.primary, "pointer-events-none min-h-9 shrink-0 px-4 text-xs")}>
+          <span className={cn(DUO.secondary, "pointer-events-none min-h-9 shrink-0 px-4 text-xs")}>
             {buttonText}
             <ArrowRight
               className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -102,11 +103,6 @@ const SectionCard: React.FC<SectionCardProps> = ({
       className={`${shared} surface-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10 ${theme.hoverBorder}`}
       style={style}
     >
-      {/* Subject-coloured accent along the top edge */}
-      <span
-        aria-hidden="true"
-        className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${theme.bar} opacity-80`}
-      />
       {body}
     </Link>
   );

@@ -23,7 +23,7 @@ import { subjectTheme } from "@/lib/subject-theme";
 const ICON_BUTTON =
   "flex h-10 w-10 items-center justify-center rounded-full border-2 border-border bg-card text-foreground/80 transition-colors hover:bg-muted";
 const SIGN_IN_BUTTON =
-  "flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-5 text-sm font-bold text-white shadow-md shadow-brand-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95";
+  "flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-500 hover:bg-brand-600 px-5 text-sm font-bold text-white shadow-md shadow-brand-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95";
 
 function initialsOf(name?: string | null): string {
   if (!name) return "U";

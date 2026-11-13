@@ -99,7 +99,7 @@ export default function MathsFlashcardsPage() {
                   {position.current} / {position.total}
                 </span>
               </div>
-              <ProgressBar value={(position.current / position.total) * 100} barClassName="bg-gradient-to-r from-sky-500 to-blue-500" />
+              <ProgressBar value={(position.current / position.total) * 100} barClassName="bg-gradient-to-r from-sky-400 to-sky-600" />
             </div>
           )}
         </div>

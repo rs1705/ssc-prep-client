@@ -28,7 +28,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
           <button
             type="button"
             onClick={reset}
-            className="mt-6 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white"
+            className="mt-6 rounded-full bg-brand-500 hover:bg-brand-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white"
           >
             Try Again
           </button>

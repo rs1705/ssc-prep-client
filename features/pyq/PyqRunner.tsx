@@ -240,7 +240,7 @@ export function PyqRunner({
       {state.submitted && (
         <section
           aria-label="Result"
-          className={`rounded-3xl border-2 bg-gradient-to-br p-5 sm:p-6 ${theme.banner}`}
+          className={`rounded-3xl border-2 p-5 sm:p-6 ${theme.banner}`}
         >
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>

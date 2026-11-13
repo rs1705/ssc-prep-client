@@ -6,7 +6,6 @@ import type { MathsCardItem } from "./decks";
 
 const FACE =
   "absolute inset-0 flex flex-col overflow-hidden rounded-3xl border-2 border-border bg-card shadow-[var(--shadow-card)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]";
-const WASH = "pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-sky-500/[0.08] to-transparent";
 const MATH =
   "[&_.katex-display]:my-1 [&_.katex-display]:overflow-x-auto [&_.katex-display]:overflow-y-hidden [&_.katex-display]:py-1";
 
@@ -30,7 +29,6 @@ export function MathsCard({ card, flipped, onFlip }: { card: MathsCardItem; flip
         style={{ transform: flipped ? "rotateY(-180deg)" : "rotateY(0deg)" }}
       >
         <div className={FACE} aria-hidden={flipped}>
-          <div className={WASH} />
           <div className="relative p-4">
             <span className="rounded-full border-2 border-sky-500/25 bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-sky-700 dark:text-sky-300">
               {card.label}
@@ -43,7 +41,6 @@ export function MathsCard({ card, flipped, onFlip }: { card: MathsCardItem; flip
         </div>
 
         <div className={`${FACE} [transform:rotateY(180deg)]`} aria-hidden={!flipped}>
-          <div className={WASH} />
           <div className={`relative border-b-2 border-border px-4 py-3 text-base font-extrabold text-foreground ${MATH}`}>
             <RichText text={card.prompt} inline />
           </div>

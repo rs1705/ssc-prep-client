@@ -96,7 +96,7 @@ export default function SectionalPyqsPage() {
     ];
     return (
       <TopicPageLayout title="Before you start" description={`${section} · ${paper.title}${paper.shift ? ` · ${paper.shift}` : ""}`}>
-        <div className={`flex w-full max-w-3xl flex-col gap-5 rounded-3xl border-2 bg-gradient-to-br p-5 sm:p-6 ${theme.banner}`}>
+        <div className={`flex w-full max-w-3xl flex-col gap-5 rounded-3xl border-2 p-5 sm:p-6 ${theme.banner}`}>
           <dl className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {rules.map(({ icon: Icon, value, label }) => (
               <div key={label} className="flex flex-col gap-1 rounded-2xl border-2 border-border bg-card px-3.5 py-3">

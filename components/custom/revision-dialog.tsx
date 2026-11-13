@@ -19,7 +19,7 @@ interface RevisionDialogProps {
   emoji?: React.ReactNode;
   revisionConfig: RevisionConfig;
   trigger: React.ReactNode;
-  colorTheme?: "sky" | "emerald" | "rose" | "amber" | "indigo" | "violet";
+  colorTheme?: "sky";
 }
 
 export const RevisionDialog: React.FC<RevisionDialogProps> = ({
@@ -27,7 +27,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
   emoji,
   revisionConfig,
   trigger,
-  colorTheme = "amber",
+  colorTheme = "sky",
 }) => {
   const [selfTest, setSelfTest] = useState(false);
   const [revealed, setRevealed] = useState<Record<number, boolean>>({});
@@ -47,55 +47,15 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
   > = {
     sky: {
       iconBg: "bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-sky-600 dark:text-sky-400",
-      activeBtn: "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sm border-0",
+      activeBtn: "bg-sky-600 text-white shadow-sm border-0",
       modeIcon: "text-sky-500",
       revealRow: "bg-[color-mix(in_oklab,var(--color-sky-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] border-sky-500/25 text-sky-600 dark:text-sky-400",
       revealPill: "text-sky-600 dark:text-sky-400 bg-[color-mix(in_oklab,var(--color-sky-500)_15%,var(--card))] border-sky-500/30",
       sparkle: "text-sky-500",
     },
-    emerald: {
-      iconBg: "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-emerald-600 dark:text-emerald-400",
-      activeBtn: "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-sm border-0",
-      modeIcon: "text-emerald-500",
-      revealRow: "bg-[color-mix(in_oklab,var(--color-emerald-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/25 text-emerald-600 dark:text-emerald-400",
-      revealPill: "text-emerald-600 dark:text-emerald-400 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] border-emerald-500/30",
-      sparkle: "text-emerald-500",
-    },
-    rose: {
-      iconBg: "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-rose-600 dark:text-rose-400",
-      activeBtn: "bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-sm border-0",
-      modeIcon: "text-rose-500",
-      revealRow: "bg-[color-mix(in_oklab,var(--color-rose-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/25 text-rose-600 dark:text-rose-400",
-      revealPill: "text-rose-600 dark:text-rose-400 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] border-rose-500/30",
-      sparkle: "text-rose-500",
-    },
-    amber: {
-      iconBg: "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-brand-600 dark:text-brand-400",
-      activeBtn: "bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white shadow-sm border-0",
-      modeIcon: "text-brand-700 dark:text-brand-400",
-      revealRow: "bg-[color-mix(in_oklab,var(--brand-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/25 text-brand-600 dark:text-brand-400",
-      revealPill: "text-brand-600 dark:text-brand-400 bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] border-brand-500/30",
-      sparkle: "text-brand-700 dark:text-brand-400",
-    },
-    indigo: {
-      iconBg: "bg-[color-mix(in_oklab,var(--color-indigo-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-indigo-600 dark:text-indigo-400",
-      activeBtn: "bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-sm border-0",
-      modeIcon: "text-indigo-500",
-      revealRow: "bg-[color-mix(in_oklab,var(--color-indigo-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-indigo-500)_10%,var(--card))] border-indigo-500/25 text-indigo-600 dark:text-indigo-400",
-      revealPill: "text-indigo-600 dark:text-indigo-400 bg-[color-mix(in_oklab,var(--color-indigo-500)_15%,var(--card))] border-indigo-500/30",
-      sparkle: "text-indigo-500",
-    },
-    violet: {
-      iconBg: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] shadow-inner ring-1 ring-border/40 text-fuchsia-700 dark:text-fuchsia-400",
-      activeBtn: "bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white shadow-sm border-0",
-      modeIcon: "text-fuchsia-600 dark:text-fuchsia-400",
-      revealRow: "bg-[color-mix(in_oklab,var(--color-fuchsia-500)_5%,var(--card))] hover:bg-[color-mix(in_oklab,var(--color-fuchsia-500)_10%,var(--card))] border-fuchsia-500/25 text-fuchsia-700 dark:text-fuchsia-400",
-      revealPill: "text-fuchsia-700 dark:text-fuchsia-400 bg-[color-mix(in_oklab,var(--color-fuchsia-500)_15%,var(--card))] border-fuchsia-500/30",
-      sparkle: "text-fuchsia-600 dark:text-fuchsia-400",
-    },
   };
 
-  const currentTheme = themeMap[colorTheme] || themeMap.amber;
+  const currentTheme = themeMap[colorTheme] ?? themeMap.sky;
 
   const toggleSection = (label: string) => {
     setOpenSection((prev) => (prev === label ? null : label));
@@ -234,13 +194,7 @@ export const RevisionDialog: React.FC<RevisionDialogProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <span
-                      className={`text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border-2 ${
-                        group.label === "Easy"
-                          ? "bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
-                          : group.label === "Medium"
-                            ? "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-brand-500/25 text-brand-600 dark:text-brand-400"
-                            : "bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-rose-500/25 text-rose-600 dark:text-rose-400"
-                      }`}
+                      className="text-xs font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border-2 border-border bg-muted text-muted-foreground"
                     >
                       {group.label}
                     </span>

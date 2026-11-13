@@ -182,7 +182,7 @@ export default function TopicPyqsPage() {
             type="button"
             disabled={isLoadingSet}
             onClick={() => start(null)}
-            className={`group flex w-full flex-col gap-4 rounded-3xl border-2 bg-gradient-to-br p-5 text-left transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 sm:flex-row sm:items-center sm:justify-between sm:p-6 ${theme.banner}`}
+            className={`group flex w-full flex-col gap-4 rounded-3xl border-2 p-5 text-left transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 sm:flex-row sm:items-center sm:justify-between sm:p-6 ${theme.banner}`}
           >
             <div className="flex items-center gap-4">
               <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ring-1 ring-border/60 ${theme.iconWrap}`}>
