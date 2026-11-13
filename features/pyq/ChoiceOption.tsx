@@ -13,6 +13,41 @@ import { cn } from "@/lib/utils";
  */
 export type ChoiceState = "idle" | "picked" | "right" | "wrong" | "faded";
 
+/**
+ * Options are always shown as A-D by position. Papers store their own labels ("1"-"4" or "A"-"D"),
+ * which stay the internal key for answers; only the display letter comes from here.
+ */
+export function optionLetter(index: number): string {
+  return String.fromCharCode(65 + index);
+}
+
+/** Display letter of the option whose stored label is `label` (falls back to the label). */
+export function letterFor(options: readonly { label: string }[], label: string): string {
+  const i = options.findIndex((o) => o.label === label);
+  return i >= 0 ? optionLetter(i) : label;
+}
+
+/**
+ * Explanations for papers with numbered options say "option 3"; rewrite those to the
+ * letter the screen shows ("option C"). Text for lettered papers is returned as is.
+ */
+export function relabelOptionRefs(text: string, options: readonly { label: string }[]): string {
+  const numbered = options.length > 0 && options.every((o, i) => o.label === String(i + 1));
+  if (!numbered) return text;
+  return text.replace(/\b(options?)(\s+)\(?([1-9])\)?(?![\d/])/gi, (whole, word: string, gap: string, n: string) => {
+    const i = Number(n) - 1;
+    return i < options.length ? `${word}${gap}${optionLetter(i)}` : whole;
+  });
+}
+
+/**
+ * Shared type scale for the three question screens (topic practice, sectional PYQs and mock
+ * tests): the question at 15px medium, options at the size of their container (15px, or the
+ * exam screen's zoom level) so both always match.
+ */
+export const QUESTION_TEXT = "text-[15px] font-medium leading-relaxed";
+export const OPTION_TEXT = "gap-3 text-[1em] leading-relaxed";
+
 /** The state for one option, from the usual three facts about it. */
 export function choiceState({
   revealed,

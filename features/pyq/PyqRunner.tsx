@@ -34,7 +34,18 @@ import {
   type PyqMode,
   type PyqSessionState,
 } from "./session";
-import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
+import { ChoiceOption, OPTION_TEXT, QUESTION_TEXT, choiceState, letterFor, optionLetter, relabelOptionRefs } from "@/features/pyq/ChoiceOption";
+import { cn } from "@/lib/utils";
+
+type TileStatus = "right" | "wrong" | "answered" | "open";
+
+/** Question-map tiles, styled like the mock-test map. */
+const TILE_STYLE: Record<TileStatus, string> = {
+  right: "border-emerald-700 bg-emerald-600 text-white",
+  wrong: "border-rose-600 bg-rose-500 text-white",
+  answered: "border-brand-700 bg-brand-500 text-white",
+  open: "border-border bg-muted text-foreground",
+};
 
 interface PyqRunnerProps {
   subject: SubjectKey;
@@ -155,21 +166,31 @@ export function PyqRunner({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [question, revealed, state.index, confirming]);
 
-  const paletteClass = (q: Pyq, i: number) => {
+  // Same tiles as the mock-test map: solid fills, white numbers.
+  const graded = state.submitted || mode === "practice";
+  const tileStatus = (q: Pyq): TileStatus => {
     const answer = state.answers[q.id];
-    const show = state.submitted || (mode === "practice" && !!answer);
-    let tone = "border-border bg-muted text-foreground";
-    if (show && answer) {
-      tone =
-        answer === q.answer
-          ? "border-emerald-500/50 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-700 dark:text-emerald-300"
-          : "border-rose-500/50 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-700 dark:text-rose-300";
-    } else if (answer) {
-      tone = "border-brand-700 bg-brand-500 text-white";
-    }
-    const ring = i === state.index ? "ring-2 ring-foreground ring-offset-2 ring-offset-card" : "";
-    return `${tone} ${ring}`;
+    if (!answer) return "open";
+    if (!graded) return "answered";
+    return answer === q.answer ? "right" : "wrong";
   };
+  const tileCounts = state.questions.reduce<Record<TileStatus, number>>(
+    (acc, q) => {
+      acc[tileStatus(q)] += 1;
+      return acc;
+    },
+    { right: 0, wrong: 0, answered: 0, open: 0 },
+  );
+  const legend: [TileStatus, string][] = graded
+    ? [
+        ["right", "Right"],
+        ["wrong", "Wrong"],
+        ["open", "Not answered"],
+      ]
+    : [
+        ["answered", "Answered"],
+        ["open", "Not answered"],
+      ];
 
   const timeRatio =
     state.secondsLeft !== null && state.secondsTotal
@@ -344,22 +365,23 @@ export function PyqRunner({
 
           <RichText
             text={question.question}
-            className="text-base font-medium leading-relaxed text-foreground sm:text-lg"
+            className={cn(QUESTION_TEXT, "text-foreground")}
           />
 
-          <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2">
-            {question.options.map((option) => {
+          <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2.5 text-[15px]">
+            {question.options.map((option, i) => {
               const isChosen = chosen === option.label;
               const isAnswer = option.label === question.answer;
               return (
                 <ChoiceOption
                   key={option.label}
-                  label={option.label}
+                  label={optionLetter(i)}
                   state={choiceState({ revealed, isAnswer, isChosen })}
                   role="radio"
                   aria-checked={isChosen}
                   disabled={revealed}
                   onClick={() => dispatch({ type: "SELECT", label: option.label })}
+                  className={OPTION_TEXT}
                 >
                   <RichText inline text={option.text} />
                 </ChoiceOption>
@@ -371,7 +393,7 @@ export function PyqRunner({
             {revealed && chosen
               ? chosen === question.answer
                 ? "Correct"
-                : `Wrong. The correct option is ${question.answer}`
+                : `Wrong. The correct option is ${letterFor(question.options, question.answer)}`
               : ""}
           </p>
 
@@ -437,14 +459,14 @@ export function PyqRunner({
             >
               <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground [&::-webkit-details-marker]:hidden">
                 {!chosen ? (
-                  <span className="text-muted-foreground">Not attempted · Answer: {question.answer}</span>
+                  <span className="text-muted-foreground">Not attempted · Answer: {letterFor(question.options, question.answer)}</span>
                 ) : chosen === question.answer ? (
                   <span className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300">
                     <Check className="h-4 w-4" aria-hidden="true" /> Correct
                   </span>
                 ) : (
                   <span className="flex items-center gap-1.5 text-rose-700 dark:text-rose-300">
-                    <X className="h-4 w-4" aria-hidden="true" /> Answer: {question.answer}
+                    <X className="h-4 w-4" aria-hidden="true" /> Answer: {letterFor(question.options, question.answer)}
                   </span>
                 )}
                 <span className="ml-auto flex items-center gap-1 text-xs font-semibold text-brand-700 dark:text-brand-400">
@@ -455,7 +477,7 @@ export function PyqRunner({
               </summary>
               <div className="border-t border-border px-4 py-3">
                 {question.explanation ? (
-                  <RichText text={question.explanation} className="text-sm leading-relaxed text-foreground/90" />
+                  <RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />
                 ) : (
                   <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
                 )}
@@ -494,24 +516,49 @@ export function PyqRunner({
         </article>
 
         {/* Question palette */}
-        <nav aria-label="Questions" className="rounded-xl border border-border bg-card p-4 lg:sticky lg:top-24 lg:w-[16.5rem] lg:shrink-0">
-          <p className="section-label mb-3">
-            Questions · {answeredCount}/{state.questions.length} answered
-          </p>
-          <ol className="grid grid-cols-[repeat(auto-fill,2.5rem)] justify-center gap-2 lg:grid-cols-[repeat(5,2.5rem)]">
-            {state.questions.map((q, i) => (
-              <li key={q.id}>
-                <button
-                  type="button"
-                  onClick={() => dispatch({ type: "GOTO", index: i })}
-                  aria-label={`Question ${i + 1}`}
-                  aria-current={i === state.index ? "true" : undefined}
-                  className={`flex h-10 w-10 items-center justify-center rounded-lg border font-mono text-sm font-bold transition-colors ${paletteClass(q, i)}`}
+        <nav aria-label="Questions" className="overflow-hidden rounded-xl border border-border bg-card lg:sticky lg:top-24 lg:w-[16.5rem] lg:shrink-0">
+          <div className="border-b border-border px-4 py-3">
+            <p className="text-sm font-bold text-foreground">Question map</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              <b className="font-mono text-foreground">{answeredCount}</b> of {state.questions.length} answered
+            </p>
+          </div>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 border-b border-border px-4 py-3 text-xs text-muted-foreground">
+            {legend.map(([status, label]) => (
+              <li key={status} className="flex items-center gap-2">
+                <span
+                  className={cn(
+                    "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border font-mono text-[11px] font-bold",
+                    TILE_STYLE[status],
+                  )}
                 >
-                  {i + 1}
-                </button>
+                  {tileCounts[status]}
+                </span>
+                {label}
               </li>
             ))}
+          </ul>
+          <ol className="grid grid-cols-[repeat(5,2.5rem)] justify-center gap-2 px-4 py-4">
+            {state.questions.map((q, i) => {
+              const status = tileStatus(q);
+              return (
+                <li key={q.id}>
+                  <button
+                    type="button"
+                    onClick={() => dispatch({ type: "GOTO", index: i })}
+                    aria-label={`Question ${i + 1}: ${status === "open" ? "not answered" : status}`}
+                    aria-current={i === state.index ? "true" : undefined}
+                    className={cn(
+                      "flex h-10 w-10 items-center justify-center rounded-lg border font-mono text-sm font-bold transition-colors",
+                      TILE_STYLE[status],
+                      i === state.index && "ring-2 ring-foreground ring-offset-2 ring-offset-card",
+                    )}
+                  >
+                    {i + 1}
+                  </button>
+                </li>
+              );
+            })}
           </ol>
         </nav>
       </div>

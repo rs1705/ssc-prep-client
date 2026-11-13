@@ -35,7 +35,7 @@ import {
   type ExamState,
   type PaletteStatus,
 } from "./examSession";
-import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
+import { ChoiceOption, OPTION_TEXT, QUESTION_TEXT, choiceState, optionLetter, relabelOptionRefs } from "@/features/pyq/ChoiceOption";
 
 interface MockRunnerProps {
   mock: FullMock;
@@ -67,7 +67,8 @@ const SECTION_NAME: Record<string, string> = {
 
 const STATUS_STYLE: Record<PaletteStatus, string> = {
   "not-visited": "border-border bg-muted text-foreground",
-  "not-answered": "border-rose-600 bg-rose-500 text-white",
+  "not-answered":
+    "border-rose-300 bg-[color-mix(in_oklab,var(--color-rose-500)_12%,var(--card))] text-rose-700 dark:border-rose-500/50 dark:text-rose-300",
   answered: "border-emerald-700 bg-emerald-600 text-white",
   marked: "border-brand-700 bg-brand-500 text-white",
   "answered-marked": "border-brand-700 bg-brand-500 text-white",
@@ -561,25 +562,20 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
               )}
               <RichText text={question.question} className="font-medium leading-relaxed text-foreground" />
               <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2.5">
-                {question.options.map((o) => {
+                {question.options.map((o, i) => {
                   const picked = state.draft === o.label;
                   return (
-                    <label
+                    <ChoiceOption
                       key={o.label}
-                      className={cn(
-                        "flex cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition-colors",
-                        picked ? "border-brand-500 bg-brand-50 dark:bg-brand-500/10" : "border-border hover:bg-muted/50",
-                      )}
+                      label={optionLetter(i)}
+                      state={picked ? "picked" : "idle"}
+                      role="radio"
+                      aria-checked={picked}
+                      onClick={() => dispatch({ type: "PICK", label: o.label })}
+                      className={OPTION_TEXT}
                     >
-                      <input
-                        type="radio"
-                        name={`q-${question.id}`}
-                        checked={picked}
-                        onChange={() => dispatch({ type: "PICK", label: o.label })}
-                        className="h-5 w-5 shrink-0 accent-[var(--brand-600)]"
-                      />
-                      <RichText inline text={o.text} className="min-w-0 flex-1 text-foreground" />
-                    </label>
+                      <RichText inline text={o.text} />
+                    </ChoiceOption>
                   );
                 })}
               </div>
@@ -618,7 +614,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
         </aside>
         {paletteOpen && (
           <div className="fixed inset-0 z-40 flex justify-end bg-black/40 lg:hidden" onClick={() => setPaletteOpen(false)}>
-            <aside aria-label="Question palette" className="flex h-full w-[86%] max-w-sm flex-col bg-background shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <aside aria-label="Question palette" className="flex h-full w-[16.5rem] max-w-[85%] flex-col bg-background shadow-2xl" onClick={(e) => e.stopPropagation()}>
               {palette}
             </aside>
           </div>
@@ -894,18 +890,19 @@ function Review({
                   <RichText text={question.passage} className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90" />
                 </details>
               )}
-              <RichText text={question.question} className="text-base font-medium leading-relaxed text-foreground sm:text-lg" />
-              <div className="flex flex-col gap-2">
-                {question.options.map((o) => {
+              <RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />
+              <div className="flex flex-col gap-2.5 text-[15px]">
+                {question.options.map((o, i) => {
                   const isAnswer = o.label === question.answer;
                   const isChosen = chosen === o.label;
                   return (
                     <ChoiceOption
                       key={o.label}
-                      label={o.label}
+                      label={optionLetter(i)}
                       state={choiceState({ revealed: true, isAnswer, isChosen })}
                       disabled
-                      aria-label={`Option ${o.label}${isAnswer ? ", correct answer" : isChosen ? ", your answer" : ""}`}
+                      className={OPTION_TEXT}
+                      aria-label={`Option ${optionLetter(i)}${isAnswer ? ", correct answer" : isChosen ? ", your answer" : ""}`}
                     >
                       <RichText inline text={o.text} />
                     </ChoiceOption>
@@ -920,7 +917,7 @@ function Review({
                 </summary>
                 <div className="border-t border-border px-4 py-3">
                   {question.explanation ? (
-                    <RichText text={question.explanation} className="text-sm leading-relaxed text-foreground/90" />
+                    <RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />
                   ) : (
                     <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
                   )}
