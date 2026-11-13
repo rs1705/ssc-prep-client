@@ -5,7 +5,6 @@ import {
   AlertTriangle,
   ArrowLeft,
   BookOpenText,
-  Check,
   ChevronDown,
   ChevronRight,
   LayoutGrid,
@@ -36,6 +35,7 @@ import {
   type ExamState,
   type PaletteStatus,
 } from "./examSession";
+import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
 
 interface MockRunnerProps {
   mock: FullMock;
@@ -900,22 +900,15 @@ function Review({
                   const isAnswer = o.label === question.answer;
                   const isChosen = chosen === o.label;
                   return (
-                    <div
+                    <ChoiceOption
                       key={o.label}
-                      className={cn(
-                        "flex items-center gap-3 rounded-md border px-4 py-3 text-sm sm:text-base",
-                        isAnswer
-                          ? "border-emerald-500 bg-emerald-50 text-foreground dark:bg-emerald-500/10"
-                          : isChosen
-                            ? "border-rose-500 bg-rose-50 text-foreground dark:bg-rose-500/10"
-                            : "border-border text-muted-foreground",
-                      )}
+                      label={o.label}
+                      state={choiceState({ revealed: true, isAnswer, isChosen })}
+                      disabled
+                      aria-label={`Option ${o.label}${isAnswer ? ", correct answer" : isChosen ? ", your answer" : ""}`}
                     >
-                      <span className="font-mono text-xs font-bold text-muted-foreground">{o.label}</span>
-                      <RichText inline text={o.text} className="min-w-0 flex-1" />
-                      {isAnswer && <Check className="h-4 w-4 shrink-0 text-emerald-600" aria-label="Correct answer" />}
-                      {isChosen && !isAnswer && <X className="h-4 w-4 shrink-0 text-rose-600" aria-label="Your answer, wrong" />}
-                    </div>
+                      <RichText inline text={o.text} />
+                    </ChoiceOption>
                   );
                 })}
               </div>

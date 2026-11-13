@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import confetti from "canvas-confetti";
-import { ArrowRight, Check, Eye, LayoutDashboard, RotateCcw, Sparkles, X } from "lucide-react";
+import { ArrowRight, Check, Eye, LayoutDashboard, RotateCcw, Sparkles } from "lucide-react";
 import { DUO } from "@/features/games/buttons";
 import { playFeedback } from "@/features/games/feedback";
 import { GameFrame } from "@/features/games/GameFrame";
@@ -18,6 +18,7 @@ import {
 } from "@/lib/activity-log";
 import { subjectTheme } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
+import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
 
 const PER_SESSION = 10;
 
@@ -171,29 +172,19 @@ export function ReviewSession() {
 
           {card.options ? (
             <div className="flex flex-col gap-2" role="radiogroup" aria-label="Options">
-              {card.options.map((o, i) => {
-                const isAnswer = o === card.mistake.answer;
-                const state =
-                  graded === null ? DUO.idle : isAnswer ? DUO.correct : o === chosen ? DUO.wrong : DUO.faded;
-                return (
-                  <button
-                    key={o}
-                    type="button"
-                    role="radio"
-                    aria-checked={o === chosen}
-                    disabled={graded !== null}
-                    onClick={() => choose(o)}
-                    className={cn(DUO.option, state, "flex min-h-12 items-center gap-3 px-3 py-2.5 text-left text-sm font-semibold")}
-                  >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted font-mono text-xs font-black text-muted-foreground">
-                      {i + 1}
-                    </span>
-                    <span className="min-w-0 flex-1">{o}</span>
-                    {graded !== null && isAnswer && <Check className="h-4 w-4 shrink-0" aria-hidden="true" />}
-                    {graded !== null && o === chosen && !isAnswer && <X className="h-4 w-4 shrink-0" aria-hidden="true" />}
-                  </button>
-                );
-              })}
+              {card.options.map((o, i) => (
+                <ChoiceOption
+                  key={o}
+                  label={String.fromCharCode(65 + i)}
+                  state={choiceState({ revealed: graded !== null, isAnswer: o === card.mistake.answer, isChosen: o === chosen })}
+                  role="radio"
+                  aria-checked={o === chosen}
+                  disabled={graded !== null}
+                  onClick={() => choose(o)}
+                >
+                  {o}
+                </ChoiceOption>
+              ))}
             </div>
           ) : !revealed ? (
             <button type="button" onClick={() => setRevealed(true)} className={cn(DUO.secondary, "w-full")}>

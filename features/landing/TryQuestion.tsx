@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, RotateCcw, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import { DUO } from "@/features/games/buttons";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
+import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
 
 interface SampleQuestion {
   subject: SubjectKey;
@@ -221,27 +222,19 @@ export function TryQuestion() {
       <p className="mb-4 text-base font-bold leading-relaxed text-foreground sm:text-lg">{q.question}</p>
 
       <div className="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label="Options">
-        {q.options.map((option, i) => {
-          const state = !answered ? DUO.idle : i === q.answer ? DUO.correct : i === chosen ? DUO.wrong : DUO.faded;
-          return (
-            <button
-              key={option}
-              type="button"
-              role="radio"
-              aria-checked={chosen === i}
-              disabled={answered}
-              onClick={() => choose(i)}
-              className={cn(DUO.option, state, "flex min-h-12 items-center gap-3 px-3 py-2 text-left text-sm font-semibold")}
-            >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted font-mono text-xs font-black text-muted-foreground">
-                {String.fromCharCode(65 + i)}
-              </span>
-              <span className="min-w-0 flex-1">{option}</span>
-              {answered && i === q.answer && <Check className="h-4 w-4 shrink-0" aria-hidden="true" />}
-              {answered && i === chosen && i !== q.answer && <X className="h-4 w-4 shrink-0" aria-hidden="true" />}
-            </button>
-          );
-        })}
+        {q.options.map((option, i) => (
+          <ChoiceOption
+            key={option}
+            label={String.fromCharCode(65 + i)}
+            state={choiceState({ revealed: answered, isAnswer: i === q.answer, isChosen: chosen === i })}
+            role="radio"
+            aria-checked={chosen === i}
+            disabled={answered}
+            onClick={() => choose(i)}
+          >
+            {option}
+          </ChoiceOption>
+        ))}
       </div>
 
       <div aria-live="polite">

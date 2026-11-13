@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { BTN } from "@/features/mock/examButtons";
 import { replayHref, shuffle } from "@/features/games/sessionSet";
-import { cn } from "@/lib/utils";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import type { Pyq } from "@/redux/PyqApi";
@@ -35,6 +34,7 @@ import {
   type PyqMode,
   type PyqSessionState,
 } from "./session";
+import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
 
 interface PyqRunnerProps {
   subject: SubjectKey;
@@ -351,44 +351,18 @@ export function PyqRunner({
             {question.options.map((option) => {
               const isChosen = chosen === option.label;
               const isAnswer = option.label === question.answer;
-              const tone =
-                revealed && isAnswer
-                  ? "border-emerald-500 bg-emerald-50 text-foreground dark:bg-emerald-500/10"
-                  : revealed && isChosen
-                    ? "border-rose-500 bg-rose-50 text-foreground dark:bg-rose-500/10"
-                    : isChosen
-                      ? "border-brand-500 bg-brand-50 text-foreground dark:bg-brand-500/10"
-                      : revealed
-                        ? "border-border text-muted-foreground"
-                        : "border-border text-foreground hover:border-brand-500/50 hover:bg-muted/50";
-
               return (
-                <button
+                <ChoiceOption
                   key={option.label}
-                  type="button"
+                  label={option.label}
+                  state={choiceState({ revealed, isAnswer, isChosen })}
                   role="radio"
                   aria-checked={isChosen}
                   disabled={revealed}
                   onClick={() => dispatch({ type: "SELECT", label: option.label })}
-                  className={cn("flex min-h-12 items-center gap-3 rounded-md border px-4 py-3 text-left text-sm transition-colors disabled:cursor-default sm:text-base", tone)}
                 >
-                  <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-mono text-xs font-bold ${
-                      revealed && isAnswer
-                        ? "bg-emerald-600 text-white"
-                        : revealed && isChosen
-                          ? "bg-rose-600 text-white"
-                          : isChosen
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {option.label}
-                  </span>
-                  <RichText inline text={option.text} className="min-w-0 flex-1" />
-                  {revealed && isAnswer && <Check className="h-4 w-4 shrink-0 text-emerald-600" aria-label="Correct answer" />}
-                  {revealed && isChosen && !isAnswer && <X className="h-4 w-4 shrink-0 text-rose-600" aria-label="Your answer, wrong" />}
-                </button>
+                  <RichText inline text={option.text} />
+                </ChoiceOption>
               );
             })}
           </div>
