@@ -86,6 +86,10 @@ export const pyqApi = flashcardApi.injectEndpoints({
     getMockPaper: builder.query<FullMock, string>({
       query: (id) => `/mocks/papers/${id}`,
     }),
+    /** Questions by id, in that order (reopening a past attempt). */
+    getQuestionsByIds: builder.query<Pyq[], string[]>({
+      query: (ids) => ({ url: "/mocks/questions", method: "POST", body: { ids } }),
+    }),
     getNewMock: builder.query<FullMock, void>({
       query: () => "/mocks/new",
       // Every mock is freshly drawn, so never reuse a cached one.
@@ -102,4 +106,5 @@ export const {
   useGetMockPapersQuery,
   useLazyGetMockPaperQuery,
   useLazyGetNewMockQuery,
+  useLazyGetQuestionsByIdsQuery,
 } = pyqApi;

@@ -12,6 +12,8 @@ import { SUBJECT_META } from "@/lib/exam-pattern";
 import { subjectTheme } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import { useGetPyqPapersQuery } from "@/redux/PyqApi";
+import { AttemptList } from "@/features/mock/AttemptList";
+import { useAttempts } from "@/features/mock/attempts";
 
 function formatPaperDate(iso: string | null): string | null {
   if (!iso) return null;
@@ -23,6 +25,13 @@ const MINUTES = SECTION_SECONDS / 60;
 export default function SectionalPyqsPage() {
   const subject = useSubjectParam();
   const { data: papers, isLoading, isError, refetch } = useGetPyqPapersQuery(subject ?? "maths", { skip: !subject });
+  const { attempts } = useAttempts((a) => a.kind === "section" && a.subject === subject);
+  const best = new Map<string, { marks: number; max: number; count: number }>();
+  for (const a of attempts) {
+    if (!a.paperId) continue;
+    const prev = best.get(a.paperId);
+    best.set(a.paperId, { marks: Math.max(prev?.marks ?? -Infinity, a.marks), max: a.maxMarks, count: (prev?.count ?? 0) + 1 });
+  }
 
   if (!subject) {
     return (
@@ -89,7 +98,12 @@ export default function SectionalPyqsPage() {
                         {p.questionCount < 25 ? " (diagram questions left out)" : ""}
                       </span>
                     </span>
-                    <span className="hidden text-sm font-bold text-brand-700 dark:text-brand-400 sm:inline">Start</span>
+                    {best.has(p.id) && (
+                      <span className="hidden shrink-0 rounded-md bg-muted px-2 py-1 font-mono text-xs font-bold text-muted-foreground sm:inline">
+                        Best {best.get(p.id)!.marks}/{best.get(p.id)!.max}
+                      </span>
+                    )}
+                    <span className="hidden text-sm font-bold text-brand-700 dark:text-brand-400 sm:inline">{best.has(p.id) ? "Retake" : "Start"}</span>
                     <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </Link>
                 </li>
@@ -97,6 +111,8 @@ export default function SectionalPyqsPage() {
             })}
           </ul>
         )}
+
+        <AttemptList attempts={attempts} title={`Your ${section} attempts`} />
       </div>
     </TopicPageLayout>
   );

@@ -6,6 +6,8 @@ import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
 import { SECTION_SECONDS } from "@/features/mock/examSession";
 import { BTN } from "@/features/mock/MockRunner";
+import { AttemptList } from "@/features/mock/AttemptList";
+import { useAttempts } from "@/features/mock/attempts";
 import { MARKS_CORRECT, MARKS_WRONG } from "@/features/pyq/session";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
@@ -19,6 +21,9 @@ const attemptHref = (paper: string) => `/mock-tests/attempt?paper=${encodeURICom
 
 export default function MockTestsPage() {
   const { data: papers, isLoading, isError, refetch } = useGetMockPapersQuery();
+  const { attempts } = useAttempts((a) => a.kind !== "section");
+  const bestByPaper = new Map<string, number>();
+  for (const a of attempts) if (a.paperId) bestByPaper.set(a.paperId, Math.max(bestByPaper.get(a.paperId) ?? -Infinity, a.marks));
 
   return (
     <TopicPageLayout
@@ -87,6 +92,8 @@ export default function MockTestsPage() {
           </li>
         </ul>
 
+        <AttemptList attempts={attempts} />
+
         {/* Past papers */}
         <section aria-labelledby="past-papers" className="flex flex-col gap-3">
           <div>
@@ -119,7 +126,14 @@ export default function MockTestsPage() {
                         {paper.shift ? `${paper.shift} · ` : ""}4 sections · {MINUTES * 4} min
                       </span>
                     </span>
-                    <span className="hidden text-sm font-bold text-brand-700 dark:text-brand-400 sm:inline">Start</span>
+                    {bestByPaper.has(paper.id) && (
+                      <span className="hidden shrink-0 rounded-md bg-muted px-2 py-1 font-mono text-xs font-bold text-muted-foreground sm:inline">
+                        Best {bestByPaper.get(paper.id)}
+                      </span>
+                    )}
+                    <span className="hidden text-sm font-bold text-brand-700 dark:text-brand-400 sm:inline">
+                      {bestByPaper.has(paper.id) ? "Retake" : "Start"}
+                    </span>
                     <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </Link>
                 </li>

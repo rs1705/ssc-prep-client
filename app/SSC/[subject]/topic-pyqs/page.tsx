@@ -10,7 +10,7 @@ interface SavedSession {
   session: PyqSessionState;
 }
 import { ArrowRight, Layers, Loader2, RotateCcw, Shuffle } from "lucide-react";
-import { DUO } from "@/features/games/buttons";
+import { BTN } from "@/features/mock/examButtons";
 import { cn } from "@/lib/utils";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
@@ -159,7 +159,7 @@ export default function TopicPyqsPage() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button type="button" onClick={() => resumeSet(unfinished)} className={cn(DUO.primary, "min-h-11 flex-1 px-4 text-xs sm:flex-none")}>
+                <button type="button" onClick={() => resumeSet(unfinished)} className={cn(BTN.primary, "flex-1 sm:flex-none")}>
                   <RotateCcw className="h-4 w-4" aria-hidden="true" />
                   Resume
                 </button>
@@ -169,7 +169,7 @@ export default function TopicPyqsPage() {
                     clearUnfinished(window.location.pathname);
                     setUnfinished(null);
                   }}
-                  className={cn(DUO.secondary, "min-h-11 px-4 text-xs")}
+                  className={BTN.outline}
                 >
                   Discard
                 </button>
@@ -195,7 +195,7 @@ export default function TopicPyqsPage() {
                 </span>
               </span>
             </div>
-            <span className={cn(DUO.primary, "pointer-events-none min-h-10 self-start px-4 text-xs")}>
+            <span className={cn(BTN.primary, "pointer-events-none self-start")}>
               {pending === "__mixed" ? "Loading" : "Start"}
               {pending === "__mixed" ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />

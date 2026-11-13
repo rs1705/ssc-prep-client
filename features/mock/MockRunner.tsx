@@ -25,6 +25,8 @@ import { recordPlanActivity } from "@/lib/today-plan";
 import { SUBJECT_LABEL, subjectTheme } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import type { FullMock, Pyq } from "@/redux/PyqApi";
+import { buildAttempt, saveAttempt } from "./attempts";
+import { BTN } from "./examButtons";
 import {
   SECTION_SECONDS,
   countStatuses,
@@ -51,16 +53,8 @@ function kindLabel(kind: FullMock["kind"]) {
   return kind === "mock" ? "Mock test" : kind === "section" ? "Sectional test" : "Previous year paper";
 }
 
-/* Plain exam-style buttons: the CBT look, not the app's chunky game buttons. */
-const BTN_BASE =
-  "inline-flex h-10 items-center justify-center gap-1.5 rounded-md px-4 text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50";
-export const BTN = {
-  primary: `${BTN_BASE} bg-brand-600 text-white hover:bg-brand-700`,
-  outline: `${BTN_BASE} border border-border bg-card text-foreground hover:bg-muted`,
-  save: `${BTN_BASE} bg-emerald-600 text-white hover:bg-emerald-700`,
-  mark: `${BTN_BASE} border border-brand-500 bg-card text-brand-700 hover:bg-brand-50 dark:text-brand-300 dark:hover:bg-brand-500/10`,
-  ghost: `${BTN_BASE} text-muted-foreground hover:bg-muted hover:text-foreground`,
-};
+export { BTN } from "./examButtons";
+
 const ICON_BTN =
   "flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:bg-muted disabled:opacity-40";
 
@@ -157,6 +151,7 @@ export function MockRunner(props: MockRunnerProps) {
         {...props}
         onFinish={(s) => {
           exitFullscreen();
+          saveAttempt(buildAttempt(props.mock, s));
           setFinalState(s);
           setPhase("review");
         }}
@@ -736,7 +731,22 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
 
 /* -------------------------------- Review --------------------------------- */
 
-function Review({ mock, exam, onExit, onRestart, restartLabel, homeHref = "/mock-tests", exitLabel = "All tests" }: MockRunnerProps & { exam: ExamState }) {
+/** Reopen a saved attempt: the same result and review, without logging it again. */
+export function MockReview(props: MockRunnerProps & { exam: ExamState; when?: string }) {
+  return <Review {...props} record={false} />;
+}
+
+function Review({
+  mock,
+  exam,
+  onExit,
+  onRestart,
+  restartLabel,
+  homeHref = "/mock-tests",
+  exitLabel = "All tests",
+  record = true,
+  when,
+}: MockRunnerProps & { exam: ExamState; record?: boolean; when?: string }) {
   const [index, setIndex] = useState(0);
   // Mark the saved answers with the usual PYQ rules (+2 / -0.5).
   const asSession = (questions: Pyq[]) => ({ ...createSession("test", questions), answers: exam.answers, submitted: true });
@@ -748,7 +758,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel, homeHref = "/mock
   // Log once: one entry per attempted section, so subject stats update.
   const logged = useRef(false);
   useEffect(() => {
-    if (logged.current) return;
+    if (logged.current || !record) return;
     logged.current = true;
     recordPlanActivity("pyq");
     const path = homeHref;
@@ -791,7 +801,7 @@ function Review({ mock, exam, onExit, onRestart, restartLabel, homeHref = "/mock
       <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-card px-4 sm:px-6">
         <div className="min-w-0">
           <p className="truncate text-sm font-bold uppercase tracking-wide text-foreground">{mock.title}</p>
-          <p className="text-xs text-muted-foreground">Result &amp; review</p>
+          <p className="text-xs text-muted-foreground">{when ? `Attempted ${when}` : "Result & review"}</p>
         </div>
         <button type="button" onClick={onExit} className={BTN.ghost}>
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />

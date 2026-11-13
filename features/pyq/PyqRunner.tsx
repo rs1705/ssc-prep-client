@@ -17,7 +17,7 @@ import {
   Repeat,
   Target,
 } from "lucide-react";
-import { DUO } from "@/features/games/buttons";
+import { BTN } from "@/features/mock/examButtons";
 import { replayHref, shuffle } from "@/features/games/sessionSet";
 import { cn } from "@/lib/utils";
 import { ProgressBar } from "@/components/custom/ProgressBar";
@@ -158,16 +158,16 @@ export function PyqRunner({
   const paletteClass = (q: Pyq, i: number) => {
     const answer = state.answers[q.id];
     const show = state.submitted || (mode === "practice" && !!answer);
-    let tone = "border-border bg-card text-muted-foreground";
+    let tone = "border-border bg-muted text-foreground";
     if (show && answer) {
       tone =
         answer === q.answer
           ? "border-emerald-500/50 bg-[color-mix(in_oklab,var(--color-emerald-500)_15%,var(--card))] text-emerald-700 dark:text-emerald-300"
           : "border-rose-500/50 bg-[color-mix(in_oklab,var(--color-rose-500)_15%,var(--card))] text-rose-700 dark:text-rose-300";
     } else if (answer) {
-      tone = "border-primary bg-primary text-primary-foreground";
+      tone = "border-brand-700 bg-brand-500 text-white";
     }
-    const ring = i === state.index ? "ring-2 ring-brand-500 ring-offset-2 ring-offset-background" : "";
+    const ring = i === state.index ? "ring-2 ring-foreground ring-offset-2 ring-offset-card" : "";
     return `${tone} ${ring}`;
   };
 
@@ -179,14 +179,14 @@ export function PyqRunner({
   return (
     <div className="flex w-full flex-col gap-4">
       {/* Session bar */}
-      <div className="surface-card flex flex-col gap-3 rounded-2xl p-3 sm:p-4">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 sm:p-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             <button
               type="button"
               onClick={onExit}
               aria-label="Leave this set"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card text-muted-foreground transition-colors hover:text-foreground"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -240,7 +240,7 @@ export function PyqRunner({
       {state.submitted && (
         <section
           aria-label="Result"
-          className={`rounded-3xl border-2 p-5 sm:p-6 ${theme.banner}`}
+          className="rounded-xl border border-border bg-card p-5 sm:p-6"
         >
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -266,7 +266,7 @@ export function PyqRunner({
                 { label: "Skipped", value: result.skipped, tone: "text-muted-foreground" },
                 { label: "Accuracy", value: `${result.accuracy}%`, tone: "text-foreground" },
               ].map((s) => (
-                <div key={s.label} className="rounded-2xl border-2 border-border bg-card px-2 py-2.5 sm:min-w-[4.75rem]">
+                <div key={s.label} className="rounded-lg border border-border bg-card px-2 py-2.5 sm:min-w-[4.75rem]">
                   <dd className={`font-mono text-lg font-black tabular-nums ${s.tone}`}>{s.value}</dd>
                   <dt className="text-xs font-medium text-muted-foreground">{s.label}</dt>
                 </div>
@@ -275,7 +275,7 @@ export function PyqRunner({
           </div>
           <div className="mt-4 flex flex-col flex-wrap gap-2 sm:flex-row">
             {onPlayQuestions && wrongQuestions.length > 0 && (
-              <button type="button" onClick={() => onPlayQuestions(shuffle(wrongQuestions))} className={cn(DUO.primary, "min-h-11")}>
+              <button type="button" onClick={() => onPlayQuestions(shuffle(wrongQuestions))} className={BTN.primary}>
                 <Target className="h-4 w-4" aria-hidden="true" />
                 Retry {wrongQuestions.length} wrong
               </button>
@@ -284,7 +284,7 @@ export function PyqRunner({
               <button
                 type="button"
                 onClick={() => onPlayQuestions(shuffle(state.questions))}
-                className={cn(wrongQuestions.length > 0 ? DUO.secondary : DUO.primary, "min-h-11")}
+                className={wrongQuestions.length > 0 ? BTN.outline : BTN.primary}
               >
                 <Repeat className="h-4 w-4" aria-hidden="true" />
                 Same set again
@@ -293,12 +293,12 @@ export function PyqRunner({
             <button
               type="button"
               onClick={onRestart}
-              className={cn(DUO.primary, "min-h-11 px-5")}
+              className={BTN.primary}
             >
               <RotateCcw className="h-4 w-4" aria-hidden="true" />
               {restartLabel}
             </button>
-            <button type="button" onClick={onExit} className={cn(DUO.secondary, "min-h-11 px-5")}>
+            <button type="button" onClick={onExit} className={BTN.outline}>
               Back
             </button>
           </div>
@@ -307,9 +307,9 @@ export function PyqRunner({
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
         {/* Question */}
-        <article className="surface-card flex min-w-0 flex-1 flex-col gap-4 rounded-3xl p-4 sm:p-6">
+        <article className="flex min-w-0 flex-1 flex-col gap-4 rounded-xl border border-border bg-card p-4 sm:p-6">
           <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
-            <span className="rounded-full bg-primary px-2.5 py-1 font-mono text-primary-foreground">
+            <span className="rounded-md bg-brand-600 px-2 py-0.5 font-mono text-white">
               Q{state.index + 1}
             </span>
             {question.subtopics[0] && (
@@ -328,7 +328,7 @@ export function PyqRunner({
           </div>
 
           {question.passage && (
-            <details open className="group rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))]">
+            <details open className="group rounded-lg border border-border bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))]">
               <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground">
                 <BookOpenText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 Passage
@@ -337,7 +337,7 @@ export function PyqRunner({
               </summary>
               <RichText
                 text={question.passage}
-                className="max-h-64 overflow-y-auto border-t-2 border-border px-4 py-3 text-sm leading-relaxed text-foreground/90"
+                className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90"
               />
             </details>
           )}
@@ -353,14 +353,14 @@ export function PyqRunner({
               const isAnswer = option.label === question.answer;
               const tone =
                 revealed && isAnswer
-                  ? DUO.correct
+                  ? "border-emerald-500 bg-emerald-50 text-foreground dark:bg-emerald-500/10"
                   : revealed && isChosen
-                    ? DUO.wrong
+                    ? "border-rose-500 bg-rose-50 text-foreground dark:bg-rose-500/10"
                     : isChosen
-                      ? "border-brand-500 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-foreground"
+                      ? "border-brand-500 bg-brand-50 text-foreground dark:bg-brand-500/10"
                       : revealed
-                        ? DUO.faded
-                        : DUO.idle;
+                        ? "border-border text-muted-foreground"
+                        : "border-border text-foreground hover:border-brand-500/50 hover:bg-muted/50";
 
               return (
                 <button
@@ -370,10 +370,10 @@ export function PyqRunner({
                   aria-checked={isChosen}
                   disabled={revealed}
                   onClick={() => dispatch({ type: "SELECT", label: option.label })}
-                  className={cn(DUO.option, tone, "flex min-h-12 items-center gap-3 px-3 py-2.5 text-left text-sm font-medium sm:text-base")}
+                  className={cn("flex min-h-12 items-center gap-3 rounded-md border px-4 py-3 text-left text-sm transition-colors disabled:cursor-default sm:text-base", tone)}
                 >
                   <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-black ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md font-mono text-xs font-bold ${
                       revealed && isAnswer
                         ? "bg-emerald-600 text-white"
                         : revealed && isChosen
@@ -402,12 +402,12 @@ export function PyqRunner({
           </p>
 
           {/* Controls */}
-          <div className="flex flex-wrap items-center justify-between gap-2 border-t-2 border-border/70 pt-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border/70 pt-4">
             <button
               type="button"
               disabled={state.index === 0}
               onClick={() => dispatch({ type: "GOTO", index: state.index - 1 })}
-              className={cn(DUO.secondary, "min-h-11 px-4")}
+              className={BTN.outline}
             >
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Previous</span>
@@ -428,7 +428,7 @@ export function PyqRunner({
                 <button
                   type="button"
                   onClick={() => setConfirming(true)}
-                  className={cn(isLast ? DUO.primary : DUO.secondary, "min-h-11 px-4")}
+                  className={isLast ? BTN.primary : BTN.outline}
                 >
                   <Flag className="h-4 w-4" aria-hidden="true" />
                   Submit test
@@ -438,7 +438,7 @@ export function PyqRunner({
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "SUBMIT" })}
-                  className={cn(DUO.success, "min-h-11 px-5")}
+                  className={BTN.save}
                 >
                   See results
                 </button>
@@ -447,7 +447,7 @@ export function PyqRunner({
                 <button
                   type="button"
                   onClick={() => dispatch({ type: "GOTO", index: state.index + 1 })}
-                  className={cn(DUO.primary, "min-h-11 px-5")}
+                  className={BTN.primary}
                 >
                   Next
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -459,7 +459,7 @@ export function PyqRunner({
           {revealed && (
             <details
               key={question.id}
-              className="group rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))]"
+              className="group rounded-lg border border-border bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))]"
             >
               <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground [&::-webkit-details-marker]:hidden">
                 {!chosen ? (
@@ -479,7 +479,7 @@ export function PyqRunner({
                   <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
                 </span>
               </summary>
-              <div className="border-t-2 border-border px-4 py-3">
+              <div className="border-t border-border px-4 py-3">
                 {question.explanation ? (
                   <RichText text={question.explanation} className="text-sm leading-relaxed text-foreground/90" />
                 ) : (
@@ -490,7 +490,7 @@ export function PyqRunner({
           )}
 
           {confirming && (
-            <div role="alertdialog" aria-label="Submit test?" className="rounded-2xl border-2 border-brand-500/40 bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] p-4">
+            <div role="alertdialog" aria-label="Submit test?" className="rounded-lg border border-brand-500/40 bg-brand-50 p-4 dark:bg-brand-500/10">
               <p className="text-sm font-bold text-foreground">
                 Submit the test now?
               </p>
@@ -507,11 +507,11 @@ export function PyqRunner({
                     setConfirming(false);
                     dispatch({ type: "SUBMIT" });
                   }}
-                  className={cn(DUO.primary, "min-h-11 px-5")}
+                  className={BTN.primary}
                 >
                   Yes, submit
                 </button>
-                <button type="button" onClick={() => setConfirming(false)} className={cn(DUO.secondary, "min-h-11 px-5")}>
+                <button type="button" onClick={() => setConfirming(false)} className={BTN.outline}>
                   Keep going
                 </button>
               </div>
@@ -520,11 +520,11 @@ export function PyqRunner({
         </article>
 
         {/* Question palette */}
-        <nav aria-label="Questions" className="surface-card rounded-3xl lg:sticky lg:top-24 lg:w-64 lg:shrink-0 p-4 sm:p-6">
+        <nav aria-label="Questions" className="rounded-xl border border-border bg-card p-4 lg:sticky lg:top-24 lg:w-[16.5rem] lg:shrink-0">
           <p className="section-label mb-3">
             Questions · {answeredCount}/{state.questions.length} answered
           </p>
-          <ol className="grid grid-cols-8 gap-1.5 sm:grid-cols-10 lg:grid-cols-5">
+          <ol className="grid grid-cols-[repeat(auto-fill,2.5rem)] justify-center gap-2 lg:grid-cols-[repeat(5,2.5rem)]">
             {state.questions.map((q, i) => (
               <li key={q.id}>
                 <button
@@ -532,7 +532,7 @@ export function PyqRunner({
                   onClick={() => dispatch({ type: "GOTO", index: i })}
                   aria-label={`Question ${i + 1}`}
                   aria-current={i === state.index ? "true" : undefined}
-                  className={`flex aspect-square w-full items-center justify-center rounded-lg border-2 font-mono text-xs font-bold transition-colors ${paletteClass(q, i)}`}
+                  className={`flex h-10 w-10 items-center justify-center rounded-lg border font-mono text-sm font-bold transition-colors ${paletteClass(q, i)}`}
                 >
                   {i + 1}
                 </button>
