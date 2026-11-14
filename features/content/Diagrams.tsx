@@ -58,6 +58,14 @@ function Geometry({ d }: { d: GeometryDiagram }) {
       {g.rightAngles.map((r, i) => (
         <polyline key={`r${i}`} points={r.points.map((p) => p.join(",")).join(" ")} className={r.highlight ? "right" : "brand"} strokeWidth={2} />
       ))}
+      {g.dimensions.map((m, i) => (
+        <g key={`m${i}`}>
+          <line x1={m.x1} y1={m.y1} x2={m.x2} y2={m.y2} className="ink" strokeWidth={1.1} strokeDasharray="4 3" />
+          {m.ticks.map(([a, b], j) => (
+            <line key={j} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} className="ink" strokeWidth={1.4} />
+          ))}
+        </g>
+      ))}
       {g.lengthLabels.map((l, i) => (
         <g key={`l${i}`}>
           <rect x={l.x - l.w / 2} y={l.y - l.h / 2} width={l.w} height={l.h} rx={4} className="card-fill" />

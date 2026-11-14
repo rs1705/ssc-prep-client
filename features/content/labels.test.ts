@@ -42,3 +42,32 @@ describe("placeLabels", () => {
     }
   });
 });
+
+describe("geometry length labels", () => {
+  // Two parallel chords on the same side of the centre (a real explanation that read badly:
+  // "10 cm" and "7 cm" sat between OA and OP and looked like their lengths).
+  const chords = {
+    kind: "geometry" as const,
+    alt: "Two parallel chords",
+    points: { O: [0, 0], P: [0, 12], Q: [0, 5], A: [-5, 12], B: [5, 12], C: [-12, 5], D: [12, 5] } as Record<string, [number, number]>,
+    segments: [["A", "B"], ["C", "D"], ["O", "P"], ["O", "A"], ["O", "C"]] as [string, string][],
+    circles: [{ center: "O", through: "A" }],
+    labels: { AB: "10 cm", CD: "24 cm", PQ: "7 cm" },
+  };
+
+  it("puts each label nearer its own line than any other, and gives an undrawn distance a dimension line", async () => {
+    const { layoutGeometry } = await import("./geometry");
+    const g = layoutGeometry(chords);
+    const seg = (i: number): [[number, number], [number, number]] => [[g.segments[i].x1, g.segments[i].y1], [g.segments[i].x2, g.segments[i].y2]];
+    const gap = (l: (typeof g.lengthLabels)[number], s: [[number, number], [number, number]]) => segmentBoxDistance(s, l.x, l.y, l.w / 2, l.h / 2);
+    const [ab, , pq] = g.lengthLabels;
+    // 10 cm: on the far side of AB from the centre (OP and OA are on the near side), nearer AB than OA
+    expect(ab.y + ab.h / 2).toBeLessThan(g.segments[0].y1);
+    expect(gap(ab, seg(0))).toBeLessThan(gap(ab, seg(3)));
+    // 7 cm: PQ has no line of its own, so it gets a dimension line, and the label is nearer that than OP
+    expect(g.dimensions).toHaveLength(1);
+    const m = g.dimensions[0];
+    expect(gap(pq, [[m.x1, m.y1], [m.x2, m.y2]])).toBeLessThan(gap(pq, seg(2)));
+    expect(gap(pq, seg(3))).toBeGreaterThan(gap(pq, [[m.x1, m.y1], [m.x2, m.y2]]));
+  });
+});
