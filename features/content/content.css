@@ -1,0 +1,142 @@
+/*
+ * Content-format renderer styles (ported from design/diagram-lab.html).
+ * Everything is scoped under .cf and coloured from the tokens below, so diagrams follow
+ * light and dark mode. Dark applies under a .dark ancestor or data-theme="dark" on .cf.
+ */
+.cf {
+  --cf-card: #ffffff;
+  --cf-fg: #0e1630;
+  --cf-muted: #56617d;
+  --cf-border: #dbe1ee;
+  --cf-grid: #e8ecf5;
+  --cf-bg: #f4f6fb;
+  --cf-brand: #4f46e5;
+  --cf-brand-3: #818cf8;
+  --cf-brand-soft: #eef0ff;
+  --cf-right: #059669;
+  --cf-right-soft: #ecfdf5;
+  --cf-wrong: #e11d48;
+  --cf-wrong-soft: #fff1f2;
+  /* Chart colours: categorical slots (validated, CVD-safe in order), bars in Quant sky. */
+  --cf-series-1: #2a78d6; --cf-series-2: #eb6834; --cf-series-3: #1baf7a; --cf-series-4: #eda100; --cf-series-5: #e87ba4;
+  --cf-bar: #0ea5e9;
+  --cf-font-body: var(--font-geist-sans, "Geist"), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --cf-font-mono: var(--font-geist-mono, "Geist Mono"), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  color: var(--cf-fg);
+  font-family: var(--cf-font-body);
+  line-height: 1.6;
+}
+.dark .cf,
+.cf[data-theme="dark"] {
+  --cf-card: #131a30; --cf-fg: #eef1f8; --cf-muted: #9aa6c6; --cf-border: #252f52; --cf-grid: #1c2444; --cf-bg: #0b1020;
+  --cf-brand: #818cf8; --cf-brand-3: #4f46e5; --cf-brand-soft: #1d2250;
+  --cf-right: #34d399; --cf-right-soft: #0f2a24; --cf-wrong: #fb7185; --cf-wrong-soft: #2e1420;
+  --cf-series-1: #3987e5; --cf-series-2: #d95926; --cf-series-3: #199e70; --cf-series-4: #c98500; --cf-series-5: #d55181;
+  --cf-bar: #38bdf8;
+  color-scheme: dark;
+}
+
+.cf, .cf *, .cf *::before, .cf *::after { box-sizing: border-box; }
+
+.cf-blocks { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.cf-text { margin: 0; overflow-wrap: anywhere; }
+.cf-text ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 2px; }
+.cf-text p { margin: 0; }
+.cf-text p + p, .cf-text p + ul, .cf-text ul + p { margin-top: 6px; }
+.cf-text img { max-width: 100%; max-height: 240px; border-radius: 8px; border: 1px solid var(--cf-border); margin: 6px 0; display: block; }
+.cf-math { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.cf-figure { overflow-x: auto; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+.cf-figure svg { max-width: 100%; height: auto; display: block; }
+.cf-caption { font-size: 12px; color: var(--cf-muted); text-align: center; }
+.cf-scale { font: 600 11px/1 var(--cf-font-mono); color: var(--cf-muted); letter-spacing: .04em; }
+
+table.cf-table { border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; margin: 0 auto; }
+.cf-table th, .cf-table td { border: 1px solid var(--cf-border); padding: 7px 14px; text-align: center; }
+.cf-table th { background: var(--cf-brand-soft); font-weight: 600; }
+.cf-table tr.cf-hl td { background: var(--cf-right-soft); color: var(--cf-right); font-weight: 700; }
+
+.cf-series { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 6px 4px; padding: 6px 0; }
+.cf-s-num {
+  min-width: 46px; padding: 9px 10px; text-align: center; border: 1px solid var(--cf-border); border-radius: 8px;
+  font: 700 18px/1 var(--cf-font-mono); background: var(--cf-card); font-variant-numeric: tabular-nums;
+}
+.cf-s-num.cf-ask { border-style: dashed; color: var(--cf-brand); }
+.cf-s-num.cf-found { border-color: var(--cf-right); color: var(--cf-right); background: var(--cf-right-soft); }
+.cf-s-gap { display: flex; flex-direction: column; align-items: center; gap: 3px; padding-bottom: 8px; min-width: 30px; }
+.cf-s-diff { font: 600 12px/1 var(--cf-font-mono); color: var(--cf-brand); }
+.cf-s-arrow { width: 26px; height: 8px; }
+.cf-s-comma { align-self: flex-end; padding: 0 2px 6px 0; font: 700 18px/1 var(--cf-font-mono); color: var(--cf-muted); }
+
+.cf-coding { display: grid; gap: 6px; justify-content: center; }
+.cf-c-row { display: flex; gap: 6px; align-items: center; }
+.cf-c-tag { width: 64px; font: 600 12px/1 var(--cf-font-mono); color: var(--cf-muted); text-align: right; padding-right: 6px; }
+.cf-c-cell {
+  width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--cf-border); border-radius: 7px;
+  font: 700 17px/1 var(--cf-font-mono);
+}
+.cf-c-cell.cf-out { background: var(--cf-brand-soft); color: var(--cf-brand); border-color: transparent; }
+.cf-c-shift { width: 38px; text-align: center; font: 600 11px/1 var(--cf-font-mono); color: var(--cf-brand); }
+
+.cf-paper-img { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.cf-paper-img img { max-width: min(100%, 320px); max-height: 240px; border: 1px solid var(--cf-border); border-radius: 8px; background: #fff; }
+.cf-paper-tag { font: 600 11px/1 var(--cf-font-mono); color: var(--cf-muted); letter-spacing: .04em; }
+
+.cf-problem {
+  border: 1px dashed var(--cf-wrong); background: var(--cf-wrong-soft); color: var(--cf-wrong);
+  border-radius: 8px; padding: 8px 12px; font-size: 13px;
+}
+.cf-problem ul { margin: 4px 0 0; padding-left: 1.2em; }
+
+/* Options (the calm style: thin border, A–D chip in Geist Mono, soft right/wrong fills). */
+.cf-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 520px) { .cf-opts { grid-template-columns: minmax(0, 1fr); } }
+.cf-opt {
+  display: flex; align-items: center; gap: 10px; text-align: left; width: 100%;
+  padding: 10px 12px; border: 1px solid var(--cf-border); border-radius: 9px; background: var(--cf-card);
+  color: var(--cf-fg); font: 500 14px/1.4 var(--cf-font-body); min-width: 0;
+}
+button.cf-opt { cursor: pointer; }
+button.cf-opt:hover:not(:disabled) { border-color: var(--cf-brand-3); }
+button.cf-opt:disabled { cursor: default; }
+.cf-opt:focus-visible { outline: 2px solid var(--cf-brand); outline-offset: 2px; }
+.cf-opt-lbl {
+  flex: none; width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center;
+  background: var(--cf-brand-soft); color: var(--cf-brand); font: 700 12px/1 var(--cf-font-mono);
+}
+.cf-opt-body { min-width: 0; flex: 1; }
+.cf-opt-body .cf-blocks { gap: 6px; }
+.cf-opt-body .cf-paper-img img { width: 72px; height: 72px; object-fit: contain; }
+.cf-opt-body .cf-paper-tag { display: none; }
+.cf-opt.cf-right { border-color: var(--cf-right); background: var(--cf-right-soft); }
+.cf-opt.cf-right .cf-opt-lbl { background: var(--cf-right); color: var(--cf-card); }
+.cf-opt.cf-wrong { border-color: var(--cf-wrong); background: var(--cf-wrong-soft); }
+.cf-opt.cf-wrong .cf-opt-lbl { background: var(--cf-wrong); color: var(--cf-card); }
+
+/* Diagram strokes and fills come from the tokens. */
+.cf-dg .ink { stroke: var(--cf-fg); fill: none; }
+.cf-dg .ink-fill { fill: var(--cf-fg); }
+.cf-dg .muted { stroke: var(--cf-muted); fill: none; }
+.cf-dg .grid { stroke: var(--cf-grid); fill: none; }
+.cf-dg .brand { stroke: var(--cf-brand); fill: none; }
+.cf-dg .brand-fill { fill: var(--cf-brand); }
+.cf-dg .soft { fill: var(--cf-brand-soft); }
+.cf-dg .right { stroke: var(--cf-right); fill: none; }
+.cf-dg .right-fill { fill: var(--cf-right); }
+.cf-dg .card-fill { fill: var(--cf-card); }
+/* Halo: a card-coloured outline behind every letter, so text stays readable where it
+   crosses a line, a circle or the grid. Text on coloured fills keeps none. */
+.cf-dg text {
+  fill: var(--cf-fg);
+  font: 500 13px var(--cf-font-body);
+  paint-order: stroke fill;
+  stroke: var(--cf-card);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.cf-dg text.small { font-size: 11px; fill: var(--cf-muted); }
+.cf-dg text.mono { font-family: var(--cf-font-mono); }
+.cf-dg text.bold { font-weight: 700; }
+.cf-dg text.fg { fill: var(--cf-fg); }
+.cf-dg text.right-text { fill: var(--cf-right); }
+.cf-dg text.on-brand { stroke: none; fill: #fff; font-weight: 700; }

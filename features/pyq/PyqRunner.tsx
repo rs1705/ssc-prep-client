@@ -23,6 +23,7 @@ import { ProgressBar } from "@/components/custom/ProgressBar";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import type { Pyq } from "@/redux/PyqApi";
 import { RichText } from "./RichText";
+import { Blocks, mapTextBlocks, markAskedBlank } from "@/features/content/Blocks";
 import {
   MARKS_CORRECT,
   MARKS_WRONG,
@@ -357,15 +358,16 @@ export function PyqRunner({
                 <span className="ml-auto hidden text-xs font-medium text-muted-foreground group-open:inline">Hide</span>
               </summary>
               <RichText
-                text={question.passage}
+                text={markAskedBlank(question.passage, question.question)}
                 className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90"
               />
             </details>
           )}
 
-          <RichText
-            text={question.question}
+          <Blocks
+            blocks={question.questionBlocks}
             className={cn(QUESTION_TEXT, "text-foreground")}
+            fallback={<RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />}
           />
 
           <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2.5 text-[15px]">
@@ -383,7 +385,7 @@ export function PyqRunner({
                   onClick={() => dispatch({ type: "SELECT", label: option.label })}
                   className={OPTION_TEXT}
                 >
-                  <RichText inline text={option.text} />
+                  <Blocks blocks={option.blocks} fallback={<RichText inline text={option.text} />} />
                 </ChoiceOption>
               );
             })}
@@ -476,8 +478,12 @@ export function PyqRunner({
                 </span>
               </summary>
               <div className="border-t border-border px-4 py-3">
-                {question.explanation ? (
-                  <RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />
+                {question.explanation || question.explanationBlocks?.length ? (
+                  <Blocks
+                    blocks={mapTextBlocks(question.explanationBlocks, (t) => relabelOptionRefs(t, question.options))}
+                    className="text-sm leading-relaxed text-foreground/90"
+                    fallback={<RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />}
+                  />
                 ) : (
                   <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
                 )}

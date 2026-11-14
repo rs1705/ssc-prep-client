@@ -27,6 +27,8 @@ checked in the browser (phone width 375px too, if it's a layout change).
 - `lib/` — pure logic and helpers: `subject-theme.ts` (the only colour themes),
   `storage.ts` (localStorage helpers), `activity-log.ts`, `progress-sync.ts` (account sync),
   `today-plan.ts`, `nav.ts`.
+- `features/content/` — the question content renderer (blocks, diagrams). Copied unchanged from
+  `ingestion-pipeline/src/content/`; change it there and copy it over. App-only: `Blocks.tsx`, `app-theme.css`.
 - `redux/` — RTK Query APIs (`FlashcardApiSlice.ts` base, `PyqApi.ts`).
 
 ## Conventions

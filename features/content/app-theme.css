@@ -1,0 +1,33 @@
+/*
+ * The content renderer (copied unchanged from the ingestion pipeline) reads --cf-* tokens.
+ * In the app they follow the app's own theme tokens, in light and dark.
+ */
+:root .cf,
+:root.dark .cf,
+.dark .cf {
+  --cf-card: var(--card);
+  --cf-fg: var(--foreground);
+  --cf-muted: var(--muted-foreground);
+  --cf-border: var(--border);
+  --cf-grid: color-mix(in oklab, var(--border) 60%, var(--card));
+  --cf-bg: var(--background);
+  --cf-brand: var(--brand-500);
+  --cf-brand-3: color-mix(in oklab, var(--brand-500) 55%, var(--card));
+  --cf-brand-soft: color-mix(in oklab, var(--brand-500) 12%, var(--card));
+  --cf-right: var(--color-emerald-600);
+  --cf-right-soft: color-mix(in oklab, var(--color-emerald-500) 10%, var(--card));
+  --cf-wrong: var(--color-rose-600);
+  --cf-wrong-soft: color-mix(in oklab, var(--color-rose-500) 10%, var(--card));
+  --cf-bar: var(--color-sky-500);
+  --cf-font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --cf-font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: inherit;
+  line-height: inherit;
+}
+:root.dark .cf,
+.dark .cf {
+  --cf-right: var(--color-emerald-400);
+  --cf-wrong: var(--color-rose-400);
+  --cf-bar: var(--color-sky-400);
+  --cf-series-1: #3987e5; --cf-series-2: #d95926; --cf-series-3: #199e70; --cf-series-4: #c98500; --cf-series-5: #d55181;
+}

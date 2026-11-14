@@ -1,9 +1,12 @@
 import { flashcardApi } from "./FlashcardApiSlice";
 import type { SubjectKey } from "@/lib/subject-theme";
+import type { Block } from "@/features/content/types";
 
 export interface PyqOption {
   label: string;
   text: string;
+  /** The option in the content-block format, when it has more than text. */
+  blocks?: Block[];
 }
 
 export interface Pyq {
@@ -11,12 +14,16 @@ export interface Pyq {
   topic: string;
   subtopics: string[];
   difficulty: string | null;
-  /** Markdown with inline LaTeX ($...$). */
+  /** Markdown with inline LaTeX ($...$). Always set, also when blocks are. */
   question: string;
+  /** The question in the content-block format (tables, series, diagrams), when it has one. */
+  questionBlocks?: Block[];
   options: PyqOption[];
   /** Label of the correct option. */
   answer: string;
   explanation: string;
+  /** The explanation in the content-block format, when it has one. */
+  explanationBlocks?: Block[];
   passage: string | null;
   source: string | null;
 }

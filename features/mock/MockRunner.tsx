@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import { RichText } from "@/features/pyq/RichText";
+import { Blocks, mapTextBlocks, markAskedBlank } from "@/features/content/Blocks";
 import { MARKS_CORRECT, MARKS_WRONG, computeResult, createSession, formatClock } from "@/features/pyq/session";
 import { logActivity, logMistakes, plainText } from "@/lib/activity-log";
 import { recordPlanActivity } from "@/lib/today-plan";
@@ -557,10 +558,14 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
                     Passage
                     <ChevronDown className="ml-auto h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
                   </summary>
-                  <RichText text={question.passage} className="max-h-72 overflow-y-auto border-t border-border px-4 py-3 leading-relaxed text-foreground/90" />
+                  <RichText text={markAskedBlank(question.passage, question.question)} className="max-h-72 overflow-y-auto border-t border-border px-4 py-3 leading-relaxed text-foreground/90" />
                 </details>
               )}
-              <RichText text={question.question} className="font-medium leading-relaxed text-foreground" />
+              <Blocks
+                blocks={question.questionBlocks}
+                className="font-medium leading-relaxed text-foreground"
+                fallback={<RichText text={question.question} className="font-medium leading-relaxed text-foreground" />}
+              />
               <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2.5">
                 {question.options.map((o, i) => {
                   const picked = state.draft === o.label;
@@ -574,7 +579,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
                       onClick={() => dispatch({ type: "PICK", label: o.label })}
                       className={OPTION_TEXT}
                     >
-                      <RichText inline text={o.text} />
+                      <Blocks blocks={o.blocks} fallback={<RichText inline text={o.text} />} />
                     </ChoiceOption>
                   );
                 })}
@@ -887,10 +892,14 @@ function Review({
                     Passage
                     <ChevronDown className="ml-auto h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
                   </summary>
-                  <RichText text={question.passage} className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90" />
+                  <RichText text={markAskedBlank(question.passage, question.question)} className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90" />
                 </details>
               )}
-              <RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />
+              <Blocks
+                blocks={question.questionBlocks}
+                className={cn(QUESTION_TEXT, "text-foreground")}
+                fallback={<RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />}
+              />
               <div className="flex flex-col gap-2.5 text-[15px]">
                 {question.options.map((o, i) => {
                   const isAnswer = o.label === question.answer;
@@ -904,7 +913,7 @@ function Review({
                       className={OPTION_TEXT}
                       aria-label={`Option ${optionLetter(i)}${isAnswer ? ", correct answer" : isChosen ? ", your answer" : ""}`}
                     >
-                      <RichText inline text={o.text} />
+                      <Blocks blocks={o.blocks} fallback={<RichText inline text={o.text} />} />
                     </ChoiceOption>
                   );
                 })}
@@ -917,7 +926,11 @@ function Review({
                 </summary>
                 <div className="border-t border-border px-4 py-3">
                   {question.explanation ? (
-                    <RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />
+                    <Blocks
+                      blocks={mapTextBlocks(question.explanationBlocks, (t) => relabelOptionRefs(t, question.options))}
+                      className="text-sm leading-relaxed text-foreground/90"
+                      fallback={<RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />}
+                    />
                   ) : (
                     <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
                   )}
