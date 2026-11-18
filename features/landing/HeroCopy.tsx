@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { DUO } from "@/features/games/buttons";
+import { DUO, LANDING_PRIMARY } from "@/features/games/buttons";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import { SNAPPY_EASE } from "./motion";
@@ -68,7 +68,7 @@ export function HeroCopy() {
       </p>
 
       <div className="mb-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-        <Link href="/practice" className={cn(DUO.primary, "w-full px-7 text-sm sm:w-auto sm:text-base")}>
+        <Link href="/practice" className={cn(LANDING_PRIMARY, "w-full px-7 text-sm sm:w-auto sm:text-base")}>
           Start practicing, free
           <ArrowRight className="h-5 w-5" aria-hidden="true" />
         </Link>

@@ -9,11 +9,16 @@ import { ServerWakeNotice } from "@/components/custom/server-wake-notice";
 import { ProgressSync } from "@/components/custom/progress-sync";
 import { useAuth } from "@/context/auth";
 import { SidebarProvider, useSidebar } from "@/components/custom/sidebar-context";
+import { isFocusRoute } from "@/lib/sidebar-mode";
+import { useHideOnScroll } from "@/lib/hide-on-scroll";
+import { useRef } from "react";
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted } = useSidebar();
   const { user } = useAuth();
+  const scroller = useRef<HTMLDivElement>(null);
+  const hideBar = useHideOnScroll(scroller, !isFocusRoute(pathname ?? ""));
 
   if (pathname === "/") {
     return <>{children}</>;
@@ -31,25 +36,10 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const isGameRoute = (path: string) => {
-    if (path.includes('/hangman')) return true;
-    if (path.includes('/fsrs')) return true;
-    if (path.includes('/freestyle')) return true;
-    if (path.endsWith('/maths/flashcards')) return true;
-    // Individual games live under /games/<name>; the /games hub itself is a normal page.
-    if (/\/games\/.+/.test(path)) return true;
-    if (/\/speed-drills\/.+/.test(path)) return true;
-    if (/\/(maths|reasoning)\/match$/.test(path)) return true;
-    if (path === '/review') return true;
-    
-    // Trigger on specific topics inside mental-maths, but NOT the topic list page itself
-    const isMentalMathsTopic = path.includes('/mental-maths/') && path.split('/mental-maths/')[1]?.length > 0;
-    if (isMentalMathsTopic) return true;
-
-    return false;
-  };
+  const isGameRoute = isFocusRoute;
 
   const isFocusMode = isGameRoute(pathname);
+  const barHidden = hideBar;
   // Room at the bottom is only needed when the phone tab bar is showing.
   const showTabBar = Boolean(user) && !isGameRoute(pathname) && !(pathname.startsWith("/signin") || pathname.startsWith("/signup"));
   // Games that lay themselves out to exactly the viewport height (and scroll internally if
@@ -69,8 +59,14 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       </div>
       
       {/* Main Content Area */}
-      <div className="app-canvas flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
-        <div className="sticky top-0 z-30 w-full bg-background border-b-2 border-border/60 backdrop-blur-md shrink-0">
+      <div ref={scroller} className="app-canvas flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
+        {/* Phones: no top bar on focus pages (the game card has its own header), and on other
+            pages it slides away while scrolling down and comes back on the way up. */}
+        <div
+          className={`sticky top-0 z-30 w-full shrink-0 border-b-2 border-border/60 bg-background pt-[env(safe-area-inset-top)] backdrop-blur-md transition-transform duration-300 ease-out md:pt-0 ${
+            isFocusMode ? "max-md:hidden" : ""
+          } ${barHidden ? "max-md:-translate-y-full" : ""}`}
+        >
           <div className="mx-auto w-full max-w-[1400px]">
             <TopBar />
           </div>
@@ -79,8 +75,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           <main 
             key={isFocusMode ? "focus" : "normal"}
             className={`flex-1 flex flex-col animate-in fade-in duration-500 fill-mode-forwards min-h-0 ${
-              isFocusMode 
-                ? "px-3 pt-2 pb-2 sm:px-4 sm:pt-3 sm:pb-3 md:px-6 md:pt-4 md:pb-4 items-center justify-start overflow-hidden" 
+              isFocusMode
+                ? "px-3 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 sm:px-4 sm:pb-3 md:px-6 md:pt-4 md:pb-4 items-center justify-start overflow-hidden"
                 : `pt-4 sm:pt-6 md:pt-8 px-4 sm:px-6 md:px-8 md:pb-16 ${showTabBar ? "pb-28" : "pb-8"}`
             }`}
           >

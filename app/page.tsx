@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowRight, Brain, Zap, BookOpen, Gamepad2, Rocket, CheckCircle2, Check, Activity, Map, Dumbbell, Trophy, RefreshCw, Crosshair, Tag, Timer } from "lucide-react";
+import { BrandMark } from "@/components/custom/brand-mark";
+import { ArrowRight, Brain, Zap, BookOpen, Gamepad2, CheckCircle2, Check, Activity, Map, Dumbbell, Trophy, RefreshCw, Crosshair, Tag, Timer } from "lucide-react";
 import { useRef } from "react";
 import { motion, useInView, type Variants, useScroll } from "framer-motion";
 import Link from "next/link";
@@ -10,7 +11,7 @@ import { SNAPPY_SPRING, SNAPPY_EASE } from "@/features/landing/motion";
 import { TryQuestion } from "@/features/landing/TryQuestion";
 import { HeroCopy } from "@/features/landing/HeroCopy";
 import { SubjectCards } from "@/features/landing/SubjectCards";
-import { DUO } from "@/features/games/buttons";
+import { DUO, LANDING_PRIMARY } from "@/features/games/buttons";
 import { cn } from "@/lib/utils";
 
 // Below the fold: separate chunks, still rendered on the server for search engines.
@@ -31,7 +32,7 @@ function ScrollTimelineLine() {
   return (
     <div ref={ref} className="absolute top-12 md:top-20 bottom-12 md:bottom-20 left-[23.5px] md:left-1/2 md:-ml-[1.5px] w-[2px] md:w-[3px] z-0 bg-[color-mix(in_oklab,var(--border)_40%,var(--card))] rounded-full overflow-hidden">
       <motion.div 
-        className="w-full h-full origin-top bg-gradient-to-b from-brand-500 via-brand-alt-500 to-brand-500"
+        className="w-full h-full origin-top bg-[linear-gradient(to_bottom,var(--color-sky-500),var(--color-fuchsia-500),var(--color-orange-500),var(--color-teal-500))]"
         style={{ scaleY: scrollYProgress }}
       />
     </div>
@@ -176,9 +177,7 @@ export default function LandingPage() {
       <header className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-2 z-50 sticky top-0">
         <div className="w-full px-4 sm:px-6 py-3 rounded-full bg-background sm:bg-background backdrop-blur-none sm:backdrop-blur-xl border-2 border-border shadow-lg shadow-black/5 flex items-center justify-between overflow-hidden relative">
           <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-brand-alt-500 shadow-md shadow-brand-500/20 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
-              <Rocket className="w-4 h-4" />
-            </div>
+            <BrandMark className="h-9 w-9 shadow-md shadow-brand-500/20 rounded-full transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" />
             <div className="leading-tight">
               <div className="font-bold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
                 <span>Ept<span className="text-brand-600 dark:text-brand-400">SSC</span></span>
@@ -198,16 +197,17 @@ export default function LandingPage() {
               <a href="#faq" className="px-3 py-2 rounded-full hover:text-foreground hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] transition-colors">FAQ</a>
             </div>
             {user ? (
-              <Link 
-                href="/dashboard" 
-                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full surface-card hover:bg-card text-xs font-semibold transition-all text-foreground"
+              <Link
+                href="/dashboard"
+                className={cn(DUO.secondary, "hidden min-h-10 rounded-full px-4 text-xs sm:inline-flex")}
               >
                 Dashboard
               </Link>
             ) : (
-              <button 
+              <button
+                type="button"
                 onClick={signInWithGoogle}
-                className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full surface-card hover:bg-card text-xs font-semibold transition-all text-foreground cursor-pointer"
+                className={cn(DUO.secondary, "hidden min-h-10 rounded-full px-4 text-xs sm:inline-flex")}
               >
                 Sign In
               </button>
@@ -215,7 +215,7 @@ export default function LandingPage() {
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} transition={SNAPPY_SPRING}>
               <Link 
                 href="/practice" 
-                className="group flex h-10 items-center gap-1.5 px-5 rounded-full bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-brand-500/25 transition-all"
+                className={cn(LANDING_PRIMARY, "group min-h-10 gap-1.5 rounded-full px-5 text-xs")}
               >
                 Enter App <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
@@ -278,7 +278,7 @@ export default function LandingPage() {
                   <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Sit a Real Section</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Pick a section from a past SSC CGL Tier 1 paper and attempt it against the clock, with the real +2 / −0.5 marking.</p>
                 </div>
-                <TimelineIcon baseClass="ring-sky-500/20 text-sky-600" activeClass="scale-110 bg-sky-500 text-white shadow-lg shadow-sky-500/20">
+                <TimelineIcon baseClass="ring-sky-500/25 text-sky-600 dark:text-sky-400" activeClass="scale-110 bg-sky-600 text-white shadow-lg shadow-sky-600/25">
                   <Activity className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
@@ -295,7 +295,7 @@ export default function LandingPage() {
                 className="flex flex-row md:flex-row gap-4 md:gap-12 items-start md:items-center group"
               >
                 <div className="hidden md:block md:w-1/2" />
-                <TimelineIcon baseClass="ring-brand-500/20 text-brand-500" activeClass="scale-110 bg-brand-500 text-white shadow-lg shadow-brand-500/20">
+                <TimelineIcon baseClass="ring-fuchsia-500/25 text-fuchsia-600 dark:text-fuchsia-400" activeClass="scale-110 bg-fuchsia-600 text-white shadow-lg shadow-fuchsia-600/25">
                   <Map className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2">
@@ -315,7 +315,7 @@ export default function LandingPage() {
                   <h3 className="text-xl md:text-2xl font-bold mb-2 tracking-tight">Drill Daily in Minutes</h3>
                   <p className="text-foreground/70 leading-relaxed text-sm">Speed Math sprints, topic-wise PYQ sets, flashcards and word games. Short sessions that fit into any day.</p>
                 </div>
-                <TimelineIcon baseClass="ring-brand-500/20 text-brand-500" activeClass="scale-110 bg-brand-500 text-white shadow-lg shadow-brand-500/20">
+                <TimelineIcon baseClass="ring-orange-500/25 text-orange-600 dark:text-orange-400" activeClass="scale-110 bg-orange-600 text-white shadow-lg shadow-orange-600/25">
                   <Dumbbell className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2 md:hidden">
@@ -332,7 +332,7 @@ export default function LandingPage() {
                 className="flex flex-row md:flex-row gap-4 md:gap-12 items-start md:items-center group"
               >
                 <div className="hidden md:block md:w-1/2" />
-                <TimelineIcon baseClass="ring-fuchsia-500/20 text-fuchsia-600 dark:text-fuchsia-400" activeClass="scale-110 bg-fuchsia-600 text-white shadow-lg shadow-fuchsia-500/20">
+                <TimelineIcon baseClass="ring-teal-500/25 text-teal-600 dark:text-teal-400" activeClass="scale-110 bg-teal-600 text-white shadow-lg shadow-teal-600/25">
                   <Trophy className="w-5 h-5 md:w-6 md:h-6" />
                 </TimelineIcon>
                 <div className="md:w-1/2">
@@ -472,7 +472,7 @@ export default function LandingPage() {
                 
                 <Link 
                   href="/practice" 
-                  className="w-full py-3 rounded-2xl bg-muted hover:bg-[color-mix(in_oklab,var(--muted)_80%,var(--card))] text-foreground font-bold transition-all text-center text-sm font-mono"
+                  className={cn(DUO.secondary, "w-full")}
                 >
                   Start Free
                 </Link>
@@ -519,7 +519,7 @@ export default function LandingPage() {
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={SNAPPY_SPRING}>
                   <Link 
                     href="/practice" 
-                    className="w-full block py-3 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-alt-500 text-white font-bold hover:opacity-95 transition-all text-center shadow-lg shadow-brand-500/25 relative z-10 text-sm font-mono"
+                    className={cn(LANDING_PRIMARY, "relative z-10 w-full")}
                   >
                     Coming soon
                   </Link>
@@ -555,7 +555,7 @@ export default function LandingPage() {
           <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.96 }} transition={SNAPPY_SPRING}>
             <Link 
               href="/practice" 
-              className={cn(DUO.primary, "px-8 text-base")}
+              className={cn(LANDING_PRIMARY, "group px-8 text-base")}
             >
               <span>Start practicing, free</span>
               <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
@@ -567,9 +567,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 text-left">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-3 group cursor-pointer w-fit">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-500 to-brand-alt-500 flex items-center justify-center text-white shrink-0 group-hover:rotate-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
-                <Rocket className="w-3.5 h-3.5" />
-              </div>
+              <BrandMark className="h-7 w-7 rounded-full transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" />
               <span className="font-bold text-base tracking-tight text-foreground group-hover:text-brand-500 transition-colors">EptSSC</span>
             </Link>
             <p className="text-muted-foreground text-xs leading-relaxed max-w-xs">

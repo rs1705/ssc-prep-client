@@ -40,3 +40,10 @@ export const CTA = {
   /** Continue after a wrong answer. */
   wrong: `inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-b-[5px] border-rose-700 bg-rose-500 px-6 text-base font-extrabold uppercase tracking-wide text-white hover:bg-rose-600 ${PRESS}`,
 } as const;
+
+/**
+ * The landing page's main button: the chunky shape of DUO.primary, filled with the brand
+ * gradient (indigo to blue), the same colours as the app icon. Landing page only; inside
+ * the app, main buttons stay solid (DUO.primary).
+ */
+export const LANDING_PRIMARY = `inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border-2 border-b-[5px] border-brand-700 bg-gradient-to-r from-brand-500 to-brand-alt-500 px-6 text-sm font-extrabold uppercase tracking-wide text-white hover:from-brand-600 hover:to-brand-alt-600 disabled:opacity-60 ${PRESS}`;

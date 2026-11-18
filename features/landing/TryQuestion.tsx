@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
-import { DUO } from "@/features/games/buttons";
+import { DUO, LANDING_PRIMARY } from "@/features/games/buttons";
 import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import { ChoiceOption, choiceState } from "@/features/pyq/ChoiceOption";
@@ -174,7 +174,7 @@ export function TryQuestion() {
         </ul>
 
         <div className="mt-5 flex gap-2">
-          <Link href="/practice" className={cn(DUO.primary, "min-h-12 flex-1 px-3")}>
+          <Link href="/practice" className={cn(LANDING_PRIMARY, "min-h-12 flex-1 px-3")}>
             Practice more
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
@@ -264,7 +264,7 @@ export function TryQuestion() {
           <ArrowLeft className="h-5 w-5" aria-hidden="true" />
         </button>
         {isLast && doneCount === SAMPLES.length ? (
-          <button type="button" onClick={() => setFinished(true)} className={cn(DUO.success, "min-h-11 flex-1 px-3 text-xs")}>
+          <button type="button" onClick={() => setFinished(true)} className={cn(LANDING_PRIMARY, "min-h-11 flex-1 px-3 text-xs")}>
             See my result
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -276,7 +276,7 @@ export function TryQuestion() {
           <button
             type="button"
             onClick={() => setIndex((i) => i + 1)}
-            className={cn(answered ? DUO.primary : DUO.secondary, "min-h-11 flex-1 px-3 text-xs")}
+            className={cn(answered ? LANDING_PRIMARY : DUO.secondary, "min-h-11 flex-1 px-3 text-xs")}
           >
             {answered ? "Next question" : "Skip for now"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />

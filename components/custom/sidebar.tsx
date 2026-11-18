@@ -1,9 +1,10 @@
 "use client";
 
+import { BrandMark } from "@/components/custom/brand-mark";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, PanelLeftClose, PanelLeftOpen, Rocket, Sun } from "lucide-react";
+import { Moon, PanelLeftClose, PanelLeftOpen, Sun } from "lucide-react";
 import { useSidebar } from "@/components/custom/sidebar-context";
 import { ExamCountdown } from "@/components/custom/exam-countdown";
 import { useAuth } from "@/context/auth";
@@ -92,12 +93,11 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
     >
       {/* Brand */}
       <Link
-        href="/"
+        href={user ? "/dashboard" : "/practice"}
+        aria-label="EptSSC home"
         className={`group mb-6 flex min-w-0 items-center ${ease} ${isCollapsed ? "gap-0" : "gap-3"}`}
       >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-alt-600 text-white shadow-md shadow-brand-500/25 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
-          <Rocket className="h-5 w-5" />
-        </div>
+        <BrandMark className="h-9 w-9 shadow-md shadow-brand-500/25 rounded-full transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" />
         <div
           className={`truncate leading-tight ${ease} ${
             isCollapsed ? "max-w-0 overflow-hidden opacity-0" : "max-w-[200px] opacity-100"

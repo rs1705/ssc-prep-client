@@ -21,7 +21,7 @@ export function LobbyScreen({ best, onStart }: LobbyScreenProps) {
     <GameLobby
       hero={<HangmanFigure strikes={4} />}
       title="Hangman"
-      blurb="Guess the SSC word from its meaning. The first letter (and the last, for long words) is given."
+      blurb="Guess the SSC word from its meaning. A few letters are filled in to start: one for short words, three to five for long ones."
       rules={RULES}
       best={best}
       onStart={onStart}

@@ -1,9 +1,10 @@
 "use client";
 
+import { BrandMark } from "@/components/custom/brand-mark";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Home, LogOut, Menu, Moon, Rocket, Sun } from "lucide-react";
+import { CalendarDays, Home, LogOut, Menu, Moon, Sun } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -80,13 +81,11 @@ export function TopBar() {
             <SheetTitle className="sr-only">Menu</SheetTitle>
 
             <Link
-              href={user ? "/dashboard" : "/"}
+              href={user ? "/dashboard" : "/practice"}
               onClick={() => setMobileOpen(false)}
               className="mb-6 flex items-center gap-3"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-alt-600 text-white shadow-md shadow-brand-500/25">
-                <Rocket className="h-5 w-5" />
-              </div>
+              <BrandMark className="h-9 w-9 shadow-md shadow-brand-500/25 rounded-full" />
               <div className="leading-tight">
                 <div className="font-display text-base font-extrabold tracking-tight text-foreground">
                   Ept<span className="text-brand-600 dark:text-brand-400">SSC</span>
@@ -209,7 +208,7 @@ export function TopBar() {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
-        <Link href={user ? "/dashboard" : "/"} aria-label="Home" className={`${ICON_BUTTON} md:hidden`}>
+        <Link href={user ? "/dashboard" : "/practice"} aria-label="Home" className={`${ICON_BUTTON} md:hidden`}>
           <Home className="h-4 w-4" strokeWidth={1.75} />
         </Link>
         <button type="button" aria-label="Toggle theme" onClick={toggleTheme} className={`${ICON_BUTTON} md:hidden`}>
