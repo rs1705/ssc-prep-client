@@ -1,10 +1,10 @@
 "use client";
 
+import { PageLoader } from "@/components/custom/page-loader";
 import Link from "next/link";
 import { ChevronRight, Clock, Lock, Target } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
-import { Loader } from "@/components/custom/loader";
 import { SECTION_SECONDS } from "@/features/mock/examSession";
 import { MARKS_CORRECT, MARKS_WRONG } from "@/features/pyq/session";
 import { useSubjectParam } from "@/features/pyq/useSubjectParam";
@@ -65,9 +65,7 @@ export default function SectionalPyqsPage() {
         </ul>
 
         {isLoading ? (
-          <div className="flex min-h-[30dvh] items-center justify-center">
-            <Loader text="Loading papers…" />
-          </div>
+          <PageLoader text="Loading papers" className="min-h-[30dvh] sm:min-h-[35dvh]" />
         ) : isError || !papers ? (
           <ErrorState
             title="Couldn't load papers"

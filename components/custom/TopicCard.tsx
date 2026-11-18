@@ -1,8 +1,9 @@
+import { Spinner } from "@/components/custom/loader";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { DUO } from "@/features/games/buttons";
 import { Button } from "@/components/ui/button";
-import { Swords, BookOpen, Loader2 } from "lucide-react";
+import { Swords, BookOpen } from "lucide-react";
 import { RevisionDialog } from "./revision-dialog";
 
 export interface RevisionRange {
@@ -144,7 +145,7 @@ export const TopicCard = ({
             className={cn(DUO.primary, "group/btn min-h-10 px-4 text-xs")}
           >
             {isStarting ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" />
+              <Spinner tone="current" className="h-4 w-4" />
             ) : (
               <Swords className="w-3.5 h-3.5 group-hover/btn:rotate-12 group-hover/btn:scale-125 transition-transform duration-300" />
             )}

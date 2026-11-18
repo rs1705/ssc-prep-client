@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components/custom/loader";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Clock, FileText, Lock, Shuffle } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
@@ -110,13 +111,11 @@ export default function MockTestsPage() {
             <ErrorState title="Couldn't load the papers" description="Please try again in a moment." onRetry={refetch} />
           ) : (
             <ul className="surface-card divide-y-2 divide-border overflow-hidden rounded-3xl">
-              {isLoading &&
-                [0, 1].map((i) => (
-                  <li key={i} className="flex items-center gap-4 px-5 py-4">
-                    <span className="h-12 w-12 animate-pulse rounded-2xl bg-muted" />
-                    <span className="h-4 w-40 animate-pulse rounded bg-muted" />
-                  </li>
-                ))}
+              {isLoading && (
+                <li className="px-5 py-8">
+                  <Loader text="Loading papers" />
+                </li>
+              )}
               {papers?.map((paper) => (
                 <li key={paper.id}>
                   <Link href={attemptHref(paper.id)} className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-muted/60">

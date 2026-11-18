@@ -14,6 +14,16 @@ interface FlashcardProps {
 const FACE =
   "absolute inset-0 flex flex-col overflow-hidden rounded-3xl border-2 border-border bg-card shadow-[var(--shadow-card)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]";
 
+/** A soft pink glow fanning out from the top-right corner: a touch of colour on a plain card. */
+function CornerGlow() {
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-fuchsia-500)_16%,transparent)_0%,transparent_70%)] dark:bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-fuchsia-500)_24%,transparent)_0%,transparent_70%)]"
+    />
+  );
+}
+
 
 function capitalise(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -90,6 +100,7 @@ export default function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
       >
         {/* ── Front ── */}
         <div className={FACE} aria-hidden={flipped}>
+          <CornerGlow />
           <div className="relative flex items-center justify-between p-4">
             <TypeChip type={card.type} />
             <SpeakButton text={card.front.text} />
@@ -105,6 +116,7 @@ export default function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
 
         {/* ── Back ── */}
         <div className={`${FACE} [transform:rotateY(180deg)]`} aria-hidden={!flipped}>
+          <CornerGlow />
           <div className="relative flex items-center justify-between gap-3 border-b-2 border-border px-4 py-3">
             <div className="min-w-0">
               <p className="truncate text-lg font-extrabold text-foreground">{word}</p>

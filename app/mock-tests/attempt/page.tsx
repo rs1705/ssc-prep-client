@@ -1,10 +1,10 @@
 "use client";
 
+import { PageLoader } from "@/components/custom/page-loader";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { Loader } from "@/components/custom/loader";
 import { BTN, MockReview, MockRunner } from "@/features/mock/MockRunner";
 import { findAttempt, type Attempt } from "@/features/mock/attempts";
 import { createExam, type ExamState } from "@/features/mock/examSession";
@@ -116,9 +116,7 @@ function ReviewAttempt({ id }: { id: string }) {
 
   if (state.status === "loading") {
     return (
-      <div className="flex min-h-[100dvh] items-center justify-center bg-background">
-        <Loader text="Opening your attempt…" />
-      </div>
+      <PageLoader text="Opening your attempt" className="min-h-[100dvh] bg-background sm:min-h-[100dvh]" />
     );
   }
 
@@ -211,9 +209,10 @@ function Attempt() {
 
   if (!mock) {
     return (
-      <div className="flex min-h-[100dvh] items-center justify-center bg-background">
-        <Loader text={paper === "new" ? "Building your mock test…" : "Loading the paper…"} />
-      </div>
+      <PageLoader
+        text={paper === "new" ? "Building your mock test" : "Loading the paper"}
+        className="min-h-[100dvh] bg-background sm:min-h-[100dvh]"
+      />
     );
   }
 

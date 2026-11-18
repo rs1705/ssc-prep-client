@@ -50,8 +50,6 @@ export function GameLobby({
     <div className="relative flex min-h-0 w-full flex-1 flex-col gap-4">
       {loadingText && (
         <div
-          role="status"
-          aria-live="polite"
           className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-1 bg-card text-center animate-in fade-in duration-200"
         >
           <Loader />

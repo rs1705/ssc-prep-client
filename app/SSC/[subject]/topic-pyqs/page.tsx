@@ -1,5 +1,7 @@
 "use client";
 
+import { Spinner } from "@/components/custom/loader";
+import { PageLoader } from "@/components/custom/page-loader";
 import { useEffect, useState } from "react";
 import { loadSet, saveSet, useReplayRequest } from "@/features/games/sessionSet";
 import { clearUnfinished, loadUnfinished, saveUnfinished, takeResumeParam, type Unfinished } from "@/features/games/unfinished";
@@ -9,12 +11,11 @@ interface SavedSession {
   topic: string | null;
   session: PyqSessionState;
 }
-import { ArrowRight, Layers, Loader2, RotateCcw, Shuffle } from "lucide-react";
+import { ArrowRight, Layers, RotateCcw, Shuffle } from "lucide-react";
 import { BTN } from "@/features/mock/examButtons";
 import { cn } from "@/lib/utils";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
-import { Loader } from "@/components/custom/loader";
 import { PyqRunner } from "@/features/pyq/PyqRunner";
 import { useSubjectParam } from "@/features/pyq/useSubjectParam";
 import { SUBJECT_META } from "@/lib/exam-pattern";
@@ -131,9 +132,7 @@ export default function TopicPyqsPage() {
       description={`Real ${SUBJECT_META[subject].paperSection} questions from past SSC CGL Tier 1 papers, grouped by topic. Each one comes with an explanation.`}
     >
       {isLoading ? (
-        <div className="flex min-h-[40dvh] items-center justify-center">
-          <Loader text="Loading topics…" />
-        </div>
+        <PageLoader text="Loading topics" />
       ) : isError || !topics ? (
         <ErrorState
           title="Couldn't load topics"
@@ -198,7 +197,7 @@ export default function TopicPyqsPage() {
             <span className={cn(BTN.primary, "pointer-events-none self-start")}>
               {pending === "__mixed" ? "Loading" : "Start"}
               {pending === "__mixed" ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                <Spinner tone="current" className="h-4 w-4" />
               ) : (
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
               )}
@@ -242,7 +241,7 @@ export default function TopicPyqsPage() {
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-sm font-bold text-brand-700 dark:text-brand-400">
                       {pending === topic.topic ? "Loading questions" : `Practice ${Math.min(SET_SIZE, topic.count)} questions`}
                       {pending === topic.topic ? (
-                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                        <Spinner tone="current" className="h-4 w-4" />
                       ) : (
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                       )}

@@ -1,4 +1,5 @@
 import { Loader } from "@/components/custom/loader";
+import { cn } from "@/lib/utils";
 
 /**
  * The one loader for a whole page or section: centred in the content area (it
@@ -7,11 +8,7 @@ import { Loader } from "@/components/custom/loader";
  */
 export function PageLoader({ text = "Loading", className = "" }: { text?: string; className?: string }) {
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      className={`flex min-h-[50dvh] w-full flex-1 items-center justify-center py-10 ${className}`}
-    >
+    <div className={cn("flex min-h-[40dvh] w-full flex-1 items-center justify-center py-8 sm:min-h-[50dvh] sm:py-10", className)}>
       <Loader text={text} />
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/custom/loader";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +9,6 @@ import { useRouter, usePathname } from "next/navigation";
 import {
   MessageSquare,
   CheckCircle2,
-  Loader2,
   Send,
   Bug,
   Lightbulb,
@@ -297,7 +297,7 @@ export default function FeedbackPage() {
                 <button type="submit" disabled={isSubmitting} className={cn(DUO.primary, "w-full")}>
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                      <Spinner tone="current" className="h-4 w-4" />
                       Sending…
                     </>
                   ) : (
