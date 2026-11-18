@@ -290,7 +290,7 @@ export function MatchGame({
           ]}
           best={best}
           onStart={() => void start()}
-          startLabel={loading ? "Loading words…" : "Start"}
+          loadingText={loading ? "Getting your words ready" : undefined}
         >
           <DeckPicker
             label="Practice"

@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { CTA, DUO } from "./buttons";
 import { GAME_TONE, TONE_BAND, type GameTone } from "./tone";
 import { ActionBar } from "./ActionBar";
+import { Loader } from "@/components/custom/loader";
 
 export interface LobbyRule {
   icon: LucideIcon;
@@ -21,6 +22,8 @@ interface GameLobbyProps {
   best: number;
   onStart: () => void;
   startLabel?: string;
+  /** While the round's words are being fetched: covers the screen with the loader and this message. */
+  loadingText?: string;
   tone?: GameTone;
   /** Extra controls between the rules and the start button (e.g. a deck picker). */
   children?: React.ReactNode;
@@ -36,6 +39,7 @@ export function GameLobby({
   best,
   onStart,
   startLabel = "Start",
+  loadingText,
   tone = "english",
   children,
   resume,
@@ -43,7 +47,18 @@ export function GameLobby({
   const t = GAME_TONE[tone];
   const reduce = useReducedMotion();
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col gap-4">
+    <div className="relative flex min-h-0 w-full flex-1 flex-col gap-4">
+      {loadingText && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-1 bg-card text-center animate-in fade-in duration-200"
+        >
+          <Loader />
+          <p className="mt-1 text-base font-extrabold text-foreground">{loadingText}</p>
+          <p className="text-sm text-muted-foreground">This takes a few seconds.</p>
+        </div>
+      )}
       <div className="flex min-h-0 flex-1 flex-col items-center gap-5 overflow-y-auto py-1 text-center [scrollbar-width:none]">
         <div className="flex flex-col items-center gap-3 pt-2">
           <motion.div
@@ -118,7 +133,7 @@ export function GameLobby({
         className="mx-auto w-full max-w-sm"
         note={<p className="hidden text-center text-xs text-muted-foreground md:block">or press Enter</p>}
       >
-        <button type="button" onClick={onStart} autoFocus={!resume} className={CTA.primary}>
+        <button type="button" onClick={onStart} disabled={Boolean(loadingText)} autoFocus={!resume} className={CTA.primary}>
           <Play className="h-5 w-5 fill-current" aria-hidden="true" />
           {startLabel}
         </button>

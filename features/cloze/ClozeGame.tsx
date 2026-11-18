@@ -196,7 +196,7 @@ export function ClozeGame() {
           }
           best={best}
           onStart={() => void start()}
-          startLabel={loading ? "Loading sentences…" : "Start"}
+          loadingText={loading ? "Getting your sentences ready" : undefined}
         >
           <DeckPicker label="Practice" options={DECKS} value={deck} onChange={chooseDeck} />
           {error && <p role="alert" className="text-sm font-semibold text-rose-600 dark:text-rose-400">{error}</p>}
