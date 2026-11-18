@@ -9,8 +9,10 @@ import { ProgressBar } from "@/components/custom/ProgressBar";
 import { useWordBanks } from "@/features/games/wordBank";
 import { missedLabels, orderFresh, useMarkSeen } from "@/features/games/seenPool";
 import { GameFrame } from "@/features/games/GameFrame";
+import { usePause } from "@/features/games/usePause";
 import { GameLobby } from "@/features/games/GameLobby";
 import { ResultSummary } from "@/features/games/ResultSummary";
+import { WordReviewList } from "@/features/games/WordReviewList";
 import { useBestScore } from "@/features/games/useBestScore";
 import {
   FEEDBACK_MS,
@@ -26,6 +28,7 @@ import {
 
 export function SpellingGame() {
   const [state, dispatch] = useReducer(spellingReducer, initialState);
+  const { paused, pause, resume } = usePause(state.phase === "playing");
   const { best, isNewBest, submit, clearNewBest } = useBestScore("ssc:spelling:best");
   const reduceMotion = useReducedMotion();
   const question = state.queue[state.index];
@@ -81,12 +84,12 @@ export function SpellingGame() {
 
   // Clock. Stands still while the tab is hidden.
   useEffect(() => {
-    if (state.phase !== "playing") return;
+    if (state.phase !== "playing" || paused) return;
     const id = window.setInterval(() => {
       if (!document.hidden) dispatch({ type: "TICK" });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [state.phase]);
+  }, [state.phase, paused]);
 
   // Show feedback colours briefly, then move to the next word.
   useEffect(() => {
@@ -138,7 +141,7 @@ export function SpellingGame() {
   const accuracy = state.answeredCount > 0 ? Math.round((state.correctCount / state.answeredCount) * 100) : 0;
 
   return (
-    <GameFrame title="Spelling Check" subtitle="Spot the correct spelling, fast" best={best}>
+    <GameFrame title="Spelling Check" subtitle="Spot the correct spelling, fast" best={best} confirmExit={state.phase === "playing"} pause={state.phase === "playing" ? { paused, onPause: pause, onResume: resume } : undefined}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<SpellCheck aria-hidden="true" strokeWidth={1.6} />}
@@ -271,25 +274,19 @@ export function SpellingGame() {
           ]}
           onPlayAgain={start}
         >
-          <div className="flex flex-col gap-2">
-            <h3 className="section-label">{state.misses.length > 0 ? "Words to review" : "No mistakes!"}</h3>
-            {state.misses.length > 0 && (
-              <ul className="flex flex-col gap-1.5">
-                {state.misses.map((m, i) => (
-                  <li
-                    key={`${m.correct}-${i}`}
-                    className="flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-card px-3 py-2.5 font-mono text-sm"
-                  >
-                    <span className="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-400">
-                      <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
-                      {m.correct}
-                    </span>
-                    <span className="truncate text-xs text-rose-700 line-through dark:text-rose-400">{m.chosen}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <WordReviewList
+            words={state.answered
+              // A word answered twice (the bank loops) is listed once, by its last answer.
+              .filter((x, i, all) => all.findLastIndex((y) => y.word.correct === x.word.correct) === i)
+              .map((x) => ({
+                key: x.word.correct,
+                word: x.word.correct,
+                correct: x.correct,
+                meaning: x.word.meaning,
+                hindi: x.word.hindi,
+                note: x.correct ? undefined : `You chose: ${x.chosen}`,
+              }))}
+          />
         </ResultSummary>
       )}
     </GameFrame>

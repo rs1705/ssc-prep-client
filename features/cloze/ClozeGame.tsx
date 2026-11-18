@@ -1,8 +1,6 @@
 "use client";
 
 import { playFeedback } from "@/features/games/feedback";
-import { cn } from "@/lib/utils";
-import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
 import type { ClozeQuestion, ClozeState } from "./game";
@@ -12,11 +10,13 @@ interface SavedRun {
   game: ClozeState;
   deck: ClozeDeck;
 }
-import { ArrowRight, Check, Flame, Lightbulb, ListChecks, TextCursorInput, X } from "lucide-react";
+import { Check, Flame, Lightbulb, ListChecks, TextCursorInput, X } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { GameFrame } from "@/features/games/GameFrame";
 import { GameLobby } from "@/features/games/GameLobby";
 import { ResultSummary } from "@/features/games/ResultSummary";
+import { AnswerSheet } from "@/features/games/AnswerSheet";
+import { WordReviewList } from "@/features/games/WordReviewList";
 import { DeckPicker } from "@/features/games/DeckPicker";
 import { GAME_TONE } from "@/features/games/tone";
 import { useBestScore } from "@/features/games/useBestScore";
@@ -171,7 +171,7 @@ export function ClozeGame() {
   }, [state.phase, answered, q, start, next, answer]);
 
   return (
-    <GameFrame title="Fill in the Blanks" subtitle={DECKS.find((d) => d.id === deck)?.label ?? ""} best={best}>
+    <GameFrame title="Fill in the Blanks" subtitle={DECKS.find((d) => d.id === deck)?.label ?? ""} best={best} confirmExit={state.phase === "playing"}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<TextCursorInput aria-hidden="true" strokeWidth={1.6} />}
@@ -282,28 +282,23 @@ export function ClozeGame() {
             })}
           </div>
 
-          {answered && (
-            <div className="flex flex-col gap-3">
-              <p className="rounded-2xl border-2 border-border bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] px-4 py-3 text-sm leading-relaxed text-foreground">
-                <span className="font-extrabold">{q.answer}</span>
-                <span className="text-muted-foreground"> — {q.meaning}</span>
-              </p>
-              <button
-                type="button"
-                onClick={next}
-                autoFocus
-                className={cn(DUO.primary, "w-full")}
-              >
-                {state.index + 1 >= state.questions.length ? "See results" : "Next sentence"}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          )}
-
-          <p role="status" aria-live="polite" className="sr-only">
-            {answered ? (state.chosen === q.answer ? "Correct" : `Wrong. The answer is ${q.answer}`) : ""}
-          </p>
         </section>
+      )}
+
+      {state.phase === "playing" && q && answered && (
+        <AnswerSheet
+          correct={state.chosen === q.answer}
+          answer={q.answer}
+          detail={
+            <>
+              <span className="font-extrabold">{q.answer}</span>
+              {q.hindi && <span className="font-semibold text-muted-foreground"> · {q.hindi}</span>}
+              <span className="block text-muted-foreground">{q.meaning}</span>
+            </>
+          }
+          continueLabel={state.index + 1 >= state.questions.length ? "See results" : "Continue"}
+          onContinue={next}
+        />
       )}
 
       {state.phase === "over" && (
@@ -333,19 +328,15 @@ export function ClozeGame() {
           ]}
           onPlayAgain={() => void start()}
         >
-          <div className="flex flex-col gap-2">
-            <h3 className="section-label">{state.misses.length > 0 ? "Words to review" : "No mistakes!"}</h3>
-            {state.misses.length > 0 && (
-              <ul className="flex flex-col gap-1.5">
-                {state.misses.map((m) => (
-                  <li key={m.id} className="rounded-2xl border-2 border-border bg-card px-3 py-2.5 text-sm">
-                    <span className="font-bold text-foreground">{m.answer}</span>
-                    <span className="text-muted-foreground"> — {m.meaning}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <WordReviewList
+            words={state.questions.map((q) => ({
+              key: q.id,
+              word: q.answer,
+              correct: !state.misses.some((m) => m.id === q.id),
+              meaning: q.meaning,
+              hindi: q.hindi,
+            }))}
+          />
         </ResultSummary>
       )}
     </GameFrame>

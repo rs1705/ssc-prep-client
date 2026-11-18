@@ -3,11 +3,13 @@
 import { playFeedback } from "@/features/games/feedback";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Check, Clock, Flame, Puzzle, Timer, X, Zap } from "lucide-react";
+import { Clock, Flame, Puzzle, Timer, X, Zap } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { GameFrame } from "@/features/games/GameFrame";
+import { usePause } from "@/features/games/usePause";
 import { GameLobby } from "@/features/games/GameLobby";
 import { ResultSummary } from "@/features/games/ResultSummary";
+import { WordReviewList } from "@/features/games/WordReviewList";
 import { DeckPicker } from "@/features/games/DeckPicker";
 import { GAME_TONE, type GameTone } from "@/features/games/tone";
 import { useBestScore } from "@/features/games/useBestScore";
@@ -58,6 +60,7 @@ export function MatchGame({
   const tone = GAME_TONE[toneKey];
   const DECK_KEY = `${storagePrefix}:deck`;
   const [state, dispatch] = useReducer(matchReducer, initialState);
+  const { paused, pause, resume } = usePause(state.phase === "playing");
   const [deckId, setDeckId] = useState<MatchDeckId>(decks[0].id);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -139,7 +142,13 @@ export function MatchGame({
         const { limit: _limit, random: _random, ...query } = deck.query ?? {};
         const cards = await fetchCards(query).unwrap();
         const toPair = deck.toPair ?? (() => null);
-        pairs = cards.map(toPair).filter((p): p is Pair => p !== null);
+        pairs = cards
+          .map((c): Pair | null => {
+            const p = toPair(c);
+            const hindi = c.back.content_hindi?.[0]?.trim();
+            return p ? { ...p, meaning: c.back.content_eng, ...(hindi ? { hindi } : {}) } : null;
+          })
+          .filter((p): p is Pair => p !== null);
       }
       const ordered = orderFresh(seenPoolKey, pairs, {
         idOf: (p) => p.id,
@@ -159,12 +168,12 @@ export function MatchGame({
 
   // Clock (pauses while the tab is hidden).
   useEffect(() => {
-    if (state.phase !== "playing") return;
+    if (state.phase !== "playing" || paused) return;
     const id = window.setInterval(() => {
       if (!document.hidden) dispatch({ type: "TICK" });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [state.phase]);
+  }, [state.phase, paused]);
 
   useEffect(() => {
     if (!state.wrong) return;
@@ -245,10 +254,15 @@ export function MatchGame({
               animate={isWrong && !reduceMotion ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
               transition={{ duration: 0.35 }}
               className={`flex min-h-[3.25rem] flex-1 items-center justify-center rounded-2xl border-2 border-b-4 active:translate-y-[2px] active:border-b-2 px-2.5 py-2 text-center leading-snug transition-colors disabled:cursor-default ${
-                side === "left" ? "text-sm font-extrabold sm:text-base" : "text-xs font-semibold sm:text-sm"
+                side === "left"
+                  ? "text-sm font-extrabold sm:text-base"
+                  : text.length > 60
+                    ? "text-[11.5px] font-semibold leading-tight sm:text-xs"
+                    : "text-xs font-semibold sm:text-sm"
               } ${tileClass(side, id)}`}
             >
-              <span className="line-clamp-3">{text}</span>
+              {/* Long meanings wrap onto more lines; nothing is cut off. */}
+              <span className="break-words [hyphens:auto]">{text}</span>
             </motion.button>
           );
         })}
@@ -262,7 +276,7 @@ export function MatchGame({
       : 0;
 
   return (
-    <GameFrame title={title} subtitle={deck.label} best={best} tone={toneKey} backHref={backHref} backLabel={backLabel}>
+    <GameFrame title={title} subtitle={deck.label} best={best} tone={toneKey} backHref={backHref} backLabel={backLabel} confirmExit={state.phase === "playing"} pause={state.phase === "playing" ? { paused, onPause: pause, onResume: resume } : undefined}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<Puzzle aria-hidden="true" strokeWidth={1.6} />}
@@ -358,22 +372,25 @@ export function MatchGame({
           allHref={backHref}
           allLabel="Back"
         >
-          <div className="flex flex-col gap-2">
-            <h3 className="section-label">{state.missed.length > 0 ? "Pairs to review" : "No wrong pairs!"}</h3>
-            {state.missed.length > 0 && (
-              <ul className="flex flex-col gap-1.5">
-                {state.missed.map((p) => (
-                  <li key={p.id} className="flex flex-col gap-0.5 rounded-2xl border-2 border-border bg-card px-3 py-2.5">
-                    <span className="flex items-center gap-1.5 text-sm font-bold text-foreground">
-                      <Check className="h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
-                      {p.left}
-                    </span>
-                    <span className="pl-5 text-sm text-muted-foreground">{p.right}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <WordReviewList
+            title="Pairs this run"
+            words={state.rounds
+              .slice(0, state.round + 1)
+              .flat()
+              .filter((p, i, all) => all.findIndex((q) => q.id === p.id) === i)
+              .map((p) => {
+                const reached = state.round > state.rounds.findIndex((r) => r.some((q) => q.id === p.id)) || state.matched.includes(p.id);
+                const relation = deck.id === "synonyms" || deck.id === "antonyms";
+                return {
+                  key: p.id,
+                  word: p.left,
+                  correct: reached && !state.missed.some((m) => m.id === p.id),
+                  meaning: relation ? `${deck.rightLabel}: ${p.right}${p.meaning ? ` · ${p.meaning}` : ""}` : (p.meaning ?? p.right),
+                  hindi: p.hindi,
+                  note: reached ? undefined : "Not matched before time ran out",
+                };
+              })}
+          />
         </ResultSummary>
       )}
     </GameFrame>

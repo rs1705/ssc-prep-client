@@ -1,8 +1,9 @@
 "use client";
 
 import { playFeedback } from "@/features/games/feedback";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameFrame } from "@/features/games/GameFrame";
+import { usePause } from "@/features/games/usePause";
 import { HangmanBoard } from "@/features/hangman/HangmanBoard";
 import { LobbyScreen } from "@/features/hangman/LobbyScreen";
 import { ResultScreen } from "@/features/hangman/ResultScreen";
@@ -10,7 +11,16 @@ import { useHangmanGame } from "@/features/hangman/useHangmanGame";
 import { useWordBanks } from "@/features/games/wordBank";
 
 export default function HangmanPage() {
-  const { state, word, best, isNewBest, start, guess, hint, next, replaySet, retryMistakes, retryCount } = useHangmanGame({ bank: useWordBanks().hangman });
+  // The pause hook needs to know when a word is in play; the game reports it below.
+  const [inPlay, setInPlay] = useState(false);
+  const { paused, pause, resume } = usePause(inPlay);
+  const { state, word, best, isNewBest, start, guess, hint, next, replaySet, retryMistakes, retryCount } = useHangmanGame({
+    bank: useWordBanks().hangman,
+    paused,
+  });
+  useEffect(() => {
+    setInPlay(state.phase === "playing");
+  }, [state.phase]);
   const previous = useRef({ phase: state.phase, index: state.index, wrong: 0, guessed: 0 });
 
   // Sound + vibration per guess (prefilled letters at a word's start stay silent).
@@ -28,6 +38,8 @@ export default function HangmanPage() {
       title="Hangman"
       subtitle="SSC vocabulary & one-word substitutions"
       best={state.phase === "lobby" ? 0 : best}
+      confirmExit={state.phase === "playing" || state.phase === "reveal"}
+      pause={state.phase === "playing" ? { paused, onPause: pause, onResume: resume } : undefined}
     >
       {state.phase === "lobby" && <LobbyScreen best={best} onStart={start} />}
 

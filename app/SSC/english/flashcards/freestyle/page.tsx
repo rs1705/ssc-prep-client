@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/sheet";
 import { SlidersVertical, Dices, AlertTriangle, X, Shuffle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { freestyleSpotKey } from "@/features/flashcards/resume";
 
 const FreestylePage = () => {
   const filterStore = useSelector((state: RootState) => state.filter);
@@ -356,6 +357,7 @@ const FreestylePage = () => {
                   shuffled={shuffled}
                   mode="freestyle"
                   onPosition={onPosition}
+                  rememberKey={freestyleSpotKey(activeTab, filterStore[activeTab])}
                 />
               </div>
 

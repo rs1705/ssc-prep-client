@@ -6,7 +6,6 @@ import { readStored, writeStored } from "@/lib/storage";
 import { missedLabels, orderFresh, useMarkSeen } from "@/features/games/seenPool";
 import { loadSet, saveSet, shuffle, useReplayRequest } from "@/features/games/sessionSet";
 import {
-  REVEAL_MS,
   currentWord,
   hangmanReducer,
   initialState,
@@ -18,9 +17,11 @@ const BEST_KEY = "ssc:hangman:best";
 interface Options {
   /** Word source. Defaults to the built-in demo bank. */
   bank?: HangmanWord[];
+  /** The clock stands still while true. */
+  paused?: boolean;
 }
 
-export function useHangmanGame({ bank = HANGMAN_WORDS }: Options = {}) {
+export function useHangmanGame({ bank = HANGMAN_WORDS, paused = false }: Options = {}) {
   const [state, dispatch] = useReducer(hangmanReducer, initialState);
   const [best, setBest] = useState(0);
   const [isNewBest, setIsNewBest] = useState(false);
@@ -48,19 +49,14 @@ export function useHangmanGame({ bank = HANGMAN_WORDS }: Options = {}) {
 
   // One-second clock while a word is in play. It stands still while the tab is hidden.
   useEffect(() => {
-    if (state.phase !== "playing") return;
+    if (state.phase !== "playing" || paused) return;
     const id = window.setInterval(() => {
       if (!document.hidden) dispatch({ type: "TICK" });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [state.phase, state.index]);
+  }, [state.phase, state.index, paused]);
 
-  // Auto-advance past the reveal card (tap / Enter skips it).
-  useEffect(() => {
-    if (state.phase !== "reveal") return;
-    const id = window.setTimeout(() => dispatch({ type: "NEXT" }), REVEAL_MS);
-    return () => window.clearTimeout(id);
-  }, [state.phase, state.index]);
+  // After each word the answer panel waits for Continue, so there's time to read the meaning.
 
   // Start with a given list of words and remember it for "Same set again".
   const begin = useCallback((queue: HangmanWord[], save = true) => {

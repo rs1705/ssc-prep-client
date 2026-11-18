@@ -83,10 +83,28 @@ export function toSpellingWord(card: FlashCardInterface): SpellingWord | null {
   if (!w || w.length < 7) return null;
   const wrong = misspellings(w).slice(0, 3);
   if (wrong.length < 3) return null;
-  return { correct: w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(), wrong: wrong as [string, string, string] };
+  const hindi = card.back.content_hindi?.[0]?.trim();
+  return {
+    correct: w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+    wrong: wrong as [string, string, string],
+    meaning: card.back.content_eng,
+    ...(hindi ? { hindi } : {}),
+  };
 }
 
 /* ---------- Hook ---------- */
+
+/** Built-in spelling words keep their hand-picked misspellings but borrow a card's meanings. */
+function withMeanings(words: SpellingWord[], cards: FlashCardInterface[]): SpellingWord[] {
+  const byWord = new Map(cards.map((c) => [c.front.text.trim().toLowerCase(), c]));
+  return words.map((w) => {
+    if (w.meaning) return w;
+    const card = byWord.get(w.correct.toLowerCase());
+    if (!card) return w;
+    const hindi = card.back.content_hindi?.[0]?.trim();
+    return { ...w, meaning: card.back.content_eng, ...(hindi ? { hindi } : {}) };
+  });
+}
 
 function mergeBy<T>(key: (t: T) => string, ...lists: T[][]): T[] {
   const seen = new Map<string, T>();
@@ -106,7 +124,7 @@ export function useWordBanks() {
     const cards = [...(vocab.data ?? []), ...(ows.data ?? [])];
     return {
       hangman: mergeBy((w) => w.word, HANGMAN_WORDS, mapAll(cards, toHangmanWord)),
-      spelling: mergeBy((w) => w.correct, SPELLING_WORDS, mapAll(cards, toSpellingWord)),
+      spelling: withMeanings(mergeBy((w) => w.correct, SPELLING_WORDS, mapAll(cards, toSpellingWord)), cards),
       wordle: mergeBy((w) => w.word, WORD_OF_DAY_BANK, mapAll(cards, toWordOfDay)),
       loading: vocab.isLoading || ows.isLoading,
     };

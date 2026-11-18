@@ -27,3 +27,16 @@ export const DUO = {
   /** Options that are no longer in play after an answer. */
   faded: "border-border bg-card text-muted-foreground opacity-55",
 } as const;
+
+/**
+ * The big thumb-sized buttons for the bottom of a game screen (Start, Continue, Play
+ * again): full width on phones, 56px tall, larger text.
+ */
+export const CTA = {
+  primary: `${DUO.primary} min-h-14 w-full text-base`,
+  secondary: `${DUO.secondary} min-h-14 w-full text-base`,
+  /** Continue after a right answer. */
+  correct: `inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-b-[5px] border-emerald-700 bg-emerald-500 px-6 text-base font-extrabold uppercase tracking-wide text-white hover:bg-emerald-600 ${PRESS}`,
+  /** Continue after a wrong answer. */
+  wrong: `inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-b-[5px] border-rose-700 bg-rose-500 px-6 text-base font-extrabold uppercase tracking-wide text-white hover:bg-rose-600 ${PRESS}`,
+} as const;

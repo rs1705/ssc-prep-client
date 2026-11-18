@@ -16,6 +16,9 @@ export interface Pair {
   id: string;
   left: string;
   right: string;
+  /** Full English meaning and Hindi meaning, for the end-of-run word list. */
+  meaning?: string;
+  hindi?: string;
 }
 
 export type Side = "left" | "right";

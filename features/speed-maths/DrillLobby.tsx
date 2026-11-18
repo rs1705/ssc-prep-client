@@ -1,8 +1,9 @@
 "use client";
 
 import { Clock, Keyboard, ListChecks, Play, Zap } from "lucide-react";
-import { DUO } from "@/features/games/buttons";
+import { CTA, DUO } from "@/features/games/buttons";
 import { GAME_TONE } from "@/features/games/tone";
+import { ActionBar } from "@/features/games/ActionBar";
 import { cn } from "@/lib/utils";
 
 export type Difficulty = "easy" | "medium" | "hard" | "all";
@@ -147,13 +148,12 @@ export function DrillLobby({
         </Section>
       </div>
 
-      <div className="flex shrink-0 flex-col items-center gap-2 border-t-2 border-border pt-4">
-        <button type="button" onClick={onStart} autoFocus className={cn(DUO.primary, "w-full")}>
-          <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+      <ActionBar note={<p className="hidden text-center text-xs text-muted-foreground md:block">or press Enter</p>}>
+        <button type="button" onClick={onStart} autoFocus className={CTA.primary}>
+          <Play className="h-5 w-5 fill-current" aria-hidden="true" />
           Start drill
         </button>
-        <p className="hidden text-xs text-muted-foreground md:block">or press Enter</p>
-      </div>
+      </ActionBar>
     </div>
   );
 }

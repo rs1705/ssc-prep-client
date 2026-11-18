@@ -2,9 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { DUO } from "@/features/games/buttons";
+import { AnswerSheet } from "@/features/games/AnswerSheet";
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, Clock, Flame, Heart, Lightbulb, X } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Clock, Flame, Heart, Lightbulb } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { Button } from "@/components/ui/button";
 import type { HangmanWord } from "@/lib/hangman-words";
@@ -12,7 +13,6 @@ import {
   HINT_COST,
   LIVES,
   MAX_STRIKES,
-  REVEAL_MS,
   comboMultiplier,
   type HangmanState,
 } from "./game";
@@ -199,73 +199,30 @@ export function HangmanBoard({ state, word, onGuess, onHint, onNext }: HangmanBo
           />
         </div>
 
-        <AnimatePresence>
-          {revealing && result && (
-            <motion.div
-              key={`reveal-${state.index}`}
-              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-              role="status"
-              aria-live="polite"
-              className="col-start-1 row-start-1 flex flex-col justify-between gap-2 overflow-hidden rounded-2xl border-2 border-border bg-card p-3 shadow-[var(--shadow-card)] sm:p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div
-                    className={`flex items-center gap-1.5 text-sm font-black ${
-                      result.outcome === "solved"
-                        ? "text-emerald-700 dark:text-emerald-400"
-                        : "text-rose-700 dark:text-rose-400"
-                    }`}
-                  >
-                    {result.outcome === "solved" ? (
-                      <Check className="h-4 w-4" aria-hidden="true" />
-                    ) : (
-                      <X className="h-4 w-4" aria-hidden="true" />
-                    )}
-                    {result.outcome === "solved"
-                      ? result.perfect
-                        ? "Perfect!"
-                        : "Solved!"
-                      : result.outcome === "timeout"
-                        ? "Time's up"
-                        : "Out of strikes"}
-                  </div>
-                  <p className="mt-0.5 truncate text-sm font-semibold text-foreground">
-                    <span className="font-mono font-black">{result.word.word}</span> ·{" "}
-                    {result.word.hindi}
-                  </p>
-                </div>
-                {result.outcome === "solved" && (
-                  <span className="shrink-0 font-mono text-lg font-black tabular-nums text-brand-700 dark:text-brand-400">
-                    +{result.gained}
-                  </span>
-                )}
-              </div>
-
-              <Button
-                type="button"
-                onClick={onNext}
-                autoFocus
-                className={cn(DUO.primary, "h-12 w-full")}
-              >
-                {isFinal ? "See results" : "Next word"}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
-
-              <div className="h-1 w-full overflow-hidden rounded-full bg-muted" aria-hidden="true">
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: REVEAL_MS / 1000, ease: "linear" }}
-                  className="h-full origin-left bg-brand-500"
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {revealing && result && (
+          <div key={`reveal-${state.index}`} className="col-start-1 row-start-1 flex flex-col justify-end">
+            <AnswerSheet
+              bleed={false}
+              correct={result.outcome === "solved"}
+              verdict={
+                result.outcome === "solved"
+                  ? `${result.perfect ? "Perfect!" : "Solved!"} +${result.gained}`
+                  : result.outcome === "timeout"
+                    ? "Time's up"
+                    : "Out of strikes"
+              }
+              detail={
+                <>
+                  <span className="font-mono text-base font-black tracking-wide">{result.word.word}</span>
+                  <span className="font-semibold text-muted-foreground"> · {result.word.hindi}</span>
+                  <span className="mt-0.5 block text-muted-foreground">{result.word.meaning}</span>
+                </>
+              }
+              continueLabel={isFinal ? "See results" : "Next word"}
+              onContinue={onNext}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

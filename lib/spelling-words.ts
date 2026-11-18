@@ -2,6 +2,9 @@ export interface SpellingWord {
   correct: string;
   /** Exactly 3 realistic misspellings. */
   wrong: [string, string, string];
+  /** English and Hindi meaning, when the word bank has them (for the end-of-run list). */
+  meaning?: string;
+  hindi?: string;
 }
 
 /** Demo bank of commonly misspelled words. Replace/extend with database words of the same shape. */

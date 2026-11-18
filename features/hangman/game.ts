@@ -143,18 +143,38 @@ function finishWord(
 }
 
 /**
- * Letters shown before the first guess so the word is approachable: the first
- * letter, plus the last one for words of 7+ letters. Never so many that fewer
- * than two different letters are left to find.
+ * How many letter tiles to show before the first guess: one for words of up to six
+ * letters, then 3 to 5 for longer words (about a third of the word).
+ */
+export function prefillTarget(length: number): number {
+  if (length <= 6) return 1;
+  return Math.min(5, Math.max(3, Math.round(length / 3)));
+}
+
+/**
+ * Letters shown before the first guess so the word is approachable. Picks the first
+ * letter, the last, then letters spread through the middle, until about
+ * `prefillTarget` tiles are showing (a letter shows every place it appears). Never so
+ * many that fewer than two different letters are left to find.
  */
 export function prefillLetters(word: string): string[] {
   const letters = word.toUpperCase().split("");
+  const n = letters.length;
   const distinct = new Set(letters);
-  const picks = [letters[0]];
-  if (letters.length >= 7 && letters[letters.length - 1] !== letters[0]) picks.push(letters[letters.length - 1]);
+  const target = prefillTarget(n);
+  const order = [0, n - 1, Math.floor(n / 2), Math.floor(n / 4), Math.floor((3 * n) / 4), 1, n - 2];
   const out: string[] = [];
-  for (const letter of picks) {
-    if (distinct.size - (out.length + 1) >= 2) out.push(letter);
+  let shown = 0;
+  for (const pos of order) {
+    if (shown >= target) break;
+    const letter = letters[pos];
+    if (letter === undefined || out.includes(letter)) continue;
+    if (distinct.size - (out.length + 1) < 2) break;
+    const count = letters.filter((l) => l === letter).length;
+    // Don't overshoot the target by much on long words with repeated letters.
+    if (shown > 0 && shown + count > target + 1) continue;
+    out.push(letter);
+    shown += count;
   }
   return out;
 }

@@ -18,10 +18,9 @@ export interface MatchDeck {
   local?: () => Pair[];
 }
 
-/** Meanings can be long; keep the first clause so a tile stays readable. */
+/** The meaning's first clause, in full (tiles wrap long text instead of cutting it). */
 function shortMeaning(text: string): string {
-  const first = text.split(/[;:]/)[0].trim().replace(/\.$/, "");
-  return first.length > 70 ? `${first.slice(0, 67).trimEnd()}…` : first;
+  return text.split(/[;:]/)[0].trim().replace(/\.$/, "");
 }
 
 const word = (card: FlashCardInterface) => card.front.text.trim();

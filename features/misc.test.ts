@@ -1,13 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { prefillLetters } from "@/features/hangman/game";
+import { prefillLetters, prefillTarget } from "@/features/hangman/game";
 import { fractionPercent, MATHS_DECKS } from "@/features/maths-cards/decks";
 import { formatInterval } from "@/features/flashcards/ratings";
 
 describe("Hangman prefillLetters", () => {
-  it("gives the first letter, and the last for words of 7+ letters", () => {
-    expect(prefillLetters("RESILIENT")).toEqual(["R", "T"]);
-    expect(prefillLetters("OBSOLETE")).toEqual(["O", "E"]);
+  it("gives one letter for short words and 3-5 letter tiles for words over six letters", () => {
+    const tiles = (w: string) => w.split("").filter((l) => prefillLetters(w).includes(l)).length;
     expect(prefillLetters("ABATE")).toEqual(["A"]);
+    expect(prefillLetters("CANDID")).toEqual(["C"]);
+    expect(prefillLetters("RESILIENT")[0]).toBe("R");
+    for (const w of ["ABSTAIN", "RESILIENT", "OBSOLETE", "AMELIORATE", "BENEVOLENT", "QUESTIONNAIRE", "INCOMPREHENSIBLE"]) {
+      expect(tiles(w)).toBeGreaterThanOrEqual(3);
+      expect(tiles(w)).toBeLessThanOrEqual(6);
+      expect(new Set(w.split("")).size - prefillLetters(w).length).toBeGreaterThanOrEqual(2);
+    }
+    expect(prefillTarget(16)).toBe(5);
+    expect(prefillTarget(7)).toBe(3);
   });
 
   it("always leaves at least two different letters to find", () => {

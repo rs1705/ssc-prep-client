@@ -3,8 +3,13 @@ import { describeRoute, logActivity, logMistakes } from "@/lib/activity-log";
 import { recordPlanActivity } from "@/lib/today-plan";
 import { playFeedback } from "@/features/games/feedback";
 import { DrillLobby } from "@/features/speed-maths/DrillLobby";
-import { DUO } from "@/features/games/buttons";
-import { GAME_TONE } from "@/features/games/tone";
+import { CTA, DUO } from "@/features/games/buttons";
+import { GAME_TONE, TONE_BAND } from "@/features/games/tone";
+import { ActionBar } from "@/features/games/ActionBar";
+import { ResultHero } from "@/features/games/ResultHero";
+import { STREAK_BAND, StatTile, accuracySignal } from "@/features/games/StatTile";
+import { useBestScore } from "@/features/games/useBestScore";
+import { bestStreak, drillBestKey, drillHeadline, paceSignal } from "@/features/speed-maths/results";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -17,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/auth";
 import { useMentalMathsEngine } from "@/hooks/useMentalMathsEngine";
 import { DIFFICULTY_CONFIGS } from "@/lib/mathGenerator";
-import { ENCOURAGEMENT_MESSAGES } from "@/lib/encouragementMessages";
 import { readStored, writeStored } from "@/lib/storage";
 import {
   Trophy,
@@ -30,8 +34,15 @@ import {
   Flame,
   Pause,
   Play,
-  Swords,
   ChevronLeft,
+  Crown,
+  LayoutGrid,
+  RotateCcw,
+  Sprout,
+  Star,
+  Target,
+  ThumbsUp,
+  Timer,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -83,118 +94,6 @@ const getQuestionFontSize = (text: string | undefined) => {
   return "text-lg sm:text-xl md:text-xl lg:text-2xl leading-snug";
 };
 
-const renderTopicIcon = (topic: string, className?: string) => {
-  const iconClass = className || "text-primary/80 shrink-0 w-[18px] h-[18px]";
-  switch (topic.toLowerCase()) {
-    case "addition":
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-      );
-    case "subtraction":
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-      );
-    case "division":
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="5" y1="12" x2="19" y2="12" />
-          <circle cx="12" cy="6" r="1.5" fill="currentColor" />
-          <circle cx="12" cy="18" r="1.5" fill="currentColor" />
-        </svg>
-      );
-    case "multiplication":
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      );
-    case "squares":
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <path d="M3 12h18M12 3v18" />
-        </svg>
-      );
-    case "cubes":
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-          <line x1="12" y1="22.08" x2="12" y2="12" />
-        </svg>
-      );
-    default:
-      return (
-        <svg
-          className={iconClass}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
-        </svg>
-      );
-  }
-};
-
 const getDifficultyDescription = (topic: string, diff: string) => {
   const t = topic.toLowerCase();
   const d = diff.toLowerCase();
@@ -217,35 +116,35 @@ const getDifficultyDescription = (topic: string, diff: string) => {
 
   if (t === "squares") {
     return d === "all"
-      ? `💡 Squares ranging from ${min} to ${max}`
-      : `💡 Squares from ${min} to ${max} [e.g., ${min}² = ${min * min}]`;
+      ? `Squares ranging from ${min} to ${max}`
+      : `Squares of ${min} to ${max}, e.g. ${min}² = ${min * min}`;
   }
   if (t === "cubes") {
     return d === "all"
-      ? `💡 Cubes ranging from ${min} to ${max}`
-      : `💡 Cubes from ${min} to ${max} [e.g., ${min}³ = ${min * min * min}]`;
+      ? `Cubes ranging from ${min} to ${max}`
+      : `Cubes of ${min} to ${max}, e.g. ${min}³ = ${min * min * min}`;
   }
   if (t === "addition") {
     const digits = min.toString().length;
     return d === "all"
-      ? `💡 Additions ranging from ${min} to ${max}`
-      : `💡 ${digits}-digit additions ( Range: ${min} to ${max}) [e.g.,${max} + ${min}=${max + min}]`;
+      ? `Additions ranging from ${min} to ${max}`
+      : `${digits}-digit numbers from ${min} to ${max}, e.g. ${max} + ${min} = ${max + min}`;
   }
   if (t === "subtraction") {
     const digits = min.toString().length;
     return d === "all"
-      ? `💡 Subtractions ranging from ${min} to ${max}`
-      : `💡 ${digits}-digit subtractions ( Range: ${min} to ${max}) [e.g,${max}-${min}=${max - min}]`;
+      ? `Subtractions ranging from ${min} to ${max}`
+      : `${digits}-digit numbers from ${min} to ${max}, e.g. ${max} − ${min} = ${max - min}`;
   }
   if (t === "multiplication") {
     return d === "all"
-      ? `💡Multiplication ranging from ${min} to ${max}`
-      : `💡 ${min} to ${max} [e.g ${min}x${min}=${min * min}]`;
+      ? `Multiplication ranging from ${min} to ${max}`
+      : `Numbers from ${min} to ${max}, e.g. ${min} × ${min} = ${min * min}`;
   }
   if (t === "division") {
     return d === "all"
-      ? `💡 Division ranging up to divisors of ${max}`
-      : `💡 Division with divisors from ${min} to ${max} [e.g ${max * min} ÷ ${min} = ${max}]`;
+      ? `Division ranging up to divisors of ${max}`
+      : `Divisors from ${min} to ${max}, e.g. ${max * min} ÷ ${min} = ${max}`;
   }
 
   return "";
@@ -308,6 +207,7 @@ export default function MentalMathsPractice() {
     drillLogged.current = true;
     playFeedback("finish");
     recordPlanActivity("drill");
+    if (engine.state.attemptedQuestionsCount > 0) submitBest(engine.state.score);
     const path = window.location.pathname;
     const route = describeRoute(path);
     logActivity({
@@ -333,13 +233,19 @@ export default function MentalMathsPractice() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState]);
 
+  const bestKey = drillBestKey(
+    topic,
+    engine.state.mode,
+    engine.state.mode === "timed" ? engine.state.timeLimit : engine.state.questionLimit,
+    engine.state.difficulty,
+  );
+  const { best, isNewBest, submit: submitBest, clearNewBest } = useBestScore(bestKey);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const confettiCanvasRef = useRef<HTMLCanvasElement>(null);
   const [userInput, setUserInput] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [animatedAccuracy, setAnimatedAccuracy] = useState<number>(0);
   const [inputLayout, setInputLayout] = useState<"keys" | "mcq">("mcq");
-  const [resultTab, setResultTab] = useState<"overview" | "attempts">("overview");
 
   const countdownMsg = React.useMemo(() => {
     if (gameState !== "countdown") return "";
@@ -387,6 +293,7 @@ export default function MentalMathsPractice() {
   };
 
   const handleStartPractice = () => {
+    clearNewBest();
     engine.startSession();
   };
 
@@ -544,44 +451,9 @@ export default function MentalMathsPractice() {
     isManuallyPaused,
   ]);
 
-  // Animate accuracy percentage on game over screen
   const correctVal = engine.state.correctAnswers;
   const wrongVal = engine.state.wrongAnswers;
   const skippedVal = engine.state.skippedAnswers;
-  const totalVal = correctVal + wrongVal + skippedVal;
-  const targetAccuracy =
-    totalVal > 0 ? Math.floor((correctVal / totalVal) * 100) : 0;
-
-  const encouragementMessage = React.useMemo(() => {
-    let messages = ENCOURAGEMENT_MESSAGES.needsImprovement;
-    if (targetAccuracy >= 90) messages = ENCOURAGEMENT_MESSAGES.exceptional;
-    else if (targetAccuracy >= 75) messages = ENCOURAGEMENT_MESSAGES.great;
-    else if (targetAccuracy >= 50) messages = ENCOURAGEMENT_MESSAGES.good;
-    return messages[Math.floor(Math.random() * messages.length)];
-  }, [targetAccuracy]);
-
-  useEffect(() => {
-    if (gameState === "game_over") {
-      setAnimatedAccuracy(0);
-      if (targetAccuracy === 0) return;
-
-      let start = 0;
-      const duration = 800; // Snappy 800ms animation
-      const stepTime = Math.max(Math.floor(duration / targetAccuracy), 10);
-
-      const timer = setInterval(() => {
-        start += 1;
-        setAnimatedAccuracy(start);
-        if (start >= targetAccuracy) {
-          clearInterval(timer);
-        }
-      }, stepTime);
-
-      return () => clearInterval(timer);
-    } else {
-      setAnimatedAccuracy(0);
-    }
-  }, [gameState, targetAccuracy]);
 
   // Game over 100% accuracy confetti effect
   useEffect(() => {
@@ -591,7 +463,7 @@ export default function MentalMathsPractice() {
         correct + engine.state.wrongAnswers + engine.state.skippedAnswers;
       const accuracy = total > 0 ? Math.floor((correct / total) * 100) : 0;
 
-      if (accuracy === 100 && confettiCanvasRef.current) {
+      if ((accuracy === 100 || isNewBest) && total > 0 && confettiCanvasRef.current) {
         const myConfetti = confetti.create(confettiCanvasRef.current, {
           resize: true,
           useWorker: true,
@@ -623,6 +495,7 @@ export default function MentalMathsPractice() {
     engine.state.correctAnswers,
     engine.state.wrongAnswers,
     engine.state.skippedAnswers,
+    isNewBest,
   ]);
 
   // PostHog: Capture session completion with full performance stats
@@ -826,39 +699,14 @@ export default function MentalMathsPractice() {
                 <div className="h-full w-full flex flex-col flex-1 gap-1.5 sm:gap-2.5">
                   {/* Top Bar: Topic Badge + Score Pill + Switcher */}
                   <div className="flex items-center justify-between w-full pb-1.5 gap-2">
-                    {/* Left: Topic Icon + Name & Tags */}
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-[color-mix(in_oklab,var(--color-sky-500)_10%,var(--card))] rounded-2xl text-sky-700 dark:text-sky-300 flex items-center justify-center border-2 border-sky-500/25">
-                        {renderTopicIcon(
-                          topic,
-                          "w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 shrink-0",
-                        )}
-                      </div>
-                      <div className="flex flex-col min-w-0 justify-center">
-                        <span className="font-black text-xs sm:text-sm md:text-base tracking-tight text-foreground leading-none capitalize truncate">
-                          {topic}
-                        </span>
-                        <div className="flex items-center gap-1.5 mt-1 min-w-0 text-xs font-mono font-bold uppercase tracking-wider select-none">
-                          <span className="bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] text-foreground/80 px-1.5 py-0.5 rounded">
-                            {engine.state.mode === "timed"
-                              ? "Timed"
-                              : "Freestyle"}
-                          </span>
-                          <span
-                            className={`px-1.5 py-0.5 rounded bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] ${
-                              engine.state.difficulty === "easy"
-                                ? "text-emerald-600 dark:text-emerald-400"
-                                : engine.state.difficulty === "medium"
-                                  ? "text-brand-700 dark:text-brand-400"
-                                  : engine.state.difficulty === "all"
-                                    ? "text-primary"
-                                    : "text-rose-600 dark:text-rose-400"
-                            }`}
-                          >
-                            {engine.state.difficulty}
-                          </span>
-                        </div>
-                      </div>
+                    {/* Left: mode and level (the drill's name is in the header) */}
+                    <div className="flex min-w-0 items-center gap-1.5 text-xs font-extrabold uppercase tracking-wide select-none">
+                      <span className="rounded-lg bg-muted px-2 py-1 text-foreground/80">
+                        {engine.state.mode === "timed" ? "Timed" : "Freestyle"}
+                      </span>
+                      {topic !== "mixed" && (
+                        <span className="truncate rounded-lg bg-muted px-2 py-1 text-foreground/80">{engine.state.difficulty}</span>
+                      )}
                     </div>
 
                     {/* Right: Score Pill + Layout Switcher */}
@@ -1138,11 +986,11 @@ export default function MentalMathsPractice() {
                             )}
                           </div>
                           {/* 3D Skip Button for MCQ */}
-                          <div className="flex justify-center items-center shrink-0 pt-1 sm:pt-1.5 pb-0.5">
+                          <div className="flex w-full shrink-0 items-center justify-center pt-1 pb-0.5">
                             <button
                               type="button"
                               onClick={() => handleEnterSubmit("skip")}
-                              className={cn(DUO.secondary, "h-10 min-h-10 px-7 text-xs")}
+                              className={cn(DUO.secondary, "min-h-12 w-full sm:w-auto sm:px-10")}
                             >
                               Skip
                               <kbd className="hidden md:inline rounded bg-muted px-1.5 py-0.5 text-xs normal-case">
@@ -1157,469 +1005,195 @@ export default function MentalMathsPractice() {
                 </div>
               )}
 
-              {/* 4. PERFORMANCE RESULTS SCORECARD */}
+              {/* 4. RESULTS */}
               {gameState === "game_over" &&
                 (() => {
                   const correct = engine.state.correctAnswers;
                   const wrong = engine.state.wrongAnswers;
                   const skipped = engine.state.skippedAnswers;
                   const total = correct + wrong + skipped;
-                  const accuracy =
-                    total > 0 ? Math.floor((correct / total) * 100) : 0;
+                  const accuracy = total > 0 ? Math.floor((correct / total) * 100) : 0;
 
                   const validTimes = engine.state.history
                     .filter((h) => h.timeTaken && h.timeTaken > 0)
                     .map((h) => (h.timeTaken ?? 0) / 1000);
-                  const fastestTime =
-                    validTimes.length > 0 ? Math.min(...validTimes) : 0;
+                  const fastestTime = validTimes.length > 0 ? Math.min(...validTimes) : 0;
                   const avgTime =
                     engine.state.history.length > 0
-                      ? engine.state.history.reduce(
-                          (acc, curr) => acc + (curr.timeTaken ?? 0),
-                          0,
-                        ) /
+                      ? engine.state.history.reduce((acc, curr) => acc + (curr.timeTaken ?? 0), 0) /
                         Math.max(1, engine.state.history.length) /
                         1000
                       : 0;
-
-                  const getAccuracyColorClasses = (acc: number) => {
-                    if (acc >= 90)
-                      return {
-                        text: "text-emerald-700 dark:text-emerald-300",
-                        stroke: "stroke-emerald-500",
-                      };
-                    if (acc >= 75)
-                      return {
-                        text: "text-sky-700 dark:text-sky-300",
-                        stroke: "stroke-sky-500",
-                      };
-                    if (acc >= 50)
-                      return {
-                        text: "text-amber-700 dark:text-amber-300",
-                        stroke: "stroke-amber-500",
-                      };
-                    return {
-                      text: "text-rose-700 dark:text-rose-300",
-                      stroke: "stroke-rose-500",
-                    };
-                  };
-                  const accuracyColors = getAccuracyColorClasses(accuracy);
+                  const target = getTargetTime(topic, engine.state.difficulty);
+                  const streakBest = bestStreak(engine.state.history);
+                  const BadgeIcon = isNewBest
+                    ? Trophy
+                    : accuracy === 100 && total >= 5
+                      ? Crown
+                      : accuracy >= 80
+                        ? Star
+                        : accuracy >= 50
+                          ? ThumbsUp
+                          : Sprout;
+                  const setup =
+                    engine.state.mode === "timed"
+                      ? `${engine.state.timeLimit}s timed`
+                      : `${engine.state.questionLimit} questions`;
 
                   return (
-                    <div className="w-full h-full flex-1 flex flex-col text-left py-1 animate-in fade-in duration-300 relative min-h-0">
-                      {/* Localized Confetti Canvas */}
+                    <div className="relative flex min-h-0 w-full flex-1 flex-col text-left animate-in fade-in duration-300">
                       <canvas
                         ref={confettiCanvasRef}
-                        className="absolute inset-0 pointer-events-none w-full h-full z-[100] rounded-3xl"
+                        className="pointer-events-none absolute inset-0 z-[100] h-full w-full rounded-3xl"
                       />
 
-                      {/* Header */}
-                      <div className="w-full flex items-center justify-between pb-3 sm:pb-4 border-b-2 border-border/40 gap-3 shrink-0">
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/20 flex items-center justify-center text-brand-700 dark:text-brand-400 shrink-0">
-                            <Trophy className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.2} />
-                          </div>
-                          <div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground tracking-tight leading-tight">
-                                Session complete
-                              </h2>
-                              <div className="flex items-center gap-1.5 select-none">
-                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-xs sm:text-xs font-mono font-bold uppercase tracking-wider border-2 border-border">
-                                  {topic}
-                                </span>
-                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-xs sm:text-xs font-mono font-bold uppercase tracking-wider border-2 border-border">
-                                  {engine.state.mode === "timed"
-                                    ? "Timed"
-                                    : "Freestyle"}
-                                </span>
-                                <span className="px-2.5 py-0.5 bg-muted text-muted-foreground rounded-full text-xs sm:text-xs font-mono font-bold uppercase tracking-wider border-2 border-border">
-                                  {engine.state.difficulty}
-                                </span>
-                              </div>
-                            </div>
-                            <p className="text-muted-foreground text-xs sm:text-sm mt-0.5 font-medium">
-                              <span className="text-foreground font-mono font-bold">{correct}</span> of{" "}
-                              <span className="text-foreground font-mono font-bold">
-                                {engine.state.attemptedQuestionsCount}
+                      <div className="flex flex-col gap-5 pb-3">
+                        <ResultHero
+                          icon={BadgeIcon}
+                          badgeClass={isNewBest ? "bg-brand-500 text-white" : TONE_BAND.maths}
+                          headline={drillHeadline(accuracy, total)}
+                          line={
+                            <>
+                              <span className="font-bold text-foreground tabular-nums">
+                                {correct} of {total}
                               </span>{" "}
-                              correct · you averaged{" "}
-                              <span className="text-foreground font-mono font-bold">
-                                {avgTime.toFixed(1)}s
-                              </span>{" "}
-                              against a {getTargetTime(topic, engine.state.difficulty)}s target.
-                            </p>
-                          </div>
+                              right · <span className="capitalize">{topic.replace(/[-_]/g, " ")}</span> · {setup}
+                            </>
+                          }
+                          ribbon={
+                            isNewBest ? (
+                              <span className="mt-1 flex items-center gap-1.5 rounded-full bg-brand-500 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-white">
+                                <Trophy className="h-3.5 w-3.5" aria-hidden="true" />
+                                New best score
+                              </span>
+                            ) : best > 0 ? (
+                              <span className="mt-1 text-xs font-semibold text-muted-foreground">
+                                Your best here: <span className="tabular-nums text-foreground">{best}</span>
+                              </span>
+                            ) : null
+                          }
+                        />
+
+                        <div className="mx-auto grid w-full max-w-2xl grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Your results">
+                          <StatTile label="Score" value={engine.state.score} icon={Zap} band={TONE_BAND.maths} index={0} />
+                          <StatTile
+                            label="Accuracy"
+                            value={accuracy}
+                            suffix="%"
+                            icon={Target}
+                            signal={total > 0 ? accuracySignal(accuracy) : undefined}
+                            band="bg-muted text-foreground"
+                            display={total === 0 ? "—" : undefined}
+                            index={1}
+                          />
+                          <StatTile
+                            label="Avg pace"
+                            value={avgTime}
+                            decimals={1}
+                            suffix="s"
+                            icon={Timer}
+                            signal={total > 0 ? paceSignal(avgTime, target) : undefined}
+                            band="bg-muted text-foreground"
+                            note={`target ${target}s`}
+                            display={total === 0 ? "—" : undefined}
+                            index={2}
+                          />
+                          <StatTile
+                            label="Best streak"
+                            value={streakBest}
+                            icon={Flame}
+                            band={STREAK_BAND}
+                            note={fastestTime > 0 ? `fastest ${fastestTime.toFixed(1)}s` : undefined}
+                            index={3}
+                          />
                         </div>
-                      </div>
 
-                      {/* Mobile View Tab Switcher */}
-                      <div className="flex md:hidden w-full p-1 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] border-2 border-border rounded-xl mt-2 mb-1 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => setResultTab("overview")}
-                          className={`flex-1 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all select-none cursor-pointer ${
-                            resultTab === "overview"
-                              ? "surface-card text-foreground shadow-xs font-black"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                        >
-                          Accuracy & Pace
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setResultTab("attempts")}
-                          className={`flex-1 py-1.5 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all select-none cursor-pointer ${
-                            resultTab === "attempts"
-                              ? "surface-card text-foreground shadow-xs font-black"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                        >
-                          Every Answer ({engine.state.history.length})
-                        </button>
-                      </div>
-
-                      {/* Main Dual-Column Layout: Side-by-side on desktop, tabbed on mobile */}
-                      <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch my-2 sm:my-3 flex-1 shrink-0">
-                        {/* LEFT COLUMN: Overview Stats & Pacing (5 cols on md/lg) */}
-                        <div className={`md:col-span-5 flex-col gap-3 sm:gap-4 h-full min-h-0 ${resultTab === "overview" ? "flex" : "hidden md:flex"}`}>
-                          {/* Accuracy Gauge & Stacked Counts Box */}
-                          <div className="surface-card rounded-2xl p-3 sm:p-3.5 md:p-4 flex items-center gap-3.5 sm:gap-4 md:gap-5 shrink-0">
-                            {/* Circular Accuracy Gauge with Responsive Radius */}
-                            <div className="relative flex flex-col items-center justify-center w-[88px] h-[88px] sm:w-[98px] sm:h-[98px] md:w-[116px] md:h-[116px] shrink-0">
-                              <svg className="w-full h-full transform -rotate-90 relative z-10">
-                                <circle
-                                  cx="50%"
-                                  cy="50%"
-                                  r="40%"
-                                  className="stroke-emerald-500/20"
-                                  strokeWidth="8"
-                                  fill="transparent"
-                                />
-                                <circle
-                                  cx="50%"
-                                  cy="50%"
-                                  r="40%"
-                                  className={accuracyColors.stroke}
-                                  strokeWidth="8"
-                                  fill="transparent"
-                                  pathLength="100"
-                                  strokeDasharray="100"
-                                  strokeDashoffset={100 - animatedAccuracy}
-                                  strokeLinecap="round"
-                                />
-                              </svg>
-                              <div className="absolute flex flex-col items-center justify-center z-20">
-                                <span className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground font-mono leading-none mb-0.5">
-                                  {animatedAccuracy}%
-                                </span>
-                                <span className="text-xs sm:text-xs text-muted-foreground font-mono font-bold uppercase tracking-widest">
-                                  Accuracy
-                                </span>
-                              </div>
+                        {total > 0 && (
+                          <section aria-label="Review your answers" className="mx-auto flex w-full max-w-2xl flex-col gap-2.5">
+                            <div className="flex items-center justify-between gap-2">
+                              <h3 className="section-label">Review</h3>
+                              <span className="text-xs font-semibold text-muted-foreground tabular-nums">
+                                {wrong > 0 ? `${wrong} to look at` : "No mistakes"}
+                              </span>
                             </div>
-
-                            {/* Stacked Metric Cards */}
-                            <div className="flex-1 flex flex-col gap-1.5 sm:gap-2">
-                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-xl border-2 border-border">
-                                <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
-                                  Correct
-                                </span>
-                                <span className="text-xs sm:text-sm md:text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                                  {correct}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-xl border-2 border-border">
-                                <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
-                                  Wrong
-                                </span>
-                                <span className="text-xs sm:text-sm md:text-base font-bold text-rose-600 dark:text-rose-400 font-mono">
-                                  {wrong}
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between px-3.5 py-1.5 sm:py-2 bg-[color-mix(in_oklab,var(--muted)_50%,var(--card))] rounded-xl border-2 border-border">
-                                <span className="text-xs sm:text-xs md:text-xs font-mono uppercase font-bold text-muted-foreground tracking-widest">
-                                  Skipped
-                                </span>
-                                <span className="text-xs sm:text-sm md:text-base font-bold text-brand-600 dark:text-brand-500 font-mono">
-                                  {skipped}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Pacing Chart Card matching Demo Design */}
-                          {(() => {
-                            const targetTime = getTargetTime(topic, engine.state.difficulty);
-                            const items = engine.state.history.length > 0 ? engine.state.history : [];
-                            const maxPace = Math.max(
-                              ...items.map((h) => (h.timeTaken ?? 0) / 1000),
-                              targetTime,
-                              1
-                            );
-                            // Scale to a clean round top ceiling (e.g. 10s, 15s, 20s, 30s)
-                            const topY = maxPace <= 5 ? 6 : maxPace <= 10 ? 12 : maxPace <= 15 ? 18 : maxPace <= 25 ? 30 : Math.ceil(maxPace / 10) * 10;
-                            const midY = Math.round(topY / 2);
-
-                            return (
-                              <div className="surface-card rounded-2xl p-3 sm:p-3.5 md:p-4 flex flex-col flex-1 min-h-[210px] shrink-0 justify-between">
-                                {/* Header */}
-                                <div className="flex justify-between items-center mb-2 shrink-0">
-                                  <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground tracking-widest uppercase">
-                                    PACE PER QUESTION
-                                  </span>
-                                  <span className="text-xs font-mono text-muted-foreground lowercase">
-                                    target {targetTime}s
-                                  </span>
-                                </div>
-
-                                {/* Main Chart Plot */}
-                                <div className="flex gap-1.5 w-full flex-1 min-h-0 pt-1 items-stretch">
-                                  {/* Y-Axis Coordinates */}
-                                  <div className="flex flex-col justify-between items-end pr-1 text-xs sm:text-xs md:text-xs font-mono font-bold text-muted-foreground/70 select-none py-0.5 shrink-0 w-auto min-w-[18px] sm:min-w-[22px] h-full min-h-[96px] sm:min-h-[110px] md:min-h-[120px]">
-                                    <span>{topY}s</span>
-                                    <span>{midY}s</span>
-                                    <span>0s</span>
-                                  </div>
-
-                                  {/* Plot Area */}
-                                  <div className="flex-1 flex flex-col min-w-0 h-full min-h-0">
-                                    <div className="relative w-full flex-1 min-h-[96px] sm:min-h-[110px] md:min-h-[120px] border-l border-b border-border/40 flex items-end px-1 pb-1">
-                                      {/* Target Dashed Line with Badge */}
-                                      <div
-                                        className="absolute left-0 right-0 border-b border-dashed border-brand-500/60 z-10 pointer-events-none flex items-center justify-end"
-                                        style={{
-                                          bottom: `${Math.min(95, Math.max(5, (targetTime / topY) * 100))}%`,
-                                        }}
-                                      >
-                                        <span className="bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs sm:text-xs md:text-xs font-mono font-bold px-1.5 py-0.5 rounded-sm tracking-wider uppercase transform -translate-y-1/2 select-none mr-0.5 sm:mr-1">
-                                          TARGET {targetTime}s
+                            <div className="flex flex-col">
+                              <div className="flex flex-col">
+                                <ol className="flex flex-col divide-y-2 divide-border overflow-hidden rounded-2xl border-2 border-border bg-card">
+                                  {engine.state.history.map((item, idx) => {
+                                    const isCorrect = item.status === "correct";
+                                    const isWrong = item.status === "wrong";
+                                    const secs = (item.timeTaken ?? 0) / 1000;
+                                    const slow = item.status !== "skipped" && secs > target;
+                                    return (
+                                      <li key={idx} className="flex items-center gap-3 px-3 py-2.5">
+                                        <span
+                                          className={cn(
+                                            "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white",
+                                            isCorrect ? "bg-emerald-500" : isWrong ? "bg-rose-500" : "bg-muted text-muted-foreground",
+                                          )}
+                                          aria-label={isCorrect ? "Right" : isWrong ? "Wrong" : "Skipped"}
+                                        >
+                                          {isCorrect ? (
+                                            <Check className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+                                          ) : isWrong ? (
+                                            <X className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+                                          ) : (
+                                            <Minus className="h-4 w-4" strokeWidth={3} aria-hidden="true" />
+                                          )}
                                         </span>
-                                      </div>
-
-                                      {/* Capsule Bars */}
-                                      <div className="flex-1 flex items-end justify-between gap-[1px] sm:gap-0.5 h-full z-20 px-0.5 min-w-0">
-                                        {items.length === 0 ? (
-                                          <div className="w-full h-full flex items-center justify-center text-xs sm:text-xs font-mono text-muted-foreground/60 italic">
-                                            No pacing data
-                                          </div>
-                                        ) : (
-                                          items.map((h, idx) => {
-                                            const timeSec = Math.max(0.1, (h.timeTaken ?? 0) / 1000);
-                                            const heightPct = Math.min(
-                                              100,
-                                              Math.max(8, (timeSec / topY) * 100)
-                                            );
-                                            const isCorrect = h.status === "correct";
-                                            const isWrong = h.status === "wrong";
-
-                                            return (
-                                              <div
-                                                key={idx}
-                                                className="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer min-w-[2px] max-w-[16px]"
-                                              >
-                                                <div
-                                                  className={`w-full min-w-[1.5px] rounded-full transition-all duration-200 group-hover:brightness-110 ${
-                                                    isCorrect
-                                                      ? "bg-emerald-400 dark:bg-emerald-500"
-                                                      : isWrong
-                                                      ? "bg-rose-400 dark:bg-rose-500"
-                                                      : "bg-brand-400 dark:bg-brand-500"
-                                                  }`}
-                                                  style={{ height: `${heightPct}%` }}
-                                                />
-                                                {/* Tooltip */}
-                                                <div className="absolute bottom-full mb-1 hidden group-hover:block bg-popover border-2 border-border text-popover-foreground text-xs sm:text-xs font-mono px-1.5 py-0.5 rounded-lg shadow-lg whitespace-nowrap z-50">
-                                                  Q{idx + 1}: {h.status === "skipped" ? "Skipped (" : ""}{timeSec.toFixed(1)}s{h.status === "skipped" ? ")" : ""}
-                                                </div>
-                                              </div>
-                                            );
-                                          })
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* X-Axis Landmark Coordinates */}
-                                    <div className="flex justify-between items-center w-full pt-1 sm:pt-1.5 md:pt-2 px-1 shrink-0 min-w-0">
-                                      {items.map((_, idx) => {
-                                        const qNum = idx + 1;
-                                        const total = items.length;
-                                        const isMilestone =
-                                          qNum === 1 ||
-                                          qNum === total ||
-                                          (total > 40 ? qNum % 15 === 0 : total > 20 ? qNum % 10 === 0 : qNum % 5 === 0) ||
-                                          total <= 8;
-
-                                        return (
-                                          <div key={idx} className="flex-1 flex justify-center min-w-[2px] max-w-[16px]">
-                                            <span className="text-xs sm:text-xs md:text-xs font-mono font-bold text-muted-foreground/70 select-none">
-                                              {isMilestone ? `Q${qNum}` : ""}
-                                            </span>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* Footer */}
-                                <div className="flex justify-between items-center mt-2 pt-1 text-xs sm:text-xs md:text-sm font-mono shrink-0">
-                                  <span className="text-muted-foreground font-medium">
-                                    avg <span className="text-foreground font-bold">{avgTime.toFixed(1)}s</span>
-                                  </span>
-                                  <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                                    fastest {fastestTime.toFixed(1)}s
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-
-                        {/* RIGHT COLUMN: Question Review List (7 cols on md/lg) */}
-                        <div className={`md:col-span-7 flex-col h-full min-h-0 ${resultTab === "attempts" ? "flex" : "hidden md:flex"}`}>
-                          {engine.state.history.length === 0 ? (
-                            <div className="surface-card rounded-2xl flex-1 flex flex-col items-center justify-center py-12 text-muted-foreground">
-                              <span className="text-2xl mb-2">📋</span>
-                              <p className="text-sm font-medium">No questions attempted</p>
-                            </div>
-                          ) : (
-                            <div className="surface-card rounded-2xl flex-1 flex flex-col min-h-0 overflow-hidden">
-                              {/* Internal Card Header - Perfectly aligned with Left Column Accuracy Box */}
-                              <div className="flex justify-between items-center px-3.5 sm:px-4 py-2.5 sm:py-3 border-b-2 border-border/40 shrink-0 bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))]">
-                                <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground uppercase tracking-widest">
-                                  Every Answer
-                                </span>
-                                <span className="text-xs sm:text-xs text-muted-foreground font-mono font-bold uppercase tracking-wider">
-                                  {engine.state.history.length} items
-                                </span>
-                              </div>
-
-                              {/* Scrollable Answers List */}
-                              <div className="flex-1 overflow-y-auto pr-1 divide-y-2 divide-border/40 p-1.5 sm:p-2 scrollbar-thin">
-                                {engine.state.history.map((item, idx) => {
-                                  const isCorrect = item.status === "correct";
-                                  const isWrong = item.status === "wrong";
-                                  const isSkipped = item.status === "skipped";
-
-                                  return (
-                                    <div
-                                      key={idx}
-                                      className="flex items-center justify-between py-2.5 sm:py-3 px-2.5 sm:px-3 hover:bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))] transition-colors group rounded-xl"
-                                    >
-                                      {/* Left: Index + Status Circle + Question & Answer Text */}
-                                      <div className="flex items-center gap-2 sm:gap-2.5 flex-1 min-w-0 pr-2 sm:pr-3">
-                                        <span className="text-xs sm:text-xs font-mono font-bold text-muted-foreground/60 w-4 sm:w-5 shrink-0">
-                                          {String(idx + 1).padStart(2, "0")}
+                                        <div className="min-w-0 flex-1 font-mono text-[15px] leading-snug">
+                                          <span className="text-foreground">{item.questionText} = </span>
+                                          <span className="font-extrabold text-foreground">{item.correctAnswer}</span>
+                                          {isWrong && (
+                                            <span className="ml-2 text-sm font-bold text-rose-600 line-through dark:text-rose-400">{item.userAnswer}</span>
+                                          )}
+                                          {item.status === "skipped" && <span className="ml-2 font-sans text-xs font-semibold text-muted-foreground">skipped</span>}
+                                        </div>
+                                        <span
+                                          className={cn(
+                                            "shrink-0 font-mono text-xs font-bold tabular-nums",
+                                            slow ? "text-amber-700 dark:text-amber-300" : "text-muted-foreground",
+                                          )}
+                                          title={slow ? `Slower than the ${target}s target` : undefined}
+                                        >
+                                          {item.status === "skipped" ? "" : `${secs.toFixed(1)}s`}
                                         </span>
-                                        <div className="flex items-center justify-center shrink-0">
-                                          {isCorrect && (
-                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] border-2 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                                              <Check className="w-2.5 h-2.5" strokeWidth={2.5} />
-                                            </div>
-                                          )}
-                                          {isWrong && (
-                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] border-2 border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-                                              <X className="w-2.5 h-2.5" strokeWidth={2.5} />
-                                            </div>
-                                          )}
-                                          {isSkipped && (
-                                            <div className="w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] border-2 border-brand-500/30 text-brand-600 dark:text-brand-500 flex items-center justify-center">
-                                              <Minus className="w-2.5 h-2.5" strokeWidth={2.5} />
-                                            </div>
-                                          )}
-                                        </div>
-                                        <div className="text-xs sm:text-sm font-mono font-bold text-foreground flex-1 flex flex-wrap gap-x-2 gap-y-0.5 items-baseline min-w-0">
-                                          <span className="text-foreground">
-                                            {item.questionText} =
-                                          </span>
-                                          <span className="shrink-0 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
-                                            <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                                              {item.correctAnswer}
-                                            </span>
-                                            {isWrong && (
-                                              <span className="line-through text-rose-500/80 font-bold font-mono">
-                                                {item.userAnswer}
-                                              </span>
-                                            )}
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                      {/* Right: Status Pill + Time with Amber Zap - Aligned to straight left column */}
-                                      <div className="flex items-center justify-end gap-1.5 sm:gap-2.5 shrink-0 w-[115px] sm:w-[125px] md:w-[135px]">
-                                        {/* Status Pill Badge - Fixed uniform width for perfect left alignment */}
-                                        <div className="w-[58px] sm:w-[64px] md:w-[68px] shrink-0 flex items-center justify-start">
-                                          {isCorrect && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-[color-mix(in_oklab,var(--color-emerald-500)_10%,var(--card))] text-emerald-600 dark:text-emerald-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-emerald-500/20">
-                                              Correct
-                                            </span>
-                                          )}
-                                          {isWrong && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-600 dark:text-rose-400 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-rose-500/20">
-                                              Incorrect
-                                            </span>
-                                          )}
-                                          {isSkipped && (
-                                            <span className="w-full text-center py-0.5 px-1 rounded-full bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] text-brand-600 dark:text-brand-500 font-mono text-xs sm:text-xs font-bold uppercase tracking-wider border border-brand-500/20">
-                                              Skipped
-                                            </span>
-                                          )}
-                                        </div>
-
-                                        {/* Pace Time Badge */}
-                                        <div className="w-11 sm:w-13 flex items-center justify-end shrink-0">
-                                          {!isSkipped && (
-                                            <div className="flex items-center gap-1 text-xs sm:text-xs font-mono font-bold text-brand-700 dark:text-brand-400">
-                                              <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-brand-500 text-brand-700 dark:text-brand-400" strokeWidth={2.2} />
-                                              {((item.timeTaken ?? 0) / 1000).toFixed(1)}s
-                                            </div>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
+                                      </li>
+                                    );
+                                  })}
+                                </ol>
                               </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Footer actions stay pinned while the stats scroll */}
-                      <div className="sticky bottom-0 z-10 -mb-1 flex w-full shrink-0 flex-col gap-2.5 border-t-2 border-border bg-card pb-1 pt-3 sm:gap-3">
-                        <div className="w-full flex gap-3">
-                          <button
-                            type="button"
-                            onClick={() => router.push("/SSC/maths/mental-maths")}
-                            className={cn(DUO.secondary, "flex-[3] px-3")}
-                          >
-                            All drills
-                          </button>
-                          <Button
-                            onClick={engine.resetSession}
-                            className={cn(DUO.primary, "group h-12 flex-[7] px-4")}
-                          >
-                            <Swords className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 group-hover:scale-125 transition-transform duration-300" />
-                            Practice again
-                          </Button>
-                        </div>
-
-                        {/* Minimalist Guest Auth Prompt */}
-                        {!user && (
-                          <div className="w-full text-center pb-0.5 animate-in fade-in duration-700 delay-300">
-                            <p className="text-xs sm:text-xs text-muted-foreground font-mono font-medium tracking-wide">
-                              Playing as a Guest.{" "}
-                              <button 
-                                onClick={signInWithGoogle} 
-                                className="text-foreground hover:text-brand-500 font-bold underline underline-offset-2 transition-colors cursor-pointer"
-                              >
-                                Sign in with Google to save scores
-                              </button>
-                            </p>
-                          </div>
+                          </section>
                         )}
                       </div>
+
+                      <ActionBar
+                        className="sticky -bottom-4 z-30 -mb-4 bg-card pb-[max(1rem,env(safe-area-inset-bottom))] sm:-bottom-5 sm:-mb-5 sm:pb-5 md:-bottom-6 md:-mb-6 md:pb-6"
+                        note={
+                          !user ? (
+                            <p className="text-center text-xs font-medium text-muted-foreground">
+                              Playing as a guest.{" "}
+                              <button
+                                type="button"
+                                onClick={signInWithGoogle}
+                                className="font-bold text-foreground underline underline-offset-2 hover:text-brand-600"
+                              >
+                                Sign in to save your scores
+                              </button>
+                            </p>
+                          ) : undefined
+                        }
+                      >
+                        <button type="button" onClick={engine.resetSession} autoFocus className={CTA.primary}>
+                          <RotateCcw className="h-5 w-5" aria-hidden="true" />
+                          Practice again
+                        </button>
+                        <button type="button" onClick={() => router.push("/SSC/maths/mental-maths")} className={CTA.secondary}>
+                          <LayoutGrid className="h-5 w-5" aria-hidden="true" />
+                          All drills
+                        </button>
+                      </ActionBar>
                     </div>
                   );
                 })()}

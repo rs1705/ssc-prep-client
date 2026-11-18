@@ -13,6 +13,8 @@ import { useSaveFlashcardInteractionsMutation } from "@/redux/FlashcardApiSlice"
 import Flashcard from "./Flashcard";
 import { RATINGS, formatInterval } from "./ratings";
 import { SessionSummary } from "./SessionSummary";
+import { readStored, removeStored, writeStored } from "@/lib/storage";
+import { resumeIndex, type SavedSpot } from "./resume";
 
 export type { ActionType } from "./ratings";
 
@@ -34,6 +36,11 @@ interface FlashcardDeckProps<T extends DeckItem> {
   shuffled?: boolean;
   /** Reports the 1-based card position so the page can show progress. */
   onPosition?: (position: number, total: number) => void;
+  /**
+   * Remembers the last card shown under this key and reopens the deck there (not while
+   * shuffled). Finishing the deck clears it, so the next visit starts from the top.
+   */
+  rememberKey?: string;
 }
 
 type Mark = "known" | "learning";
@@ -63,9 +70,19 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
   onPosition,
   renderCard,
   backHref,
+  rememberKey,
 }: FlashcardDeckProps<T>) {
+  const remember = rememberKey && !shuffled ? rememberKey : null;
+  /** Where to open `cards`: the remembered card, or the first one. */
+  const openingIndex = (cards: T[], key: string | null) =>
+    key ? resumeIndex(cards, readStored<SavedSpot | null>(key, null)) : 0;
   const [order, setOrder] = useState<T[]>(() => (shuffled ? shuffle(deck) : deck));
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() => openingIndex(order, remember));
+  /** The card number we picked up at, while the "Start over" hint is showing. */
+  const [resumedAt, setResumedAt] = useState<number | null>(() => {
+    const i = openingIndex(order, remember);
+    return i > 0 ? i + 1 : null;
+  });
   const [flipped, setFlipped] = useState(false);
   const [direction, setDirection] = useState(1);
   const [finished, setFinished] = useState(false);
@@ -76,9 +93,11 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
   const shownAt = useRef(0);
   const dragging = useRef(false);
 
-  const start = (cards: T[]) => {
+  const start = (cards: T[], resumeKey: string | null = null) => {
+    const opening = openingIndex(cards, resumeKey);
     setOrder(cards);
-    setIndex(0);
+    setIndex(opening);
+    setResumedAt(opening > 0 ? opening + 1 : null);
     setFlipped(false);
     setFinished(false);
     setMarks({});
@@ -88,10 +107,16 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
   };
 
   // Start over whenever the source deck, the reset key or shuffle changes.
-  const [source, setSource] = useState({ deck, resetKey, shuffled });
-  if (source.deck !== deck || source.resetKey !== resetKey || source.shuffled !== shuffled) {
-    setSource({ deck, resetKey, shuffled });
-    start(shuffled ? shuffle(deck) : deck);
+  // A new deck from the page (new tab, filters or letter) reopens at its remembered card.
+  const [source, setSource] = useState({ deck, resetKey, shuffled, remember });
+  if (
+    source.deck !== deck ||
+    source.resetKey !== resetKey ||
+    source.shuffled !== shuffled ||
+    source.remember !== remember
+  ) {
+    setSource({ deck, resetKey, shuffled, remember });
+    start(shuffled ? shuffle(deck) : deck, remember);
   }
 
   const card = order[index];
@@ -103,6 +128,18 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
   useEffect(() => {
     shownAt.current = Date.now();
   }, [card?._id]);
+
+  // Remember the card on screen; forget it once the deck is finished.
+  useEffect(() => {
+    if (!remember) return;
+    if (finished) removeStored(remember);
+    else if (card) writeStored<SavedSpot>(remember, { id: card._id, index });
+  }, [remember, card, index, finished]);
+
+  // The hint goes away once the learner moves on.
+  useEffect(() => {
+    if (resumedAt !== null && index + 1 !== resumedAt) setResumedAt(null);
+  }, [index, resumedAt]);
 
   useEffect(() => {
     if (deck.length > 0) {
@@ -234,7 +271,29 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
 
   return (
     <div className="flex w-full flex-col gap-3">
-      <div className="relative h-[clamp(300px,calc(100dvh-22rem),440px)] w-full">
+      {resumedAt !== null && (
+        <div
+          role="status"
+          className="flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-card py-1 pl-3 pr-1 text-sm animate-in fade-in slide-in-from-top-1 duration-300"
+        >
+          <span className="font-semibold text-foreground">
+            Picked up at card <span className="tabular-nums">{resumedAt}</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => goTo(0, -1)}
+            className="min-h-9 shrink-0 rounded-xl px-2.5 text-xs font-extrabold uppercase tracking-wide text-brand-700 hover:bg-muted dark:text-brand-300"
+          >
+            Start over
+          </button>
+        </div>
+      )}
+      <div
+        className={cn(
+          "relative w-full",
+          resumedAt !== null ? "h-[clamp(280px,calc(100dvh-25.5rem),440px)]" : "h-[clamp(300px,calc(100dvh-22rem),440px)]",
+        )}
+      >
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.div
             key={`${card._id}-${index}`}

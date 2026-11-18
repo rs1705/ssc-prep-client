@@ -1,15 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { DUO } from "@/features/games/buttons";
 import { useCallback, useEffect, useReducer } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, Eye, Link2, Target, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check, Eye, Link2, Target, X } from "lucide-react";
 import { PINPOINT_PUZZLES } from "@/lib/pinpoint-puzzles";
 import { GameFrame } from "@/features/games/GameFrame";
 import { GameLobby } from "@/features/games/GameLobby";
 import { ResultSummary } from "@/features/games/ResultSummary";
+import { AnswerSheet } from "@/features/games/AnswerSheet";
 import { useBestScore } from "@/features/games/useBestScore";
 import {
   MAX_SCORE,
@@ -67,7 +65,7 @@ export function PinpointGame() {
   const solvedCount = state.results.filter((r) => r.solved).length;
 
   return (
-    <GameFrame title="Odd Link" subtitle="Find what the words have in common" best={best}>
+    <GameFrame title="Odd Link" subtitle="Find what the words have in common" best={best} confirmExit={state.phase === "playing" || state.phase === "reveal"}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<Link2 aria-hidden="true" strokeWidth={1.6} />}
@@ -184,39 +182,20 @@ export function PinpointGame() {
             })}
           </div>
 
-          {revealing && (
-            <motion.div
-              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              role="status"
-              className="mt-auto flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-card p-3 [@media(max-height:480px)_and_(min-width:560px)]:p-2"
-            >
-              {(() => {
-                const result = state.results[state.results.length - 1];
-                return (
-                  <>
-                    <div
-                      className={`flex items-center gap-1.5 text-sm font-black ${
-                        result.solved ? "text-emerald-700 dark:text-emerald-400" : "text-rose-700 dark:text-rose-400"
-                      }`}
-                    >
-                      {result.solved ? <Check className="h-4 w-4" aria-hidden="true" /> : <X className="h-4 w-4" aria-hidden="true" />}
-                      {result.solved ? `+${result.points}` : "No points"}
-                    </div>
-                    <Button
-                      type="button"
-                      onClick={next}
-                      autoFocus
-                      className={cn(DUO.primary, "h-12")}
-                    >
-                      {state.index + 1 >= state.rounds.length ? "See results" : "Next puzzle"}
-                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                    </Button>
-                  </>
-                );
-              })()}
-            </motion.div>
-          )}
+          {revealing &&
+            (() => {
+              const result = state.results[state.results.length - 1];
+              return (
+                <AnswerSheet
+                  bleed={false}
+                  correct={result.solved}
+                  verdict={result.solved ? `Solved! +${result.points}` : "No points this time"}
+                  answer={round.puzzle.answer}
+                  continueLabel={state.index + 1 >= state.rounds.length ? "See results" : "Next puzzle"}
+                  onContinue={next}
+                />
+              );
+            })()}
           </div>
         </section>
       )}

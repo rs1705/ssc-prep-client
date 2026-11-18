@@ -53,16 +53,16 @@ export function PlanStepToast() {
   return (
     <div
       aria-live="polite"
-      className="pointer-events-none fixed inset-x-0 bottom-24 z-50 flex justify-center px-4 md:bottom-auto md:top-20 md:justify-end md:px-6"
+      className="pointer-events-none fixed inset-x-0 top-[calc(env(safe-area-inset-top)+4.25rem)] z-50 flex justify-center px-4 md:top-20 md:justify-end md:px-6"
     >
       <AnimatePresence>
         {info && (
           <motion.div
             key={`${info.step.id}-${info.done}`}
             role="status"
-            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            initial={{ opacity: 0, y: -20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            exit={{ opacity: 0, y: -14, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
             className={cn(
               "pointer-events-auto w-full max-w-sm rounded-3xl border-2 border-b-[5px] bg-card p-4 shadow-xl",

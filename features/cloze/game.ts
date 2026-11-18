@@ -14,6 +14,8 @@ export interface ClozeQuestion {
   answer: string;
   options: string[];
   meaning: string;
+  /** The Hindi meaning, when the card has one. */
+  hindi?: string;
 }
 
 export type Phase = "lobby" | "playing" | "over";
@@ -98,7 +100,8 @@ export function buildQuestions(cards: FlashCardInterface[], count = QUESTIONS_PE
     if (wrong.length < 3) continue;
     const options = shuffle([blank.answer, ...wrong.map((w) => matchCase(w, blank.answer))]);
     if (new Set(options.map((o) => o.toLowerCase())).size !== 4) continue;
-    out.push({ id: card._id, ...blank, options, meaning: card.back.content_eng });
+    const hindi = card.back.content_hindi?.[0]?.trim();
+    out.push({ id: card._id, ...blank, options, meaning: card.back.content_eng, ...(hindi ? { hindi } : {}) });
   }
   return out;
 }

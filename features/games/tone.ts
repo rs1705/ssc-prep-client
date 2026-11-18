@@ -57,3 +57,10 @@ export const GAME_TONE: Record<GameTone, ToneClasses> = {
     timer: "from-sky-400 to-sky-600",
   },
 };
+
+/** Solid label band for result tiles, one per subject (white text on the subject hue). */
+export const TONE_BAND: Record<GameTone, string> = {
+  english: "bg-fuchsia-600 text-white",
+  reasoning: "bg-orange-600 text-white",
+  maths: "bg-sky-600 text-white",
+};

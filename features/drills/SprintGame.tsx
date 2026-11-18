@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Check, Clock, Flame, Lightbulb, Timer, X, Zap, type LucideIcon } from "lucide-react";
 import { ProgressBar } from "@/components/custom/ProgressBar";
 import { GameFrame } from "@/features/games/GameFrame";
+import { usePause } from "@/features/games/usePause";
 import { GameLobby } from "@/features/games/GameLobby";
 import { ResultSummary } from "@/features/games/ResultSummary";
 import { GAME_TONE, type GameTone } from "@/features/games/tone";
@@ -49,6 +50,7 @@ export function SprintGame({
   backLabel,
 }: SprintGameProps) {
   const [state, dispatch] = useReducer(sprintReducer, initialState);
+  const { paused, pause, resume } = usePause(state.phase === "playing");
   const { best, isNewBest, submit, clearNewBest } = useBestScore(storageKey);
   const reduceMotion = useReducedMotion();
   const t = GAME_TONE[tone];
@@ -94,12 +96,12 @@ export function SprintGame({
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
 
   useEffect(() => {
-    if (state.phase !== "playing") return;
+    if (state.phase !== "playing" || paused) return;
     const id = window.setInterval(() => {
       if (!document.hidden) dispatch({ type: "TICK" });
     }, 1000);
     return () => window.clearInterval(id);
-  }, [state.phase]);
+  }, [state.phase, paused]);
 
   // Right answers move on quickly; a miss stays a little longer so the method can be read.
   useEffect(() => {
@@ -149,7 +151,7 @@ export function SprintGame({
   const accuracy = state.answeredCount ? Math.round((state.correctCount / state.answeredCount) * 100) : 0;
 
   return (
-    <GameFrame title={title} subtitle={subtitle} best={best} tone={tone} backHref={backHref} backLabel={backLabel}>
+    <GameFrame title={title} subtitle={subtitle} best={best} tone={tone} backHref={backHref} backLabel={backLabel} confirmExit={state.phase === "playing"} pause={state.phase === "playing" ? { paused, onPause: pause, onResume: resume } : undefined}>
       {state.phase === "lobby" && (
         <GameLobby
           hero={<Icon aria-hidden="true" strokeWidth={1.6} />}

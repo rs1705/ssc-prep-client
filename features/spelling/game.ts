@@ -30,6 +30,8 @@ export interface SpellingState {
   correctCount: number;
   answeredCount: number;
   misses: Miss[];
+  /** Every answer in order, right or wrong, for the end-of-run list. */
+  answered: { word: SpellingWord; chosen: string; correct: boolean }[];
   /** Set for a moment after an answer so the UI can colour the buttons. */
   feedback: { chosen: string; correct: boolean } | null;
 }
@@ -52,6 +54,7 @@ export const initialState: SpellingState = {
   correctCount: 0,
   answeredCount: 0,
   misses: [],
+  answered: [],
   feedback: null,
 };
 
@@ -106,6 +109,7 @@ export function spellingReducer(state: SpellingState, action: SpellingAction): S
           score: state.score + Math.round(BASE_POINTS * streakMultiplier(state.streak)),
           correctCount: state.correctCount + 1,
           answeredCount: state.answeredCount + 1,
+          answered: [...state.answered, { word: question.word, chosen: action.option, correct: true }],
           feedback: { chosen: action.option, correct: true },
         };
       }
@@ -118,6 +122,7 @@ export function spellingReducer(state: SpellingState, action: SpellingAction): S
         phase: timeLeft <= 0 ? "over" : state.phase,
         answeredCount: state.answeredCount + 1,
         misses: [...state.misses, { correct: question.word.correct, chosen: action.option }],
+        answered: [...state.answered, { word: question.word, chosen: action.option, correct: false }],
         feedback: { chosen: action.option, correct: false },
       };
     }
