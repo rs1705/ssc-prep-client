@@ -2,6 +2,7 @@
 
 import { Fragment, useMemo, type ReactNode } from "react";
 import katex from "katex";
+import { KATEX_OPTIONS, tidyTex } from "./tex";
 import "katex/dist/katex.min.css";
 
 /**
@@ -17,7 +18,7 @@ const INLINE = /(\$\$[\s\S]+?\$\$|(?<!\\)\$(?:\\.|[^$\\])+?\$|\*\*[\s\S]+?\*\*|<
 
 export function Tex({ tex, display = false }: { tex: string; display?: boolean }) {
   const html = useMemo(
-    () => katex.renderToString(tex, { displayMode: display, throwOnError: false, strict: "ignore", trust: false }),
+    () => katex.renderToString(tidyTex(tex), { ...KATEX_OPTIONS, displayMode: display }),
     [tex, display],
   );
   return display ? (

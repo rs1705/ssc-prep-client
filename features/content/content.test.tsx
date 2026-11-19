@@ -179,3 +179,11 @@ describe("venn and tree checks", () => {
     ]);
   });
 });
+
+describe("tidyTex", () => {
+  it("turns en dashes, em dashes and Unicode minus into a plain minus", async () => {
+    const { tidyTex } = await import("./tex");
+    expect(tidyTex("10 – 5 — 2 − 1")).toBe("10 - 5 - 2 - 1");
+    expect(tidyTex(String.raw`\frac{a} - b`)).toBe(String.raw`\frac{a} - b`);
+  });
+});
