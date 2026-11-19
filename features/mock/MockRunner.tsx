@@ -12,8 +12,6 @@ import {
   LogOut,
   Maximize,
   Minimize,
-  Minus,
-  Plus,
   RotateCcw,
   X,
 } from "lucide-react";
@@ -27,6 +25,8 @@ import { cn } from "@/lib/utils";
 import type { FullMock, Pyq } from "@/redux/PyqApi";
 import { buildAttempt, saveAttempt } from "./attempts";
 import { BTN } from "./examButtons";
+import { TextSizeControl } from "@/components/custom/text-size-control";
+import { QuestionStrip } from "@/features/pyq/QuestionStrip";
 import {
   SECTION_SECONDS,
   countStatuses,
@@ -78,7 +78,6 @@ const STATUS_STYLE: Record<PaletteStatus, string> = {
 const shortName = (subject: string) =>
   ({ reasoning: "Reasoning", gk: "GK", maths: "Quant", english: "English" } as Record<string, string>)[subject] ?? subject;
 
-const ZOOM = ["text-[15px]", "text-base", "text-lg", "text-xl"];
 
 function StatusChip({ status, children, className }: { status: PaletteStatus; children?: React.ReactNode; className?: string }) {
   return (
@@ -294,7 +293,6 @@ function Instructions({ mock, onExit, onBegin }: MockRunnerProps & { onBegin: ()
 
 function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s: ExamState) => void }) {
   const [state, dispatch] = useReducer(examReducer, mock.sections, createExam);
-  const [zoom, setZoom] = useState(0);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [confirm, setConfirm] = useState<null | "section" | "submit" | "leave">(null);
   const [switches, setSwitches] = useState(0);
@@ -469,12 +467,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
       {/* Top bar */}
       <header className="grid h-14 shrink-0 grid-cols-[auto_1fr_auto] items-center gap-3 border-b border-border bg-card px-3 sm:px-4">
         <div className="flex items-center gap-1.5">
-          <button type="button" onClick={() => setZoom((z) => Math.max(0, z - 1))} disabled={zoom === 0} aria-label="Zoom out" className={cn(ICON_BTN, "hidden sm:flex")}>
-            <Minus className="h-4 w-4" aria-hidden="true" />
-          </button>
-          <button type="button" onClick={() => setZoom((z) => Math.min(ZOOM.length - 1, z + 1))} disabled={zoom === ZOOM.length - 1} aria-label="Zoom in" className={cn(ICON_BTN, "hidden sm:flex")}>
-            <Plus className="h-4 w-4" aria-hidden="true" />
-          </button>
+          <TextSizeControl />
           <button
             type="button"
             onClick={() => (fullscreen ? exitFullscreen() : enterFullscreen())}
@@ -550,7 +543,7 @@ function ExamScreen({ mock, onExit, onFinish }: MockRunnerProps & { onFinish: (s
           </div>
 
           <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto bg-card">
-            <div className={cn("flex w-full flex-col gap-5 px-4 py-5 sm:px-6", ZOOM[zoom])}>
+            <div className="content-zoom flex w-full flex-col gap-5 px-4 py-5 text-[15px] sm:px-6">
               {question.passage && (
                 <details open className="group rounded-lg border border-border">
                   <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-semibold text-foreground">
@@ -804,10 +797,13 @@ function Review({
           <p className="truncate text-sm font-bold uppercase tracking-wide text-foreground">{mock.title}</p>
           <p className="text-xs text-muted-foreground">{when ? `Attempted ${when}` : "Result & review"}</p>
         </div>
-        <button type="button" onClick={onExit} className={BTN.ghost}>
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          <span className="hidden sm:inline">{exitLabel}</span>
-        </button>
+        <div className="flex shrink-0 items-center gap-2">
+          <TextSizeControl />
+          <button type="button" onClick={onExit} className={BTN.ghost}>
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">{exitLabel}</span>
+          </button>
+        </div>
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto">
@@ -869,7 +865,39 @@ function Review({
             </div>
           </section>
 
-          <div id="review-question" className="flex scroll-mt-4 flex-col gap-5 lg:flex-row lg:items-start">
+          <div className="sticky top-0 z-10 -mx-4 flex flex-col gap-1.5 border-y border-border bg-card/95 px-4 pb-1 pt-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden">
+            <div className="flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
+              {exam.sections.map((s) => (
+                <button
+                  key={s.subject}
+                  type="button"
+                  onClick={() => setIndex(s.start)}
+                  aria-pressed={s === sec}
+                  className={cn(
+                    "shrink-0 rounded-md px-2.5 py-1 text-xs font-semibold",
+                    s === sec ? "bg-brand-600 text-white" : "bg-muted text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {shortName(s.subject)}
+                </button>
+              ))}
+            </div>
+            <QuestionStrip
+              current={index - sec.start}
+              onPick={(i) => setIndex(sec.start + i)}
+              items={exam.questions.slice(sec.start, sec.end).map((q, i) => {
+                const a = exam.answers[q.id];
+                return {
+                  id: q.id,
+                  number: i + 1,
+                  tone: !a ? "border-border bg-muted text-muted-foreground" : a === q.answer ? "border-emerald-700 bg-emerald-600 text-white" : "border-rose-600 bg-rose-500 text-white",
+                  label: `Question ${i + 1}: ${!a ? "not answered" : a === q.answer ? "right" : "wrong"}`,
+                };
+              })}
+            />
+          </div>
+
+          <div id="review-question" className="flex scroll-mt-32 flex-col gap-5 lg:scroll-mt-4 lg:flex-row lg:items-start">
             <article className="flex min-w-0 flex-1 flex-col gap-4 rounded-xl border border-border bg-card p-4 sm:p-6">
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
                 <span className="rounded bg-brand-600 px-2 py-0.5 font-mono text-white">Q{index - sec.start + 1}</span>
@@ -885,57 +913,59 @@ function Review({
                   )}
                 </span>
               </div>
-              {question.passage && (
-                <details className="group rounded-lg border border-border">
-                  <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-semibold text-foreground">
-                    <BookOpenText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                    Passage
+              <div className="content-zoom flex flex-col gap-4">
+                {question.passage && (
+                  <details className="group rounded-lg border border-border">
+                    <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-semibold text-foreground">
+                      <BookOpenText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                      Passage
+                      <ChevronDown className="ml-auto h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+                    </summary>
+                    <RichText text={markAskedBlank(question.passage, question.question)} className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90" />
+                  </details>
+                )}
+                <Blocks
+                  blocks={question.questionBlocks}
+                  className={cn(QUESTION_TEXT, "text-foreground")}
+                  fallback={<RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />}
+                />
+                <div className="flex flex-col gap-2.5 text-[15px]">
+                  {question.options.map((o, i) => {
+                    const isAnswer = o.label === question.answer;
+                    const isChosen = chosen === o.label;
+                    return (
+                      <ChoiceOption
+                        key={o.label}
+                        label={optionLetter(i)}
+                        state={choiceState({ revealed: true, isAnswer, isChosen })}
+                        disabled
+                        className={OPTION_TEXT}
+                        aria-label={`Option ${optionLetter(i)}${isAnswer ? ", correct answer" : isChosen ? ", your answer" : ""}`}
+                      >
+                        <Blocks blocks={o.blocks} fallback={<RichText inline text={o.text} />} />
+                      </ChoiceOption>
+                    );
+                  })}
+                </div>
+                <details key={question.id} className="group rounded-lg border border-border">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-semibold text-brand-700 dark:text-brand-300 [&::-webkit-details-marker]:hidden">
+                    <span className="group-open:hidden">Show explanation</span>
+                    <span className="hidden group-open:inline">Hide explanation</span>
                     <ChevronDown className="ml-auto h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
                   </summary>
-                  <RichText text={markAskedBlank(question.passage, question.question)} className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90" />
+                  <div className="border-t border-border px-4 py-3">
+                    {question.explanation ? (
+                      <Blocks
+                        blocks={mapTextBlocks(question.explanationBlocks, (t) => relabelOptionRefs(t, question.options))}
+                        className="text-sm leading-relaxed text-foreground/90"
+                        fallback={<RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />}
+                      />
+                    ) : (
+                      <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
+                    )}
+                  </div>
                 </details>
-              )}
-              <Blocks
-                blocks={question.questionBlocks}
-                className={cn(QUESTION_TEXT, "text-foreground")}
-                fallback={<RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />}
-              />
-              <div className="flex flex-col gap-2.5 text-[15px]">
-                {question.options.map((o, i) => {
-                  const isAnswer = o.label === question.answer;
-                  const isChosen = chosen === o.label;
-                  return (
-                    <ChoiceOption
-                      key={o.label}
-                      label={optionLetter(i)}
-                      state={choiceState({ revealed: true, isAnswer, isChosen })}
-                      disabled
-                      className={OPTION_TEXT}
-                      aria-label={`Option ${optionLetter(i)}${isAnswer ? ", correct answer" : isChosen ? ", your answer" : ""}`}
-                    >
-                      <Blocks blocks={o.blocks} fallback={<RichText inline text={o.text} />} />
-                    </ChoiceOption>
-                  );
-                })}
               </div>
-              <details key={question.id} className="group rounded-lg border border-border">
-                <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-semibold text-brand-700 dark:text-brand-300 [&::-webkit-details-marker]:hidden">
-                  <span className="group-open:hidden">Show explanation</span>
-                  <span className="hidden group-open:inline">Hide explanation</span>
-                  <ChevronDown className="ml-auto h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
-                </summary>
-                <div className="border-t border-border px-4 py-3">
-                  {question.explanation ? (
-                    <Blocks
-                      blocks={mapTextBlocks(question.explanationBlocks, (t) => relabelOptionRefs(t, question.options))}
-                      className="text-sm leading-relaxed text-foreground/90"
-                      fallback={<RichText text={relabelOptionRefs(question.explanation, question.options)} className="text-sm leading-relaxed text-foreground/90" />}
-                    />
-                  ) : (
-                    <p className="text-sm text-muted-foreground">No explanation for this question yet.</p>
-                  )}
-                </div>
-              </details>
               <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
                 <button type="button" disabled={index === 0} onClick={() => setIndex((i) => i - 1)} className={BTN.outline}>
                   « Previous
@@ -946,7 +976,7 @@ function Review({
               </div>
             </article>
 
-            <nav aria-label="Review questions" className="rounded-xl border border-border bg-card p-4 lg:sticky lg:top-4 lg:w-[16.5rem] lg:shrink-0">
+            <nav aria-label="Review questions" className="hidden rounded-xl border border-border bg-card p-4 lg:sticky lg:top-4 lg:block lg:w-[16.5rem] lg:shrink-0">
               <div className="mb-3 grid grid-cols-4 gap-1.5">
                 {exam.sections.map((s) => (
                   <button

@@ -449,3 +449,11 @@ html[data-reduce-motion="on"] *::after {
   transition-duration: 0.01ms !important;
   scroll-behavior: auto !important;
 }
+
+/* Question text size (A− / A+ on practice, PYQ and mock screens). Set on <html> by PreferencesProvider. */
+:root {
+  --content-zoom: 1;
+}
+.content-zoom {
+  zoom: var(--content-zoom);
+}

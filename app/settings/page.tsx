@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { Monitor, Music, Smartphone, Sun, Type, Waves } from "lucide-react";
+import { ALargeSmall, Monitor, Music, Smartphone, Sun, Type, Waves } from "lucide-react";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import { playFeedback } from "@/features/games/feedback";
 import { usePreferences, type Preferences } from "@/lib/preferences";
+import { CONTENT_ZOOM, contentSizePercent } from "@/lib/content-size";
 
 function Row({
   icon: Icon,
@@ -127,6 +128,14 @@ export default function SettingsPage() {
                   { id: "large", label: "Large" },
                 ]}
                 onChange={set("textSize")}
+              />
+            </Row>
+            <Row icon={ALargeSmall} title="Question text" description="Size of questions, options and explanations. You can also change it with A− / A+ while practicing.">
+              <Segmented
+                label="Question text size"
+                value={String(prefs.contentSize)}
+                options={CONTENT_ZOOM.map((_, i) => ({ id: String(i), label: contentSizePercent(i) }))}
+                onChange={(v) => update({ contentSize: Number(v) })}
               />
             </Row>
             <Row icon={Waves} title="Motion" description="Turn off animations, or follow your device setting.">

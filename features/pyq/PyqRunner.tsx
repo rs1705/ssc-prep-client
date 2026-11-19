@@ -24,6 +24,8 @@ import { subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import type { Pyq } from "@/redux/PyqApi";
 import { RichText } from "./RichText";
 import { Blocks, mapTextBlocks, markAskedBlank } from "@/features/content/Blocks";
+import { TextSizeControl } from "@/components/custom/text-size-control";
+import { QuestionStrip } from "./QuestionStrip";
 import {
   MARKS_CORRECT,
   MARKS_WRONG,
@@ -221,24 +223,27 @@ export function PyqRunner({
             </div>
           </div>
 
-          {mode === "test" && state.secondsLeft !== null && !state.submitted ? (
-            <div
-              role="timer"
-              aria-label="Time left"
-              className={`flex shrink-0 items-center gap-1.5 rounded-full border-2 px-3 py-1.5 font-mono text-sm font-black tabular-nums ${
-                timeRatio <= 0.15
-                  ? "border-rose-500/40 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-700 dark:text-rose-300"
-                  : "border-border bg-card text-foreground"
-              }`}
-            >
-              <Clock className="h-4 w-4" aria-hidden="true" />
-              {formatClock(state.secondsLeft)}
-            </div>
-          ) : (
-            <div className="shrink-0 font-mono text-sm font-black tabular-nums text-muted-foreground">
-              {state.index + 1} / {state.questions.length}
-            </div>
-          )}
+          <div className="flex shrink-0 items-center gap-2">
+            <TextSizeControl />
+            {mode === "test" && state.secondsLeft !== null && !state.submitted ? (
+              <div
+                role="timer"
+                aria-label="Time left"
+                className={`flex shrink-0 items-center gap-1.5 rounded-full border-2 px-3 py-1.5 font-mono text-sm font-black tabular-nums ${
+                  timeRatio <= 0.15
+                    ? "border-rose-500/40 bg-[color-mix(in_oklab,var(--color-rose-500)_10%,var(--card))] text-rose-700 dark:text-rose-300"
+                    : "border-border bg-card text-foreground"
+                }`}
+              >
+                <Clock className="h-4 w-4" aria-hidden="true" />
+                {formatClock(state.secondsLeft)}
+              </div>
+            ) : (
+              <div className="shrink-0 font-mono text-sm font-black tabular-nums text-muted-foreground">
+                {state.index + 1} / {state.questions.length}
+              </div>
+            )}
+          </div>
         </div>
 
         {mode === "test" && !state.submitted ? (
@@ -256,6 +261,21 @@ export function PyqRunner({
             barClassName={`bg-gradient-to-r ${theme.bar}`}
           />
         )}
+
+        <QuestionStrip
+          className="lg:hidden"
+          current={state.index}
+          onPick={(index) => dispatch({ type: "GOTO", index })}
+          items={state.questions.map((q, i) => {
+            const status = tileStatus(q);
+            return {
+              id: q.id,
+              number: i + 1,
+              tone: TILE_STYLE[status],
+              label: `Question ${i + 1}: ${status === "open" ? "not answered" : status}`,
+            };
+          })}
+        />
       </div>
 
       {/* Result summary */}
@@ -349,46 +369,49 @@ export function PyqRunner({
             )}
           </div>
 
-          {question.passage && (
-            <details open className="group rounded-lg border border-border bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))]">
-              <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground">
-                <BookOpenText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                Passage
-                <span className="ml-auto text-xs font-medium text-muted-foreground group-open:hidden">Show</span>
-                <span className="ml-auto hidden text-xs font-medium text-muted-foreground group-open:inline">Hide</span>
-              </summary>
-              <RichText
-                text={markAskedBlank(question.passage, question.question)}
-                className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90"
-              />
-            </details>
-          )}
+          <div className="content-zoom flex flex-col gap-4">
+            {question.passage && (
+              <details open className="group rounded-lg border border-border bg-[color-mix(in_oklab,var(--muted)_40%,var(--card))]">
+                <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-bold text-foreground">
+                  <BookOpenText className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  Passage
+                  <span className="ml-auto text-xs font-medium text-muted-foreground group-open:hidden">Show</span>
+                  <span className="ml-auto hidden text-xs font-medium text-muted-foreground group-open:inline">Hide</span>
+                </summary>
+                <RichText
+                  text={markAskedBlank(question.passage, question.question)}
+                  className="max-h-64 overflow-y-auto border-t border-border px-4 py-3 text-sm leading-relaxed text-foreground/90"
+                />
+              </details>
+            )}
 
-          <Blocks
-            blocks={question.questionBlocks}
-            className={cn(QUESTION_TEXT, "text-foreground")}
-            fallback={<RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />}
-          />
+            <Blocks
+              blocks={question.questionBlocks}
+              className={cn(QUESTION_TEXT, "text-foreground")}
+              fallback={<RichText text={question.question} className={cn(QUESTION_TEXT, "text-foreground")} />}
+            />
 
-          <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2.5 text-[15px]">
-            {question.options.map((option, i) => {
-              const isChosen = chosen === option.label;
-              const isAnswer = option.label === question.answer;
-              return (
-                <ChoiceOption
-                  key={option.label}
-                  label={optionLetter(i)}
-                  state={choiceState({ revealed, isAnswer, isChosen })}
-                  role="radio"
-                  aria-checked={isChosen}
-                  disabled={revealed}
-                  onClick={() => dispatch({ type: "SELECT", label: option.label })}
-                  className={OPTION_TEXT}
-                >
-                  <Blocks blocks={option.blocks} fallback={<RichText inline text={option.text} />} />
-                </ChoiceOption>
-              );
-            })}
+            <div role="radiogroup" aria-label="Options" className="flex flex-col gap-2.5 text-[15px]">
+              {question.options.map((option, i) => {
+                const isChosen = chosen === option.label;
+                const isAnswer = option.label === question.answer;
+                return (
+                  <ChoiceOption
+                    key={option.label}
+                    label={optionLetter(i)}
+                    state={choiceState({ revealed, isAnswer, isChosen })}
+                    role="radio"
+                    aria-checked={isChosen}
+                    disabled={revealed}
+                    onClick={() => dispatch({ type: "SELECT", label: option.label })}
+                    className={OPTION_TEXT}
+                  >
+                    <Blocks blocks={option.blocks} fallback={<RichText inline text={option.text} />} />
+                  </ChoiceOption>
+                );
+              })}
+            </div>
+
           </div>
 
           <p role="status" aria-live="polite" className="sr-only">
@@ -477,7 +500,7 @@ export function PyqRunner({
                   <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
                 </span>
               </summary>
-              <div className="border-t border-border px-4 py-3">
+              <div className="content-zoom border-t border-border px-4 py-3">
                 {question.explanation || question.explanationBlocks?.length ? (
                   <Blocks
                     blocks={mapTextBlocks(question.explanationBlocks, (t) => relabelOptionRefs(t, question.options))}
@@ -522,7 +545,7 @@ export function PyqRunner({
         </article>
 
         {/* Question palette */}
-        <nav aria-label="Questions" className="overflow-hidden rounded-xl border border-border bg-card lg:sticky lg:top-24 lg:w-[16.5rem] lg:shrink-0">
+        <nav aria-label="Questions" className="hidden overflow-hidden rounded-xl border border-border bg-card lg:sticky lg:top-24 lg:block lg:w-[16.5rem] lg:shrink-0">
           <div className="border-b border-border px-4 py-3">
             <p className="text-sm font-bold text-foreground">Question map</p>
             <p className="mt-0.5 text-xs text-muted-foreground">
