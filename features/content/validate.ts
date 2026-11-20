@@ -1,6 +1,6 @@
 import { RELATION_PATTERN_NAMES, RELATION_PATTERNS } from "./relations";
 import { CUT_SHAPES, cutsOnSheet, FOLD_SIDES, foldedSheet, insidePolygon } from "./fold";
-import { isPanelAt, SHAPE_NAMES } from "./panel";
+import { anchorPoint, isPanelAt, SHAPE_NAMES } from "./panel";
 import type { Block, Diagram, PanelItem } from "./types";
 
 /**
@@ -269,11 +269,7 @@ export function diagramProblems(d: Diagram): string[] {
         if (c.missing && (c.items ?? []).length) out.push(`${name} is the missing "?" figure but has items.`);
         if (!c.missing && !(c.items ?? []).length) out.push(`${name} is empty.`);
         if ((c.items ?? []).length > 16) out.push(`${name} has more than 16 items.`);
-        // Marks with no place are drawn in the centre; two on one spot are drawn on top of each other.
-        const spots = (c.items ?? [])
-          .filter((it) => isObject(it) && it.type !== "line" && it.type !== "arc")
-          .map((it) => JSON.stringify((it as { at?: unknown }).at ?? "c"));
-        if (new Set(spots).size < spots.length) out.push(`${name} has two marks in the same place.`);
+        if (marksOverlap(c.items ?? [])) out.push(`${name} has two letters drawn on top of each other.`);
         (c.items ?? []).forEach((it, j) => out.push(...panelItemProblems(it).map((p) => `${name}, item ${j + 1}: ${p}`)));
       });
       if (d.cells.slice(0, -1).some((c) => c?.missing)) out.push('Only the last cell can be the missing "?" figure.');
@@ -324,6 +320,24 @@ const ARROW_HEADS = ["single", "double", "hollow"];
 const ARROW_TAILS = ["none", "bar", "double"];
 const GLYPH_TRANSFORMS = ["none", "mirror", "water", "rotate90", "rotate180", "rotate270"];
 const LINE_ENDS = ["none", "bar", "arrow", "dot"];
+
+/**
+ * Two letters or digits in a cell closer than about their own width, so they'd be drawn
+ * over each other. A mark with no place is drawn in the centre. Shapes may overlap on
+ * purpose (a circle in a square, a dot on a line), so only glyphs are compared.
+ */
+function marksOverlap(items: PanelItem[]): boolean {
+  const glyphs = items
+    .filter((it): it is Extract<PanelItem, { type: "glyph" }> => isObject(it) && it.type === "glyph")
+    .map((it) => ({ p: anchorPoint(it.at), size: it.size ?? 0.3 }))
+    .filter((m): m is { p: [number, number]; size: number } => !!m.p);
+  for (let i = 0; i < glyphs.length; i++)
+    for (let j = i + 1; j < glyphs.length; j++) {
+      const [a, b] = [glyphs[i], glyphs[j]];
+      if (Math.hypot(a.p[0] - b.p[0], a.p[1] - b.p[1]) < 0.45 * (a.size + b.size)) return true;
+    }
+  return false;
+}
 
 function panelItemProblems(it: PanelItem): string[] {
   if (!isObject(it)) return ["not an item."];

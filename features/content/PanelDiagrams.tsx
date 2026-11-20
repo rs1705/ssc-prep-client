@@ -243,7 +243,14 @@ export function Fold({ d }: { d: FoldDiagram }) {
   const W = frames * C + (frames - 1) * FIG.gap + 2 * PAD, H = C + 2 * PAD;
   const xAt = (i: number) => PAD + i * (C + FIG.gap);
   const opened = d.showUnfolded ? unfold(d) : null;
-  const scale = C - 2 * M;
+  // The last frame zooms in on the folded sheet so it fills the frame: drawn at the full
+  // sheet's scale, a quarter sheet's holes were only a few pixels wide.
+  const xs = sheet.map((p) => p[0]), ys = sheet.map((p) => p[1]);
+  const [minX, minY] = [Math.min(...xs), Math.min(...ys)];
+  const side = Math.max(Math.max(...xs) - minX, Math.max(...ys) - minY) || 1;
+  const off: Pt = [(side - (Math.max(...xs) - minX)) / 2, (side - (Math.max(...ys) - minY)) / 2];
+  const Z = (p: Pt): Pt => S([(p[0] - minX + off[0]) / side, (p[1] - minY + off[1]) / side]);
+  const scale = (C - 2 * M) / side;
   return (
     <Svg w={W} h={H} label={d.alt || foldAlt(d)}>
       <defs>
@@ -274,9 +281,9 @@ export function Fold({ d }: { d: FoldDiagram }) {
       <g transform={`translate(${xAt(stages.length)} ${PAD})`}>
         <CutSheet
           id={`${id}f`}
-          outline={<polygon points={pts(sheet.map(S))} />}
+          outline={<polygon points={pts(sheet.map(Z))} />}
           holes={cuts.map((c, i) => {
-            const p = S(c.at);
+            const p = Z(c.at);
             return (
               <path
                 key={`h${i}`}
