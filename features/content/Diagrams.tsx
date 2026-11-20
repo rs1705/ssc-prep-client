@@ -1,10 +1,16 @@
 "use client";
 
-import { useId, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { ArrowMarker as Arrow, FIG, Svg, useSvgId } from "./figure";
 import { GEO_H, GEO_W, layoutGeometry } from "./geometry";
 import { placeLabels, type Pt } from "./labels";
+import { cubeAlt } from "./plain";
+import { Mirror, Puzzle, Regions, Relation } from "./FigureDiagrams";
+import { Fold, Panel } from "./PanelDiagrams";
 import type {
   BarDiagram,
+  CubeDiagram,
+  CubeView,
   Diagram,
   GeometryDiagram,
   NumberLineDiagram,
@@ -17,52 +23,34 @@ import type {
 
 /** Diagram renderers, ported from design/diagram-lab.html. Colours come from content.css tokens. */
 
-function Svg({ w, h, label, children }: { w: number; h: number; label: string; children: ReactNode }) {
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} className="cf-dg" role="img" aria-label={label}>
-      {children}
-    </svg>
-  );
-}
-
-function Arrow({ id, cls }: { id: string; cls: string }) {
-  return (
-    <marker id={id} viewBox="0 0 10 10" refX={9} refY={5} markerWidth={7} markerHeight={7} orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" className={cls} />
-    </marker>
-  );
-}
-
-/** A DOM-safe id for SVG markers (useId returns colons). */
-function useSvgId(prefix: string) {
-  return `${prefix}${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
-}
-
 // Geometry: points in maths coordinates (y up), circles, segments, right angles, labels.
 function Geometry({ d }: { d: GeometryDiagram }) {
   const g = layoutGeometry(d);
   return (
     <Svg w={GEO_W} h={GEO_H} label={d.alt || "Geometry figure"}>
       {g.circles.map((c, i) => (
-        <circle key={`c${i}`} cx={c.cx} cy={c.cy} r={c.r} className="ink" strokeWidth={1.6} />
+        <circle key={`c${i}`} cx={c.cx} cy={c.cy} r={c.r} className="ink" strokeWidth={FIG.line} />
+      ))}
+      {g.arcs.map((a, i) => (
+        <path key={`a${i}`} d={a} className="ink" strokeWidth={FIG.line} strokeLinecap="round" />
       ))}
       {g.segments.map((s, i) => (
         <line
           key={`s${i}`}
           x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
           className={s.highlight ? "brand" : "ink"}
-          strokeWidth={s.highlight ? 3 : 1.8}
+          strokeWidth={s.highlight ? FIG.bold : FIG.line}
           strokeLinecap="round"
         />
       ))}
       {g.rightAngles.map((r, i) => (
-        <polyline key={`r${i}`} points={r.points.map((p) => p.join(",")).join(" ")} className={r.highlight ? "right" : "brand"} strokeWidth={2} />
+        <polyline key={`r${i}`} points={r.points.map((p) => p.join(",")).join(" ")} className={r.highlight ? "right" : "brand"} strokeWidth={FIG.line} />
       ))}
       {g.dimensions.map((m, i) => (
         <g key={`m${i}`}>
-          <line x1={m.x1} y1={m.y1} x2={m.x2} y2={m.y2} className="ink" strokeWidth={1.1} strokeDasharray="4 3" />
+          <line x1={m.x1} y1={m.y1} x2={m.x2} y2={m.y2} className="ink" strokeWidth={FIG.thin * 0.85} strokeDasharray={FIG.dash} />
           {m.ticks.map(([a, b], j) => (
-            <line key={j} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} className="ink" strokeWidth={1.4} />
+            <line key={j} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} className="ink" strokeWidth={FIG.thin} />
           ))}
         </g>
       ))}
@@ -74,7 +62,7 @@ function Geometry({ d }: { d: GeometryDiagram }) {
       ))}
       {g.points.map((p) => (
         <g key={`p${p.name}`}>
-          <circle cx={p.x} cy={p.y} r={3.2} className="ink-fill" />
+          <circle cx={p.x} cy={p.y} r={FIG.dot} className="ink-fill" />
           <text x={p.labelX} y={p.labelY + 5} textAnchor="middle" className="bold">{p.name}</text>
         </g>
       ))}
@@ -216,7 +204,7 @@ function Venn({ d }: { d: VennDiagram }) {
       <circle cx={b0.cx} cy={b0.cy} r={b0.r} className="soft" />
       {d.sets.map((set) => {
         const p = placed[set.id];
-        return <circle key={`c${set.id}`} cx={p.cx} cy={p.cy} r={p.r} className={set.highlight ? "brand" : "ink"} strokeWidth={set.highlight ? 2.6 : 1.6} fill="none" />;
+        return <circle key={`c${set.id}`} cx={p.cx} cy={p.cy} r={p.r} className={set.highlight ? "brand" : "ink"} strokeWidth={set.highlight ? FIG.bold : FIG.line} fill="none" />;
       })}
       {d.sets.map((set) => {
         const p = placed[set.id];
@@ -256,7 +244,7 @@ function Tree({ d }: { d: TreeDiagram }) {
       {d.edges.map(([p, c]) => {
         const [x1, y1] = pos[p], [x2, y2] = pos[c];
         const midY = (y1 + y2) / 2;
-        return <path key={`e${p}-${c}`} d={`M${x1},${y1 + 16} V${midY} H${x2} V${y2 - 16}`} className="muted" strokeWidth={1.6} />;
+        return <path key={`e${p}-${c}`} d={`M${x1},${y1 + 16} V${midY} H${x2} V${y2 - 16}`} className="muted" strokeWidth={FIG.line} />;
       })}
       {d.nodes.map((n) => {
         const [x, y] = pos[n.id];
@@ -264,9 +252,9 @@ function Tree({ d }: { d: TreeDiagram }) {
         return (
           <g key={`n${n.id}`}>
             {n.gender === "f" ? (
-              <circle cx={x} cy={y} r={15} className={cls} strokeWidth={2} fill="none" />
+              <circle cx={x} cy={y} r={15} className={cls} strokeWidth={FIG.line} fill="none" />
             ) : (
-              <rect x={x - 15} y={y - 15} width={30} height={30} rx={3} className={cls} strokeWidth={2} fill="none" />
+              <rect x={x - 15} y={y - 15} width={30} height={30} rx={3} className={cls} strokeWidth={FIG.line} fill="none" />
             )}
             <text x={x} y={y + 4} textAnchor="middle" className="bold small fg">{n.short || ""}</text>
             <text x={x} y={y + 33} textAnchor="middle" className={n.highlight ? "bold" : undefined}>{n.label}</text>
@@ -359,7 +347,7 @@ function PathFigure({ d }: { d: PathDiagram }) {
       <text x={X(0) - 10} y={Y(0) + 4} textAnchor="end" className="bold small fg">Start</text>
       <circle cx={X(ex)} cy={Y(ey)} r={6} className="right-fill" />
       <text x={X(ex) + 10} y={Y(ey) + 4} className="bold small fg">End</text>
-      <line x1={cx} y1={cy + 14} x2={cx} y2={cy - 12} className="ink" strokeWidth={1.6} markerEnd={`url(#${arrowId})`} />
+      <line x1={cx} y1={cy + 14} x2={cx} y2={cy - 12} className="ink" strokeWidth={FIG.line} markerEnd={`url(#${arrowId})`} />
       <text x={cx} y={cy - 16} textAnchor="middle" className="bold small fg">N</text>
     </Svg>
   );
@@ -372,7 +360,7 @@ function Seating({ d }: { d: SeatingDiagram }) {
   return (
     <Svg w={W} h={H} label={d.alt || "Circular seating arrangement"}>
       <circle cx={cx} cy={cy} r={R - 34} className="soft" />
-      <circle cx={cx} cy={cy} r={R - 34} className="muted" strokeWidth={1.2} />
+      <circle cx={cx} cy={cy} r={R - 34} className="muted" strokeWidth={FIG.frame} />
       <text x={cx} y={cy + 4} textAnchor="middle" className="small">table</text>
       {d.seats.map((name, k) => {
         const ang = (Math.PI / 180) * (90 - (360 / n) * k);
@@ -382,13 +370,87 @@ function Seating({ d }: { d: SeatingDiagram }) {
         return (
           <g key={`seat${k}`}>
             <circle cx={x} cy={y} r={17} className={hlv === "answer" ? "right-fill" : hlv ? "brand-fill" : "card-fill"} />
-            <circle cx={x} cy={y} r={17} className={hlv === "answer" ? "right" : hlv ? "brand" : "ink"} strokeWidth={1.6} />
+            <circle cx={x} cy={y} r={17} className={hlv === "answer" ? "right" : hlv ? "brand" : "ink"} strokeWidth={FIG.line} />
             <text x={x} y={y + 5} textAnchor="middle" className={hlv ? "on-brand" : "bold"}>{name}</text>
-            <line x1={cx + (R - 19) * Math.cos(ang)} y1={cy + (R - 19) * Math.sin(ang)} x2={ix} y2={iy} className="muted" strokeWidth={1.4} />
+            <line x1={cx + (R - 19) * Math.cos(ang)} y1={cy + (R - 19) * Math.sin(ang)} x2={ix} y2={iy} className="muted" strokeWidth={FIG.frame} />
           </g>
         );
       })}
       <text x={cx} y={H - 10} textAnchor="middle" className="small">{d.note || "All face the centre"}</text>
+    </Svg>
+  );
+}
+
+// Cube / dice: each view shows the top, left and right faces of a cube, drawn side by side.
+const CUBE = { a: 50, b: 27, h: 56, gap: 40, pad: 16, top: 12 };
+/** Dot positions on a face, in a unit square. */
+const PIPS: Record<string, [number, number][]> = {
+  "1": [[0.5, 0.5]],
+  "2": [[0.27, 0.27], [0.73, 0.73]],
+  "3": [[0.25, 0.25], [0.5, 0.5], [0.75, 0.75]],
+  "4": [[0.27, 0.27], [0.73, 0.27], [0.27, 0.73], [0.73, 0.73]],
+  "5": [[0.25, 0.25], [0.75, 0.25], [0.5, 0.5], [0.25, 0.75], [0.75, 0.75]],
+  "6": [[0.27, 0.22], [0.73, 0.22], [0.27, 0.5], [0.73, 0.5], [0.27, 0.78], [0.73, 0.78]],
+};
+
+function CubeFace({
+  origin, u, v, face, pips, highlight,
+}: {
+  origin: Pt; u: Pt; v: Pt; face: string; pips?: boolean; highlight: boolean;
+}) {
+  const [ox, oy] = origin;
+  const corners: Pt[] = [origin, [ox + u[0], oy + u[1]], [ox + u[0] + v[0], oy + u[1] + v[1]], [ox + v[0], oy + v[1]]];
+  const cx = ox + (u[0] + v[0]) / 2, cy = oy + (u[1] + v[1]) / 2;
+  const dots = pips ? PIPS[face] : undefined;
+  return (
+    <g>
+      <polygon points={corners.map((p) => p.join(",")).join(" ")} className={highlight ? "soft" : "card-fill"} />
+      <polygon points={corners.map((p) => p.join(",")).join(" ")} className={highlight ? "brand" : "ink"} strokeWidth={highlight ? FIG.bold : FIG.line} strokeLinejoin="round" />
+      {dots ? (
+        <g transform={`matrix(${u[0]},${u[1]},${v[0]},${v[1]},${ox},${oy})`}>
+          {dots.map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r={0.085} className={highlight ? "brand-fill" : "ink-fill"} />
+          ))}
+        </g>
+      ) : (
+        <text
+          x={cx} y={cy}
+          textAnchor="middle" dominantBaseline="central"
+          className="bold fg"
+          style={{ fontSize: face.length > 2 ? 15 : 21, stroke: "none", fill: highlight ? "var(--cf-brand)" : undefined }}
+        >
+          {face}
+        </text>
+      )}
+    </g>
+  );
+}
+
+function Cube({ d }: { d: CubeDiagram }) {
+  const { a, b, h, gap, pad, top } = CUBE;
+  const n = d.views.length;
+  const W = pad * 2 + n * 2 * a + (n - 1) * gap;
+  const cubeBottom = top + 2 * b + h;
+  const opposites = (d.opposites ?? []).filter((p) => p?.length === 2);
+  const H = cubeBottom + (opposites.length ? 40 : 12);
+  const hl = (f: string) => !!d.highlight && f === d.highlight;
+  return (
+    <Svg w={W} h={H} label={d.alt || cubeAlt(d)}>
+      {d.views.map((view: CubeView, i) => {
+        const cx = pad + a + i * (2 * a + gap);
+        return (
+          <g key={`v${i}`}>
+            <CubeFace origin={[cx - a, top + b]} u={[a, -b]} v={[a, b]} face={view.top} pips={d.pips} highlight={hl(view.top)} />
+            <CubeFace origin={[cx - a, top + b]} u={[a, b]} v={[0, h]} face={view.left} pips={d.pips} highlight={hl(view.left)} />
+            <CubeFace origin={[cx, top + 2 * b]} u={[a, -b]} v={[0, h]} face={view.right} pips={d.pips} highlight={hl(view.right)} />
+          </g>
+        );
+      })}
+      {opposites.length > 0 && (
+        <text x={W / 2} y={cubeBottom + 26} textAnchor="middle" className="small">
+          Opposite faces: {opposites.map(([x, y]) => `${x} ↔ ${y}`).join("  ·  ")}
+        </text>
+      )}
     </Svg>
   );
 }
@@ -413,10 +475,10 @@ function NumberLine({ d }: { d: NumberLineDiagram }) {
       <defs>
         <Arrow id={arrowId} cls="ink-fill" />
       </defs>
-      <line x1={L - 12} x2={W - R + 12} y1={yv} y2={yv} className="ink" strokeWidth={1.6} markerEnd={`url(#${arrowId})`} markerStart={`url(#${arrowId})`} />
+      <line x1={L - 12} x2={W - R + 12} y1={yv} y2={yv} className="ink" strokeWidth={FIG.line} markerEnd={`url(#${arrowId})`} markerStart={`url(#${arrowId})`} />
       {ticks.map((v) => (
         <g key={`t${v}`}>
-          <line x1={X(v)} x2={X(v)} y1={yv - 6} y2={yv + 6} className="ink" strokeWidth={1.2} />
+          <line x1={X(v)} x2={X(v)} y1={yv - 6} y2={yv + 6} className="ink" strokeWidth={FIG.thin} />
           <text x={X(v)} y={yv + 24} textAnchor="middle" className="small mono">{v}</text>
         </g>
       ))}
@@ -454,5 +516,12 @@ export function DiagramView({ d }: { d: Diagram }) {
     case "path": return <PathFigure d={d} />;
     case "seating": return <Seating d={d} />;
     case "numberline": return <NumberLine d={d} />;
+    case "cube": return <Cube d={d} />;
+    case "puzzle": return <Puzzle d={d} />;
+    case "mirror": return <Mirror d={d} />;
+    case "regions": return <Regions d={d} />;
+    case "relation": return <Relation d={d} />;
+    case "panel": return <Panel d={d} />;
+    case "fold": return <Fold d={d} />;
   }
 }

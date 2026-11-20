@@ -1,3 +1,5 @@
+import type { RelationPattern } from "./relations";
+
 /**
  * EptSSC question content format (spec: main-app/CONTENT_FORMAT.md).
  *
@@ -81,7 +83,14 @@ export type Diagram =
   | TreeDiagram
   | PathDiagram
   | SeatingDiagram
-  | NumberLineDiagram;
+  | NumberLineDiagram
+  | CubeDiagram
+  | PuzzleDiagram
+  | MirrorDiagram
+  | RegionsDiagram
+  | RelationDiagram
+  | PanelDiagram
+  | FoldDiagram;
 
 export type DiagramKind = Diagram["kind"];
 
@@ -103,6 +112,13 @@ export interface GeometryDiagram extends DiagramBase {
   labels?: Record<string, string>;
   /** Segment names ("AB") and/or "right" (the right-angle mark). */
   highlight?: string[];
+  /** Arcs of a circle about `center`, from `from` anticlockwise to the ray through `to`. */
+  arcs?: { center: string; from: string; to: string }[];
+  /**
+   * A figure-counting question ("how many triangles…"): the points are only corners, so
+   * no dots or names are drawn, and the answer key is checked by counting.
+   */
+  count?: "triangles" | "squares" | "rectangles";
 }
 
 export interface BarDiagram extends DiagramBase {
@@ -160,6 +176,198 @@ export interface NumberLineDiagram extends DiagramBase {
   ranges?: { from: number; to: number; fromClosed: boolean; toClosed: boolean }[];
   marks?: number[];
   marksLabel?: string;
+}
+
+export interface CubeView {
+  /** What is printed on each visible face: a letter, number or short symbol. */
+  top: string;
+  left: string;
+  right: string;
+}
+
+export interface CubeDiagram extends DiagramBase {
+  kind: "cube";
+  /** 1 to 4 positions of the same cube (or separate cubes), drawn side by side. */
+  views: CubeView[];
+  /** Faces are numbers 1 to 6 drawn as dots, like a real dice. */
+  pips?: boolean;
+  /** Explanations: a face to emphasise (e.g. the common face) wherever it shows. */
+  highlight?: string;
+  /** Explanations: opposite pairs worked out, shown under the cubes. */
+  opposites?: [string, string][];
+}
+
+export interface PuzzleFigure {
+  shape: "triangle" | "square" | "circle" | "grid";
+  /**
+   * triangle: the 3 corners (top, bottom-left, bottom-right); square: the 4 corners
+   * clockwise from top-left; circle: 2 to 8 sectors clockwise from the top.
+   */
+  values?: string[];
+  /** Number in the middle (triangle, square, circle). */
+  center?: string;
+  /** grid: rows of cells. */
+  rows?: string[][];
+}
+
+export interface PuzzleDiagram extends DiagramBase {
+  kind: "puzzle";
+  /** 1 to 4 figures side by side; the missing number is "?". */
+  figures: PuzzleFigure[];
+  /** Explanations: a value to emphasise (usually the answer that replaced "?"). */
+  highlight?: string;
+}
+
+export interface MirrorDiagram extends DiagramBase {
+  kind: "mirror";
+  /** Letters, digits and symbols as printed, left to right. */
+  text: string;
+  /** How the text is drawn: as printed, its mirror image (left-right), water image (top-bottom) or turned upside down. */
+  transform?: "none" | "mirror" | "water" | "rotate";
+  /** Positions in `text` (0-based) whose character is moved but not flipped (trick options). */
+  keep?: number[];
+  /** Draw the mirror line MN on the right or below. */
+  line?: "right" | "below";
+}
+
+export interface RegionsDiagram extends DiagramBase {
+  kind: "regions";
+  /** 2 or 3 overlapping groups, called A, B, C in this order. */
+  sets: { label: string; shape: "circle" | "triangle" | "square" }[];
+  /** Number in each region, keyed by the groups it is inside: "A", "AB", "ABC"… */
+  values: Record<string, string>;
+  /** Number outside every group (draws the surrounding box). */
+  outside?: string;
+  /** Explanations: region keys to emphasise. */
+  highlight?: string[];
+}
+
+export interface RelationDiagram extends DiagramBase {
+  kind: "relation";
+  /** One of the standard arrangements in relations.ts (e.g. "3-two-inside-apart"). */
+  pattern: RelationPattern;
+  /** Names for circles A, B, C (explanations); options usually leave them out. */
+  labels?: string[];
+  /** Explanations: index of the circle to emphasise. */
+  highlight?: number;
+}
+
+/** Where an item sits in a panel cell: a spot on the 3×3 grid, or [x, y] from 0 to 1 (y down). */
+export type PanelAnchor = "tl" | "t" | "tr" | "l" | "c" | "r" | "bl" | "b" | "br";
+export type PanelAt = PanelAnchor | [number, number];
+
+export type PanelShapeName =
+  | "circle" | "square" | "triangle" | "star" | "pentagon" | "hexagon" | "diamond" | "cross" | "dot"
+  | "ellipse" | "rect" | "semicircle";
+
+/** A shape. A triangle (or semicircle) with rotate 0 points up; rotate turns it clockwise. */
+export interface PanelShape {
+  type: "shape";
+  shape: PanelShapeName;
+  at?: PanelAt;
+  /** Width as a share of the cell (default 0.24). */
+  size?: number;
+  /** Height ÷ width, for ellipse and rect (default 0.6). */
+  aspect?: number;
+  /** Degrees clockwise. */
+  rotate?: number;
+  filled?: boolean;
+  /** Drawn as a hole cut out of the cell (punched or cut paper); clipped at the cell edge. */
+  cut?: boolean;
+}
+
+/** An arrow pointing `dir` degrees clockwise from up (steps of 45). */
+export interface PanelArrow {
+  type: "arrow";
+  at?: PanelAt;
+  dir: number;
+  /** Length as a share of the cell (default 0.5). */
+  size?: number;
+  /** single: one head; double: a head at both ends; hollow: an open head. */
+  head?: "single" | "double" | "hollow";
+  /** bar: a cross bar at the tail; double: two short lines across the tail. */
+  tail?: "none" | "bar" | "double";
+}
+
+/** A letter, digit or symbol, as printed or flipped / turned. */
+export interface PanelGlyph {
+  type: "glyph";
+  text: string;
+  at?: PanelAt;
+  transform?: "none" | "mirror" | "water" | "rotate90" | "rotate180" | "rotate270";
+  /** Font size as a share of the cell (default 0.3). */
+  size?: number;
+}
+
+export type PanelLineEnd = "none" | "bar" | "arrow" | "dot";
+
+export interface PanelLine {
+  type: "line";
+  from: PanelAt;
+  to: PanelAt;
+  style?: "solid" | "dashed";
+  /** End caps at from and to, e.g. ["none", "bar"] for a T end. */
+  ends?: [PanelLineEnd, PanelLineEnd];
+}
+
+/** Part of a circle about `at`, from `start` to `end` degrees clockwise from up. */
+export interface PanelArc {
+  type: "arc";
+  at?: PanelAt;
+  /** Radius as a share of the cell (default 0.25). */
+  r?: number;
+  start: number;
+  end: number;
+  style?: "solid" | "dashed";
+}
+
+export type PanelItem = PanelShape | PanelArrow | PanelGlyph | PanelLine | PanelArc;
+
+export interface PanelCell {
+  items: PanelItem[];
+  /** The missing figure: drawn as a dashed cell with "?". */
+  missing?: boolean;
+  /** Explanations: the answer cell. */
+  highlight?: boolean;
+}
+
+/**
+ * A row of 1 to 5 square cells with shapes, arrows, letters and lines in them: figure
+ * series ("which figure comes next"), and one cell per option.
+ */
+export interface PanelDiagram extends DiagramBase {
+  kind: "panel";
+  cells: PanelCell[];
+  /** Cell outline (default square). */
+  frame?: "square" | "circle" | "none";
+}
+
+/**
+ * The part of the sheet that folds over: top, bottom, left, right fold that half over
+ * the middle line; tl, tr, bl, br fold that corner's triangle over the diagonal.
+ */
+export type FoldSide = "top" | "bottom" | "left" | "right" | "tl" | "tr" | "bl" | "br";
+
+/** A hole punched or a piece cut, placed in the folded sheet's own box (0 to 1, y down). */
+export interface FoldCut {
+  shape: "circle" | "ellipse" | "square" | "rect" | "diamond" | "triangle" | "semicircle";
+  at: PanelAt;
+  /** Width as a share of the folded sheet's box (default 0.18). */
+  size?: number;
+  aspect?: number;
+  rotate?: number;
+}
+
+/**
+ * Paper folding and cutting: a square sheet folded step by step, then holes punched or
+ * pieces cut from the folded sheet. A cut on the sheet's edge is a notch.
+ */
+export interface FoldDiagram extends DiagramBase {
+  kind: "fold";
+  steps: { fold: FoldSide }[];
+  cuts: FoldCut[];
+  /** Explanations: also draw the sheet opened out. */
+  showUnfolded?: boolean;
 }
 
 /** An option: blocks, or the short forms { label, text } and { label, image, alt }. */

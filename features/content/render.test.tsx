@@ -18,7 +18,8 @@ describe("renderer", () => {
       expect(out).not.toContain("cf-problem");
       expect(out).not.toContain("NaN");
       expect(out).not.toContain("undefined");
-      const diagrams = [...q.question, ...q.explanation].filter((b) => b.type === "diagram").length;
+      const optionDiagrams = q.options.flatMap((o) => o.blocks ?? []).filter((b) => b.type === "diagram").length;
+      const diagrams = [...q.question, ...q.explanation].filter((b) => b.type === "diagram").length + optionDiagrams;
       expect((out.match(/class="cf-dg"/g) ?? []).length).toBe(diagrams);
     });
   }

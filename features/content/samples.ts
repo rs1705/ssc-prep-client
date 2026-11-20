@@ -1,4 +1,5 @@
-import type { Block, ContentOption } from "./types";
+import { unfold } from "./fold";
+import type { Block, ContentOption, FoldDiagram, GeometryDiagram, PanelAnchor, PanelCell, PanelGlyph } from "./types";
 
 /**
  * The 12 sample questions from the approved Diagram Lab (design/diagram-lab.html), as
@@ -35,6 +36,51 @@ function paperFigure(transform: string, withMirror: boolean): string {
 
 const opts = (...texts: string[]): ContentOption[] =>
   texts.map((text, i) => ({ label: String.fromCharCode(65 + i), text }));
+
+// Figure series, paper folding and figure counting.
+const panelOption = (label: string, cell: PanelCell): ContentOption => ({
+  label,
+  blocks: [{ type: "diagram", diagram: { kind: "panel", cells: [cell] } }],
+});
+/** A black circle and a triangle in two corners. */
+const cornerCell = (circle: PanelAnchor, triangle: PanelAnchor): PanelCell => ({
+  items: [
+    { type: "shape", shape: "circle", at: circle, filled: true, size: 0.2 },
+    { type: "shape", shape: "triangle", at: triangle, size: 0.22 },
+  ],
+});
+/** An arrow with a bar at its tail, turned `dir`, and a small square on the edge. */
+const arrowCell = (dir: number, square: PanelAnchor): PanelCell => ({
+  items: [
+    { type: "arrow", dir, tail: "bar", size: 0.46 },
+    { type: "shape", shape: "square", at: square, size: 0.12, filled: true },
+  ],
+});
+/** F turned, R flipped. */
+const letterCell = (f: PanelGlyph["transform"], r: PanelGlyph["transform"]): PanelCell => ({
+  items: [
+    { type: "glyph", text: "F", at: [0.32, 0.5], transform: f },
+    { type: "glyph", text: "R", at: [0.7, 0.5], transform: r },
+  ],
+});
+const holes = (at: [number, number][]): PanelCell => ({
+  items: at.map((p) => ({ type: "shape", shape: "circle", at: p, size: 0.09, cut: true })),
+});
+const PUNCH: FoldDiagram = {
+  kind: "fold", alt: "Square folded top half down, then left half over; one hole punched in the middle",
+  steps: [{ fold: "top" }, { fold: "left" }], cuts: [{ shape: "circle", at: "c", size: 0.18 }],
+};
+const CUT: FoldDiagram = {
+  kind: "fold", alt: "Square folded left over right, then top down; a square cut at the inner corner and a notch on the outer edge",
+  steps: [{ fold: "left" }, { fold: "top" }],
+  cuts: [{ shape: "square", at: [0, 0], size: 0.3 }, { shape: "circle", at: [1, 0.5], size: 0.3 }],
+};
+/** A square with both diagonals and both middle lines. */
+const COUNT_FIGURE: GeometryDiagram = {
+  kind: "geometry", count: "triangles", alt: "A square with both diagonals and the two lines joining the midpoints of opposite sides",
+  points: { A: [0, 4], B: [4, 4], C: [4, 0], D: [0, 0], P: [2, 4], Q: [4, 2], R: [2, 0], S: [0, 2] },
+  segments: [["A", "B"], ["B", "C"], ["C", "D"], ["D", "A"], ["A", "C"], ["B", "D"], ["P", "R"], ["S", "Q"]],
+};
 
 const CIRCLE_POINTS: Record<string, [number, number]> = { O: [0, 0], A: [-5, 0], B: [5, 0], C: [-1.4, 4.8] };
 const SALES = { labels: ["2020", "2021", "2022", "2023", "2024"], values: [120, 135, 165, 170, 190], tick: 50, unit: "₹ cr" };
@@ -207,6 +253,96 @@ export const SAMPLE_QUESTIONS: SampleQuestion[] = [
     ],
   },
   {
+    id: "cube", subject: "reasoning", topic: "Dice and cubes", kinds: ["cube"],
+    question: [
+      { type: "text", text: "Two different positions of the same cube are shown. Which letter is on the face opposite to Q?" },
+      { type: "diagram", diagram: { kind: "cube", views: [{ top: "Q", left: "Z", right: "V" }, { top: "T", left: "L", right: "V" }] } },
+    ],
+    options: opts("Z", "L", "T", "V"),
+    answer: "C",
+    explanation: [
+      { type: "text", text: "V shows in both positions, in the same place (right). When the common face stays in the same place, the faces in matching places are opposite each other." },
+      { type: "diagram", diagram: {
+        kind: "cube", views: [{ top: "Q", left: "Z", right: "V" }, { top: "T", left: "L", right: "V" }],
+        highlight: "V", opposites: [["Q", "T"], ["Z", "L"]] } },
+      { type: "text", text: "- Top: Q in the first, T in the second, so **Q is opposite T**.\n- Left: Z and L, so Z is opposite L." },
+    ],
+  },
+  {
+    id: "puzzle", subject: "reasoning", topic: "Missing number", kinds: ["puzzle"],
+    question: [
+      { type: "text", text: "Select the number that can replace the question mark (?) in the following figure." },
+      { type: "diagram", diagram: { kind: "puzzle", figures: [
+        { shape: "triangle", values: ["2", "3", "4"], center: "24" },
+        { shape: "triangle", values: ["3", "4", "5"], center: "60" },
+        { shape: "triangle", values: ["4", "5", "6"], center: "?" },
+      ] } },
+    ],
+    options: opts("90", "100", "120", "150"),
+    answer: "C",
+    explanation: [
+      { type: "text", text: "The middle number is the product of the three corners: $2 \\times 3 \\times 4 = 24$ and $3 \\times 4 \\times 5 = 60$." },
+      { type: "diagram", diagram: { kind: "puzzle", highlight: "120", figures: [
+        { shape: "triangle", values: ["2", "3", "4"], center: "24" },
+        { shape: "triangle", values: ["3", "4", "5"], center: "60" },
+        { shape: "triangle", values: ["4", "5", "6"], center: "120" },
+      ] } },
+      { type: "text", text: "So the missing number is $4 \\times 5 \\times 6 = $ **120**." },
+    ],
+  },
+  {
+    id: "mirror-text", subject: "reasoning", topic: "Mirror images", kinds: ["mirror"],
+    question: [
+      { type: "text", text: "Select the correct mirror image of the given combination when the mirror is placed at MN as shown." },
+      { type: "diagram", diagram: { kind: "mirror", text: "AB3K7", line: "right" } },
+    ],
+    options: [
+      { label: "A", blocks: [{ type: "diagram", diagram: { kind: "mirror", text: "AB3K7", transform: "mirror" } }] },
+      { label: "B", blocks: [{ type: "diagram", diagram: { kind: "mirror", text: "AB3K7", transform: "water" } }] },
+      { label: "C", blocks: [{ type: "diagram", diagram: { kind: "mirror", text: "AB3K7", transform: "rotate" } }] },
+      { label: "D", blocks: [{ type: "diagram", diagram: { kind: "mirror", text: "AB3K7", transform: "mirror", keep: [2] } }] },
+    ],
+    answer: "A",
+    explanation: [
+      { type: "text", text: "A mirror on the right swaps left and right: the order is reversed and every character is flipped sideways. Top and bottom stay as they are." },
+      { type: "diagram", diagram: { kind: "mirror", text: "AB3K7", transform: "mirror", line: "right" } },
+      { type: "text", text: "- B is the water image (flipped top to bottom).\n- C is turned upside down.\n- D leaves the 3 unflipped." },
+    ],
+  },
+  {
+    id: "regions", subject: "reasoning", topic: "Venn diagrams", kinds: ["regions"],
+    question: [
+      { type: "text", text: "In the given figure, the triangle stands for doctors, the circle for women and the square for mothers. How many women doctors are not mothers?" },
+      { type: "diagram", diagram: { kind: "regions",
+        sets: [{ label: "Doctors", shape: "triangle" }, { label: "Women", shape: "circle" }, { label: "Mothers", shape: "square" }],
+        values: { A: "12", B: "8", C: "5", AB: "6", AC: "3", BC: "9", ABC: "4" } } },
+    ],
+    options: opts("4", "6", "9", "10"),
+    answer: "B",
+    explanation: [
+      { type: "text", text: "Women doctors are inside both the triangle and the circle. Leaving out mothers means staying outside the square, so only one region counts." },
+      { type: "diagram", diagram: { kind: "regions",
+        sets: [{ label: "Doctors", shape: "triangle" }, { label: "Women", shape: "circle" }, { label: "Mothers", shape: "square" }],
+        values: { A: "12", B: "8", C: "5", AB: "6", AC: "3", BC: "9", ABC: "4" }, highlight: ["AB"] } },
+      { type: "text", text: "The region in the triangle and the circle but not the square holds **6**." },
+    ],
+  },
+  {
+    id: "relation", subject: "reasoning", topic: "Venn diagrams", kinds: ["relation"],
+    question: [{ type: "text", text: "Which of the following diagrams best represents the relationship between Women, Mothers and Doctors?" }],
+    options: [
+      { label: "A", blocks: [{ type: "diagram", diagram: { kind: "relation", pattern: "3-nested" } }] },
+      { label: "B", blocks: [{ type: "diagram", diagram: { kind: "relation", pattern: "3-inside-overlap-both" } }] },
+      { label: "C", blocks: [{ type: "diagram", diagram: { kind: "relation", pattern: "3-overlap" } }] },
+      { label: "D", blocks: [{ type: "diagram", diagram: { kind: "relation", pattern: "3-inside-apart" } }] },
+    ],
+    answer: "B",
+    explanation: [
+      { type: "text", text: "Every mother is a woman, so Mothers sits inside Women. Some women are doctors and some doctors are mothers, so Doctors overlaps both." },
+      { type: "diagram", diagram: { kind: "relation", pattern: "3-inside-overlap-both", labels: ["Women", "Mothers", "Doctors"], highlight: 2 } },
+    ],
+  },
+  {
     id: "mirror", subject: "reasoning", topic: "Mirror images", kinds: ["image"],
     question: [
       { type: "text", text: "Select the correct mirror image of the given figure when the mirror is placed at MN, as shown." },
@@ -222,6 +358,113 @@ export const SAMPLE_QUESTIONS: SampleQuestion[] = [
     explanation: [
       { type: "text", text: "A vertical mirror swaps left and right only; top and bottom stay put. Option A is the water image (flipped top to bottom), B is a half turn, and D is unchanged." },
       { type: "text", text: "Questions like this keep the real pictures from the paper: no spec can describe them reliably." },
+    ],
+  },
+  {
+    id: "series-shapes", subject: "reasoning", topic: "Figure series · Shapes moving", kinds: ["panel"],
+    question: [
+      { type: "text", text: "Select the figure that will come next in the following series." },
+      { type: "diagram", diagram: { kind: "panel", cells: [
+        cornerCell("tl", "br"), cornerCell("tr", "bl"), cornerCell("br", "tl"), cornerCell("bl", "tr"), { items: [], missing: true },
+      ] } },
+    ],
+    options: [
+      panelOption("A", cornerCell("tl", "tr")),
+      panelOption("B", cornerCell("tl", "br")),
+      panelOption("C", cornerCell("tr", "br")),
+      panelOption("D", cornerCell("bl", "br")),
+    ],
+    answer: "B",
+    explanation: [
+      { type: "text", text: "- The black circle moves one corner clockwise each time: top-left, top-right, bottom-right, bottom-left, then back to **top-left**.\n- The triangle moves one corner clockwise too, from the opposite corner, so it is back at **bottom-right**." },
+      { type: "diagram", diagram: { kind: "panel", cells: [
+        cornerCell("tl", "br"), cornerCell("tr", "bl"), cornerCell("br", "tl"), cornerCell("bl", "tr"), { ...cornerCell("tl", "br"), highlight: true },
+      ] } },
+    ],
+  },
+  {
+    id: "series-arrows", subject: "reasoning", topic: "Figure series · Arrows turning", kinds: ["panel"],
+    question: [
+      { type: "text", text: "Select the figure that can replace the question mark (?) in the following series." },
+      { type: "diagram", diagram: { kind: "panel", cells: [arrowCell(0, "tl"), arrowCell(45, "t"), arrowCell(90, "tr"), { items: [], missing: true }] } },
+    ],
+    options: [
+      panelOption("A", arrowCell(180, "r")),
+      panelOption("B", arrowCell(135, "br")),
+      panelOption("C", arrowCell(135, "r")),
+      panelOption("D", arrowCell(315, "r")),
+    ],
+    answer: "C",
+    explanation: [
+      { type: "text", text: "- The arrow with the bar at its tail turns **45° clockwise** each time: up, up-right, right, so next it points down-right.\n- The small square moves one step clockwise round the edge: top-left, top, top-right, then **right**." },
+      { type: "diagram", diagram: { kind: "panel", cells: [arrowCell(0, "tl"), arrowCell(45, "t"), arrowCell(90, "tr"), { ...arrowCell(135, "r"), highlight: true }] } },
+    ],
+  },
+  {
+    id: "series-letters", subject: "reasoning", topic: "Figure series · Letters turning and flipping", kinds: ["panel"],
+    question: [
+      { type: "text", text: "Select the figure that will come next in the following series." },
+      { type: "diagram", diagram: { kind: "panel", cells: [letterCell("none", "none"), letterCell("rotate90", "mirror"), letterCell("rotate180", "none"), { items: [], missing: true }] } },
+    ],
+    options: [
+      panelOption("A", letterCell("rotate270", "none")),
+      panelOption("B", letterCell("rotate270", "mirror")),
+      panelOption("C", letterCell("water", "mirror")),
+      panelOption("D", letterCell("rotate90", "mirror")),
+    ],
+    answer: "B",
+    explanation: [
+      { type: "text", text: "- **F** turns 90° clockwise each time, so the fourth figure shows it turned 270°.\n- **R** flips left-right every other figure: as printed, flipped, as printed, so next it is **flipped**." },
+      { type: "diagram", diagram: { kind: "panel", cells: [letterCell("none", "none"), letterCell("rotate90", "mirror"), letterCell("rotate180", "none"), { ...letterCell("rotate270", "mirror"), highlight: true }] } },
+    ],
+  },
+  {
+    id: "fold-punch", subject: "reasoning", topic: "Paper folding · Punching", kinds: ["fold", "panel"],
+    question: [
+      { type: "text", text: "A square sheet of paper is folded as shown and a hole is punched in it. How will the paper look when opened?" },
+      { type: "diagram", diagram: PUNCH },
+    ],
+    options: [
+      panelOption("A", holes([[0.25, 0.25], [0.75, 0.75]])),
+      panelOption("B", holes([[0.5, 0.25], [0.5, 0.75], [0.25, 0.5], [0.75, 0.5]])),
+      panelOption("C", unfold(PUNCH)),
+      panelOption("D", holes([[0.75, 0.25], [0.75, 0.75]])),
+    ],
+    answer: "C",
+    explanation: [
+      { type: "text", text: "- Open the second fold (left over right): the hole is copied into the left half.\n- Open the first fold (top down): both holes are copied into the top half.\n- So there is one hole in each quarter of the sheet." },
+      { type: "diagram", diagram: { ...PUNCH, showUnfolded: true } },
+    ],
+  },
+  {
+    id: "fold-cut", subject: "reasoning", topic: "Paper folding · Cutting", kinds: ["fold", "panel"],
+    question: [
+      { type: "text", text: "A square sheet of paper is folded and cut as shown. Which figure shows the paper when it is opened?" },
+      { type: "diagram", diagram: CUT },
+    ],
+    options: [
+      panelOption("A", unfold(CUT)),
+      panelOption("B", { items: unfold(CUT).items.filter((i) => i.type === "shape" && Array.isArray(i.at) && i.at[0] !== 0) }),
+      panelOption("C", { items: unfold(CUT).items.filter((i) => i.type === "shape" && i.shape === "circle") }),
+      panelOption("D", unfold({ ...CUT, steps: [{ fold: "left" }] })),
+    ],
+    answer: "A",
+    explanation: [
+      { type: "text", text: "- The square cut at the folded corner is at the centre of the sheet, so it opens into **one** square hole.\n- The notch on the outer edge is copied by both folds: two notches on the right edge and two on the left." },
+      { type: "diagram", diagram: { ...CUT, showUnfolded: true } },
+    ],
+  },
+  {
+    id: "count-triangles", subject: "reasoning", topic: "Figure counting · Triangles", kinds: ["geometry"],
+    question: [
+      { type: "text", text: "How many triangles are there in the given figure?" },
+      { type: "diagram", diagram: COUNT_FIGURE },
+    ],
+    options: opts("8", "12", "16", "20"),
+    answer: "C",
+    explanation: [
+      { type: "text", text: "- Single pieces: the two diagonals and two middle lines cut the square into **8** small triangles.\n- Made of two pieces: **4**, one on each side of the square with its tip at the centre.\n- Made of four pieces: **4** halves of the square cut by a diagonal.\n- Total: 8 + 4 + 4 = **16**." },
+      { type: "diagram", diagram: COUNT_FIGURE },
     ],
   },
 ];

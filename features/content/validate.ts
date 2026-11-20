@@ -1,4 +1,7 @@
-import type { Block, Diagram } from "./types";
+import { RELATION_PATTERN_NAMES, RELATION_PATTERNS } from "./relations";
+import { CUT_SHAPES, cutsOnSheet, FOLD_SIDES, foldedSheet, insidePolygon } from "./fold";
+import { isPanelAt, SHAPE_NAMES } from "./panel";
+import type { Block, Diagram, PanelItem } from "./types";
 
 /**
  * Plain-English problems with a block, or [] when it can be drawn. The renderer shows
@@ -81,6 +84,16 @@ export function diagramProblems(d: Diagram): string[] {
       for (const r of d.rightAngles ?? []) {
         if (![r.at, r.from, r.to].every(has)) out.push(`Right angle at ${r.at} uses an unknown point.`);
       }
+      for (const a of d.arcs ?? []) {
+        if (![a?.center, a?.from, a?.to].every(has)) out.push(`Arc about ${a?.center} uses an unknown point.`);
+        else if (samePoint(d.points[a.center], d.points[a.from]) || samePoint(d.points[a.center], d.points[a.to])) {
+          out.push(`Arc about ${a.center} has zero radius.`);
+        }
+      }
+      if (d.count !== undefined && !["triangles", "squares", "rectangles"].includes(d.count)) {
+        out.push("Count must be triangles, squares or rectangles.");
+      }
+      if (d.count && (d.segments ?? []).length < 3) out.push("A counting figure needs its lines (at least 3 segments).");
       for (const key of Object.keys(d.labels ?? {})) {
         const pair = splitSegmentName(key, names);
         if (!pair) out.push(`Label "${key}" doesn't name a segment between two points.`);
@@ -161,6 +174,130 @@ export function diagramProblems(d: Diagram): string[] {
       }
       for (const m of d.marks ?? []) if (m < d.min || m > d.max) out.push(`Mark ${m} is outside the line.`);
       return out;
+    case "puzzle": {
+      if (!Array.isArray(d.figures) || d.figures.length === 0) return ["Number puzzle needs at least one figure."];
+      if (d.figures.length > 4) out.push("Number puzzle is drawn for up to 4 figures.");
+      const filled = (x: unknown) => typeof x === "string" && x.trim() !== "";
+      d.figures.forEach((f, i) => {
+        const name = `Figure ${i + 1}`;
+        const values = f?.values ?? [];
+        if (f?.shape === "triangle" && values.length !== 3) out.push(`${name}: a triangle needs 3 corner values.`);
+        else if (f?.shape === "square" && values.length !== 4) out.push(`${name}: a square needs 4 corner values.`);
+        else if (f?.shape === "circle" && (values.length < 2 || values.length > 8)) out.push(`${name}: a circle needs 2 to 8 sector values.`);
+        else if (f?.shape === "grid") {
+          const rows = f.rows ?? [];
+          if (rows.length === 0 || rows.length > 6 || rows.some((r) => !Array.isArray(r) || r.length !== rows[0].length || r.length > 6)) {
+            out.push(`${name}: a grid needs up to 6 rows of the same length (up to 6 cells).`);
+          }
+        } else if (!["triangle", "square", "circle", "grid"].includes(f?.shape as string)) {
+          out.push(`${name}: shape must be triangle, square, circle or grid.`);
+        }
+        const all = [...values, ...(f?.rows ?? []).flat(), ...(f?.center !== undefined ? [f.center] : [])];
+        if (!all.every(filled)) out.push(`${name} has an empty value.`);
+        if (all.some((x) => typeof x === "string" && x.length > 5)) out.push(`${name}: keep each value short (up to 5 characters).`);
+      });
+      return out;
+    }
+    case "mirror": {
+      if (typeof d.text !== "string" || d.text.trim() === "") return ["Mirror image needs the text."];
+      if (Array.from(d.text).length > 14) out.push("Mirror image text is drawn for up to 14 characters.");
+      if (d.transform && !["none", "mirror", "water", "rotate"].includes(d.transform)) out.push("Mirror transform must be none, mirror, water or rotate.");
+      if (d.line && !["right", "below"].includes(d.line)) out.push('Mirror line must be "right" or "below".');
+      const n = Array.from(d.text).length;
+      if ((d.keep ?? []).some((i) => !Number.isInteger(i) || i < 0 || i >= n)) out.push("Mirror keep lists a position outside the text.");
+      return out;
+    }
+    case "regions": {
+      if (!Array.isArray(d.sets) || d.sets.length < 2 || d.sets.length > 3) return ["Regions figure needs 2 or 3 groups."];
+      for (const s of d.sets) {
+        if (!s || typeof s.label !== "string" || s.label.trim() === "") out.push("Each group needs a label.");
+        if (!["circle", "triangle", "square"].includes(s?.shape as string)) out.push("Each group's shape must be circle, triangle or square.");
+      }
+      const valid = d.sets.length === 3 ? ["A", "B", "C", "AB", "AC", "BC", "ABC"] : ["A", "B", "AB"];
+      const keys = Object.keys(isObject(d.values) ? d.values : {});
+      if (keys.length === 0) out.push("Regions figure has no numbers.");
+      for (const k of keys) if (!valid.includes(k)) out.push(`Region "${k}" doesn't exist for ${d.sets.length} groups.`);
+      for (const k of d.highlight ?? []) if (!valid.includes(k) && k !== "outside") out.push(`Highlighted region "${k}" doesn't exist.`);
+      return out;
+    }
+    case "relation": {
+      if (!RELATION_PATTERN_NAMES.includes(d.pattern)) return [`Unknown circle arrangement "${String(d.pattern)}".`];
+      const n = RELATION_PATTERNS[d.pattern].circles.length;
+      if ((d.labels ?? []).length > n) out.push(`"${d.pattern}" has ${n} circles but ${d.labels!.length} labels.`);
+      if (d.highlight !== undefined && (!Number.isInteger(d.highlight) || d.highlight < 0 || d.highlight >= n)) out.push("Highlighted circle is outside the arrangement.");
+      return out;
+    }
+    case "cube": {
+      if (!Array.isArray(d.views) || d.views.length === 0) return ["Cube needs at least one view."];
+      if (d.views.length > 4) out.push("Cube is drawn for up to 4 views.");
+      const shown = new Set<string>();
+      d.views.forEach((v, i) => {
+        const faces = [v?.top, v?.left, v?.right];
+        if (!faces.every((f) => typeof f === "string" && f.trim() !== "")) {
+          out.push(`Cube view ${i + 1} needs top, left and right faces.`);
+          return;
+        }
+        if (faces.some((f) => f.length > 4)) out.push(`Cube view ${i + 1}: keep each face to a short symbol (up to 4 characters).`);
+        if (new Set(faces).size !== 3) out.push(`Cube view ${i + 1} shows the same face twice.`);
+        if (d.pips && faces.some((f) => !/^[1-6]$/.test(f))) out.push(`Cube view ${i + 1}: dot faces must be numbers 1 to 6.`);
+        faces.forEach((f) => shown.add(f));
+      });
+      if (d.highlight && !shown.has(d.highlight)) out.push(`Cube highlight "${d.highlight}" isn't on any view.`);
+      const paired = new Set<string>();
+      for (const pair of d.opposites ?? []) {
+        const [a, b] = pair ?? [];
+        if (!a || !b || a === b) {
+          out.push("Each opposite pair needs two different faces.");
+          continue;
+        }
+        if (paired.has(a) || paired.has(b)) out.push(`Face ${paired.has(a) ? a : b} is in two opposite pairs.`);
+        paired.add(a);
+        paired.add(b);
+        if (d.views.some((v) => v && [v.top, v.left, v.right].includes(a) && [v.top, v.left, v.right].includes(b))) {
+          out.push(`${a} and ${b} show together on one view, so they can't be opposite.`);
+        }
+      }
+      return out;
+    }
+    case "panel": {
+      if (!Array.isArray(d.cells) || d.cells.length === 0) return ["Figure row needs at least one cell."];
+      if (d.cells.length > 5) out.push("Figure row is drawn for up to 5 cells.");
+      if (d.frame && !["square", "circle", "none"].includes(d.frame)) out.push("Cell frame must be square, circle or none.");
+      d.cells.forEach((c, i) => {
+        const name = d.cells.length > 1 ? `Cell ${i + 1}` : "Figure";
+        if (!isObject(c)) return void out.push(`${name} isn't a cell.`);
+        if (c.missing && (c.items ?? []).length) out.push(`${name} is the missing "?" figure but has items.`);
+        if (!c.missing && !(c.items ?? []).length) out.push(`${name} is empty.`);
+        if ((c.items ?? []).length > 16) out.push(`${name} has more than 16 items.`);
+        // Marks with no place are drawn in the centre; two on one spot are drawn on top of each other.
+        const spots = (c.items ?? [])
+          .filter((it) => isObject(it) && it.type !== "line" && it.type !== "arc")
+          .map((it) => JSON.stringify((it as { at?: unknown }).at ?? "c"));
+        if (new Set(spots).size < spots.length) out.push(`${name} has two marks in the same place.`);
+        (c.items ?? []).forEach((it, j) => out.push(...panelItemProblems(it).map((p) => `${name}, item ${j + 1}: ${p}`)));
+      });
+      if (d.cells.slice(0, -1).some((c) => c?.missing)) out.push('Only the last cell can be the missing "?" figure.');
+      return out;
+    }
+    case "fold": {
+      if (!Array.isArray(d.steps)) return ["Paper folding needs its folds (steps)."];
+      if (d.steps.length > 4) out.push("Paper folding is drawn for up to 4 folds.");
+      for (const [i, s] of d.steps.entries()) {
+        if (!FOLD_SIDES.includes(s?.fold)) out.push(`Fold ${i + 1} must be one of ${FOLD_SIDES.join(", ")}.`);
+      }
+      if (!Array.isArray(d.cuts) || d.cuts.length === 0) return [...out, "Paper folding needs at least one hole or cut."];
+      if (d.cuts.length > 8) out.push("Paper folding is drawn for up to 8 cuts.");
+      if (out.length) return out;
+      const sheet = foldedSheet(d.steps);
+      const placedAt = (i: number) => cutsOnSheet({ ...d, cuts: [d.cuts[i]] })[0];
+      d.cuts.forEach((c, i) => {
+        if (!CUT_SHAPES.includes(c?.shape)) out.push(`Cut ${i + 1}: shape must be one of ${CUT_SHAPES.join(", ")}.`);
+        if (!isPanelAt(c?.at)) out.push(`Cut ${i + 1}: place it at a grid spot (tl … br) or [x, y] from 0 to 1.`);
+        else if (!placedAt(i) || !insidePolygon(sheet, placedAt(i).at, 0.02)) out.push(`Cut ${i + 1} is off the folded sheet.`);
+        if (c?.size !== undefined && (!isNumber(c.size) || c.size <= 0 || c.size > 1)) out.push(`Cut ${i + 1}: size must be between 0 and 1.`);
+      });
+      return out;
+    }
     default:
       return [`Unknown diagram kind "${String((d as { kind?: unknown }).kind)}".`];
   }
@@ -181,6 +318,60 @@ export function splitSegmentName(key: string, names: string[]): [string, string]
     if (names.includes(a) && names.includes(b) && a !== b) return [a, b];
   }
   return null;
+}
+
+const ARROW_HEADS = ["single", "double", "hollow"];
+const ARROW_TAILS = ["none", "bar", "double"];
+const GLYPH_TRANSFORMS = ["none", "mirror", "water", "rotate90", "rotate180", "rotate270"];
+const LINE_ENDS = ["none", "bar", "arrow", "dot"];
+
+function panelItemProblems(it: PanelItem): string[] {
+  if (!isObject(it)) return ["not an item."];
+  const out: string[] = [];
+  const at = (v: unknown, what = "at") => {
+    if (v !== undefined && !isPanelAt(v)) out.push(`${what} must be a grid spot (tl, t, tr, l, c, r, bl, b, br) or [x, y] from 0 to 1.`);
+  };
+  const share = (v: unknown, what: string) => {
+    if (v !== undefined && (!isNumber(v) || v <= 0 || v > 1)) out.push(`${what} must be between 0 and 1.`);
+  };
+  switch (it.type) {
+    case "shape":
+      if (!SHAPE_NAMES.includes(it.shape)) out.push(`unknown shape "${String(it.shape)}".`);
+      at(it.at);
+      share(it.size, "size");
+      if (it.aspect !== undefined && (!isNumber(it.aspect) || it.aspect <= 0 || it.aspect > 4)) out.push("aspect must be between 0 and 4.");
+      if (it.rotate !== undefined && !isNumber(it.rotate)) out.push("rotate must be a number of degrees.");
+      return out;
+    case "arrow":
+      at(it.at);
+      share(it.size, "size");
+      if (!isNumber(it.dir) || it.dir % 45 !== 0) out.push("arrow dir must be degrees from up in steps of 45.");
+      if (it.head !== undefined && !ARROW_HEADS.includes(it.head)) out.push(`arrow head must be ${ARROW_HEADS.join(", ")}.`);
+      if (it.tail !== undefined && !ARROW_TAILS.includes(it.tail)) out.push(`arrow tail must be ${ARROW_TAILS.join(", ")}.`);
+      return out;
+    case "glyph":
+      if (!isString(it.text) || !it.text.trim()) out.push("glyph has no text.");
+      else if (Array.from(it.text).length > 3) out.push("glyph is up to 3 characters.");
+      at(it.at);
+      share(it.size, "size");
+      if (it.transform !== undefined && !GLYPH_TRANSFORMS.includes(it.transform)) out.push(`glyph transform must be ${GLYPH_TRANSFORMS.join(", ")}.`);
+      return out;
+    case "line":
+      if (it.from === undefined || it.to === undefined) out.push("line needs from and to.");
+      at(it.from, "from");
+      at(it.to, "to");
+      if (it.ends !== undefined && (!Array.isArray(it.ends) || it.ends.length !== 2 || !it.ends.every((e) => LINE_ENDS.includes(e)))) {
+        out.push(`line ends must be two of ${LINE_ENDS.join(", ")}.`);
+      }
+      return out;
+    case "arc":
+      at(it.at);
+      share(it.r, "r");
+      if (!isNumber(it.start) || !isNumber(it.end)) out.push("arc needs start and end angles.");
+      return out;
+    default:
+      return [`unknown item type "${String((it as { type?: unknown }).type)}".`];
+  }
 }
 
 function hasCycle(ids: string[], edges: [string, string][]): boolean {

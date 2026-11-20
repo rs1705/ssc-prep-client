@@ -16,6 +16,8 @@ type Pt = [number, number];
 
 export interface GeometryLayout {
   circles: { cx: number; cy: number; r: number }[];
+  /** Arcs as SVG path data. */
+  arcs: string[];
   segments: { x1: number; y1: number; x2: number; y2: number; highlight: boolean }[];
   rightAngles: { points: Pt[]; highlight: boolean }[];
   /** Length labels with their background box. */
@@ -36,6 +38,8 @@ export function layoutGeometry(d: GeometryDiagram, W = GEO_W, H = GEO_H): Geomet
     const r = Math.hypot(tx - cx, ty - cy);
     xs.push(cx - r, cx + r); ys.push(cy - r, cy + r);
   }
+  const arcSpecs = (d.arcs ?? []).map((a) => arcGeometry(pts[a.center], pts[a.from], pts[a.to]));
+  for (const a of arcSpecs) for (const [x, y] of a.samples) { xs.push(x); ys.push(y); }
   const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
   // A figure that is a single line still needs a scale on both axes.
   const spanX = maxX - minX || 1, spanY = maxY - minY || 1;
@@ -50,6 +54,12 @@ export function layoutGeometry(d: GeometryDiagram, W = GEO_W, H = GEO_H): Geomet
   const circles = (d.circles ?? []).map((c) => {
     const [cx, cy] = P2(c.center), [tx, ty] = P2(c.through);
     return { cx, cy, r: Math.hypot(tx - cx, ty - cy) };
+  });
+  const arcs = arcSpecs.map((a) => {
+    const [sx, sy] = [X(a.start[0]), Y(a.start[1])], [ex, ey] = [X(a.end[0]), Y(a.end[1])];
+    const r = a.r * k;
+    // Anticlockwise in maths (y up) is sweep 0 on screen (y down).
+    return `M${sx.toFixed(2)},${sy.toFixed(2)} A${r.toFixed(2)},${r.toFixed(2)} 0 ${a.sweep > Math.PI ? 1 : 0},0 ${ex.toFixed(2)},${ey.toFixed(2)}`;
   });
   const segments = (d.segments ?? []).map(([a, b]) => {
     const [x1, y1] = P2(a), [x2, y2] = P2(b);
@@ -173,7 +183,8 @@ export function layoutGeometry(d: GeometryDiagram, W = GEO_W, H = GEO_H): Geomet
   });
 
   // 3. Point names: 16 directions around the point, at three distances.
-  const points: GeometryLayout["points"] = names.map((name, i) => {
+  // Counting figures: the points are only corners, so they get no dots or names.
+  const points: GeometryLayout["points"] = d.count ? [] : names.map((name, i) => {
     const [x, y] = dots[i];
     const hw = 6 + name.length * 4, hh = 8;
     let ax = x - centroid[0], ay = y - centroid[1];
@@ -201,5 +212,16 @@ export function layoutGeometry(d: GeometryDiagram, W = GEO_W, H = GEO_H): Geomet
     lengthLabels.push({ x: p.x, y: p.y, w: p.hw * 2, h: p.hh * 2, text: w.text });
   });
 
-  return { circles, segments, rightAngles, lengthLabels, dimensions, points };
+  return { circles, arcs, segments, rightAngles, lengthLabels, dimensions, points };
+}
+
+/** An arc about c from p anticlockwise to the ray through q (maths coordinates), with points along it. */
+function arcGeometry(c: Pt, p: Pt, q: Pt) {
+  const r = Math.hypot(p[0] - c[0], p[1] - c[1]);
+  const a0 = Math.atan2(p[1] - c[1], p[0] - c[0]);
+  let sweep = Math.atan2(q[1] - c[1], q[0] - c[0]) - a0;
+  while (sweep <= 0) sweep += 2 * Math.PI;
+  const at = (a: number): Pt => [c[0] + r * Math.cos(a), c[1] + r * Math.sin(a)];
+  const samples = Array.from({ length: 17 }, (_, i) => at(a0 + (sweep * i) / 16));
+  return { r, sweep, start: at(a0), end: at(a0 + sweep), samples };
 }
