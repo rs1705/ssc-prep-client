@@ -7,6 +7,7 @@ import { placeLabels, type Pt } from "./labels";
 import { cubeAlt } from "./plain";
 import { Mirror, Puzzle, Regions, Relation } from "./FigureDiagrams";
 import { Fold, Panel } from "./PanelDiagrams";
+import { Trace } from "./TraceDiagram";
 import type {
   BarDiagram,
   CubeDiagram,
@@ -523,5 +524,6 @@ export function DiagramView({ d }: { d: Diagram }) {
     case "relation": return <Relation d={d} />;
     case "panel": return <Panel d={d} />;
     case "fold": return <Fold d={d} />;
+    case "trace": return <Trace d={d} />;
   }
 }

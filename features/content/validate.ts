@@ -1,6 +1,6 @@
 import { RELATION_PATTERN_NAMES, RELATION_PATTERNS } from "./relations";
 import { CUT_SHAPES, cutsOnSheet, FOLD_SIDES, foldedSheet, insidePolygon } from "./fold";
-import { anchorPoint, isPanelAt, SHAPE_NAMES } from "./panel";
+import { anchorPoint, DEFAULT_GLYPH_SIZE, isPanelAt, SHAPE_NAMES } from "./panel";
 import type { Block, Diagram, PanelItem } from "./types";
 
 /**
@@ -275,6 +275,16 @@ export function diagramProblems(d: Diagram): string[] {
       if (d.cells.slice(0, -1).some((c) => c?.missing)) out.push('Only the last cell can be the missing "?" figure.');
       return out;
     }
+    case "trace": {
+      if (!isNumber(d.w) || !isNumber(d.h) || d.w <= 0 || d.h <= 0) return ["Traced figure needs its size (w, h)."];
+      const nums = (v: unknown) => Array.isArray(v) && v.every(isNumber);
+      if ((d.lines ?? []).some((l) => !nums(l) || l.length !== 4)) out.push("Traced lines are [x1, y1, x2, y2].");
+      if ((d.circles ?? []).some((c) => !nums(c) || c.length !== 3)) out.push("Traced circles are [cx, cy, r].");
+      if ((d.glyphs ?? []).some((g) => !isString(g.text) || !g.text.trim())) out.push("A traced letter has no text.");
+      const parts = (d.lines?.length ?? 0) + (d.circles?.length ?? 0) + (d.paths?.length ?? 0) + (d.polygons?.length ?? 0) + (d.fills?.length ?? 0) + (d.glyphs?.length ?? 0);
+      if (!parts) out.push("Traced figure is empty.");
+      return out;
+    }
     case "fold": {
       if (!Array.isArray(d.steps)) return ["Paper folding needs its folds (steps)."];
       if (d.steps.length > 4) out.push("Paper folding is drawn for up to 4 folds.");
@@ -329,7 +339,7 @@ const LINE_ENDS = ["none", "bar", "arrow", "dot"];
 function marksOverlap(items: PanelItem[]): boolean {
   const glyphs = items
     .filter((it): it is Extract<PanelItem, { type: "glyph" }> => isObject(it) && it.type === "glyph")
-    .map((it) => ({ p: anchorPoint(it.at), size: it.size ?? 0.3 }))
+    .map((it) => ({ p: anchorPoint(it.at), size: it.size ?? DEFAULT_GLYPH_SIZE }))
     .filter((m): m is { p: [number, number]; size: number } => !!m.p);
   for (let i = 0; i < glyphs.length; i++)
     for (let j = i + 1; j < glyphs.length; j++) {
@@ -357,9 +367,14 @@ function panelItemProblems(it: PanelItem): string[] {
       if (it.rotate !== undefined && !isNumber(it.rotate)) out.push("rotate must be a number of degrees.");
       return out;
     case "arrow":
-      at(it.at);
-      share(it.size, "size");
-      if (!isNumber(it.dir) || it.dir % 45 !== 0) out.push("arrow dir must be degrees from up in steps of 45.");
+      if (it.from !== undefined || it.to !== undefined) {
+        if (!isPanelAt(it.from) || !isPanelAt(it.to)) out.push("arrow from and to must both be grid spots or [x, y] from 0 to 1.");
+        else if (JSON.stringify(it.from) === JSON.stringify(it.to)) out.push("arrow from and to are the same point.");
+      } else {
+        at(it.at);
+        share(it.size, "size");
+        if (!isNumber(it.dir) || it.dir % 45 !== 0) out.push("arrow dir must be degrees from up in steps of 45.");
+      }
       if (it.head !== undefined && !ARROW_HEADS.includes(it.head)) out.push(`arrow head must be ${ARROW_HEADS.join(", ")}.`);
       if (it.tail !== undefined && !ARROW_TAILS.includes(it.tail)) out.push(`arrow tail must be ${ARROW_TAILS.join(", ")}.`);
       return out;

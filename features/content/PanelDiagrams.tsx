@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { ArrowMarker, FIG, Svg, useSvgId } from "./figure";
 import { cutsOnSheet, foldStages, SQUARE, unfold } from "./fold";
-import { anchorPoint, defaultShapeSize, dirVector, shapePath, type Pt } from "./panel";
+import { anchorPoint, DEFAULT_ARROW_LENGTH, DEFAULT_GLYPH_SIZE, defaultShapeSize, dirVector, shapePath, type Pt } from "./panel";
 import { foldAlt, panelAlt } from "./plain";
 import type { FoldDiagram, PanelCell, PanelDiagram, PanelItem, PanelLineEnd, PanelShape } from "./types";
 
@@ -11,6 +11,8 @@ import type { FoldDiagram, PanelCell, PanelDiagram, PanelItem, PanelLineEnd, Pan
 
 const C = FIG.cell;
 const PAD = 4;
+/** Stroke width of marks inside cells. */
+const ML = FIG.mark.line;
 
 const add = (a: Pt, b: Pt, k = 1): Pt => [a[0] + b[0] * k, a[1] + b[1] * k];
 const perp = ([x, y]: Pt): Pt => [-y, x];
@@ -21,29 +23,39 @@ function Head({ tip, u, len, hollow }: { tip: Pt; u: Pt; len: number; hollow?: b
   const back = add(tip, u, -len), n = perp(u);
   const a = add(back, n, len * 0.55), b = add(back, n, -len * 0.55);
   return hollow ? (
-    <polyline points={pts([a, tip, b])} className={FIG.cls.line} strokeWidth={FIG.line} strokeLinejoin="round" strokeLinecap="round" />
+    <polyline points={pts([a, tip, b])} className={FIG.cls.line} strokeWidth={ML} strokeLinejoin="round" strokeLinecap="round" />
   ) : (
     <polygon points={pts([tip, a, b])} className={FIG.cls.fill} />
   );
 }
 
 function EndCap({ at, u, cap }: { at: Pt; u: Pt; cap: PanelLineEnd }) {
-  const s = C * 0.07;
+  const s = C * FIG.mark.cap;
   if (cap === "bar") {
     const n = perp(u);
     const a = add(at, n, s), b = add(at, n, -s);
-    return <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} className={FIG.cls.line} strokeWidth={FIG.line} strokeLinecap="round" />;
+    return <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} className={FIG.cls.line} strokeWidth={ML} strokeLinecap="round" />;
   }
-  if (cap === "arrow") return <Head tip={at} u={u} len={s * 1.6} />;
-  if (cap === "dot") return <circle cx={at[0]} cy={at[1]} r={FIG.dot} className={FIG.cls.fill} />;
+  if (cap === "arrow") return <Head tip={at} u={u} len={C * FIG.mark.head} />;
+  if (cap === "dot") return <circle cx={at[0]} cy={at[1]} r={C * FIG.mark.dot * 0.5} className={FIG.cls.fill} />;
   return null;
 }
 
 /** Position of an item in cell pixels. */
 const px = (p: Pt): Pt => [p[0] * C, p[1] * C];
+/**
+ * A mark's centre kept far enough from the frame that the whole mark (of width `size`,
+ * share of the cell) stays inside: papers never print marks across the cell border, and
+ * a reading of "0,0" means "in the corner".
+ */
+const inside = (p: Pt, size: number): Pt => {
+  const m = Math.min(0.5, size / 2 + 0.04);
+  return [Math.min(1 - m, Math.max(m, p[0])), Math.min(1 - m, Math.max(m, p[1]))];
+};
 
 function ShapeItem({ it }: { it: PanelShape }) {
-  const p = px(anchorPoint(it.at) ?? [0.5, 0.5]);
+  const size = it.size ?? defaultShapeSize(it.shape);
+  const p = it.cut ? px(anchorPoint(it.at) ?? [0.5, 0.5]) : px(inside(anchorPoint(it.at) ?? [0.5, 0.5], size));
   const filled = it.filled || it.shape === "dot";
   return (
     <path
@@ -51,7 +63,7 @@ function ShapeItem({ it }: { it: PanelShape }) {
       transform={`translate(${p[0].toFixed(2)} ${p[1].toFixed(2)})${it.rotate ? ` rotate(${it.rotate})` : ""}`}
       className={FIG.cls.line}
       style={filled ? { fill: "var(--cf-fg)" } : undefined}
-      strokeWidth={FIG.line}
+      strokeWidth={ML}
       strokeLinejoin="round"
     />
   );
@@ -62,10 +74,22 @@ function Item({ it }: { it: PanelItem }): ReactNode {
     case "shape":
       return <ShapeItem it={it} />;
     case "arrow": {
-      const c = px(anchorPoint(it.at) ?? [0.5, 0.5]);
-      const u = dirVector(it.dir ?? 0);
-      const L = (it.size ?? 0.5) * C, h = Math.min(12, L * 0.3);
-      const tail = add(c, u, -L / 2), tip = add(c, u, L / 2);
+      // From its two ends when given (exact length and place), else centre, direction and length.
+      const ends = it.from !== undefined && it.to !== undefined ? [anchorPoint(it.from), anchorPoint(it.to)] : null;
+      let tail: Pt, tip: Pt, u: Pt;
+      if (ends?.[0] && ends[1]) {
+        tail = px(ends[0]);
+        tip = px(ends[1]);
+        const len = Math.hypot(tip[0] - tail[0], tip[1] - tail[1]) || 1;
+        u = [(tip[0] - tail[0]) / len, (tip[1] - tail[1]) / len];
+      } else {
+        const c = px(anchorPoint(it.at) ?? [0.5, 0.5]);
+        u = dirVector(it.dir ?? 0);
+        const L = (it.size ?? DEFAULT_ARROW_LENGTH) * C;
+        tail = add(c, u, -L / 2);
+        tip = add(c, u, L / 2);
+      }
+      const h = C * FIG.mark.head;
       const head = it.head ?? "single";
       const solidHead = head !== "hollow";
       const end = solidHead ? add(tip, u, -h * 0.8) : tip;
@@ -73,7 +97,7 @@ function Item({ it }: { it: PanelItem }): ReactNode {
       const tailCap = it.tail ?? "none";
       return (
         <g>
-          <line x1={start[0]} y1={start[1]} x2={end[0]} y2={end[1]} className={FIG.cls.line} strokeWidth={FIG.line} strokeLinecap="round" />
+          <line x1={start[0]} y1={start[1]} x2={end[0]} y2={end[1]} className={FIG.cls.line} strokeWidth={ML} strokeLinecap="round" />
           <Head tip={tip} u={u} len={h} hollow={head === "hollow"} />
           {head === "double" && <Head tip={tail} u={[-u[0], -u[1]]} len={h} />}
           {tailCap === "bar" && <EndCap at={tail} u={u} cap="bar" />}
@@ -87,7 +111,7 @@ function Item({ it }: { it: PanelItem }): ReactNode {
       );
     }
     case "glyph": {
-      const p = px(anchorPoint(it.at) ?? [0.5, 0.5]);
+      const p = px(inside(anchorPoint(it.at) ?? [0.5, 0.5], it.size ?? DEFAULT_GLYPH_SIZE));
       const t = it.transform ?? "none";
       const flip =
         t === "mirror" ? " scale(-1 1)" : t === "water" ? " scale(1 -1)" : t.startsWith("rotate") ? ` rotate(${t.slice(6)})` : "";
@@ -96,8 +120,8 @@ function Item({ it }: { it: PanelItem }): ReactNode {
           transform={`translate(${p[0].toFixed(2)} ${p[1].toFixed(2)})${flip}`}
           textAnchor="middle"
           dominantBaseline="central"
-          className="bold mono fg"
-          style={{ fontSize: (it.size ?? 0.3) * C, stroke: "none" }}
+          className="fg cf-mark"
+          style={{ fontSize: (it.size ?? DEFAULT_GLYPH_SIZE) * C, stroke: "none" }}
         >
           {it.text}
         </text>
@@ -113,7 +137,7 @@ function Item({ it }: { it: PanelItem }): ReactNode {
           <line
             x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]}
             className={FIG.cls.line}
-            strokeWidth={FIG.line}
+            strokeWidth={ML}
             strokeLinecap="round"
             strokeDasharray={it.style === "dashed" ? FIG.dash : undefined}
           />
@@ -127,13 +151,13 @@ function Item({ it }: { it: PanelItem }): ReactNode {
       const r = (it.r ?? 0.25) * C;
       const sweep = ((((it.end - it.start) % 360) + 360) % 360) || 360;
       const dash = it.style === "dashed" ? FIG.dash : undefined;
-      if (sweep >= 359.9) return <circle cx={c[0]} cy={c[1]} r={r} className={FIG.cls.line} strokeWidth={FIG.line} strokeDasharray={dash} />;
+      if (sweep >= 359.9) return <circle cx={c[0]} cy={c[1]} r={r} className={FIG.cls.line} strokeWidth={ML} strokeDasharray={dash} />;
       const s = add(c, dirVector(it.start), r), e = add(c, dirVector(it.start + sweep), r);
       return (
         <path
           d={`M${s[0].toFixed(2)},${s[1].toFixed(2)} A${r},${r} 0 ${sweep > 180 ? 1 : 0},1 ${e[0].toFixed(2)},${e[1].toFixed(2)}`}
           className={FIG.cls.line}
-          strokeWidth={FIG.line}
+          strokeWidth={ML}
           strokeLinecap="round"
           strokeDasharray={dash}
         />
@@ -158,9 +182,9 @@ function CutSheet({ outline, holes, id, highlight = false }: { outline: ReactNod
       </defs>
       <g mask={`url(#${id}m)`}>
         <g className={FIG.cls.soft}>{outline}</g>
-        <g className={highlight ? FIG.cls.answer : FIG.cls.line} strokeWidth={highlight ? FIG.bold : FIG.line} strokeLinejoin="round">{outline}</g>
+        <g className={highlight ? FIG.cls.answer : FIG.cls.line} strokeWidth={highlight ? FIG.bold : FIG.mark.frame} strokeLinejoin="round">{outline}</g>
       </g>
-      <g clipPath={`url(#${id}c)`} className={FIG.cls.line} strokeWidth={FIG.line} strokeLinejoin="round">{holes}</g>
+      <g clipPath={`url(#${id}c)`} className={FIG.cls.line} strokeWidth={ML} strokeLinejoin="round">{holes}</g>
     </g>
   );
 }
@@ -180,7 +204,7 @@ function holePath(it: PanelShape, key: string) {
 export function PanelCellView({ cell, frame, id }: { cell: PanelCell; frame: PanelDiagram["frame"]; id: string }) {
   const shape = frame ?? "square";
   const cls = cell.highlight ? FIG.cls.answer : FIG.cls.line;
-  const sw = cell.highlight ? FIG.bold : FIG.frame;
+  const sw = cell.highlight ? FIG.bold : FIG.mark.frame;
   const dash = cell.missing ? FIG.dash : undefined;
   const outline =
     shape === "circle" ? <circle cx={C / 2} cy={C / 2} r={C / 2} /> : <rect x={0} y={0} width={C} height={C} rx={FIG.radius} />;

@@ -90,7 +90,8 @@ export type Diagram =
   | RegionsDiagram
   | RelationDiagram
   | PanelDiagram
-  | FoldDiagram;
+  | FoldDiagram
+  | TraceDiagram;
 
 export type DiagramKind = Diagram["kind"];
 
@@ -279,9 +280,16 @@ export interface PanelShape {
 /** An arrow pointing `dir` degrees clockwise from up (steps of 45). */
 export interface PanelArrow {
   type: "arrow";
+  /**
+   * Tail and tip, when known: the arrow is drawn exactly between them (preferred; papers'
+   * arrows have their own lengths). Otherwise `at` (centre), `dir` and `size`.
+   */
+  from?: PanelAt;
+  to?: PanelAt;
   at?: PanelAt;
-  dir: number;
-  /** Length as a share of the cell (default 0.5). */
+  /** Degrees clockwise from up, in steps of 45 (not needed with from/to). */
+  dir?: number;
+  /** Length as a share of the cell (default 0.32). */
   size?: number;
   /** single: one head; double: a head at both ends; hollow: an open head. */
   head?: "single" | "double" | "hollow";
@@ -368,6 +376,41 @@ export interface FoldDiagram extends DiagramBase {
   cuts: FoldCut[];
   /** Explanations: also draw the sheet opened out. */
   showUnfolded?: boolean;
+}
+
+/** A letter in a traced figure: the character, the centre and size of its box, and how it is printed. */
+export interface TraceGlyph {
+  text: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  transform?: "none" | "mirror" | "water" | "rotate90" | "rotate180" | "rotate270";
+}
+
+/**
+ * A figure traced from the paper's own picture (trace-and-fit): lines, circles, curves and
+ * filled parts measured from the pixels, letters named and oriented. Coordinates are in
+ * the original picture's pixels (w × h, y down); the renderer draws them in the shared
+ * figure style, so every traced figure looks alike.
+ */
+export interface TraceDiagram extends DiagramBase {
+  kind: "trace";
+  w: number;
+  h: number;
+  /** Stroke width measured on the original, in its pixels (for checks; drawing uses the shared style). */
+  stroke?: number;
+  /** Straight lines: [x1, y1, x2, y2]. */
+  lines?: [number, number, number, number][];
+  /** Circles: [cx, cy, r]. */
+  circles?: [number, number, number][];
+  /** Curves as point lists. */
+  paths?: [number, number][][];
+  /** Closed outlines (small triangles, squares…). */
+  polygons?: [number, number][][];
+  /** Filled areas (arrowheads, dots, filled shapes). */
+  fills?: [number, number][][];
+  glyphs?: TraceGlyph[];
 }
 
 /** An option: blocks, or the short forms { label, text } and { label, image, alt }. */

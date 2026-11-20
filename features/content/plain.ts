@@ -1,3 +1,4 @@
+import { anchorPoint } from "./panel";
 import { relationSays } from "./relations";
 import type {
   Block,
@@ -61,7 +62,12 @@ function itemAlt(it: PanelItem): string {
     }
     case "arrow": {
       const extra = [it.head && it.head !== "single" ? `${it.head} head` : "", it.tail && it.tail !== "none" ? `${it.tail} tail` : ""].filter(Boolean).join(", ");
-      return `arrow pointing ${dirWord(it.dir)}${extra ? ` (${extra})` : ""} at ${where(it.at)}`;
+      if (it.from !== undefined && it.to !== undefined) {
+        const [a, b] = [anchorPoint(it.from), anchorPoint(it.to)];
+        const deg = a && b ? (Math.atan2(b[0] - a[0], a[1] - b[1]) * 180) / Math.PI : 0;
+        return `arrow pointing ${dirWord(deg)}${extra ? ` (${extra})` : ""} from ${where(it.from)} to ${where(it.to)}`;
+      }
+      return `arrow pointing ${dirWord(it.dir ?? 0)}${extra ? ` (${extra})` : ""} at ${where(it.at)}`;
     }
     case "glyph":
       return `"${it.text}"${it.transform && it.transform !== "none" ? ` (${it.transform})` : ""} at ${where(it.at)}`;
@@ -99,6 +105,7 @@ function diagramAlt(d: Diagram): string {
   switch (d.kind) {
     case "panel": return panelAlt(d);
     case "fold": return foldAlt(d);
+    case "trace": return d.alt || `Figure from the paper${d.glyphs?.length ? ` with ${d.glyphs.map((g) => g.text).join(" ")}` : ""}`;
     case "geometry": return d.count ? `${d.alt || "Figure"} (count the ${d.count})` : d.kind;
     case "cube": return cubeAlt(d);
     case "puzzle": return puzzleAlt(d);

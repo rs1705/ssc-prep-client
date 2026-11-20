@@ -114,6 +114,8 @@ button.cf-opt:disabled { cursor: default; }
 .cf-opt.cf-wrong .cf-opt-lbl { background: var(--cf-wrong); color: var(--cf-card); }
 
 /* Diagram strokes and fills come from the tokens. */
+/* Letters inside figure-series cells: plain sans, regular weight, as exam papers print them. */
+.cf-dg .cf-mark { font-family: Arial, "Helvetica Neue", var(--cf-font-body); font-weight: 400; }
 .cf-dg .ink { stroke: var(--cf-fg); fill: none; }
 .cf-dg .ink-fill { fill: var(--cf-fg); }
 .cf-dg .muted { stroke: var(--cf-muted); fill: none; }

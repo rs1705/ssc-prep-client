@@ -27,8 +27,14 @@ export const FIG = {
   radius: 3,
   /** Point dots in geometry. */
   dot: 3.2,
-  /** Letters and digits drawn as part of a figure (mirror text, panel glyphs). */
+  /** Letters and digits drawn as part of a figure (mirror text). */
   glyph: 28,
+  /**
+   * Marks inside panel and fold cells (figure series, option figures), matched to how
+   * exam papers print them: thin lines, small shapes, short arrows, plain letters.
+   * Sizes are shares of the cell.
+   */
+  mark: { line: 1.1, frame: 1.1, shape: 0.15, dot: 0.06, glyph: 0.2, arrow: 0.32, head: 0.055, cap: 0.045 },
   /** Class names for the content.css colour tokens. */
   cls: {
     line: "ink",
@@ -42,9 +48,9 @@ export const FIG = {
   },
 } as const;
 
-export function Svg({ w, h, label, children }: { w: number; h: number; label: string; children: ReactNode }) {
+export function Svg({ w, h, label, children, viewBox }: { w: number; h: number; label: string; children: ReactNode; viewBox?: string }) {
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} className="cf-dg" role="img" aria-label={label}>
+    <svg viewBox={viewBox ?? `0 0 ${w} ${h}`} width={w} height={h} className="cf-dg" role="img" aria-label={label}>
       {children}
     </svg>
   );

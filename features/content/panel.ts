@@ -81,9 +81,14 @@ export function shapePath(shape: PanelShapeName, w: number, aspect = 0.6): strin
 }
 
 /** Default width of a shape, as a share of the cell. */
+/** Default width of a panel shape as a share of the cell (see FIG.mark). */
 export function defaultShapeSize(shape: PanelShapeName): number {
-  return shape === "dot" ? 0.09 : 0.24;
+  return shape === "dot" ? 0.06 : 0.15;
 }
+
+/** Default size of a panel letter and length of a panel arrow, as shares of the cell. */
+export const DEFAULT_GLYPH_SIZE = 0.2;
+export const DEFAULT_ARROW_LENGTH = 0.32;
 
 /** A unit vector for `deg` degrees clockwise from up (screen, y down). */
 export function dirVector(deg: number): Pt {
