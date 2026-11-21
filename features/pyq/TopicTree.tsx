@@ -27,9 +27,35 @@ export function TopicTree({
   disabled: boolean;
   onPick: (id: string, name: string) => void;
 }) {
+  // Topics in a row that share a group ("Arithmetic", "Advanced Maths") go under one heading.
+  const sections: { group: string | null; topics: PyqTopicNode[] }[] = [];
+  for (const t of topics) {
+    const last = sections[sections.length - 1];
+    if (last && last.group === (t.group ?? null)) last.topics.push(t);
+    else sections.push({ group: t.group ?? null, topics: [t] });
+  }
   return (
+    <div className="flex flex-col gap-6">
+      {sections.map((section, si) => (
+        <section key={section.group ?? `s${si}`} aria-label={section.group ?? undefined} className="flex flex-col gap-3">
+          {section.group && (
+            <h3 className="flex items-baseline gap-2 text-base font-extrabold text-foreground">
+              {section.group}
+              <span className="text-sm font-semibold text-muted-foreground">
+                {section.topics.reduce((n, t) => n + t.count, 0)} questions
+              </span>
+            </h3>
+          )}
+          {renderGrid(section.topics)}
+        </section>
+      ))}
+    </div>
+  );
+
+  function renderGrid(list: PyqTopicNode[]) {
+    return (
     <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {topics.map((topic) => {
+      {list.map((topic) => {
         const empty = topic.count === 0;
         return (
           <li key={topic.id} className={cn("surface-card flex h-full flex-col gap-3 rounded-3xl p-5", empty && "opacity-60")}>
@@ -89,5 +115,6 @@ export function TopicTree({
         );
       })}
     </ul>
-  );
+    );
+  }
 }

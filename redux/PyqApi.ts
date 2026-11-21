@@ -41,6 +41,8 @@ export interface PyqTopicNode {
   name: string;
   count: number;
   concepts: string[];
+  /** Topics only: the heading it sits under ("Arithmetic"); null when none. */
+  group?: string | null;
   children: PyqTopicNode[];
 }
 
