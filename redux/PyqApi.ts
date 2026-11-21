@@ -34,6 +34,16 @@ export interface PyqTopic {
   subtopics: string[];
 }
 
+/** A topic or subtopic from the topic list, with how many questions sit under it. */
+export interface PyqTopicNode {
+  /** Fixed ID, e.g. "quant.geometry.triangles"; pass it as `topic` to get a set. */
+  id: string;
+  name: string;
+  count: number;
+  concepts: string[];
+  children: PyqTopicNode[];
+}
+
 export interface PyqPaper {
   id: string;
   title: string;
@@ -71,6 +81,9 @@ export const pyqApi = flashcardApi.injectEndpoints({
     getPyqTopics: builder.query<PyqTopic[], SubjectKey>({
       query: (subject) => `/pyqs/topics?subject=${subject}`,
     }),
+    getPyqTopicTree: builder.query<PyqTopicNode[], SubjectKey>({
+      query: (subject) => `/pyqs/topic-tree?subject=${subject}`,
+    }),
     getPyqSet: builder.query<Pyq[], { subject: SubjectKey; topic?: string; limit?: number }>({
       query: ({ subject, topic, limit }) => {
         const params = new URLSearchParams({ subject });
@@ -107,6 +120,7 @@ export const pyqApi = flashcardApi.injectEndpoints({
 
 export const {
   useGetPyqTopicsQuery,
+  useGetPyqTopicTreeQuery,
   useLazyGetPyqSetQuery,
   useGetPyqPapersQuery,
   useLazyGetSectionalPaperQuery,

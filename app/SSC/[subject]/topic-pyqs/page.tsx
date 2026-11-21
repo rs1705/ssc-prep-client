@@ -9,6 +9,8 @@ import type { PyqSessionState } from "@/features/pyq/session";
 
 interface SavedSession {
   topic: string | null;
+  /** Topic-list ID of the set (older saves have none: the name is the filter). */
+  topicId?: string | null;
   session: PyqSessionState;
 }
 import { ArrowRight, Layers, RotateCcw, Shuffle } from "lucide-react";
@@ -20,13 +22,16 @@ import { PyqRunner } from "@/features/pyq/PyqRunner";
 import { useSubjectParam } from "@/features/pyq/useSubjectParam";
 import { SUBJECT_META } from "@/lib/exam-pattern";
 import { SUBJECT_LABEL, subjectTheme } from "@/lib/subject-theme";
-import { useGetPyqTopicsQuery, useLazyGetPyqSetQuery, type Pyq } from "@/redux/PyqApi";
+import { useGetPyqTopicsQuery, useGetPyqTopicTreeQuery, useLazyGetPyqSetQuery, type Pyq } from "@/redux/PyqApi";
+import { TopicTree } from "@/features/pyq/TopicTree";
 
 const SET_SIZE = 10;
 
 interface ActiveSet {
   /** null = mixed set across all topics */
   topic: string | null;
+  /** What to ask the server for: a topic-list ID, or the topic name for older topics. */
+  topicId?: string | null;
   questions: Pyq[];
   /** Changes on every new set so the runner starts fresh. */
   key: number;
@@ -39,6 +44,9 @@ export default function TopicPyqsPage() {
   const { data: topics, isLoading, isError, refetch } = useGetPyqTopicsQuery(subject ?? "maths", {
     skip: !subject,
   });
+  // The detailed topic list (topics → subtopics); empty until the server has it.
+  const { data: tree } = useGetPyqTopicTreeQuery(subject ?? "maths", { skip: !subject });
+  const hasTree = (tree?.length ?? 0) > 0 && tree!.some((t) => t.count > 0);
   const [fetchSet, { isFetching: isLoadingSet, isError: isSetError }] = useLazyGetPyqSetQuery();
   const [active, setActive] = useState<ActiveSet | null>(null);
   /** Which card is fetching its set ("__mixed" for the mixed set). */
@@ -56,7 +64,7 @@ export default function TopicPyqsPage() {
   const [unfinished, setUnfinished] = useState<Unfinished<SavedSession> | null>(null);
   const resumeSet = (run: Unfinished<SavedSession>) => {
     setUnfinished(null);
-    setActive({ topic: run.state.topic, questions: run.state.session.questions, key: Date.now(), session: run.state.session });
+    setActive({ topic: run.state.topic, topicId: run.state.topicId ?? run.state.topic, questions: run.state.session.questions, key: Date.now(), session: run.state.session });
   };
   useEffect(() => {
     const run = loadUnfinished<SavedSession>(window.location.pathname);
@@ -76,17 +84,18 @@ export default function TopicPyqsPage() {
   const total = topics?.reduce((sum, t) => sum + t.count, 0) ?? 0;
 
   // Play a set, remembering it so the dashboard's "Go again" can reopen it.
-  const play = (topic: string | null, questions: Pyq[], save = true) => {
+  const play = (topic: string | null, questions: Pyq[], save = true, topicId: string | null = topic) => {
     if (save) saveSet(window.location.pathname, questions, topic ?? "");
-    setActive({ topic, questions, key: Date.now() });
+    setActive({ topic, topicId, questions, key: Date.now() });
   };
 
-  const start = async (topic: string | null) => {
-    setPending(topic ?? "__mixed");
+  /** Starts a set: `topicId` is what the server filters by, `topic` the name shown. */
+  const start = async (topic: string | null, topicId: string | null = topic) => {
+    setPending(topicId ?? "__mixed");
     try {
-      const result = await fetchSet({ subject, topic: topic ?? undefined, limit: SET_SIZE });
+      const result = await fetchSet({ subject, topic: topicId ?? undefined, limit: SET_SIZE });
       if (result.data && result.data.length > 0) {
-        play(topic, result.data);
+        play(topic, result.data, true, topicId);
       }
     } finally {
       setPending(null);
@@ -103,9 +112,9 @@ export default function TopicPyqsPage() {
           title={`${active.topic ?? "Mixed topics"} · ${SUBJECT_LABEL[subject]}`}
           questions={active.questions}
           restartLabel="Another set"
-          onRestart={() => start(active.topic)}
+          onRestart={() => start(active.topic, active.topicId ?? active.topic)}
           onExit={() => setActive(null)}
-          onPlayQuestions={(questions) => play(active.topic, questions, false)}
+          onPlayQuestions={(questions) => play(active.topic, questions, false, active.topicId ?? active.topic)}
           initialSession={active.session}
           onProgress={(session) => {
             const path = window.location.pathname;
@@ -118,7 +127,7 @@ export default function TopicPyqsPage() {
               subject,
               done,
               total: session.questions.length,
-              state: { topic: active.topic, session },
+              state: { topic: active.topic, topicId: active.topicId ?? active.topic, session },
             });
           }}
         />
@@ -214,6 +223,16 @@ export default function TopicPyqsPage() {
             <h2 id="topics-heading" className="text-lg font-extrabold text-foreground">
               Choose a topic
             </h2>
+            {hasTree ? (
+              <TopicTree
+                topics={tree!}
+                theme={theme}
+                setSize={SET_SIZE}
+                pending={pending}
+                disabled={isLoadingSet}
+                onPick={(id, name) => start(name, id)}
+              />
+            ) : (
             <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {topics.map((topic) => (
                 <li key={topic.topic}>
@@ -250,6 +269,7 @@ export default function TopicPyqsPage() {
                 </li>
               ))}
             </ul>
+            )}
           </section>
         </div>
       )}
