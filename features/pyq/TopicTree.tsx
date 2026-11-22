@@ -33,9 +33,11 @@ export function TopicTree({
   // Topics in a row that share a group ("Arithmetic", "Advanced Maths") go under one heading.
   const sections: { group: string | null; topics: PyqTopicNode[] }[] = [];
   for (const t of topics) {
-    const last = sections[sections.length - 1];
-    if (last && last.group === (t.group ?? null)) last.topics.push(t);
-    else sections.push({ group: t.group ?? null, topics: [t] });
+    // Same group → same section, even when the topics aren't next to each other.
+    const g = t.group ?? null;
+    const same = g !== null ? sections.find((x) => x.group === g) : sections[sections.length - 1]?.group === null ? sections[sections.length - 1] : undefined;
+    if (same) same.topics.push(t);
+    else sections.push({ group: g, topics: [t] });
   }
   const groups = sections.filter((x) => x.group).map((x) => x.group!);
   const shown = filter ? sections.filter((x) => x.group === filter) : sections;
