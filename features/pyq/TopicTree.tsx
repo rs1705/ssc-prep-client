@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowRight, Layers } from "lucide-react";
 import { Spinner } from "@/components/custom/loader";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,8 @@ export function TopicTree({
   disabled: boolean;
   onPick: (id: string, name: string) => void;
 }) {
+  /** The group being shown (null = all). */
+  const [filter, setFilter] = useState<string | null>(null);
   // Topics in a row that share a group ("Arithmetic", "Advanced Maths") go under one heading.
   const sections: { group: string | null; topics: PyqTopicNode[] }[] = [];
   for (const t of topics) {
@@ -34,21 +37,61 @@ export function TopicTree({
     if (last && last.group === (t.group ?? null)) last.topics.push(t);
     else sections.push({ group: t.group ?? null, topics: [t] });
   }
+  const groups = sections.filter((x) => x.group).map((x) => x.group!);
+  const shown = filter ? sections.filter((x) => x.group === filter) : sections;
+
   return (
     <div className="flex flex-col gap-6">
-      {sections.map((section, si) => (
-        <section key={section.group ?? `s${si}`} aria-label={section.group ?? undefined} className="flex flex-col gap-3">
-          {section.group && (
-            <h3 className="flex items-baseline gap-2 text-base font-extrabold text-foreground">
-              {section.group}
-              <span className="text-sm font-semibold text-muted-foreground">
-                {section.topics.reduce((n, t) => n + t.count, 0)} questions
-              </span>
-            </h3>
-          )}
-          {renderGrid(section.topics)}
-        </section>
-      ))}
+      {groups.length > 1 && (
+        <div role="group" aria-label="Show topics from" className="flex flex-wrap gap-2">
+          {[null, ...groups].map((g) => (
+            <button
+              key={g ?? "all"}
+              type="button"
+              aria-pressed={filter === g}
+              onClick={() => setFilter(g)}
+              className={cn(
+                "min-h-9 rounded-full border-2 px-4 py-1.5 text-sm font-bold transition-colors",
+                filter === g ? "border-brand-500 bg-brand-500 text-white" : "border-border bg-card text-foreground hover:border-brand-500/60",
+              )}
+            >
+              {g ?? "All"}
+            </button>
+          ))}
+        </div>
+      )}
+      {shown.map((section, si) => {
+        const total = section.topics.reduce((n, t) => n + t.count, 0);
+        const key = section.group ? `group:${section.group}` : null;
+        return (
+          <section key={section.group ?? `s${si}`} aria-label={section.group ?? undefined} className="flex flex-col gap-3">
+            {section.group && (
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="flex items-baseline gap-2 text-base font-extrabold text-foreground">
+                  {section.group}
+                  <span className="text-sm font-semibold text-muted-foreground">{total} questions</span>
+                </h3>
+                {total > 0 && key && (
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => onPick(key, section.group!)}
+                    className="group inline-flex items-center gap-1.5 text-sm font-bold text-brand-700 disabled:opacity-60 dark:text-brand-400"
+                  >
+                    {pending === key ? "Loading questions" : `Practise ${Math.min(setSize, total)} from all of ${section.group}`}
+                    {pending === key ? (
+                      <Spinner tone="current" className="h-4 w-4" />
+                    ) : (
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                    )}
+                  </button>
+                )}
+              </div>
+            )}
+            {renderGrid(section.topics)}
+          </section>
+        );
+      })}
     </div>
   );
 
