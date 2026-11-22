@@ -24,6 +24,7 @@ import { SUBJECT_LABEL, subjectTheme } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import type { FullMock, Pyq } from "@/redux/PyqApi";
 import { buildAttempt, saveAttempt } from "./attempts";
+import { ScoreHero, SectionCards, TopicInsights } from "./ResultSummary";
 import { BTN } from "./examButtons";
 import { TextSizeControl } from "@/components/custom/text-size-control";
 import { QuestionStrip } from "@/features/pyq/QuestionStrip";
@@ -742,6 +743,8 @@ function Review({
   when,
 }: MockRunnerProps & { exam: ExamState; record?: boolean; when?: string }) {
   const [index, setIndex] = useState(0);
+  /** Which questions the review steps through. */
+  const [filter, setFilter] = useState<"all" | "wrong" | "skipped" | "right">("all");
   // Mark the saved answers with the usual PYQ rules (+2 / -0.5).
   const asSession = (questions: Pyq[]) => ({ ...createSession("test", questions), answers: exam.answers, submitted: true });
   const total = computeResult(asSession(exam.questions));
@@ -789,6 +792,30 @@ function Review({
     setIndex(i);
     document.getElementById("review-question")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+  const statusOf = (q: Pyq) => (!exam.answers[q.id] ? "skipped" : exam.answers[q.id] === q.answer ? "right" : "wrong");
+  const matches = (i: number) => filter === "all" || statusOf(exam.questions[i]) === filter;
+  const shown = exam.questions.map((_, i) => i).filter(matches);
+  const pos = shown.indexOf(index);
+  const step = (dir: -1 | 1) => {
+    const next = pos >= 0 ? shown[pos + dir] : shown.find((i) => (dir > 0 ? i > index : i < index));
+    if (next !== undefined) setIndex(next);
+  };
+  const pickFilter = (f: typeof filter) => {
+    setFilter(f);
+    const first = exam.questions.findIndex((q) => f === "all" || statusOf(q) === f);
+    if (first >= 0) setIndex(first);
+  };
+  const counts = {
+    all: exam.questions.length,
+    wrong: exam.questions.filter((q) => statusOf(q) === "wrong").length,
+    skipped: exam.questions.filter((q) => statusOf(q) === "skipped").length,
+    right: exam.questions.filter((q) => statusOf(q) === "right").length,
+  };
+  const sectionResults = exam.sections.map((s) => {
+    const r = computeResult(asSession(exam.questions.slice(s.start, s.end)));
+    return { subject: s.subject, start: s.start, correct: r.correct, wrong: r.wrong, skipped: r.skipped, marks: r.marks, maxMarks: r.maxMarks };
+  });
+  const subjectAt = (i: number) => (exam.sections.find((s) => i >= s.start && i < s.end) ?? exam.sections[0]).subject;
 
   return (
     <div className="flex h-[100dvh] flex-col bg-background">
@@ -808,17 +835,15 @@ function Review({
 
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 py-5 sm:px-6 sm:py-8">
-          <section aria-label="Result" className="grid gap-5 rounded-xl border border-border bg-card p-5 sm:p-6 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-10">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Your score</p>
-              <div className="mt-1 flex items-baseline gap-2">
-                <span className="font-mono text-5xl font-bold tabular-nums text-foreground sm:text-6xl">{total.marks}</span>
-                <span className="font-mono text-xl font-semibold text-muted-foreground">/ {total.maxMarks}</span>
-              </div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {total.correct} right · {total.wrong} wrong · {total.skipped} not answered · {total.accuracy}% accuracy
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
+          <ScoreHero
+            marks={total.marks}
+            maxMarks={total.maxMarks}
+            correct={total.correct}
+            wrong={total.wrong}
+            skipped={total.skipped}
+            accuracy={total.accuracy}
+            actions={
+              <>
                 <button type="button" onClick={onRestart} className={BTN.primary}>
                   <RotateCcw className="h-4 w-4" aria-hidden="true" />
                   {restartLabel}
@@ -826,44 +851,39 @@ function Review({
                 <button type="button" onClick={onExit} className={BTN.outline}>
                   {exitLabel}
                 </button>
-              </div>
+              </>
+            }
+          />
+          <SectionCards sections={sectionResults} onOpen={go} />
+          <TopicInsights questions={exam.questions} answers={exam.answers} subjectOf={subjectAt} />
+
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <h2 className="text-lg font-extrabold text-foreground">Review your answers</h2>
+            <div role="group" aria-label="Show questions" className="flex flex-wrap gap-1.5">
+              {(
+                [
+                  ["all", "All"],
+                  ["wrong", "Wrong"],
+                  ["skipped", "Not answered"],
+                  ["right", "Right"],
+                ] as const
+              ).map(([f, label]) => (
+                <button
+                  key={f}
+                  type="button"
+                  aria-pressed={filter === f}
+                  disabled={counts[f] === 0}
+                  onClick={() => pickFilter(f)}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs font-bold transition-colors disabled:opacity-40",
+                    filter === f ? "border-brand-600 bg-brand-600 text-white" : "border-border bg-card text-foreground hover:border-brand-500/60",
+                  )}
+                >
+                  {label} <span className="font-mono opacity-80">{counts[f]}</span>
+                </button>
+              ))}
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[20rem] text-sm">
-                <thead>
-                  <tr className="text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    <th className="py-2 pr-2 font-semibold">Section</th>
-                    <th className="px-2 text-right font-semibold">Right</th>
-                    <th className="px-2 text-right font-semibold">Wrong</th>
-                    <th className="px-2 text-right font-semibold">Skipped</th>
-                    <th className="pl-2 text-right font-semibold">Marks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {exam.sections.map((s) => {
-                    const res = computeResult(asSession(exam.questions.slice(s.start, s.end)));
-                    return (
-                      <tr key={s.subject} className="border-t border-border">
-                        <td className="py-2.5 pr-2">
-                          <button type="button" onClick={() => go(s.start)} className="flex items-center gap-2 font-semibold text-foreground hover:underline">
-                            <span className={cn("h-2.5 w-2.5 rounded-full", subjectTheme(s.subject).dot)} aria-hidden="true" />
-                            {SUBJECT_LABEL[s.subject]}
-                          </button>
-                        </td>
-                        <td className="px-2 text-right font-mono font-bold tabular-nums text-emerald-700 dark:text-emerald-300">{res.correct}</td>
-                        <td className="px-2 text-right font-mono font-bold tabular-nums text-rose-700 dark:text-rose-300">{res.wrong}</td>
-                        <td className="px-2 text-right font-mono font-bold tabular-nums text-muted-foreground">{res.skipped}</td>
-                        <td className="pl-2 text-right font-mono font-bold tabular-nums text-foreground">
-                          {res.marks}
-                          <span className="text-xs font-semibold text-muted-foreground">/{res.maxMarks}</span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          </div>
 
           <div className="sticky top-0 z-10 -mx-4 flex flex-col gap-1.5 border-y border-border bg-card/95 px-4 pb-1 pt-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden">
             <div className="flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
@@ -903,13 +923,14 @@ function Review({
                 <span className="rounded bg-brand-600 px-2 py-0.5 font-mono text-white">Q{index - sec.start + 1}</span>
                 <span className="text-muted-foreground">{SECTION_NAME[sec.subject]}</span>
                 {question.source && mock.kind === "mock" && <span className="text-muted-foreground">· {question.source}</span>}
+                {question.topic && <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground">{question.topic}</span>}
                 <span className="ml-auto">
                   {!chosen ? (
-                    <span className="text-muted-foreground">Not answered</span>
+                    <span className="rounded-full bg-muted px-2.5 py-1 text-muted-foreground">Not answered · 0</span>
                   ) : chosen === question.answer ? (
-                    <span className="text-emerald-700 dark:text-emerald-300">Correct · +{MARKS_CORRECT}</span>
+                    <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">Right · +{MARKS_CORRECT}</span>
                   ) : (
-                    <span className="text-rose-700 dark:text-rose-300">Wrong · {MARKS_WRONG}</span>
+                    <span className="rounded-full bg-rose-100 px-2.5 py-1 text-rose-800 dark:bg-rose-950 dark:text-rose-300">Wrong · {MARKS_WRONG}</span>
                   )}
                 </span>
               </div>
@@ -947,7 +968,19 @@ function Review({
                     );
                   })}
                 </div>
-                <details key={question.id} className="group rounded-lg border border-border">
+                {chosen !== question.answer && (
+                  <p className="text-sm text-muted-foreground">
+                    {chosen ? (
+                      <>
+                        You picked <b className="text-rose-700 dark:text-rose-300">{optionLetter(question.options.findIndex((o) => o.label === chosen))}</b>. The right answer is{" "}
+                      </>
+                    ) : (
+                      "The right answer is "
+                    )}
+                    <b className="text-emerald-700 dark:text-emerald-300">{optionLetter(question.options.findIndex((o) => o.label === question.answer))}</b>.
+                  </p>
+                )}
+                <details key={question.id} open={chosen !== question.answer} className="group rounded-lg border border-border">
                   <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-sm font-semibold text-brand-700 dark:text-brand-300 [&::-webkit-details-marker]:hidden">
                     <span className="group-open:hidden">Show explanation</span>
                     <span className="hidden group-open:inline">Hide explanation</span>
@@ -967,10 +1000,15 @@ function Review({
                 </details>
               </div>
               <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
-                <button type="button" disabled={index === 0} onClick={() => setIndex((i) => i - 1)} className={BTN.outline}>
+                <button type="button" disabled={!shown.some((i) => i < index)} onClick={() => step(-1)} className={BTN.outline}>
                   « Previous
                 </button>
-                <button type="button" disabled={index === exam.questions.length - 1} onClick={() => setIndex((i) => i + 1)} className={BTN.primary}>
+                {filter !== "all" && (
+                  <span className="text-xs text-muted-foreground">
+                    {pos >= 0 ? pos + 1 : "–"} of {shown.length} {filter === "skipped" ? "not answered" : filter}
+                  </span>
+                )}
+                <button type="button" disabled={!shown.some((i) => i > index)} onClick={() => step(1)} className={BTN.primary}>
                   Next »
                 </button>
               </div>
@@ -1005,6 +1043,7 @@ function Review({
                           "flex h-10 w-10 items-center justify-center rounded-lg border font-mono text-sm font-bold",
                           !a ? "border-border bg-muted text-muted-foreground" : a === q.answer ? "border-emerald-700 bg-emerald-600 text-white" : "border-rose-600 bg-rose-500 text-white",
                           sec.start + i === index && "ring-2 ring-amber-400 ring-offset-2 ring-offset-card",
+                          !matches(sec.start + i) && "opacity-30",
                         )}
                       >
                         {i + 1}
