@@ -2,7 +2,8 @@
 
 import { Spinner } from "@/components/custom/loader";
 import { PageLoader } from "@/components/custom/page-loader";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { loadSet, saveSet, useReplayRequest } from "@/features/games/sessionSet";
 import { clearUnfinished, loadUnfinished, saveUnfinished, takeResumeParam, type Unfinished } from "@/features/games/unfinished";
 import type { PyqSessionState } from "@/features/pyq/session";
@@ -40,7 +41,19 @@ interface ActiveSet {
 }
 
 export default function TopicPyqsPage() {
+  // The topic pages read ?topic= and ?sub= from the address.
+  return (
+    <Suspense fallback={<PageLoader text="Loading topics" />}>
+      <TopicPyqs />
+    </Suspense>
+  );
+}
+
+function TopicPyqs() {
   const subject = useSubjectParam();
+  const params = useSearchParams();
+  const openTopic = params.get("topic");
+  const openSub = params.get("sub");
   const { data: topics, isLoading, isError, refetch } = useGetPyqTopicsQuery(subject ?? "maths", {
     skip: !subject,
   });
@@ -155,7 +168,7 @@ export default function TopicPyqsPage() {
         />
       ) : (
         <div className="flex w-full flex-col gap-6 sm:gap-8">
-          {unfinished && (
+          {!(hasTree && openTopic) && unfinished && (
             <section
               aria-label="Unfinished set"
               className="flex flex-col gap-3 rounded-3xl border-2 border-brand-500/50 bg-[color-mix(in_oklab,var(--brand-500)_8%,var(--card))] p-4 sm:flex-row sm:items-center sm:p-5"
@@ -186,6 +199,7 @@ export default function TopicPyqsPage() {
           )}
 
           {/* Mixed set */}
+          {!(hasTree && openTopic) && (
           <button
             type="button"
             disabled={isLoadingSet}
@@ -212,6 +226,7 @@ export default function TopicPyqsPage() {
               )}
             </span>
           </button>
+          )}
 
           {isSetError && (
             <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300">
@@ -220,14 +235,18 @@ export default function TopicPyqsPage() {
           )}
 
           <section aria-labelledby="topics-heading" className="flex flex-col gap-3">
-            <h2 id="topics-heading" className="text-lg font-extrabold text-foreground">
-              Choose a topic
-            </h2>
+            {!(hasTree && openTopic) && (
+              <h2 id="topics-heading" className="text-lg font-extrabold text-foreground">
+                Choose a topic
+              </h2>
+            )}
             {hasTree ? (
               <TopicTree
                 topics={tree!}
                 theme={theme}
                 setSize={SET_SIZE}
+                topicId={openTopic}
+                subId={openSub}
                 pending={pending}
                 disabled={isLoadingSet}
                 onPick={(id, name) => start(name, id)}
