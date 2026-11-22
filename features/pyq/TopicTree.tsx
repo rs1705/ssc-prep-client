@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Layers } from "lucide-react";
+import { ArrowRight, ChevronDown, Layers } from "lucide-react";
 import { Spinner } from "@/components/custom/loader";
 import { cn } from "@/lib/utils";
 import type { HueTheme } from "@/lib/subject-theme";
@@ -119,7 +119,7 @@ export function TopicTree({
                     type="button"
                     disabled={disabled || sub.count === 0}
                     onClick={() => onPick(sub.id, sub.name)}
-                    title={sub.concepts.length ? sub.concepts.join(" · ") : undefined}
+                    title={sub.children.length ? sub.children.map((c) => c.name).join(" · ") : undefined}
                     className={cn(
                       "inline-flex min-h-9 items-center gap-1.5 rounded-full border-2 border-border px-3 py-1 text-sm font-semibold transition-colors",
                       sub.count === 0
@@ -136,6 +136,45 @@ export function TopicTree({
                 </li>
               ))}
             </ul>
+
+            {topic.children.some((sub) => sub.children.length > 0) && (
+              <details className="group/concepts rounded-xl border border-border bg-background/50">
+                <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3 py-2 text-sm font-bold text-foreground [&::-webkit-details-marker]:hidden">
+                  <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground transition-transform group-open/concepts:rotate-0" aria-hidden="true" />
+                  Practise by concept
+                </summary>
+                <div className="flex flex-col gap-3 border-t border-border px-3 py-3">
+                  {topic.children
+                    .filter((sub) => sub.children.length > 0)
+                    .map((sub) => (
+                      <div key={sub.id}>
+                        <p className="mb-1.5 text-xs font-bold uppercase tracking-wide text-muted-foreground">{sub.name}</p>
+                        <ul aria-label={`${sub.name} concepts`} className="flex flex-wrap gap-1.5">
+                          {sub.children.map((c) => (
+                            <li key={c.id}>
+                              <button
+                                type="button"
+                                disabled={disabled || c.count === 0}
+                                onClick={() => onPick(c.id, c.name)}
+                                className={cn(
+                                  "inline-flex min-h-8 items-center gap-1.5 rounded-full border border-border px-2.5 py-0.5 text-xs font-semibold transition-colors",
+                                  c.count === 0 ? "cursor-not-allowed text-muted-foreground/60" : `bg-card text-foreground ${theme.hoverBorder}`,
+                                )}
+                              >
+                                {c.name}
+                                <span className="font-mono text-muted-foreground">
+                                  {pending === c.id ? <Spinner tone="current" className="h-3 w-3" /> : c.count}
+                                </span>
+                                {c.count === 0 && <span className="sr-only">(no questions yet)</span>}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                </div>
+              </details>
+            )}
 
             <button
               type="button"
