@@ -264,6 +264,24 @@ export function QuickActions() {
   );
 }
 
+/** Phones only (desktop has the sidebar): one tap into each subject. */
+export function SubjectPills() {
+  return (
+    <nav aria-label="Subjects" className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:hidden">
+      {SUBJECTS.map((key) => (
+        <Link
+          key={key}
+          href={`/SSC/${key}`}
+          className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-card px-3.5 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+        >
+          <span className="h-2 w-2 rounded-full" style={{ background: HUE[key] }} aria-hidden="true" />
+          {key === "gk" ? "GK" : SUBJECT_LABEL[key]}
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
 /* ---------------- Rail: review ---------------- */
 
 export function ReviewPanel({ mistakes }: { mistakes: MistakeEntry[] }) {

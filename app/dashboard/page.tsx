@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/custom/ProtectedRoute";
 import { useAuth } from "@/context/auth";
-import { FocusPanel, Hero, QuickActions, SubjectsPanel } from "@/features/dashboard/Home";
+import { FocusPanel, Hero, QuickActions, SubjectPills, SubjectsPanel } from "@/features/dashboard/Home";
 import { PracticeCalendar } from "@/features/dashboard/PracticeCalendar";
 import { QuickQuestion } from "@/features/dashboard/Interactive";
 import { RecentPanel } from "@/features/dashboard/Recent";
@@ -34,6 +34,7 @@ export default function Dashboard() {
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
       <Hero name={name} greeting={greeting} unfinished={unfinished} week={now ? weekStats(activities, new Date(now)).activeDays : Array(7).fill(false)} />
       <QuickActions />
+      <SubjectPills />
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex min-w-0 flex-col gap-6">
