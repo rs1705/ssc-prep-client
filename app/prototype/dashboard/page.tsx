@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth";
-import { FocusPanel, Hero, QuickActions, SubjectsPanel, WeekPanel } from "@/features/dashboard/Home";
+import { FocusPanel, Hero, QuickActions, SubjectsPanel } from "@/features/dashboard/Home";
+import { PracticeCalendar } from "@/features/dashboard/PracticeCalendar";
 import { QuickQuestion } from "@/features/dashboard/Interactive";
 import { RecentPanel } from "@/features/dashboard/Recent";
 import { useAttempts } from "@/features/mock/attempts";
@@ -41,7 +42,7 @@ export default function DashboardPrototype() {
         </div>
         <aside className="flex flex-col gap-6" aria-label="Your progress">
           {now && <SubjectsPanel activities={activities} now={now} trees={trees} share={share} />}
-          {now && <WeekPanel activities={activities} now={now} />}
+          {now && <PracticeCalendar activities={activities} now={now} />}
         </aside>
       </div>
     </div>

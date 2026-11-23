@@ -144,7 +144,7 @@ export function AnalyticsView() {
             <div className="mt-4 flex h-36 gap-1.5" role="img" aria-label="Questions per day, coloured by accuracy">
               {days.map((d, i) => (
                 <div key={d.from} className="flex flex-1 flex-col items-center gap-1.5">
-                  <div className="relative w-full flex-1">
+                  <div className="relative w-full max-w-[18px] flex-1">
                     <div
                       className={cn("absolute inset-x-0 bottom-0 rounded-md transition-all duration-700", d.q ? band(d.acc).cell : "bg-muted")}
                       style={{ height: `${d.q ? Math.max(8, (d.q / maxQ) * 100) : 4}%` }}
@@ -168,30 +168,33 @@ export function AnalyticsView() {
               <span className="text-xs text-muted-foreground">Each square is a subtopic. Tap one to practise it.</span>
             </div>
             {loading && <p className="mt-3 text-sm text-muted-foreground">Loading topics…</p>}
-            <div className="mt-4 flex flex-col gap-6">
+            <div className="mt-4 flex flex-col gap-5">
               {subjects.map((s) => {
                 const topics = trees[s].filter((t) => t.count > 0);
                 if (topics.length === 0) return null;
                 return (
                   <div key={s}>
                     {filter === "all" && (
-                      <p className="mb-2 flex items-center gap-2 text-sm font-bold text-foreground">
+                      <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
                         <span className="h-2 w-2 rounded-full" style={{ background: HUE[s] }} aria-hidden="true" />
                         {SUBJECT_LABEL[s]}
                       </p>
                     )}
-                    <ul className="flex flex-col gap-2.5">
+                    <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
                       {topics.map((t) => {
                         const subs = t.children.map((c) => leaves.get(c.id)).filter((l): l is LeafInfo => !!l);
                         const tDone = subs.reduce((n, l) => n + l.done, 0);
                         const tRight = subs.reduce((n, l) => n + l.right, 0);
                         const tAcc = tDone ? tRight / tDone : null;
                         return (
-                          <li key={t.id} className="grid grid-cols-[minmax(0,10rem)_1fr_auto] items-center gap-3 sm:grid-cols-[minmax(0,14rem)_1fr_auto]">
-                            <Link href={`/SSC/${s}/topic-pyqs?topic=${encodeURIComponent(t.id)}`} className="truncate text-sm font-medium text-foreground hover:underline">
-                              {t.name}
-                            </Link>
-                            <span className="flex flex-wrap gap-1">
+                          <li key={t.id} className="rounded-xl border border-border/70 px-2.5 py-2">
+                            <span className="flex items-baseline justify-between gap-2">
+                              <Link href={`/SSC/${s}/topic-pyqs?topic=${encodeURIComponent(t.id)}`} className="truncate text-xs font-semibold text-foreground hover:underline">
+                                {t.name}
+                              </Link>
+                              <span className={cn("shrink-0 text-[11px] font-bold tabular-nums", band(tAcc).text)}>{tAcc === null ? "–" : `${Math.round(tAcc * 100)}%`}</span>
+                            </span>
+                            <span className="mt-1.5 flex flex-wrap gap-[3px]">
                               {subs.map((l) => {
                                 const a = l.done ? l.right / l.done : null;
                                 return (
@@ -199,14 +202,13 @@ export function AnalyticsView() {
                                     key={l.sub.id}
                                     href={practiseHref(l)}
                                     title={`${l.sub.name}: ${l.done ? `${Math.round((a ?? 0) * 100)}% right, ${Math.min(l.done, l.sub.count)}/${l.sub.count} done` : `${l.sub.count} questions, not started`}`}
-                                    className={cn("h-5 w-5 rounded-[5px] transition-transform hover:scale-125", band(a).cell, l.status === "review" && "ring-2 ring-orange-400 ring-offset-1 ring-offset-card")}
+                                    className={cn("h-3.5 w-3.5 rounded-[3px] transition-transform hover:scale-125", band(a).cell, l.status === "review" && "ring-2 ring-orange-400 ring-offset-1 ring-offset-card")}
                                   >
                                     <span className="sr-only">{l.sub.name}</span>
                                   </Link>
                                 );
                               })}
                             </span>
-                            <span className={cn("w-10 text-right text-xs font-bold tabular-nums", band(tAcc).text)}>{tAcc === null ? "–" : `${Math.round(tAcc * 100)}%`}</span>
                           </li>
                         );
                       })}
