@@ -19,7 +19,13 @@ export interface LeafInfo {
 }
 
 export const SUBJECTS: SubjectKey[] = ["maths", "reasoning", "english", "gk"];
-export const HUE: Record<SubjectKey, string> = { maths: "#f6c453", reasoning: "#a78bfa", english: "#f472b6", gk: "#5eead4" };
+/** The app's subject colours (lib/subject-theme.ts), for SVG strokes and inline fills. */
+export const HUE: Record<SubjectKey, string> = {
+  maths: "var(--color-sky-500)",
+  reasoning: "var(--color-orange-500)",
+  english: "var(--color-fuchsia-500)",
+  gk: "var(--color-teal-500)",
+};
 export const REVIEW = "#fb923c";
 const WEEK = 7 * 24 * 3600 * 1000;
 

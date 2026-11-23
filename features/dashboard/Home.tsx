@@ -6,7 +6,7 @@ import { ArrowRight, ArrowUpRight, Brain, Check, ClipboardCheck, Flame, Gamepad2
 import { resumeHref, type Unfinished } from "@/features/games/unfinished";
 import { HUE, practiseHref, type LeafInfo } from "@/features/pyq/topic-map";
 import { pickForReview, subjectStats, type ActivityEntry, type MistakeEntry } from "@/lib/activity-log";
-import { SUBJECT_LABEL, type SubjectKey } from "@/lib/subject-theme";
+import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { isStepDone, useTodayPlan } from "@/lib/today-plan";
 import { cn } from "@/lib/utils";
 import type { PyqTopicNode } from "@/redux/PyqApi";
@@ -218,8 +218,8 @@ export function SubjectsPanel({
                   <span className="text-xs tabular-nums text-muted-foreground">{stats.accuracy === null ? "–" : `${stats.accuracy}% right`}</span>
                   <span className="w-9 text-right text-sm font-bold tabular-nums text-foreground">{pct}%</span>
                 </span>
-                <span className="ml-4 block h-1 overflow-hidden rounded-full bg-muted">
-                  <span className="block h-full rounded-full transition-[width] duration-700" style={{ width: `${Math.max(pct, pct > 0 ? 3 : 0)}%`, background: HUE[key] }} />
+                <span className="ml-4 block h-1.5 overflow-hidden rounded-full bg-muted">
+                  <span className={cn("block h-full rounded-full bg-gradient-to-r transition-[width] duration-700", subjectTheme(key).bar)} style={{ width: `${Math.max(pct, pct > 0 ? 3 : 0)}%` }} />
                 </span>
               </Link>
             </li>
