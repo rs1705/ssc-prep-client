@@ -6,7 +6,7 @@ import { Check, Flag, Lock, Play, Trophy } from "lucide-react";
 import { EXAM_DATE_KEY } from "@/components/custom/exam-countdown";
 import { readStored } from "@/lib/storage";
 import { SUBJECT_LABEL, type SubjectKey } from "@/lib/subject-theme";
-import { HUE, SUBJECTS, useProgressMap } from "@/features/prototype/progress";
+import { HUE, SUBJECTS, useProgressMap } from "@/features/pyq/topic-map";
 import type { PyqTopicNode } from "@/redux/PyqApi";
 
 /**

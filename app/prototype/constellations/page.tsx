@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Crosshair, Play } from "lucide-react";
-import { HUE, practiseHref, REVIEW, rng, SUBJECTS, useProgressMap, type LeafInfo } from "@/features/prototype/progress";
+import { HUE, practiseHref, REVIEW, rng, SUBJECTS, useProgressMap, type LeafInfo } from "@/features/pyq/topic-map";
 import { SUBJECT_LABEL } from "@/lib/subject-theme";
 
 /**
