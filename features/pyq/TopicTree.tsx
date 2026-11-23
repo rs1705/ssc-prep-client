@@ -289,7 +289,8 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
 
   /* ---------- 1. All topics, under their group headings ---------- */
   const sections: [string, typeof topics][] = [];
-  for (const t of topics) {
+  // Topics with no questions yet stay hidden until some are published.
+  for (const t of topics.filter((x) => x.count > 0)) {
     const g = t.group || "Others";
     const sec = sections.find(([name]) => name === g);
     if (sec) sec[1].push(t);
