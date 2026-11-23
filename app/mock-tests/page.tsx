@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Play, RotateCcw } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Lock, Play, RotateCcw } from "lucide-react";
 import { Loader } from "@/components/custom/loader";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
 import { Label, panel } from "@/features/dashboard/Home";
 import { SECTION_SECONDS } from "@/features/mock/examSession";
 import { reviewHref, useAttempts } from "@/features/mock/attempts";
+import { usePaperLocks } from "@/features/mock/paperLocks";
+import { lockText } from "@/lib/unlocks";
 import { HUE } from "@/features/pyq/topic-map";
 import { MARKS_CORRECT, MARKS_WRONG } from "@/features/pyq/session";
 import { timeAgo } from "@/lib/activity-log";
@@ -26,6 +28,13 @@ const MINUTES = SECTION_SECONDS / 60;
 
 const attemptHref = (paper: string) => `/mock-tests/attempt?paper=${encodeURIComponent(paper)}`;
 
+/** How far along the way to unlocking (both the level and the practice count). */
+const lockProgress = (l: { levelNeeded: number; questionsNeeded: number; level: number; questions: number }) => {
+  const lv = l.level > 1 ? 1 - l.levelNeeded / l.level : 1;
+  const q = l.questions > 0 ? 1 - l.questionsNeeded / l.questions : 1;
+  return Math.max(0, Math.min(1, (lv + q) / 2));
+};
+
 const scoreTone = (p: number) =>
   p >= 0.6 ? "bg-emerald-500/12 text-emerald-700 dark:text-emerald-300" : p >= 0.4 ? "bg-amber-500/12 text-amber-700 dark:text-amber-300" : "bg-rose-500/12 text-rose-700 dark:text-rose-300";
 
@@ -38,7 +47,7 @@ export default function MockTestsPage() {
     const b = best.get(a.paperId);
     if (!b || a.marks > b.marks) best.set(a.paperId, { marks: a.marks, max: a.maxMarks, at: a.at });
   }
-  const sorted = [...(papers ?? [])].sort((x, y) => y.year - x.year || (y.date ?? "").localeCompare(x.date ?? ""));
+  const { sorted, locks } = usePaperLocks();
   const now = Date.now();
 
   return (
@@ -103,9 +112,38 @@ export default function MockTestsPage() {
             ) : (
               <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {sorted.map((paper) => {
+                  const lock = locks.get(paper.id);
                   const b = best.get(paper.id);
                   const p = b ? Math.max(0, b.marks) / Math.max(b.max, 1) : null;
                   return (
+                    lock && !lock.open ? (
+                      <li key={paper.id}>
+                        <div className={cn(panel, "flex h-full flex-col gap-4 border-dashed p-4")} aria-label={`${paper.shift ?? paper.year}: locked`}>
+                          <div className="flex items-start gap-3 opacity-60">
+                            <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-muted leading-none">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">CGL</span>
+                              <span className="font-mono text-sm font-black text-foreground">{paper.year}</span>
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block truncate font-bold text-foreground">{paper.shift ?? `SSC CGL ${paper.year}`}</span>
+                              <span className="block truncate text-xs text-muted-foreground">
+                                Tier 1 · {paper.questionCount} questions · {MINUTES * 4} min
+                              </span>
+                            </span>
+                            <Lock className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                          </div>
+                          <div className="mt-auto">
+                            <p className="text-xs font-semibold text-foreground">{lockText(lock)} to unlock</p>
+                            <span className="mt-1.5 block h-1.5 overflow-hidden rounded-full bg-muted">
+                              <span
+                                className="block h-full rounded-full bg-amber-400"
+                                style={{ width: `${Math.round(lockProgress(lock) * 100)}%` }}
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </li>
+                    ) : (
                     <li key={paper.id}>
                       <Link
                         href={attemptHref(paper.id)}
@@ -147,6 +185,7 @@ export default function MockTestsPage() {
                         </div>
                       </Link>
                     </li>
+                    )
                   );
                 })}
               </ul>

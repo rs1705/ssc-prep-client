@@ -4,7 +4,9 @@ import { PageLoader } from "@/components/custom/page-loader";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
+import { usePaperLocks } from "@/features/mock/paperLocks";
+import { lockText } from "@/lib/unlocks";
 import { BTN, MockReview, MockRunner } from "@/features/mock/MockRunner";
 import { findAttempt, type Attempt } from "@/features/mock/attempts";
 import { createExam, type ExamState } from "@/features/mock/examSession";
@@ -188,6 +190,24 @@ function Attempt() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  // A past paper that XP hasn't opened yet (lib/unlocks.ts). Fresh mocks and sections stay open.
+  const { locks, ready: locksReady } = usePaperLocks();
+  const lock = !section && paper !== "new" && locksReady ? locks.get(paper) : undefined;
+  if (lock && !lock.open) {
+    return (
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 bg-background p-6 text-center">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400/20 text-amber-600 dark:text-amber-300">
+          <Lock className="h-7 w-7" aria-hidden="true" />
+        </span>
+        <p className="text-lg font-bold text-foreground">This paper is locked</p>
+        <p className="max-w-sm text-sm text-muted-foreground">{lockText(lock)} to unlock it. Every question you practise earns XP.</p>
+        <button type="button" onClick={() => router.push("/mock-tests")} className={BTN.primary}>
+          Back to mock tests
+        </button>
+      </div>
+    );
+  }
 
   if (failed) {
     return (
