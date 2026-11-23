@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth";
 import { FocusPanel, Hero, QuickActions, SubjectsPanel, WeekPanel } from "@/features/dashboard/Home";
 import { QuickQuestion } from "@/features/dashboard/Interactive";
+import { RecentPanel } from "@/features/dashboard/Recent";
+import { useAttempts } from "@/features/mock/attempts";
 import { useUnfinished } from "@/features/games/unfinished";
 import { useProgressMap } from "@/features/pyq/topic-map";
 import { useActivityLog, weekStats } from "@/lib/activity-log";
@@ -18,6 +20,7 @@ export default function DashboardPrototype() {
   const { user } = useAuth();
   const { activities } = useActivityLog();
   const unfinished = useUnfinished();
+  const { attempts } = useAttempts();
   const { trees, leaves, share } = useProgressMap(false);
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => setNow(Date.now()), [activities]);
@@ -34,6 +37,7 @@ export default function DashboardPrototype() {
         <div className="flex min-w-0 flex-col gap-6">
           <QuickQuestion />
           {now && <FocusPanel leaves={leaves} now={now} />}
+          {now && <RecentPanel activities={activities} attempts={attempts} now={now} />}
         </div>
         <aside className="flex flex-col gap-6" aria-label="Your progress">
           {now && <SubjectsPanel activities={activities} now={now} trees={trees} share={share} />}
