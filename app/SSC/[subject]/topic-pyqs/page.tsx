@@ -23,7 +23,8 @@ import { PyqRunner } from "@/features/pyq/PyqRunner";
 import { useSubjectParam } from "@/features/pyq/useSubjectParam";
 import { SUBJECT_META } from "@/lib/exam-pattern";
 import { SUBJECT_LABEL, subjectTheme } from "@/lib/subject-theme";
-import { useGetPyqTopicsQuery, useGetPyqTopicTreeQuery, useLazyGetPyqSetQuery, type Pyq } from "@/redux/PyqApi";
+import { useGetPyqTopicsQuery, useGetPyqTopicTreeQuery, useLazyGetPyqSetQuery, useLazyGetQuestionsByIdsQuery, type Pyq } from "@/redux/PyqApi";
+import { readAnswered } from "@/features/pyq/answered";
 import { TopicTree } from "@/features/pyq/TopicTree";
 
 const SET_SIZE = 10;
@@ -61,6 +62,8 @@ function TopicPyqs() {
   const { data: tree } = useGetPyqTopicTreeQuery(subject ?? "maths", { skip: !subject });
   const hasTree = (tree?.length ?? 0) > 0 && tree!.some((t) => t.count > 0);
   const [fetchSet, { isFetching: isLoadingSet, isError: isSetError }] = useLazyGetPyqSetQuery();
+  const [fetchByIds, { isFetching: isLoadingIds }] = useLazyGetQuestionsByIdsQuery();
+  const [notice, setNotice] = useState<string | null>(null);
   const [active, setActive] = useState<ActiveSet | null>(null);
   /** Which card is fetching its set ("__mixed" for the mixed set). */
   const [pending, setPending] = useState<string | null>(null);
@@ -110,6 +113,33 @@ function TopicPyqs() {
       if (result.data && result.data.length > 0) {
         play(topic, result.data, true, topicId);
       }
+    } finally {
+      setPending(null);
+    }
+  };
+
+  /** Exactly these questions (a student's mistakes), in a random order, up to a set. */
+  const playIds = async (ids: string[], name: string, key: string) => {
+    setPending(key);
+    setNotice(null);
+    try {
+      const shuffled = [...ids].sort(() => Math.random() - 0.5).slice(0, SET_SIZE);
+      const result = await fetchByIds(shuffled);
+      if (result.data && result.data.length > 0) play(name, result.data, true, key);
+    } finally {
+      setPending(null);
+    }
+  };
+  /** A set of questions not answered yet under this topic, subtopic or concept. */
+  const pickNew = async (id: string, name: string) => {
+    setPending(`new:${id}`);
+    setNotice(null);
+    try {
+      const done = readAnswered();
+      const result = await fetchSet({ subject, topic: id, limit: 50 });
+      const fresh = (result.data ?? []).filter((q) => !done[q.id]).slice(0, SET_SIZE);
+      if (fresh.length > 0) play(`${name} · new`, fresh, true, id);
+      else setNotice(`You've answered every ${name} question. Practise all to go again.`);
     } finally {
       setPending(null);
     }
@@ -228,6 +258,12 @@ function TopicPyqs() {
           </button>
           )}
 
+          {notice && (
+            <p role="status" className="rounded-2xl border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground">
+              {notice}
+            </p>
+          )}
+
           {isSetError && (
             <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300">
               Couldn&apos;t load that set. Please try again.
@@ -247,8 +283,10 @@ function TopicPyqs() {
                 setSize={SET_SIZE}
                 topicId={openTopic}
                 subId={openSub}
+                onPlayIds={playIds}
+                onPickNew={pickNew}
                 pending={pending}
-                disabled={isLoadingSet}
+                disabled={isLoadingSet || isLoadingIds}
                 onPick={(id, name) => start(name, id)}
               />
             ) : (

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
+  RotateCcw,
+  Sparkles,
   ArrowLeft,
   ArrowRight,
   BarChart3,
@@ -29,7 +31,7 @@ import { Spinner } from "@/components/custom/loader";
 import { cn } from "@/lib/utils";
 import type { HueTheme } from "@/lib/subject-theme";
 import type { PyqTopicNode } from "@/redux/PyqApi";
-import { progressLabel, useTopicProgress, type NodeProgress } from "./answered";
+import { answeredUnder, progressLabel, useAnswered, useTopicProgress, type NodeProgress } from "./answered";
 
 /**
  * Topic practice in three pages, one level at a time:
@@ -68,6 +70,10 @@ type Props = {
   pending: string | null;
   disabled: boolean;
   onPick: (id: string, name: string) => void;
+  /** Plays exactly these questions (a student's mistakes). */
+  onPlayIds: (ids: string[], name: string, key: string) => void;
+  /** A set of questions the student hasn't answered yet. */
+  onPickNew: (id: string, name: string) => void;
 };
 
 function PractiseButton({ count, setSize, loading, disabled, onClick, children }: { count: number; setSize: number; loading: boolean; disabled: boolean; onClick: () => void; children?: React.ReactNode }) {
@@ -84,15 +90,59 @@ function PractiseButton({ count, setSize, loading, disabled, onClick, children }
   );
 }
 
-/** How much of `total` is done, and how much of that was right. */
+/** How much of `total` is done, in the subject's colour (accuracy is said in words). */
+let barFill = "bg-brand-500";
 function ProgressBar({ p, total, className }: { p?: NodeProgress; total: number; className?: string }) {
   const done = Math.min(p?.done ?? 0, total);
-  const right = Math.min(p?.right ?? 0, done);
   return (
     <span className={cn("flex h-1.5 overflow-hidden rounded-full bg-muted", className)} aria-hidden="true">
-      <span className="bg-emerald-500" style={{ width: `${total ? (right / total) * 100 : 0}%` }} />
-      <span className="bg-rose-400" style={{ width: `${total ? ((done - right) / total) * 100 : 0}%` }} />
+      <span className={cn("rounded-full bg-gradient-to-r", barFill)} style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
     </span>
+  );
+}
+
+/** "Retry my mistakes" and "New questions only" for a topic, subtopic or concept. */
+function RetryButtons({
+  nodeId,
+  name,
+  count,
+  answered,
+  pending,
+  disabled,
+  onPlayIds,
+  onPickNew,
+}: {
+  nodeId: string;
+  name: string;
+  count: number;
+  answered: ReturnType<typeof useAnswered>;
+  pending: string | null;
+  disabled: boolean;
+  onPlayIds: (ids: string[], name: string, key: string) => void;
+  onPickNew: (id: string, name: string) => void;
+}) {
+  const { all, wrong } = answeredUnder(answered, nodeId);
+  if (all.length === 0) return null;
+  const retryKey = `retry:${nodeId}`;
+  const newKey = `new:${nodeId}`;
+  const left = Math.max(0, count - all.length);
+  const btn =
+    "inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 text-sm font-semibold text-foreground transition-colors hover:border-brand-500/60 disabled:opacity-50";
+  return (
+    <div className="flex flex-wrap gap-2">
+      {wrong.length > 0 && (
+        <button type="button" disabled={disabled} onClick={() => onPlayIds(wrong, `${name} · mistakes`, retryKey)} className={btn}>
+          {pending === retryKey ? <Spinner tone="current" className="h-4 w-4" /> : <RotateCcw className="h-4 w-4" aria-hidden="true" />}
+          Retry my mistakes ({wrong.length})
+        </button>
+      )}
+      {left > 0 && (
+        <button type="button" disabled={disabled} onClick={() => onPickNew(nodeId, name)} className={btn}>
+          {pending === newKey ? <Spinner tone="current" className="h-4 w-4" /> : <Sparkles className="h-4 w-4" aria-hidden="true" />}
+          New questions only ({left})
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -123,9 +173,14 @@ function Row({ name, count, href, onClick, loading, progress }: { name: string; 
   );
 }
 
-export function TopicTree({ topics, theme, setSize, topicId, subId, pending, disabled, onPick }: Props) {
+export function TopicTree({ topics, theme, setSize, topicId, subId, pending, disabled, onPick, onPlayIds, onPickNew }: Props) {
   const path = usePathname();
   const progress = useTopicProgress();
+  const answered = useAnswered();
+  barFill = theme.bar;
+  const retry = (nodeId: string, name: string, count: number) => (
+    <RetryButtons nodeId={nodeId} name={name} count={count} answered={answered} pending={pending} disabled={disabled} onPlayIds={onPlayIds} onPickNew={onPickNew} />
+  );
   /** The group chip picked on the topics page (null = all). */
   const [group, setGroup] = useState<string | null>(null);
   const href = (topic?: string, sub?: string) => {
@@ -159,6 +214,7 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
           </div>
           <PractiseButton count={sub.count} setSize={setSize} loading={pending === sub.id} disabled={disabled} onClick={() => onPick(sub.id, sub.name)} />
         </header>
+        {retry(sub.id, sub.name, sub.count)}
         {concepts.length > 0 && (
           <section aria-labelledby="concepts-heading" className="flex flex-col gap-2">
             <h3 id="concepts-heading" className="text-sm font-extrabold text-foreground">
@@ -210,6 +266,7 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
             Practise all
           </PractiseButton>
         </header>
+        {retry(topic.id, topic.name, topic.count)}
         {asked.length > 0 && (
           <section aria-labelledby="subtopics-heading" className="flex flex-col gap-2">
             <h3 id="subtopics-heading" className="text-sm font-extrabold text-foreground">

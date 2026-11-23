@@ -69,6 +69,34 @@ export function progressByNode(answered: Record<string, Answered>): Map<string, 
   return out;
 }
 
+/** Question IDs answered under a topic-list node: all of them, and the ones last answered wrong. */
+export function answeredUnder(answered: Record<string, Answered>, nodeId: string): { all: string[]; wrong: string[] } {
+  const all: string[] = [];
+  const wrong: string[] = [];
+  for (const [id, a] of Object.entries(answered)) {
+    if (!a.tags.some((t) => t === nodeId || t.startsWith(`${nodeId}.`))) continue;
+    all.push(id);
+    if (!a.ok) wrong.push(id);
+  }
+  return { all, wrong };
+}
+
+/** Live answered record (updates when answers are recorded or synced). */
+export function useAnswered(): Record<string, Answered> {
+  const [answered, setAnswered] = useState<Record<string, Answered>>({});
+  useEffect(() => {
+    const load = () => setAnswered(readAnswered());
+    load();
+    window.addEventListener(ANSWERED_EVENT, load);
+    window.addEventListener("storage", load);
+    return () => {
+      window.removeEventListener(ANSWERED_EVENT, load);
+      window.removeEventListener("storage", load);
+    };
+  }, []);
+  return answered;
+}
+
 /** Live progress for the topic pages (updates when answers are recorded or synced). */
 export function useTopicProgress(): Map<string, NodeProgress> {
   const [progress, setProgress] = useState<Map<string, NodeProgress>>(new Map());
