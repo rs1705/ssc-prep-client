@@ -295,6 +295,8 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
     if (sec) sec[1].push(t);
     else sections.push([g, [t]]);
   }
+  // Bigger groups first, so the page doesn't open on rows of single cards.
+  sections.sort((x, y) => y[1].length - x[1].length);
   return (
     <div className="flex flex-col gap-6">
       {sections.map(([groupName, list]) => (
