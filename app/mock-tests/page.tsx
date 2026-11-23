@@ -150,9 +150,9 @@ export default function MockTestsPage() {
                         className={cn(panel, "group flex h-full flex-col gap-4 p-4 transition-all hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-md")}
                       >
                         <div className="flex items-start gap-3">
-                          <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-muted leading-none">
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground">CGL</span>
-                            <span className="font-mono text-sm font-black text-foreground">{paper.year}</span>
+                          <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-500/12 leading-none ring-1 ring-inset ring-brand-500/20 transition-colors group-hover:bg-brand-500/18">
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-brand-600/80 dark:text-brand-300/80">CGL</span>
+                            <span className="font-mono text-sm font-black text-brand-700 dark:text-brand-300">{paper.year}</span>
                           </span>
                           <span className="min-w-0 flex-1">
                             <span className="block truncate font-bold text-foreground">{paper.shift ?? `SSC CGL ${paper.year}`}</span>
