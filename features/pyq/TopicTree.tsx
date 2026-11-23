@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   RotateCcw,
@@ -181,8 +180,6 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
   const retry = (nodeId: string, name: string, count: number) => (
     <RetryButtons nodeId={nodeId} name={name} count={count} answered={answered} pending={pending} disabled={disabled} onPlayIds={onPlayIds} onPickNew={onPickNew} />
   );
-  /** The group chip picked on the topics page (null = all). */
-  const [group, setGroup] = useState<string | null>(null);
   const href = (topic?: string, sub?: string) => {
     const q = new URLSearchParams();
     if (topic) q.set("topic", topic);
@@ -291,63 +288,34 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
   }
 
   /* ---------- 1. All topics ---------- */
-  const groups = [...new Set(topics.map((t) => t.group).filter((g): g is string => !!g))];
-  const shown = group ? topics.filter((t) => t.group === group) : topics;
-  const groupTotal = shown.reduce((n, t) => n + t.count, 0);
   return (
     <div className="flex flex-col gap-4">
-      {groups.length > 1 && (
-        <div role="group" aria-label="Show topics from" className="flex flex-wrap gap-2">
-          {[null, ...groups].map((g) => {
-            const Icon = g ? (GROUP_ICON[g] ?? Layers) : null;
-            return (
-              <button
-                key={g ?? "all"}
-                type="button"
-                aria-pressed={group === g}
-                onClick={() => setGroup(g)}
-                className={cn(
-                  "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors",
-                  group === g ? "border-brand-600 bg-brand-600 text-white" : "border-border bg-card text-foreground hover:border-brand-500/60",
-                )}
-              >
-                {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
-                {g ?? "All topics"}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
-      {group && groupTotal > 0 && (
-        <div className="surface-card flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-3">
-          <p className="text-sm text-muted-foreground">
-            <span className="font-bold text-foreground">{group}</span> · {groupTotal} questions across {shown.length} {shown.length === 1 ? "topic" : "topics"}
-          </p>
-          <PractiseButton count={groupTotal} setSize={setSize} loading={pending === `group:${group}`} disabled={disabled} onClick={() => onPick(`group:${group}`, group)}>
-            Practise all {group}
-          </PractiseButton>
-        </div>
-      )}
-
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
-        {shown.map((t) => {
+        {topics.map((t) => {
           const Icon = iconFor(t);
-          const asked = t.children.filter((s) => s.count > 0).length;
+          const done = Math.min(progress.get(t.id)?.done ?? 0, t.count);
+          const pct = t.count ? Math.round((done / t.count) * 100) : 0;
           const body = (
             <>
               <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", t.count ? theme.iconWrap : "bg-muted text-muted-foreground")}>
                 <Icon className="h-5 w-5" aria-hidden="true" />
               </span>
               <span>
-                {t.group && !group && <span className="block text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{t.group}</span>}
+                {t.group && <span className="block text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{t.group}</span>}
                 <span className={cn("block text-[15px] font-bold leading-snug", t.count ? "text-foreground" : "text-muted-foreground")}>{t.name}</span>
               </span>
               <span className="mt-auto flex flex-col gap-1.5">
-                <span className="text-xs text-muted-foreground">
-                  {t.count ? (progressLabel(progress.get(t.id), t.count) ?? `${t.count} questions · ${asked}/${t.children.length} subtopics`) : "Not asked yet"}
-                </span>
-                {t.count > 0 && <ProgressBar p={progress.get(t.id)} total={t.count} />}
+                {t.count > 0 ? (
+                  <>
+                    <span className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
+                      <span>{t.count} questions</span>
+                      <span className="font-semibold text-foreground">{pct}% complete</span>
+                    </span>
+                    <ProgressBar p={progress.get(t.id)} total={t.count} />
+                  </>
+                ) : (
+                  <span className="text-xs text-muted-foreground">Not asked yet</span>
+                )}
               </span>
             </>
           );
