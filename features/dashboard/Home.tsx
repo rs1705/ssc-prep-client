@@ -20,6 +20,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { resumeHref, type Unfinished } from "@/features/games/unfinished";
+import { CountUp, MistakeFlip } from "./Interactive";
 import { HUE, practiseHref, type LeafInfo } from "@/features/pyq/topic-map";
 import { pickForReview, subjectStats, timeAgo, type ActivityEntry, type MistakeEntry } from "@/lib/activity-log";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
@@ -98,8 +99,8 @@ export function TodayCard({ week }: { week: boolean[] }) {
         {/* streak and the week */}
         <div className="flex items-center gap-3 rounded-2xl bg-muted/60 px-3 py-2">
           <span className={cn("flex items-center gap-1 text-sm font-extrabold", streak > 0 ? "text-orange-500" : "text-muted-foreground")}>
-            <Flame className="h-4 w-4" aria-hidden="true" />
-            {streak}
+            <Flame className={cn("h-4 w-4", streak > 0 && "motion-safe:animate-flicker")} aria-hidden="true" />
+            <CountUp value={streak} />
           </span>
           <ol className="flex gap-1" aria-label="This week">
             {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
@@ -107,7 +108,7 @@ export function TodayCard({ week }: { week: boolean[] }) {
                 key={i}
                 className={cn(
                   "flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold",
-                  week[i] ? "bg-orange-500 text-white" : i === todayIdx ? "border border-dashed border-orange-400 text-orange-500" : "bg-card text-muted-foreground",
+                  week[i] ? "bg-orange-500 text-white" : i === todayIdx ? "border border-dashed border-orange-400 text-orange-500 motion-safe:animate-pulse" : "bg-card text-muted-foreground",
                 )}
               >
                 {week[i] ? <Check className="h-3 w-3" aria-label={`${d} practised`} /> : d}
@@ -128,7 +129,7 @@ export function TodayCard({ week }: { week: boolean[] }) {
               <Link
                 href={step.href}
                 className={cn(
-                  "group flex h-full items-center gap-3 rounded-2xl border p-3 transition-colors",
+                  "group flex h-full items-center gap-3 rounded-2xl border p-3 transition-all hover:-translate-y-0.5 hover:shadow-sm",
                   isDone ? "border-transparent bg-muted/50" : isNext ? "border-brand-500/50 bg-brand-500/5 hover:border-brand-500" : "border-border hover:bg-muted/60",
                 )}
               >
@@ -138,7 +139,7 @@ export function TodayCard({ week }: { week: boolean[] }) {
                     isDone ? "bg-emerald-500 text-white" : isNext ? "bg-brand-500 text-white" : "bg-muted text-muted-foreground",
                   )}
                 >
-                  {isDone ? <Check className="h-4 w-4" aria-hidden="true" /> : <Icon className="h-4 w-4" aria-hidden="true" />}
+                  {isDone ? <Check className="h-4 w-4 motion-safe:animate-pop" aria-hidden="true" /> : <Icon className="h-4 w-4" aria-hidden="true" />}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className={cn("block truncate text-sm font-bold", isDone ? "text-muted-foreground line-through" : "text-foreground")}>{step.title}</span>
@@ -183,7 +184,7 @@ export function ReviewCard({ mistakes }: { mistakes: MistakeEntry[] }) {
       {due > 0 ? (
         <>
           <p className="text-foreground">
-            <span className="text-4xl font-extrabold tabular-nums">{due}</span>
+            <CountUp value={due} className="text-3xl font-extrabold" />
             <span className="ml-2 text-sm font-semibold text-muted-foreground">mistakes to fix</span>
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -193,8 +194,9 @@ export function ReviewCard({ mistakes }: { mistakes: MistakeEntry[] }) {
               </span>
             ))}
           </div>
-          <Link href="/review" className={cn(primaryBtn, "mt-auto w-full")}>
-            Review {Math.min(due, 10)} now
+          <MistakeFlip due={pickForReview(mistakes, 10)} />
+          <Link href="/review" className="mt-auto text-center text-sm font-semibold text-brand-600 hover:underline dark:text-brand-400">
+            Full review session
           </Link>
         </>
       ) : (
@@ -275,7 +277,7 @@ export function SubjectsRow({
             .sort((a, b) => a.right / a.done - b.right / b.done)[0];
           return (
             <li key={key}>
-              <Link href={`/SSC/${key}`} className={cn(card, "group flex h-full flex-col gap-3 !p-4 transition-colors sm:!p-5", theme.hoverBorder)}>
+              <Link href={`/SSC/${key}`} className={cn(card, "group flex h-full flex-col gap-3 !p-4 transition-all hover:-translate-y-0.5 hover:shadow-md sm:!p-5", theme.hoverBorder)}>
                 <div className="flex items-start justify-between gap-2">
                   <span className={cn("flex h-10 w-10 items-center justify-center rounded-xl", theme.iconWrap)}>
                     <Icon className="h-5 w-5" aria-hidden="true" />
@@ -315,7 +317,7 @@ export function FocusCard({ leaves, now }: { leaves: Map<string, LeafInfo>; now:
     return [...due, ...shaky, ...fresh].slice(0, 5);
   }, [leaves]);
   return (
-    <section aria-labelledby="focus-heading" className={cn(card, "flex flex-col gap-3 lg:col-span-2")}>
+    <section aria-labelledby="focus-heading" className={cn(card, "flex flex-col gap-3 lg:col-span-3")}>
       <div className="flex items-center justify-between">
         <h2 id="focus-heading" className="flex items-center gap-2 text-sm font-bold text-foreground">
           <Target className="h-4 w-4 text-brand-500" aria-hidden="true" />
@@ -394,7 +396,7 @@ export function WeekStatsCard({ activities, now }: { activities: ActivityEntry[]
       </h2>
       <div className="flex gap-6">
         <div>
-          <p className="text-2xl font-extrabold tabular-nums text-foreground">{q}</p>
+          <CountUp value={q} className="block text-2xl font-extrabold text-foreground" />
           <p className="text-xs text-muted-foreground">questions</p>
         </div>
         <div>
@@ -405,9 +407,9 @@ export function WeekStatsCard({ activities, now }: { activities: ActivityEntry[]
       <div className="mt-auto flex h-24 items-end gap-2" role="img" aria-label="Questions per day this week">
         {days.map((d, i) => (
           <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
-            <div className="flex w-full flex-1 items-end">
+            <div className="relative w-full flex-1">
               <div
-                className={cn("w-full rounded-md transition-all", i === todayIdx ? "bg-brand-500" : d.q ? "bg-brand-500/40" : "bg-muted")}
+                className={cn("absolute inset-x-0 bottom-0 rounded-md transition-all", i === todayIdx ? "bg-brand-500" : d.q ? "bg-brand-500/40" : "bg-muted")}
                 style={{ height: `${d.q ? Math.max(8, (d.q / max) * 100) : 6}%` }}
                 title={`${d.q} questions`}
               />

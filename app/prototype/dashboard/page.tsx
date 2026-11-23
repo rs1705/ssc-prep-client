@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth";
 import { HeaderCountdown } from "@/features/dashboard/HeaderCountdown";
 import { FocusCard, ResumeCard, ReviewCard, SubjectsRow, TodayCard, WeekStatsCard } from "@/features/dashboard/Home";
+import { QuickQuestion } from "@/features/dashboard/Interactive";
 import { useUnfinished } from "@/features/games/unfinished";
 import { useProgressMap } from "@/features/pyq/topic-map";
 import { useActivityLog, weekStats } from "@/lib/activity-log";
@@ -36,14 +37,17 @@ export default function DashboardPrototype() {
       </header>
 
       <div className="grid gap-5 lg:grid-cols-3">
-        <TodayCard week={week} />
+        <div className="flex flex-col gap-5 lg:col-span-2">
+          <TodayCard week={week} />
+          <QuickQuestion />
+        </div>
         <div className="flex flex-col gap-5">
           <ReviewCard mistakes={mistakes} />
           {ready && now && <ResumeCard unfinished={unfinished} activities={activities} now={now} />}
+          {now && <WeekStatsCard activities={activities} now={now} />}
         </div>
         {now && <SubjectsRow activities={activities} now={now} trees={trees} share={share} leaves={leaves} />}
         {now && <FocusCard leaves={leaves} now={now} />}
-        {now && <WeekStatsCard activities={activities} now={now} />}
       </div>
     </div>
   );
