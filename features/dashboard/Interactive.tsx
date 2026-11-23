@@ -6,7 +6,7 @@ import { ArrowRight, Check, Eye, RefreshCw, Sparkles, X } from "lucide-react";
 import { recordAnswers } from "@/features/pyq/answered";
 import { RichText } from "@/features/pyq/RichText";
 import { logActivity, logMistakes, plainText, recordReview, type MistakeEntry } from "@/lib/activity-log";
-import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
+import { SUBJECT_LABEL, type SubjectKey } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import { useLazyGetPyqSetQuery, type Pyq } from "@/redux/PyqApi";
 
@@ -88,16 +88,15 @@ export function QuickQuestion() {
   };
 
   const next = () => setSubjectIdx((i) => (i + 1) % ROTATION.length);
-  const theme = subjectTheme(subject);
   const right = picked && q ? picked === q.answer : null;
 
   return (
-    <section aria-labelledby="quick-heading" className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-5 sm:p-6 lg:col-span-2">
+    <section aria-labelledby="quick-heading" className="flex flex-col gap-4 rounded-3xl border border-border/70 bg-card p-5 sm:p-6">
       <div className="flex items-center justify-between gap-2">
-        <h2 id="quick-heading" className="flex items-center gap-2 text-sm font-bold text-foreground">
-          <Sparkles className="h-4 w-4 text-brand-500" aria-hidden="true" />
-          Quick question
-          <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", theme.chip)}>{SUBJECT_LABEL[subject]}</span>
+        <h2 id="quick-heading" className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+          One quick question
+          <span className="font-semibold normal-case tracking-normal">· {SUBJECT_LABEL[subject]}</span>
         </h2>
         {streak > 1 && (
           <span key={streak} className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-bold text-emerald-700 motion-safe:animate-pop dark:text-emerald-300">
@@ -160,13 +159,13 @@ export function QuickQuestion() {
                 {right ? "Correct!" : "Not quite. Saved to your review list."}
                 <span className="ml-1 font-normal text-muted-foreground">{q.source ? `From ${q.source}` : ""}</span>
               </p>
-              <div className="flex gap-2">
-                <Link href={`/SSC/${subject}/topic-pyqs`} className="inline-flex h-9 items-center rounded-xl px-3 text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground">
+              <div className="flex items-center gap-4">
+                <Link href={`/SSC/${subject}/topic-pyqs`} className="text-sm font-semibold text-muted-foreground hover:text-foreground">
                   More like this
                 </Link>
-                <button type="button" onClick={next} className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-brand-500 px-4 text-sm font-bold text-white hover:bg-brand-600">
-                  Next question
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <button type="button" onClick={next} className="group inline-flex items-center gap-1 text-sm font-bold text-foreground hover:underline">
+                  Another one
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                 </button>
               </div>
             </div>
