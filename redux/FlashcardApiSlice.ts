@@ -30,6 +30,8 @@ export interface ReviewArgs {
 
 export interface ReviewResult {
   cardId: string;
+  /** Due date per rating if the card is rated again now (older servers leave it out). */
+  nextReview?: Record<"1" | "2" | "3" | "4", string>;
   rating: ReviewRating;
   dueDate: string;
   state: number;

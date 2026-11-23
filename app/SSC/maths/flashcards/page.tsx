@@ -107,6 +107,7 @@ export default function MathsFlashcardsPage() {
         <FlashcardDeck<MathsCardItem>
           deck={cards}
           mode="freestyle"
+          planDeck="maths"
           resetKey={deckId}
           shuffled={shuffled}
           onPosition={onPosition}

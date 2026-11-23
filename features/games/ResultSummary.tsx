@@ -89,8 +89,8 @@ export function ResultSummary({
   useEffect(() => {
     if (counted.current) return;
     counted.current = true;
-    recordPlanActivity("game");
     const path = window.location.pathname;
+    recordPlanActivity("game", path);
     const route = describeRoute(path);
     // With a saved set, the dashboard's "Go again" reopens this exact set.
     const href = onReplaySet ? replayHref(path) : path;

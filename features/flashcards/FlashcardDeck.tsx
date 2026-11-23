@@ -41,6 +41,10 @@ interface FlashcardDeckProps<T extends DeckItem> {
    * shuffled). Finishing the deck clears it, so the next visit starts from the top.
    */
   rememberKey?: string;
+  /** Which deck this is for today's plan ("10 flashcards" counts only the deck it names). */
+  planDeck: "english" | "maths";
+  /** Freestyle end screen: where to go next (e.g. the next letter) once nothing is left to review. */
+  nextDeck?: { label: string; onClick: () => void };
 }
 
 type Mark = "known" | "learning";
@@ -71,6 +75,8 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
   renderCard,
   backHref,
   rememberKey,
+  planDeck,
+  nextDeck,
 }: FlashcardDeckProps<T>) {
   const remember = rememberKey && !shuffled ? rememberKey : null;
   /** Where to open `cards`: the remembered card, or the first one. */
@@ -168,30 +174,41 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
     (value: Mark) => {
       if (!card) return;
       setMarks((m) => ({ ...m, [card._id]: value }));
-      recordPlanActivity("cards");
+      recordPlanActivity("cards", planDeck);
       next();
     },
-    [card, next],
+    [card, next, planDeck],
   );
 
   const rate = useCallback(
     (rating: 1 | 2 | 3 | 4) => {
       if (!card) return;
       setRatings((r) => ({ ...r, [card._id]: rating }));
-      recordPlanActivity("cards");
+      recordPlanActivity("cards", planDeck);
+      // "Again" means it didn't stick: the card comes back at the end of this session
+      // (FSRS has it due again in a minute), not only on the next visit.
+      const again = rating === 1;
+      const at = index;
+      if (again) setOrder((o) => [...o, card]);
       const timeTaken = Math.round((Date.now() - shownAt.current) / 1000);
       saveReview({ cardId: card._id, rating, timeTaken })
         .unwrap()
-        .then((res) =>
-          setNextDue((due) => (!due || new Date(res.dueDate) < new Date(due) ? res.dueDate : due)),
-        )
+        .then((res) => {
+          // The repeat copy shows the intervals for its new state, not the first one's.
+          const preview = res.nextReview;
+          if (again && preview) {
+            setOrder((o) => o.map((c, i) => (i > at && c._id === card._id ? { ...c, nextReview: preview } : c)));
+          }
+          if (!again) setNextDue((due) => (!due || new Date(res.dueDate) < new Date(due) ? res.dueDate : due));
+        })
         .catch(() => {
           // The review stays counted locally; the next session will resend due cards.
         });
       track("flashcard_rated", { rating, mode, cardId: card._id });
-      next();
+      if (index + 1 >= order.length + (again ? 1 : 0)) setFinished(true);
+      else goTo(index + 1, 1);
     },
-    [card, mode, next, saveReview],
+    [card, index, mode, order.length, goTo, saveReview, planDeck],
   );
 
   // Keyboard: Space/Enter flip, arrows move (freestyle), number keys answer.
@@ -226,6 +243,11 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
             ? "You're all caught up for today. Come back tomorrow for new cards."
             : "No flashcards match these filters. Try another letter or clear the filters."}
         </p>
+        {mode === "freestyle" && nextDeck && (
+          <button type="button" onClick={nextDeck.onClick} className={cn(DUO.primary, "mt-3 px-5")}>
+            {nextDeck.label}
+          </button>
+        )}
       </div>
     );
   }
@@ -261,7 +283,7 @@ export default function FlashcardDeck<T extends DeckItem = FlashCardInterface>({
         primary={
           learning.length > 0
             ? { label: `Review the ${learning.length} I'm still learning`, onClick: () => start(learning) }
-            : undefined
+            : nextDeck
         }
         onRestart={() => start(order)}
         onShuffle={() => start(shuffle(order))}

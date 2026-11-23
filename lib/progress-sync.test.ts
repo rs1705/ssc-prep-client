@@ -22,7 +22,7 @@ Object.assign(globalThis, {
 
 const { applyDoc, buildLocalDoc, clearLocalProgress, isSyncedKey, OWNER_KEY, startProgressSync } = await import("./progress-sync");
 const { dismissMistake, logActivity, logMistakes, readMistakes } = await import("./activity-log");
-const { recordPlanActivity } = await import("./today-plan");
+const { buildPlan, recordPlanActivity } = await import("./today-plan");
 const { clearUnfinished, saveUnfinished } = await import("@/features/games/unfinished");
 
 beforeEach(() => store.clear());
@@ -31,7 +31,8 @@ describe("progress document", () => {
   it("collects everything that syncs from the device", () => {
     logActivity({ kind: "game", subject: "english", label: "Cloze", href: "/c" }, 5);
     logMistakes([{ subject: "english", source: "Cloze", prompt: "q1", answer: "a", href: "/c" }], 6);
-    recordPlanActivity("cards", 3, new Date(2026, 10, 12, 9));
+    const day = new Date(2026, 10, 12, 9);
+    recordPlanActivity("cards", buildPlan(day).find((s) => s.id === "cards")!.counts, 3, day);
     saveUnfinished({ path: "/p", label: "P", subject: "english", done: 2, total: 10, state: {} }, 7);
     store.set("ssc:exam-date", JSON.stringify("2027-02-15"));
     store.set("ssc:preferences", JSON.stringify({ sound: true })); // device setting: not synced

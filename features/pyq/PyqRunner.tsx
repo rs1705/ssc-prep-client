@@ -105,7 +105,7 @@ export function PyqRunner({
   useEffect(() => {
     if ((state.submitted || practiceDone) && !counted.current) {
       counted.current = true;
-      recordPlanActivity("pyq");
+      recordPlanActivity("pyq", subject);
       const path = window.location.pathname;
       logActivity({
         kind: "pyq",

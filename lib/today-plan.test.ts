@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { PLAN_STEP_DONE_EVENT, buildPlan, dayKey, isStepDone, readProgress, readStreak, recordPlanActivity, type PlanStepDoneDetail } from "./today-plan";
+import { PLAN_STEP_DONE_EVENT, activityCounts, buildPlan, dayKey, isStepDone, readProgress, readStreak, recordPlanActivity, type PlanStepDoneDetail, type PlanStepId } from "./today-plan";
 
 // Minimal browser stand-ins: the plan only needs localStorage and events.
 const store = new Map<string, string>();
@@ -19,14 +19,19 @@ Object.assign(globalThis, {
   },
 });
 
+/** Does the activity today's plan asks for (the right drill, subject, deck or game). */
+function act(step: PlanStepId, amount: number, date: Date) {
+  recordPlanActivity(step, buildPlan(date).find((s) => s.id === step)!.counts, amount, date);
+}
+
 const DAY = new Date(2026, 10, 11, 9, 0); // 11 Nov 2026, local time
 const nextDay = (d: Date, n = 1) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, 9, 0);
 
 function finishAll(date: Date) {
-  recordPlanActivity("drill", 1, date);
-  recordPlanActivity("pyq", 1, date);
-  recordPlanActivity("cards", 10, date);
-  recordPlanActivity("game", 1, date);
+  act("drill", 1, date);
+  act("pyq", 1, date);
+  act("cards", 10, date);
+  act("game", 1, date);
 }
 
 beforeEach(() => {
@@ -58,23 +63,23 @@ describe("buildPlan", () => {
 describe("progress", () => {
   it("ticks steps off as activity is recorded", () => {
     const plan = buildPlan(DAY);
-    recordPlanActivity("cards", 4, DAY);
+    act("cards", 4, DAY);
     const cards = plan.find((s) => s.id === "cards")!;
     expect(readProgress(DAY).cards).toBe(4);
     expect(isStepDone(cards, readProgress(DAY))).toBe(false);
-    recordPlanActivity("cards", 6, DAY);
+    act("cards", 6, DAY);
     expect(isStepDone(cards, readProgress(DAY))).toBe(true);
   });
 
   it("keeps each day's progress separate", () => {
-    recordPlanActivity("drill", 1, DAY);
+    act("drill", 1, DAY);
     expect(readProgress(nextDay(DAY)).drill).toBe(0);
   });
 });
 
 describe("plan streak", () => {
   it("starts at 1 when the whole plan is finished, and only then", () => {
-    recordPlanActivity("drill", 1, DAY);
+    act("drill", 1, DAY);
     expect(readStreak(DAY)).toBe(0);
     finishAll(DAY);
     expect(readStreak(DAY)).toBe(1);
@@ -96,7 +101,7 @@ describe("plan streak", () => {
 
   it("doesn't double-count extra practice on a finished day", () => {
     finishAll(DAY);
-    recordPlanActivity("game", 1, DAY);
+    act("game", 1, DAY);
     finishAll(DAY);
     expect(readStreak(DAY)).toBe(1);
   });
@@ -104,15 +109,15 @@ describe("plan streak", () => {
 
 describe("step-done announcement", () => {
   it("fires once when a step is completed, with the next step", () => {
-    recordPlanActivity("cards", 4, DAY);
+    act("cards", 4, DAY);
     expect(stepDone()).toHaveLength(0);
-    recordPlanActivity("cards", 6, DAY);
+    act("cards", 6, DAY);
     const [d] = stepDone();
     expect(d.step.id).toBe("cards");
     expect(d.done).toBe(1);
     expect(d.next?.id).toBe("drill");
     expect(d.complete).toBe(false);
-    recordPlanActivity("cards", 3, DAY); // extra practice: no second announcement
+    act("cards", 3, DAY); // extra practice: no second announcement
     expect(stepDone()).toHaveLength(1);
   });
 
@@ -124,5 +129,46 @@ describe("step-done announcement", () => {
     expect(last.complete).toBe(true);
     expect(last.next).toBeNull();
     expect(last.streak).toBe(1);
+  });
+});
+
+describe("only the named activity counts", () => {
+  it("doesn't tick off a Quant PYQ step with English PYQs, and does with Quant", () => {
+    const pyq = buildPlan(DAY).find((s) => s.id === "pyq")!;
+    const other = ["maths", "english", "reasoning", "gk"].find((s) => s !== pyq.counts)!;
+    recordPlanActivity("pyq", other, 1, DAY);
+    expect(readProgress(DAY).pyq).toBe(0);
+    expect(stepDone()).toHaveLength(0);
+    recordPlanActivity("pyq", pyq.counts, 1, DAY);
+    expect(readProgress(DAY).pyq).toBe(1);
+  });
+
+  it("counts a full mock for whichever subject the plan names", () => {
+    recordPlanActivity("pyq", ["maths", "english", "reasoning", "gk"], 1, DAY);
+    expect(readProgress(DAY).pyq).toBe(1);
+  });
+
+  it("matches the named drill, deck and game only", () => {
+    const plan = buildPlan(DAY);
+    const drill = plan.find((s) => s.id === "drill")!;
+    const cards = plan.find((s) => s.id === "cards")!;
+    const game = plan.find((s) => s.id === "game")!;
+    expect(activityCounts(drill, drill.counts)).toBe(true);
+    expect(activityCounts(drill, drill.counts === "cubes" ? "squares" : "cubes")).toBe(false);
+    expect(activityCounts(cards, cards.counts === "english" ? "maths" : "english")).toBe(false);
+    expect(activityCounts(game, game.counts)).toBe(true);
+    expect(activityCounts(game, `${game.counts}/round-2`)).toBe(true);
+    expect(activityCounts(game, "/SSC/english/games/some-other-game")).toBe(false);
+    expect(activityCounts(game, `${game.counts}-extra`)).toBe(false);
+  });
+
+  it("every plan links to the page whose activity it counts", () => {
+    for (let i = 0; i < 60; i++) {
+      for (const step of buildPlan(nextDay(DAY, i))) {
+        if (step.id === "game") expect(step.href).toBe(step.counts);
+        if (step.id === "drill") expect(step.href.endsWith(`/${step.counts}`)).toBe(true);
+        if (step.id === "pyq") expect(step.href).toBe(`/SSC/${step.counts}/topic-pyqs`);
+      }
+    }
   });
 });

@@ -21,6 +21,11 @@ export interface PlanStep {
   /** How much activity completes the step (e.g. 10 flashcards). */
   target: number;
   unit: string;
+  /**
+   * Which activity counts for this step: a drill id, a subject id, a deck ("english" /
+   * "maths") or a game's path. Doing something else that day doesn't tick it off.
+   */
+  counts: string;
 }
 
 export type PlanProgress = Record<PlanStepId, number>;
@@ -74,8 +79,8 @@ const PYQ_SUBJECTS = [
 ];
 
 const CARD_DECKS = [
-  { href: "/SSC/english/flashcards/freestyle", name: "English vocabulary" },
-  { href: "/SSC/maths/flashcards", name: "Maths tables and formulas" },
+  { id: "english", href: "/SSC/english/flashcards/freestyle", name: "English vocabulary" },
+  { id: "maths", href: "/SSC/maths/flashcards", name: "Quant tables and formulas" },
 ];
 
 const GAMES = [
@@ -106,6 +111,7 @@ export function buildPlan(date = new Date()): PlanStep[] {
       minutes: 2,
       target: 1,
       unit: "drill",
+      counts: drill.id,
     },
     {
       id: "pyq",
@@ -115,6 +121,7 @@ export function buildPlan(date = new Date()): PlanStep[] {
       minutes: 6,
       target: 1,
       unit: "set",
+      counts: subject.id,
     },
     {
       id: "cards",
@@ -124,6 +131,7 @@ export function buildPlan(date = new Date()): PlanStep[] {
       minutes: 4,
       target: 10,
       unit: "cards",
+      counts: deck.id,
     },
     {
       id: "game",
@@ -133,6 +141,7 @@ export function buildPlan(date = new Date()): PlanStep[] {
       minutes: 3,
       target: 1,
       unit: "game",
+      counts: game.href,
     },
   ];
 }
@@ -160,12 +169,30 @@ export function readStreak(today = new Date()): number {
 }
 
 /**
- * Record practice towards today's plan. Called by drills, PYQ sets,
- * flashcards and games when the student finishes something.
+ * Whether an activity is the one a plan step asks for. `what` is the drill id, subject,
+ * deck or page path of what was just done (a full mock lists every subject it covers);
+ * a path also matches the pages under the step's path.
  */
-export function recordPlanActivity(step: PlanStepId, amount = 1, date = new Date()): void {
+export function activityCounts(step: PlanStep, what: string | readonly string[]): boolean {
+  const list = typeof what === "string" ? [what] : what;
+  return list.some((w) => w === step.counts || w.startsWith(`${step.counts}/`));
+}
+
+/**
+ * Record practice towards today's plan. Called by drills, PYQ sets, flashcards and games
+ * when the student finishes something. Only the activity the plan named counts: English
+ * PYQs don't tick off a "Quant PYQs" step.
+ */
+export function recordPlanActivity(
+  step: PlanStepId,
+  what: string | readonly string[],
+  amount = 1,
+  date = new Date(),
+): void {
   if (typeof window === "undefined") return;
   const plan = buildPlan(date);
+  const stepDef = plan.find((s) => s.id === step);
+  if (!stepDef || !activityCounts(stepDef, what)) return;
   const before = readProgress(date);
   const wasComplete = plan.every((s) => isStepDone(s, before));
   const after = { ...before, [step]: before[step] + amount };
@@ -182,8 +209,7 @@ export function recordPlanActivity(step: PlanStepId, amount = 1, date = new Date
   }
   window.dispatchEvent(new Event(PLAN_EVENT));
 
-  const stepDef = plan.find((s) => s.id === step);
-  if (stepDef && !isStepDone(stepDef, before) && isStepDone(stepDef, after)) {
+  if (!isStepDone(stepDef, before) && isStepDone(stepDef, after)) {
     const done = plan.filter((s) => isStepDone(s, after)).length;
     const detail: PlanStepDoneDetail = {
       step: stepDef,

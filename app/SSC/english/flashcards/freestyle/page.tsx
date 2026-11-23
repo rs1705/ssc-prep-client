@@ -113,6 +113,12 @@ const FreestylePage = () => {
     (["exam", "year", "difficulty"] as const).filter((k) => applied?.[k] && applied[k] !== "all").length +
     (applied?.highFrequency ? 1 : 0);
   const totalCards = position.total;
+  const letter = filterStore[activeTab]?.alphabet || "a";
+  const nextLetter = letter < "z" ? String.fromCharCode(letter.charCodeAt(0) + 1) : null;
+  const goToLetter = (val: string) => {
+    dispatch(updateFilter({ tab: activeTab, filter: { alphabet: val } }));
+    localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
+  };
 
   return (
     <>
@@ -159,11 +165,8 @@ const FreestylePage = () => {
 
                 {/* Jump to a letter */}
                 <Select
-                  value={filterStore[activeTab]?.alphabet || "a"}
-                  onValueChange={(val) => {
-                    dispatch(updateFilter({ tab: activeTab, filter: { alphabet: val } }));
-                    localStorage.setItem(`freestyle_alphabet_${activeTab}`, val);
-                  }}
+                  value={letter}
+                  onValueChange={goToLetter}
                 >
                   <SelectTrigger
                     aria-label="Starting letter"
@@ -341,6 +344,8 @@ const FreestylePage = () => {
                   resetKey={activeTab}
                   shuffled={shuffled}
                   mode="freestyle"
+                  planDeck="english"
+                  nextDeck={nextLetter ? { label: `Next: letter ${nextLetter.toUpperCase()}`, onClick: () => goToLetter(nextLetter) } : undefined}
                   onPosition={onPosition}
                   rememberKey={freestyleSpotKey(activeTab, filterStore[activeTab])}
                 />

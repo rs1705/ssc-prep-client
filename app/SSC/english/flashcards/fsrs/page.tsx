@@ -140,7 +140,7 @@ const FsrsPage = () => {
               />
             </div>
           ) : (
-            <FlashcardDeck deck={data ?? []} mode="study" onPosition={onPosition} />
+            <FlashcardDeck deck={data ?? []} mode="study" planDeck="english" onPosition={onPosition} />
           )}
         </div>
       </div>

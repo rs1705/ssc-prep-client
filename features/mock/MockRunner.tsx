@@ -758,7 +758,7 @@ function Review({
   useEffect(() => {
     if (logged.current || !record) return;
     logged.current = true;
-    recordPlanActivity("pyq");
+    recordPlanActivity("pyq", exam.sections.map((s) => s.subject));
     recordAnswers(exam.questions, exam.answers);
     const path = homeHref;
     for (const s of exam.sections) {

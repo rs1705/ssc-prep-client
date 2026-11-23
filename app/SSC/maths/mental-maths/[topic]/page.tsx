@@ -206,7 +206,7 @@ export default function MentalMathsPractice() {
     if (drillLogged.current) return;
     drillLogged.current = true;
     playFeedback("finish");
-    recordPlanActivity("drill");
+    recordPlanActivity("drill", topic);
     if (engine.state.attemptedQuestionsCount > 0) submitBest(engine.state.score);
     const path = window.location.pathname;
     const route = describeRoute(path);
