@@ -92,7 +92,7 @@ export default function FormulasPage() {
     <TopicPageLayout
       title="Formulas & Tricks"
       description="The whole SSC CGL quant syllabus, one topic at a time. Learn the formula, check the worked example, then hide them and test yourself."
-      contentMaxWidthClass="w-full max-w-[1200px]"
+      contentMaxWidthClass="w-full"
     >
       <div className="grid w-full gap-6 lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-10">
         {/* ── Topic navigation ── */}

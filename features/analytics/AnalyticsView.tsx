@@ -142,7 +142,7 @@ export function AnalyticsView() {
   const tabs: Filter[] = ["all", ...SUBJECTS];
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <header className="flex flex-col gap-4">
         <div>
           <Label>Analytics</Label>

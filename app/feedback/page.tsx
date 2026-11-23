@@ -134,7 +134,7 @@ export default function FeedbackPage() {
     <TopicPageLayout
       title="Feedback"
       description="Found a mistake in a question, hit a bug, or have an idea? Tell us. Every message is read."
-      contentMaxWidthClass="w-full max-w-[1400px]"
+      contentMaxWidthClass="w-full"
     >
       <div className="grid w-full grid-cols-1 items-start gap-6 sm:gap-8 lg:grid-cols-12">
         <div className="surface-card rounded-3xl p-4 sm:p-6 lg:col-span-7 xl:col-span-8">

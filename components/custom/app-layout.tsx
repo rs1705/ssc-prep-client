@@ -69,11 +69,11 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
             isFocusMode ? "max-md:hidden" : ""
           } ${barHidden ? "max-md:-translate-y-full" : ""}`}
         >
-          <div className="mx-auto w-full max-w-[1400px]">
+          <div className="mx-auto w-full max-w-[1760px]">
             <TopBar />
           </div>
         </div>
-        <div className={`mx-auto flex-1 flex flex-col w-full max-w-[1400px] ${fitsViewport ? "min-h-0" : ""}`}>
+        <div className={`mx-auto flex-1 flex flex-col w-full max-w-[1760px] ${fitsViewport ? "min-h-0" : ""}`}>
           <main 
             key={isFocusMode ? "focus" : "normal"}
             className={`flex-1 flex flex-col animate-in fade-in duration-500 fill-mode-forwards min-h-0 ${

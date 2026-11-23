@@ -31,7 +31,7 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <Hero name={name} greeting={greeting} unfinished={unfinished} week={now ? weekStats(activities, new Date(now)).activeDays : Array(7).fill(false)} />
       <QuickActions />
       <SubjectPills />
