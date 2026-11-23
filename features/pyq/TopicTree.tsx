@@ -287,11 +287,21 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
     );
   }
 
-  /* ---------- 1. All topics ---------- */
+  /* ---------- 1. All topics, under their group headings ---------- */
+  const sections: [string, typeof topics][] = [];
+  for (const t of topics) {
+    const g = t.group || "Others";
+    const sec = sections.find(([name]) => name === g);
+    if (sec) sec[1].push(t);
+    else sections.push([g, [t]]);
+  }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
+      {sections.map(([groupName, list]) => (
+      <section key={groupName} className="flex flex-col gap-2.5">
+      {sections.length > 1 && <h3 className="text-sm font-bold text-foreground">{groupName}</h3>}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
-        {topics.map((t) => {
+        {list.map((t) => {
           const Icon = iconFor(t);
           const done = Math.min(progress.get(t.id)?.done ?? 0, t.count);
           const pct = t.count ? Math.round((done / t.count) * 100) : 0;
@@ -301,7 +311,6 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
                 <Icon className="h-5 w-5" aria-hidden="true" />
               </span>
               <span>
-                {t.group && <span className="block text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{t.group}</span>}
                 <span className={cn("block text-[15px] font-bold leading-snug", t.count ? "text-foreground" : "text-muted-foreground")}>{t.name}</span>
               </span>
               <span className="mt-auto flex flex-col gap-1.5">
@@ -333,6 +342,8 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
           );
         })}
       </ul>
+      </section>
+      ))}
     </div>
   );
 }
