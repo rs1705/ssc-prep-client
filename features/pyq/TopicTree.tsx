@@ -291,7 +291,8 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
   const sections: [string, typeof topics][] = [];
   // Topics with no questions yet stay hidden until some are published.
   for (const t of topics.filter((x) => x.count > 0)) {
-    const g = t.group || "Others";
+    // A topic with no group stands alone (keyed by its own ID).
+    const g = t.group || `#${t.id}`;
     const sec = sections.find(([name]) => name === g);
     if (sec) sec[1].push(t);
     else sections.push([g, [t]]);
@@ -325,8 +326,8 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
     );
   };
 
-  // Bento: every group is a block under its heading. Groups with several topics are two
-  // columns wide; a topic alone in its group gets a one-column block of its own.
+  // Bento: a group with several topics is a two-column block under its heading; a topic
+  // alone in its group (or with no group) is just its card.
   const singles = sections.filter(([, list]) => list.length === 1).map(([g, list]) => ({ g, t: list[0] }));
   const groups = sections.filter(([, list]) => list.length > 1);
   return (
@@ -351,11 +352,8 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
             </ul>
           </li>
       ))}
-      {singles.map(({ g, t }) => (
-        <li key={t.id} className="flex flex-col gap-2.5 rounded-3xl border border-border bg-muted/40 p-3">
-          <h3 className="px-1 text-sm font-bold text-foreground">{g}</h3>
-          <div className="flex-1">{card(t)}</div>
-        </li>
+      {singles.map(({ t }) => (
+        <li key={t.id}>{card(t)}</li>
       ))}
     </ul>
   );
