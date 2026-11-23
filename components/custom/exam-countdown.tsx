@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarDays, Pencil } from "lucide-react";
 import { readStored, writeStored } from "@/lib/storage";
 
@@ -47,7 +47,7 @@ interface ExamCountdownProps {
  */
 export function ExamCountdown({ compact = false, className = "" }: ExamCountdownProps) {
   const [date, setDate] = useState<string | null>(null);
-  const [editing, setEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -66,7 +66,6 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
     setDate(value);
     writeStored(STORAGE_KEY, value);
     writeStored(EXAM_DATE_AT_KEY, Date.now());
-    setEditing(false);
     window.dispatchEvent(new Event(EXAM_DATE_EVENT));
   };
 
@@ -87,64 +86,52 @@ export function ExamCountdown({ compact = false, className = "" }: ExamCountdown
     );
   }
 
+  // One slim row: days to go (tap to change), or "Set exam date". The date picker opens directly.
+  const open = () => {
+    const el = inputRef.current;
+    if (!el) return;
+    try {
+      el.showPicker();
+    } catch {
+      el.focus();
+    }
+  };
+  const isSet = ready && days !== null && days >= 0;
   return (
-    <section
-      aria-label="Exam countdown"
-      className={`w-full rounded-2xl border-2 border-brand-500/25 bg-[color-mix(in_oklab,var(--brand-500)_6%,var(--card))] p-3.5 ${className}`}
-    >
-      <div className="mb-1.5 flex items-center justify-between gap-2">
-        <span className="section-label whitespace-nowrap">Exam countdown</span>
-        {date && !editing && (
-          <button
-            type="button"
-            onClick={() => setEditing(true)}
-            aria-label="Change exam date"
-            className="-m-1.5 rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-          </button>
-        )}
-      </div>
-
-      {!ready ? (
-        <div className="h-9" />
-      ) : editing || !date ? (
-        <label className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-muted-foreground">
-            {date ? "Pick a new date" : "When is your exam?"}
+    <section aria-label="Exam countdown" className={`relative w-full ${className}`}>
+      <button
+        type="button"
+        onClick={open}
+        title={isSet && date ? `Exam on ${formatDate(date)}. Tap to change.` : "Set your exam date"}
+        className={`group flex w-full items-center gap-2.5 rounded-xl border px-3 py-2 text-left text-sm transition-colors ${
+          isSet
+            ? "border-brand-500/25 bg-[color-mix(in_oklab,var(--brand-500)_6%,var(--card))] hover:bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))]"
+            : "border-dashed border-brand-500/50 text-brand-700 hover:bg-[color-mix(in_oklab,var(--brand-500)_6%,var(--card))] dark:text-brand-300"
+        }`}
+      >
+        <CalendarDays className="h-4 w-4 shrink-0 text-brand-600 dark:text-brand-400" aria-hidden="true" />
+        {!ready ? (
+          <span className="h-5" />
+        ) : isSet ? (
+          <span className="min-w-0 flex-1 truncate text-muted-foreground">
+            <span className="font-mono text-base font-black tabular-nums text-foreground">{days}</span>{" "}
+            {days === 1 ? "day to exam" : days === 0 ? "exam is today" : "days to exam"}
           </span>
-          <input
-            type="date"
-            min={todayIso()}
-            defaultValue={date ?? ""}
-            onChange={(e) => save(e.target.value)}
-            className="h-9 w-full rounded-lg border-2 border-border bg-card px-2 font-mono text-xs text-foreground"
-          />
-        </label>
-      ) : days !== null && days < 0 ? (
-        <button
-          type="button"
-          onClick={() => setEditing(true)}
-          className="text-left text-xs font-semibold text-muted-foreground underline-offset-2 hover:underline"
-        >
-          That date has passed. Set your next exam.
-        </button>
-      ) : (
-        <>
-          <div className="flex items-baseline gap-1.5 whitespace-nowrap">
-            <span className="font-mono text-2xl font-black tabular-nums tracking-tight text-foreground">
-              {days}
-            </span>
-            <span className="text-xs font-semibold text-muted-foreground">
-              {days === 1 ? "day to go" : days === 0 ? "days — it's today" : "days to go"}
-            </span>
-          </div>
-          <div className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-            <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-            {formatDate(date)}
-          </div>
-        </>
-      )}
+        ) : (
+          <span className="flex-1 font-semibold">{date ? "Set your next exam" : "Set exam date"}</span>
+        )}
+        {isSet && <Pencil className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />}
+      </button>
+      <input
+        ref={inputRef}
+        type="date"
+        min={todayIso()}
+        value={date ?? ""}
+        onChange={(e) => save(e.target.value)}
+        aria-label="Exam date"
+        tabIndex={-1}
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
+      />
     </section>
   );
 }

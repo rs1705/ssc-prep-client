@@ -42,7 +42,7 @@ function SidebarLink({
       title={collapsed ? item.label : undefined}
       aria-current={active ? "page" : undefined}
       className={`group relative flex items-center rounded-xl text-sm font-medium transition-colors duration-150 ${
-        collapsed ? "mx-auto h-10 w-10 justify-center" : "gap-3 px-3 py-2"
+        collapsed ? "mx-auto h-9 w-9 justify-center" : "gap-3 px-3 py-1.5"
       } ${
         active
           ? "bg-[color-mix(in_oklab,var(--brand-500)_10%,var(--card))] font-bold text-brand-800 dark:text-brand-300"
@@ -96,14 +96,14 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   return (
     <aside
       className={`absolute left-0 top-0 z-50 hidden h-[100dvh] flex-col overflow-y-auto border-r-2 border-sidebar-border bg-sidebar scrollbar-none md:flex ${ease} ${
-        isCollapsed ? "w-[72px] items-center px-3 py-5" : "w-56 p-5 lg:w-64"
+        isCollapsed ? "w-[72px] items-center px-3 py-4" : "w-56 px-4 py-4 lg:w-64"
       }`}
     >
       {/* Brand */}
       <Link
         href={user ? "/dashboard" : "/practice"}
         aria-label="EptSSC home"
-        className={`group mb-6 flex min-w-0 items-center ${ease} ${isCollapsed ? "gap-0" : "gap-3"}`}
+        className={`group mb-4 flex min-w-0 items-center ${ease} ${isCollapsed ? "gap-0" : "gap-3"}`}
       >
         <BrandMark className="h-9 w-9 shadow-md shadow-brand-500/25 rounded-full transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" />
         <div
@@ -123,18 +123,18 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       {/* Navigation groups */}
       <nav aria-label="Main" className="flex w-full flex-col">
         {groups.map((group, index) => (
-          <div key={group.label ?? "main"} className={index === 0 ? "" : isCollapsed ? "mt-3" : "mt-5"}>
+          <div key={group.label ?? "main"} className={index === 0 ? "" : isCollapsed ? "mt-2" : "mt-3"}>
             {group.label && (
               <div
                 className={`section-label px-3 ${ease} ${
-                  isCollapsed ? "mb-0 h-0 overflow-hidden opacity-0" : "mb-1.5 h-auto opacity-80"
+                  isCollapsed ? "mb-0 h-0 overflow-hidden opacity-0" : "mb-0.5 h-auto opacity-80"
                 }`}
               >
                 {group.label}
               </div>
             )}
             {isCollapsed && group.label && (
-              <div aria-hidden="true" className="mx-auto mb-3 h-px w-6 bg-border" />
+              <div aria-hidden="true" className="mx-auto mb-2 h-px w-6 bg-border" />
             )}
             <div className="flex flex-col gap-0.5">
               {group.items.map((item) => (
@@ -152,19 +152,19 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
       </nav>
 
       {/* Exam countdown */}
-      <div className={`mb-3 mt-auto pt-5 ${isCollapsed ? "" : "w-full"}`}>
+      <div className={`mb-2 mt-auto pt-3 ${isCollapsed ? "" : "w-full"}`}>
         <ExamCountdown compact={isCollapsed} />
       </div>
 
       {/* Bottom controls */}
-      <div className={`flex flex-col gap-0.5 ${isCollapsed ? "" : "w-full"}`}>
+      <div className={`flex gap-0.5 ${isCollapsed ? "flex-col" : "w-full"}`}>
         <button
           type="button"
           onClick={toggleSidebar}
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={`flex items-center rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground ${
-            isCollapsed ? "mx-auto h-10 w-10 justify-center" : "w-full gap-3 px-3 py-2"
+            isCollapsed ? "mx-auto h-9 w-9 justify-center" : "flex-1 gap-2 px-3 py-1.5"
           }`}
         >
           {isCollapsed ? (
@@ -186,7 +186,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
             aria-label="Dark mode"
             title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             className={`flex items-center justify-between rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--muted)_70%,var(--card))] hover:text-foreground ${
-              isCollapsed ? "mx-auto h-10 w-10 justify-center" : "w-full px-3 py-2"
+              isCollapsed ? "mx-auto h-9 w-9 justify-center" : "flex-1 gap-2 px-3 py-1.5"
             }`}
           >
             {isCollapsed ? (
@@ -197,13 +197,13 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
               )
             ) : (
               <>
-                <span className="flex items-center gap-3">
+                <span className="flex items-center gap-2">
                   {theme === "dark" ? (
                     <Moon className="h-4 w-4 shrink-0 text-brand-400" strokeWidth={1.75} />
                   ) : (
                     <Sun className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={1.75} />
                   )}
-                  <span className="text-sm font-medium">Dark mode</span>
+                  <span className="text-sm font-medium">Dark</span>
                 </span>
                 <span
                   aria-hidden="true"
@@ -225,7 +225,7 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
 
       {/* Account */}
       {mounted && !isAuthPage && (
-        <div className={`mt-3 border-t border-border pt-3 ${isCollapsed ? "" : "w-full"}`}>
+        <div className={`mt-2 border-t border-border pt-2 ${isCollapsed ? "" : "w-full"}`}>
           {user ? (
             <div className={`flex items-center ${isCollapsed ? "flex-col gap-1" : "gap-2.5 px-1"}`}>
               <Avatar className="h-8 w-8 shrink-0" title={isCollapsed ? (user.displayName ?? user.email ?? undefined) : undefined}>
