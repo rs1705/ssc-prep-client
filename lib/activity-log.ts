@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { readStored, writeStored } from "@/lib/storage";
 import type { SubjectKey } from "@/lib/subject-theme";
+import { readStreak } from "@/lib/today-plan";
+import { XP_RULES, awardXp, dayOf } from "@/lib/xp";
 
 /**
  * On-device record of finished practice and the mistakes made in it. Feeds
@@ -108,9 +110,23 @@ function notify() {
 }
 
 export function logActivity(entry: Omit<ActivityEntry, "id" | "at">, at = Date.now()): void {
-  const next = [{ ...entry, id: uid(), at }, ...readActivity()].slice(0, MAX_ACTIVITY);
+  const id = uid();
+  const next = [{ ...entry, id, at }, ...readActivity()].slice(0, MAX_ACTIVITY);
   writeStored(ACTIVITY_KEY, next);
   notify();
+  awardXp(xpForActivity(entry, id), readStreak(), at);
+}
+
+/**
+ * XP for a finished session. Past-year questions earn per answer (features/pyq/answered.ts),
+ * so a set only adds a bonus when it was a real set. Drills, games and flashcards earn for
+ * right answers plus finishing, within a daily cap. Tests earn when saved (features/mock).
+ */
+export function xpForActivity(entry: Omit<ActivityEntry, "id" | "at">, id: string): Parameters<typeof awardXp>[0] {
+  if (entry.href.startsWith("/mock-tests")) return [];
+  if (entry.kind === "pyq")
+    return (entry.total ?? 0) >= XP_RULES.setMin ? [{ id: `set:${id}`, source: "set", amount: XP_RULES.setBonus }] : [];
+  return [{ id: `act:${id}`, source: "practice", amount: (entry.correct ?? 0) * XP_RULES.practicePerRight + XP_RULES.practiceFinish }];
 }
 
 export function logMistakes(items: Omit<MistakeEntry, "id" | "at">[], at = Date.now()): void {
@@ -136,6 +152,7 @@ export function recordReview(id: string, correct: boolean, date = new Date()): b
   const entry = list.find((m) => m.id === id);
   if (!entry) return false;
   const today = localDay(date);
+  if (correct) awardXp([{ id: `r:${id}:${dayOf(date.getTime())}`, source: "review", amount: XP_RULES.reviewRight }], readStreak(date), date.getTime());
   const rightDays = correct ? [...new Set([...(entry.rightDays ?? []), today])] : [];
   const mastered = rightDays.length >= MASTERY_DAYS;
   writeStored(

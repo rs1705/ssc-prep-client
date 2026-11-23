@@ -10,6 +10,7 @@ import { HUE, practiseHref, type LeafInfo } from "@/features/pyq/topic-map";
 import { pickForReview, subjectStats, type ActivityEntry, type MistakeEntry } from "@/lib/activity-log";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { isStepDone, useTodayPlan } from "@/lib/today-plan";
+import { useXp } from "@/lib/xp";
 import { cn } from "@/lib/utils";
 import type { PyqTopicNode } from "@/redux/PyqApi";
 import { CountUp, MistakeFlip } from "./Interactive";
@@ -49,6 +50,7 @@ export function Hero({ name, greeting, unfinished, week }: { name: string; greet
 
       {/* streak and exam date, top right */}
       <div className="relative mb-5 flex flex-wrap items-center gap-2 sm:absolute sm:right-8 sm:top-7 sm:mb-0">
+        <LevelChip />
         <Streak streak={streak} week={week} />
         <ExamChip />
       </div>
@@ -126,6 +128,30 @@ export function Hero({ name, greeting, unfinished, week }: { name: string; greet
 /* ---------------- Streak and exam date ---------------- */
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Level and XP: a badge with a small bar to the next level. */
+function LevelChip() {
+  const { xp, level, ready } = useXp();
+  if (!ready) return null;
+  return (
+    <div
+      className="flex items-center gap-2 rounded-full border border-border/70 bg-card/80 py-1 pl-1 pr-3 backdrop-blur"
+      title={`${xp} XP · ${level.toNext} XP to level ${level.level + 1}`}
+    >
+      <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-amber-400/20 px-1.5 text-xs font-extrabold text-amber-700 dark:text-amber-300">
+        {level.level}
+      </span>
+      <span className="flex flex-col gap-0.5">
+        <span className="text-[11px] font-bold leading-none text-foreground">
+          {level.name} · <CountUp value={xp} /> XP
+        </span>
+        <span className="block h-1 w-20 overflow-hidden rounded-full bg-muted">
+          <span className="block h-full rounded-full bg-amber-400 transition-[width] duration-700" style={{ width: `${(level.into / level.size) * 100}%` }} />
+        </span>
+      </span>
+    </div>
+  );
+}
 
 /** The plan streak with this week's days: ticked when practised; today's open day pulses. */
 function Streak({ streak, week }: { streak: number; week: boolean[] }) {

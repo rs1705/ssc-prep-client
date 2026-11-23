@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/custom/sidebar";
 import { TopBar } from "@/components/custom/topbar";
 import { MobileTabBar } from "@/components/custom/mobile-tab-bar";
 import { PlanStepToast } from "@/features/dashboard/PlanStepToast";
+import { XpToast } from "@/features/xp/XpToast";
 import { ServerWakeNotice } from "@/components/custom/server-wake-notice";
 import { ProgressSync } from "@/components/custom/progress-sync";
 import { useAuth } from "@/context/auth";
@@ -87,6 +88,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       </div>
       {user && !isFocusMode && !isAuthRoute && <MobileTabBar />}
       {!isAuthRoute && <PlanStepToast />}
+      {!isAuthRoute && <XpToast />}
       <ServerWakeNotice />
       <ProgressSync />
     </div>

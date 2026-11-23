@@ -8,6 +8,7 @@ import { SEEN_KEY, type SeenRecord } from "@/features/games/seenPool";
 import { ATTEMPTS_EVENT, ATTEMPTS_KEY, type Attempt } from "@/features/mock/attempts";
 import { ANSWERED_EVENT, ANSWERED_KEY, type Answered } from "@/features/pyq/answered";
 import { EXAM_DATE_AT_KEY, EXAM_DATE_EVENT, EXAM_DATE_KEY } from "@/components/custom/exam-countdown";
+import { XP_EVENT, XP_KEY, type XpRecord } from "@/lib/xp";
 
 /**
  * Account sync. Progress is still saved on the device first (so the app works
@@ -47,6 +48,8 @@ export interface ProgressDoc {
   attempts?: Attempt[];
   /** Answered past-year questions (topic progress). */
   answered?: Record<string, Answered>;
+  /** XP awards and folded days (lib/xp.ts). */
+  xp?: XpRecord;
 }
 
 function localKeys(): string[] {
@@ -71,6 +74,7 @@ export function isSyncedKey(key: string): boolean {
     key === SEEN_KEY ||
     key === ATTEMPTS_KEY ||
     key === ANSWERED_KEY ||
+    key === XP_KEY ||
     key.startsWith(PLAN_PREFIX) ||
     key.startsWith(UNFINISHED_PREFIX)
   );
@@ -104,6 +108,7 @@ export function buildLocalDoc(): ProgressDoc {
     seen: readStored<SeenRecord>(SEEN_KEY, {}),
     attempts: readStored<Attempt[]>(ATTEMPTS_KEY, []),
     answered: readStored<Record<string, Answered>>(ANSWERED_KEY, {}),
+    xp: readStored<XpRecord>(XP_KEY, { awards: {}, days: {} }),
   };
 }
 
@@ -123,6 +128,7 @@ export function applyDoc(doc: ProgressDoc): void {
     if (doc.seen) writeStored(SEEN_KEY, doc.seen);
     if (doc.attempts) writeStored(ATTEMPTS_KEY, doc.attempts);
     if (doc.answered) writeStored(ANSWERED_KEY, doc.answered);
+    if (doc.xp) writeStored(XP_KEY, doc.xp);
     for (const key of localKeys()) {
       if (key.startsWith(UNFINISHED_PREFIX) && !doc.unfinished[key.slice(UNFINISHED_PREFIX.length)]) removeStored(key);
     }
@@ -134,7 +140,7 @@ export function applyDoc(doc: ProgressDoc): void {
   } finally {
     applying = false;
   }
-  for (const event of [ACTIVITY_EVENT, PLAN_EVENT, EXAM_DATE_EVENT, ATTEMPTS_EVENT, ANSWERED_EVENT]) window.dispatchEvent(new Event(event));
+  for (const event of [ACTIVITY_EVENT, PLAN_EVENT, EXAM_DATE_EVENT, ATTEMPTS_EVENT, ANSWERED_EVENT, XP_EVENT]) window.dispatchEvent(new Event(event));
 }
 
 /** Remove synced progress from this device (another account is signing in, or sign-out). */
@@ -146,7 +152,7 @@ export function clearLocalProgress(): void {
   } finally {
     applying = false;
   }
-  for (const event of [ACTIVITY_EVENT, PLAN_EVENT, EXAM_DATE_EVENT]) window.dispatchEvent(new Event(event));
+  for (const event of [ACTIVITY_EVENT, PLAN_EVENT, EXAM_DATE_EVENT, XP_EVENT]) window.dispatchEvent(new Event(event));
 }
 
 function setState(state: SyncState) {

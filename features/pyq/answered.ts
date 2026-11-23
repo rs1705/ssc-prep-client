@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { readStored, writeStored } from "@/lib/storage";
+import { readStreak } from "@/lib/today-plan";
+import { XP_RULES, awardXp, dayOf } from "@/lib/xp";
 import type { Pyq, PyqTopicNode } from "@/redux/PyqApi";
 
 /**
@@ -30,13 +32,17 @@ export function readAnswered(): Record<string, Answered> {
 export function recordAnswers(questions: Pyq[], answers: Record<string, string>, at = Date.now()): void {
   const all = readAnswered();
   let changed = false;
+  const xp: Parameters<typeof awardXp>[0] = [];
   for (const q of questions) {
     const a = answers[q.id];
     if (!a) continue;
-    all[q.id] = { at, ok: a === q.answer, tags: (q.tags ?? []).slice(0, 8) };
+    const ok = a === q.answer;
+    all[q.id] = { at, ok, tags: (q.tags ?? []).slice(0, 8) };
+    xp.push({ id: `q:${q.id}:${dayOf(at)}`, source: "answer", amount: ok ? XP_RULES.right : XP_RULES.wrong });
     changed = true;
   }
   if (!changed) return;
+  awardXp(xp, readStreak(), at);
   const kept = Object.entries(all)
     .sort((x, y) => y[1].at - x[1].at)
     .slice(0, MAX_ANSWERED);

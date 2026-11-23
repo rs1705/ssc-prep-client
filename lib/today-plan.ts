@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { readStored, writeStored } from "@/lib/storage";
+import { XP_RULES, awardXp } from "@/lib/xp";
 
 /**
  * "Today's 15 minutes": a small daily plan that rotates by date and ticks
@@ -177,6 +178,7 @@ export function recordPlanActivity(step: PlanStepId, amount = 1, date = new Date
     const s = readStored<StreakRecord>(STREAK_KEY, { last: null, count: 0 });
     const count = s.last === today ? s.count : s.last === dayKey(yesterday) ? s.count + 1 : 1;
     writeStored<StreakRecord>(STREAK_KEY, { last: today, count });
+    awardXp([{ id: `plan:${today}`, source: "plan", amount: XP_RULES.plan }], count, date.getTime());
   }
   window.dispatchEvent(new Event(PLAN_EVENT));
 

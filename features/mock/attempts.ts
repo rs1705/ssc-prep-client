@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { readStored, writeStored } from "@/lib/storage";
+import { readStreak } from "@/lib/today-plan";
+import { XP_RULES, awardXp } from "@/lib/xp";
 import { computeResult, createSession } from "@/features/pyq/session";
 import type { FullMock } from "@/redux/PyqApi";
 import type { ExamState } from "./examSession";
@@ -46,6 +48,7 @@ export function saveAttempt(attempt: Attempt): void {
   const rest = readAttempts().filter((a) => a.id !== attempt.id);
   writeStored(ATTEMPTS_KEY, [attempt, ...rest].sort((a, b) => b.at - a.at).slice(0, MAX_ATTEMPTS));
   if (typeof window !== "undefined") window.dispatchEvent(new Event(ATTEMPTS_EVENT));
+  awardXp([{ id: `mock:${attempt.id}`, source: "mock", amount: XP_RULES.mockFinish + Math.max(0, Math.round(attempt.marks)) }], readStreak(), attempt.at);
 }
 
 const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
