@@ -29,6 +29,7 @@ import { Spinner } from "@/components/custom/loader";
 import { cn } from "@/lib/utils";
 import type { HueTheme } from "@/lib/subject-theme";
 import type { PyqTopicNode } from "@/redux/PyqApi";
+import { progressLabel, useTopicProgress, type NodeProgress } from "./answered";
 
 /**
  * Topic practice in three pages, one level at a time:
@@ -83,11 +84,32 @@ function PractiseButton({ count, setSize, loading, disabled, onClick, children }
   );
 }
 
+/** How much of `total` is done, and how much of that was right. */
+function ProgressBar({ p, total, className }: { p?: NodeProgress; total: number; className?: string }) {
+  const done = Math.min(p?.done ?? 0, total);
+  const right = Math.min(p?.right ?? 0, done);
+  return (
+    <span className={cn("flex h-1.5 overflow-hidden rounded-full bg-muted", className)} aria-hidden="true">
+      <span className="bg-emerald-500" style={{ width: `${total ? (right / total) * 100 : 0}%` }} />
+      <span className="bg-rose-400" style={{ width: `${total ? ((done - right) / total) * 100 : 0}%` }} />
+    </span>
+  );
+}
+
 /** A tappable row: name, count and a chevron (dimmed when nothing has been asked yet). */
-function Row({ name, count, href, onClick, loading }: { name: string; count: number; href?: string; onClick?: () => void; loading?: boolean }) {
+function Row({ name, count, href, onClick, loading, progress }: { name: string; count: number; href?: string; onClick?: () => void; loading?: boolean; progress?: NodeProgress }) {
+  const label = progressLabel(progress, count);
   const inner = (
     <>
-      <span className={cn("min-w-0 flex-1 font-semibold", count ? "text-foreground" : "text-muted-foreground")}>{name}</span>
+      <span className="min-w-0 flex-1 py-2.5">
+        <span className={cn("block font-semibold", count ? "text-foreground" : "text-muted-foreground")}>{name}</span>
+        {label && (
+          <>
+            <span className="mt-0.5 block text-xs text-muted-foreground">{label}</span>
+            <ProgressBar p={progress} total={count} className="mt-1.5 max-w-56" />
+          </>
+        )}
+      </span>
       <span className="font-mono text-sm tabular-nums text-muted-foreground">{loading ? <Spinner tone="current" className="h-4 w-4" /> : count}</span>
       <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/70" aria-hidden="true" />
     </>
@@ -103,6 +125,7 @@ function Row({ name, count, href, onClick, loading }: { name: string; count: num
 
 export function TopicTree({ topics, theme, setSize, topicId, subId, pending, disabled, onPick }: Props) {
   const path = usePathname();
+  const progress = useTopicProgress();
   /** The group chip picked on the topics page (null = all). */
   const [group, setGroup] = useState<string | null>(null);
   const href = (topic?: string, sub?: string) => {
@@ -129,7 +152,10 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
           <div>
             <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{topic.name}</p>
             <h2 className="text-2xl font-extrabold text-foreground">{sub.name}</h2>
-            <p className="text-sm text-muted-foreground">{sub.count} {sub.count === 1 ? "question" : "questions"} from past papers</p>
+            <p className="text-sm text-muted-foreground">
+              {progressLabel(progress.get(sub.id), sub.count) ?? `${sub.count} ${sub.count === 1 ? "question" : "questions"} from past papers`}
+            </p>
+            <ProgressBar p={progress.get(sub.id)} total={sub.count} className="mt-2 max-w-64" />
           </div>
           <PractiseButton count={sub.count} setSize={setSize} loading={pending === sub.id} disabled={disabled} onClick={() => onPick(sub.id, sub.name)} />
         </header>
@@ -141,7 +167,7 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
             <ul className="surface-card divide-y divide-border overflow-hidden rounded-2xl">
               {concepts.map((c) => (
                 <li key={c.id}>
-                  <Row name={c.name} count={c.count} loading={pending === c.id} onClick={disabled ? undefined : () => onPick(c.id, c.name)} />
+                  <Row name={c.name} count={c.count} progress={progress.get(c.id)} loading={pending === c.id} onClick={disabled ? undefined : () => onPick(c.id, c.name)} />
                 </li>
               ))}
             </ul>
@@ -175,8 +201,9 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
               {topic.group && <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">{topic.group}</p>}
               <h2 className="text-2xl font-extrabold text-foreground">{topic.name}</h2>
               <p className="text-sm text-muted-foreground">
-                {topic.count} questions · {asked.length} of {topic.children.length} subtopics asked
+                {progressLabel(progress.get(topic.id), topic.count) ?? `${topic.count} questions · ${asked.length} of ${topic.children.length} subtopics asked`}
               </p>
+              <ProgressBar p={progress.get(topic.id)} total={topic.count} className="mt-2 max-w-64" />
             </div>
           </div>
           <PractiseButton count={topic.count} setSize={setSize} loading={pending === topic.id} disabled={disabled} onClick={() => onPick(topic.id, topic.name)}>
@@ -191,7 +218,7 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
             <ul className="surface-card divide-y divide-border overflow-hidden rounded-2xl">
               {asked.map((s) => (
                 <li key={s.id}>
-                  <Row name={s.name} count={s.count} href={href(topic.id, s.id)} />
+                  <Row name={s.name} count={s.count} progress={progress.get(s.id)} href={href(topic.id, s.id)} />
                 </li>
               ))}
             </ul>
@@ -259,8 +286,11 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
                 {t.group && !group && <span className="block text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{t.group}</span>}
                 <span className={cn("block text-[15px] font-bold leading-snug", t.count ? "text-foreground" : "text-muted-foreground")}>{t.name}</span>
               </span>
-              <span className="mt-auto text-xs text-muted-foreground">
-                {t.count ? `${t.count} questions · ${asked}/${t.children.length} subtopics` : "Not asked yet"}
+              <span className="mt-auto flex flex-col gap-1.5">
+                <span className="text-xs text-muted-foreground">
+                  {t.count ? (progressLabel(progress.get(t.id), t.count) ?? `${t.count} questions · ${asked}/${t.children.length} subtopics`) : "Not asked yet"}
+                </span>
+                {t.count > 0 && <ProgressBar p={progress.get(t.id)} total={t.count} />}
               </span>
             </>
           );

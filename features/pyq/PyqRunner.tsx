@@ -2,6 +2,7 @@
 
 import { describeRoute, logActivity, logMistakes, plainText } from "@/lib/activity-log";
 import { recordPlanActivity } from "@/lib/today-plan";
+import { recordAnswers } from "@/features/pyq/answered";
 import { useEffect, useReducer, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -131,6 +132,13 @@ export function PyqRunner({
     // Logged once when the set finishes; the values are read at that moment.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.submitted, practiceDone]);
+
+  // Topic progress: in practice each answer counts once given (it is shown right away);
+  // in a timed test, only once it is submitted.
+  useEffect(() => {
+    if (mode === "practice" || state.submitted) recordAnswers(state.questions, state.answers);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.answers, state.submitted]);
 
   // Report progress so the page can save a half-finished set.
   useEffect(() => {

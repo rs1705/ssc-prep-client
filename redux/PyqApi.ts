@@ -26,6 +26,8 @@ export interface Pyq {
   explanationBlocks?: Block[];
   passage: string | null;
   source: string | null;
+  /** Subtopic and concept IDs (for topic progress). */
+  tags?: string[];
 }
 
 export interface PyqTopic {

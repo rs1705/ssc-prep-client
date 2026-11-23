@@ -6,6 +6,7 @@ import { PLAN_EVENT } from "@/lib/today-plan";
 import { UNFINISHED_PREFIX, UNFINISHED_REMOVED_KEY } from "@/features/games/unfinished";
 import { SEEN_KEY, type SeenRecord } from "@/features/games/seenPool";
 import { ATTEMPTS_EVENT, ATTEMPTS_KEY, type Attempt } from "@/features/mock/attempts";
+import { ANSWERED_EVENT, ANSWERED_KEY, type Answered } from "@/features/pyq/answered";
 import { EXAM_DATE_AT_KEY, EXAM_DATE_EVENT, EXAM_DATE_KEY } from "@/components/custom/exam-countdown";
 
 /**
@@ -44,6 +45,8 @@ export interface ProgressDoc {
   seen?: SeenRecord;
   /** Finished mocks, past papers and sectional tests. */
   attempts?: Attempt[];
+  /** Answered past-year questions (topic progress). */
+  answered?: Record<string, Answered>;
 }
 
 function localKeys(): string[] {
@@ -67,6 +70,7 @@ export function isSyncedKey(key: string): boolean {
     key === EXAM_DATE_AT_KEY ||
     key === SEEN_KEY ||
     key === ATTEMPTS_KEY ||
+    key === ANSWERED_KEY ||
     key.startsWith(PLAN_PREFIX) ||
     key.startsWith(UNFINISHED_PREFIX)
   );
@@ -99,6 +103,7 @@ export function buildLocalDoc(): ProgressDoc {
     examDate: { value: examDate, at: readStored<number>(EXAM_DATE_AT_KEY, examDate ? 1 : 0) },
     seen: readStored<SeenRecord>(SEEN_KEY, {}),
     attempts: readStored<Attempt[]>(ATTEMPTS_KEY, []),
+    answered: readStored<Record<string, Answered>>(ANSWERED_KEY, {}),
   };
 }
 
@@ -117,6 +122,7 @@ export function applyDoc(doc: ProgressDoc): void {
     writeStored(UNFINISHED_REMOVED_KEY, doc.unfinishedRemoved);
     if (doc.seen) writeStored(SEEN_KEY, doc.seen);
     if (doc.attempts) writeStored(ATTEMPTS_KEY, doc.attempts);
+    if (doc.answered) writeStored(ANSWERED_KEY, doc.answered);
     for (const key of localKeys()) {
       if (key.startsWith(UNFINISHED_PREFIX) && !doc.unfinished[key.slice(UNFINISHED_PREFIX.length)]) removeStored(key);
     }
@@ -128,7 +134,7 @@ export function applyDoc(doc: ProgressDoc): void {
   } finally {
     applying = false;
   }
-  for (const event of [ACTIVITY_EVENT, PLAN_EVENT, EXAM_DATE_EVENT, ATTEMPTS_EVENT]) window.dispatchEvent(new Event(event));
+  for (const event of [ACTIVITY_EVENT, PLAN_EVENT, EXAM_DATE_EVENT, ATTEMPTS_EVENT, ANSWERED_EVENT]) window.dispatchEvent(new Event(event));
 }
 
 /** Remove synced progress from this device (another account is signing in, or sign-out). */

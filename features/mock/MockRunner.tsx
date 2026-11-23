@@ -20,6 +20,7 @@ import { Blocks, mapTextBlocks, markAskedBlank } from "@/features/content/Blocks
 import { MARKS_CORRECT, MARKS_WRONG, computeResult, createSession, formatClock } from "@/features/pyq/session";
 import { logActivity, logMistakes, plainText } from "@/lib/activity-log";
 import { recordPlanActivity } from "@/lib/today-plan";
+import { recordAnswers } from "@/features/pyq/answered";
 import { SUBJECT_LABEL, subjectTheme } from "@/lib/subject-theme";
 import { cn } from "@/lib/utils";
 import type { FullMock, Pyq } from "@/redux/PyqApi";
@@ -758,6 +759,7 @@ function Review({
     if (logged.current || !record) return;
     logged.current = true;
     recordPlanActivity("pyq");
+    recordAnswers(exam.questions, exam.answers);
     const path = homeHref;
     for (const s of exam.sections) {
       const qs = exam.questions.slice(s.start, s.end);
