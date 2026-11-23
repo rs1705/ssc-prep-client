@@ -320,7 +320,7 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
                 {t.count > 0 ? (
                   <>
                     <span className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
-                      <span>{t.count} questions</span>
+                      <span>{t.count} {t.count === 1 ? "question" : "questions"}</span>
                       <span className="font-semibold text-foreground">{pct}% complete</span>
                     </span>
                     <ProgressBar p={progress.get(t.id)} total={t.count} />
