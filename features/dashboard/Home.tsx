@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, Brain, CalendarDays, Check, ClipboardCheck, Flame, Gamepad2, Layers, Pencil, type LucideIcon } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Brain, Calculator, CalendarDays, Check, ClipboardCheck, Flame, Gamepad2, Globe2, Languages, Layers, Pencil, Zap, type LucideIcon } from "lucide-react";
 import { EXAM_DATE_AT_KEY, EXAM_DATE_EVENT, EXAM_DATE_KEY, daysUntil, formatDate, todayIso } from "@/components/custom/exam-countdown";
 import { readStored, writeStored } from "@/lib/storage";
 import { resumeHref, type Unfinished } from "@/features/games/unfinished";
@@ -264,7 +264,7 @@ const ACTIONS: { href: string; title: string; sub: string; icon: LucideIcon; tin
   { href: "/mock-tests", title: "Mock test", sub: "Full paper, timed", icon: ClipboardCheck, tint: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-300" },
   { href: "/SSC/english/flashcards", title: "Flashcards", sub: "Words & formulas", icon: Layers, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-300" },
   { href: "/SSC/english/games", title: "Word games", sub: "Six quick games", icon: Gamepad2, tint: "bg-pink-500/10 text-pink-600 dark:text-pink-300" },
-  { href: "/SSC/maths/mental-maths", title: "Mental maths", sub: "Speed drills", icon: Brain, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-300" },
+  { href: "/SSC/maths/mental-maths", title: "Mental maths", sub: "Speed drills", icon: Zap, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-300" },
 ];
 
 /** Shortcuts: quiet tiles, one tap each. */
@@ -374,12 +374,12 @@ export function SubjectsPanel({
             <li key={key}>
               <Link href={`/analytics?subject=${key}`} className="group -mx-2 flex flex-col gap-1.5 rounded-xl px-2 py-2.5 transition-colors hover:bg-muted/60">
                 <span className="flex items-center gap-2">
-                  <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: HUE[key] }} aria-hidden="true" />
+                  <SubjectIcon subject={key} />
                   <span className="flex-1 text-sm font-semibold text-foreground">{SUBJECT_LABEL[key]}</span>
                   <span className="text-xs tabular-nums text-muted-foreground">{stats.accuracy === null ? "–" : `${stats.accuracy}% right`}</span>
                   <span className="w-9 text-right text-sm font-bold tabular-nums text-foreground">{pct}%</span>
                 </span>
-                <span className="ml-4 block h-1.5 overflow-hidden rounded-full bg-muted">
+                <span className="ml-9 block h-1.5 overflow-hidden rounded-full bg-muted">
                   <span className={cn("block h-full rounded-full bg-gradient-to-r transition-[width] duration-700", subjectTheme(key).bar)} style={{ width: `${Math.max(pct, pct > 0 ? 3 : 0)}%` }} />
                 </span>
               </Link>
@@ -440,6 +440,21 @@ function Donut({ trees, share }: { trees: Record<SubjectKey, PyqTopicNode[]>; sh
         <p className="text-xs text-muted-foreground">past-year questions answered</p>
       </div>
     </div>
+  );
+}
+
+/** The subject's own icon (same as the sidebar), on a soft tint of its colour. */
+const SUBJECT_ICON: Record<SubjectKey, LucideIcon> = { maths: Calculator, english: Languages, reasoning: Brain, gk: Globe2 };
+function SubjectIcon({ subject }: { subject: SubjectKey }) {
+  const Icon = SUBJECT_ICON[subject];
+  return (
+    <span
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+      style={{ color: HUE[subject], background: `color-mix(in oklab, ${HUE[subject]} 14%, transparent)` }}
+      aria-hidden="true"
+    >
+      <Icon className="h-4 w-4" />
+    </span>
   );
 }
 
