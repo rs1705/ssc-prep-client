@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { ArrowRight, ArrowUpRight, Check, Flame } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Brain, Check, ClipboardCheck, Flame, Gamepad2, Layers, type LucideIcon } from "lucide-react";
 import { resumeHref, type Unfinished } from "@/features/games/unfinished";
 import { HUE, practiseHref, type LeafInfo } from "@/features/pyq/topic-map";
 import { pickForReview, subjectStats, type ActivityEntry, type MistakeEntry } from "@/lib/activity-log";
@@ -123,6 +123,38 @@ export function Hero({ name, greeting, unfinished }: { name: string; greeting: s
   );
 }
 
+/* ---------------- Quick actions ---------------- */
+
+const ACTIONS: { href: string; title: string; sub: string; icon: LucideIcon; tint: string }[] = [
+  { href: "/mock-tests", title: "Mock test", sub: "Full paper, timed", icon: ClipboardCheck, tint: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-300" },
+  { href: "/SSC/english/flashcards", title: "Flashcards", sub: "Words & formulas", icon: Layers, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-300" },
+  { href: "/SSC/english/games", title: "Word games", sub: "Six quick games", icon: Gamepad2, tint: "bg-pink-500/10 text-pink-600 dark:text-pink-300" },
+  { href: "/SSC/maths/mental-maths", title: "Mental maths", sub: "Speed drills", icon: Brain, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-300" },
+];
+
+/** Shortcuts: quiet tiles, one tap each. */
+export function QuickActions() {
+  return (
+    <nav aria-label="Quick actions" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {ACTIONS.map(({ href, title, sub, icon: Icon, tint }) => (
+        <Link
+          key={href}
+          href={href}
+          className={cn(panel, "group flex items-center gap-3 p-3.5 transition-all hover:-translate-y-0.5 hover:border-border hover:shadow-md")}
+        >
+          <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110", tint)}>
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-bold text-foreground">{title}</span>
+            <span className="block truncate text-xs text-muted-foreground">{sub}</span>
+          </span>
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
 /* ---------------- Rail: review ---------------- */
 
 export function ReviewPanel({ mistakes }: { mistakes: MistakeEntry[] }) {
@@ -170,8 +202,9 @@ export function SubjectsPanel({
   return (
     <section aria-labelledby="subjects-heading" className={cn(panel, "p-5")}>
       <Label>
-        <span id="subjects-heading">Subjects</span>
+        <span id="subjects-heading">Your progress</span>
       </Label>
+      <Donut trees={trees} share={share} />
       <ul className="mt-3 flex flex-col">
         {SUBJECTS.map((key) => {
           const pct = Math.round(share(trees[key]) * 100);
@@ -186,7 +219,7 @@ export function SubjectsPanel({
                   <span className="w-9 text-right text-sm font-bold tabular-nums text-foreground">{pct}%</span>
                 </span>
                 <span className="ml-4 block h-1 overflow-hidden rounded-full bg-muted">
-                  <span className="block h-full rounded-full bg-brand-500/80 transition-[width] duration-700" style={{ width: `${Math.max(pct, pct > 0 ? 3 : 0)}%` }} />
+                  <span className="block h-full rounded-full transition-[width] duration-700" style={{ width: `${Math.max(pct, pct > 0 ? 3 : 0)}%`, background: HUE[key] }} />
                 </span>
               </Link>
             </li>
@@ -195,6 +228,57 @@ export function SubjectsPanel({
       </ul>
       <p className="mt-2 text-xs text-muted-foreground">Share of past-year questions done · accuracy this month</p>
     </section>
+  );
+}
+
+/** All past-year questions as one ring, each subject's done share in its colour. */
+function Donut({ trees, share }: { trees: Record<SubjectKey, PyqTopicNode[]>; share: (nodes: PyqTopicNode[]) => number }) {
+  const parts = SUBJECTS.map((key) => {
+    const total = trees[key].reduce((n, t) => n + t.children.reduce((m, c) => m + c.count, 0), 0);
+    return { key, total, done: share(trees[key]) * total };
+  });
+  const total = parts.reduce((n, p) => n + p.total, 0);
+  const done = parts.reduce((n, p) => n + p.done, 0);
+  const r = 52;
+  const c = 2 * Math.PI * r;
+  let offset = 0;
+  return (
+    <div className="mt-3 flex items-center gap-5">
+      <div className="relative h-32 w-32 shrink-0">
+        <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90" role="img" aria-label={`${Math.round((done / Math.max(total, 1)) * 100)}% of past-year questions done`}>
+          <circle cx="60" cy="60" r={r} fill="none" strokeWidth="12" className="stroke-muted" />
+          {parts.map((p) => {
+            const len = total ? (p.done / total) * c : 0;
+            const el = (
+              <circle
+                key={p.key}
+                cx="60"
+                cy="60"
+                r={r}
+                fill="none"
+                strokeWidth="12"
+                stroke={HUE[p.key]}
+                strokeDasharray={`${len} ${c - len}`}
+                strokeDashoffset={-offset}
+                className="transition-all duration-700"
+              />
+            );
+            offset += len;
+            return el;
+          })}
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-2xl font-extrabold tabular-nums text-foreground">{Math.round((done / Math.max(total, 1)) * 100)}%</span>
+          <span className="text-[10px] font-semibold text-muted-foreground">of all PYQs</span>
+        </div>
+      </div>
+      <div className="text-sm">
+        <p className="font-bold text-foreground">
+          <CountUp value={Math.round(done)} /> <span className="font-medium text-muted-foreground">of {total}</span>
+        </p>
+        <p className="text-xs text-muted-foreground">past-year questions answered</p>
+      </div>
+    </div>
   );
 }
 
