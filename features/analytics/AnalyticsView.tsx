@@ -7,7 +7,7 @@ import { ArrowRight, ArrowUpRight, RotateCcw } from "lucide-react";
 import { CountUp } from "@/features/dashboard/Interactive";
 import { Label, panel } from "@/features/dashboard/Home";
 import { RecentPanel } from "@/features/dashboard/Recent";
-import { reviewHref, useAttempts } from "@/features/mock/attempts";
+import { reviewHref, useAttempts, type Attempt } from "@/features/mock/attempts";
 import { HUE, SUBJECTS, practiseHref, useProgressMap, type LeafInfo } from "@/features/pyq/topic-map";
 import { plainText, timeAgo, useActivityLog } from "@/lib/activity-log";
 import { SUBJECT_LABEL, type SubjectKey } from "@/lib/subject-theme";
@@ -29,6 +29,63 @@ function band(acc: number | null) {
   if (acc >= 0.75) return { cell: "bg-emerald-500", text: "text-emerald-600 dark:text-emerald-400", label: "Strong" };
   if (acc >= 0.5) return { cell: "bg-amber-400", text: "text-amber-600 dark:text-amber-400", label: "Getting there" };
   return { cell: "bg-rose-500", text: "text-rose-600 dark:text-rose-400", label: "Weak" };
+}
+
+/** Score per test over time (oldest left), with 50% and 75% guide lines. Tap a dot to review. */
+function ScoreTrend({ tests, onOpen }: { tests: Attempt[]; onOpen: (href: string) => void }) {
+  const pts = [...tests]
+    .sort((a, b) => a.at - b.at)
+    .slice(-12)
+    .map((t) => ({ t, p: Math.max(0, Math.min(1, t.marks / Math.max(t.maxMarks, 1))) }));
+  if (pts.length === 0) return null;
+  const W = 300;
+  const H = 110;
+  const pad = 10;
+  const x = (i: number) => (pts.length === 1 ? W / 2 : pad + (i * (W - pad * 2)) / (pts.length - 1));
+  const y = (p: number) => H - pad - p * (H - pad * 2);
+  const line = pts.map((d, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(d.p).toFixed(1)}`).join(" ");
+  const area = `${line} L${x(pts.length - 1).toFixed(1)} ${H - pad} L${x(0).toFixed(1)} ${H - pad} Z`;
+  const first = pts[0].p;
+  const last = pts[pts.length - 1].p;
+  const change = Math.round((last - first) * 100);
+  return (
+    <div className="mt-3">
+      {pts.length > 1 && (
+        <p className="text-xs text-muted-foreground">
+          {change === 0 ? "Steady" : change > 0 ? `Up ${change} points` : `Down ${-change} points`} over your last {pts.length} tests
+        </p>
+      )}
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-1 h-auto w-full overflow-visible" role="img" aria-label="Score trend">
+        <defs>
+          <linearGradient id="trend-fill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stopColor="var(--brand-500)" stopOpacity="0.22" />
+            <stop offset="1" stopColor="var(--brand-500)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {[0.5, 0.75].map((g) => (
+          <g key={g}>
+            <line x1={pad} x2={W - pad} y1={y(g)} y2={y(g)} className="stroke-border" strokeDasharray="3 4" />
+            <text x={W - pad} y={y(g) - 3} textAnchor="end" className="fill-muted-foreground text-[9px]">
+              {g * 100}%
+            </text>
+          </g>
+        ))}
+        {pts.length > 1 && (
+          <>
+            <path d={area} fill="url(#trend-fill)" />
+            <path d={line} fill="none" stroke="var(--brand-500)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+          </>
+        )}
+        {pts.map((d, i) => (
+          <g key={d.t.id} className="cursor-pointer" onClick={() => onOpen(reviewHref(d.t))} role="link" aria-label={`${d.t.title}: ${Math.round(d.p * 100)}%`}>
+            <title>{`${d.t.title}: ${d.t.marks}/${d.t.maxMarks} (${Math.round(d.p * 100)}%)`}</title>
+            <circle cx={x(i)} cy={y(d.p)} r="10" fill="transparent" />
+            <circle cx={x(i)} cy={y(d.p)} r={i === pts.length - 1 ? 4.5 : 3.5} className="stroke-card" strokeWidth="2" style={{ fill: d.p >= 0.75 ? "var(--color-emerald-500)" : d.p >= 0.5 ? "var(--color-amber-400)" : "var(--color-rose-500)" }} />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
 }
 
 export function AnalyticsView() {
@@ -79,7 +136,7 @@ export function AnalyticsView() {
     .filter((l) => l.done >= 2)
     .sort((a, b) => a.right / a.done - b.right / b.done)
     .slice(0, 5);
-  const tests = attempts.filter((a) => (filter === "all" ? true : a.subject === filter));
+  const tests = attempts.filter((a) => (filter === "all" ? a.kind !== "section" : a.kind === "section" && a.subject === filter));
   const myMistakes = mistakes.filter((m) => inFilter(m.subject));
 
   const tabs: Filter[] = ["all", ...SUBJECTS];
@@ -260,7 +317,7 @@ export function AnalyticsView() {
           <section aria-labelledby="tests-heading" className={cn(panel, "p-5")}>
             <div className="flex items-baseline justify-between">
               <Label>
-                <span id="tests-heading">Test scores</span>
+                <span id="tests-heading">{filter === "all" ? "Mock scores" : "Sectional scores"}</span>
               </Label>
               <Link href="/mock-tests" className="text-xs font-semibold text-muted-foreground hover:text-foreground">
                 Take a test
@@ -270,6 +327,7 @@ export function AnalyticsView() {
               <p className="mt-3 text-sm text-muted-foreground">No tests yet. Your mock and sectional scores will appear here.</p>
             ) : (
               <>
+                <ScoreTrend tests={tests} onOpen={(href) => router.push(href)} />
                 <p className="mt-2 text-sm text-muted-foreground">
                   Best <span className="font-bold text-foreground">{Math.max(...tests.map((t) => Math.round((t.marks / Math.max(t.maxMarks, 1)) * 100)))}%</span> · average{" "}
                   <span className="font-bold text-foreground">{Math.round((tests.reduce((n, t) => n + t.marks / Math.max(t.maxMarks, 1), 0) / tests.length) * 100)}%</span>
