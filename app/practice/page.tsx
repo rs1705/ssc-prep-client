@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import Link from "next/link";
-import { ArrowUpRight, Brain, Calculator, Globe2, Languages } from "lucide-react";
+import { Brain, Calculator, Globe2, Languages } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import SectionCardGrid from "@/components/custom/section-card/section-card-grid";
-import { ExamPatternLink } from "@/components/custom/subject-overview";
+import { SyllabusLink } from "@/components/custom/subject-overview";
 import { SUBJECT_SECTIONS } from "@/lib/subject-data";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 
@@ -92,17 +91,12 @@ export default function PracticeHomePage() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="flex w-full flex-col gap-5"
           >
-            <ExamPatternLink subject={activeTab} />
-
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h2 className="text-lg font-extrabold text-foreground">Practice modes</h2>
-              <Link
-                href={`/SSC/${activeTab}`}
-                className="inline-flex items-center gap-1 py-1 text-sm font-semibold text-brand-700 hover:underline dark:text-brand-400"
-              >
-                {live} live · see the full syllabus
-                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </Link>
+              <div className="flex items-baseline gap-3">
+                <p className="text-xs font-medium text-muted-foreground">{live} live</p>
+                <SyllabusLink subject={activeTab} />
+              </div>
             </div>
 
             <SectionCardGrid sections={sections} />
