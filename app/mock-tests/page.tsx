@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Clock, FileText, Lock, Play, RotateCcw, Shuffle } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Play, RotateCcw } from "lucide-react";
 import { Loader } from "@/components/custom/loader";
 import { TopicPageLayout } from "@/components/custom/TopicPageLayout";
 import ErrorState from "@/components/custom/error-state";
@@ -44,66 +44,40 @@ export default function MockTestsPage() {
   return (
     <TopicPageLayout title="Mock tests" description="Full SSC CGL Tier 1 papers in the real exam interface. Tests open full-screen.">
       <div className="flex w-full flex-col gap-6">
-        {/* fresh mock: the one main action */}
-        <section aria-labelledby="new-mock" className={cn(panel, "relative overflow-hidden")}>
-          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-500/10 blur-3xl" aria-hidden="true" />
-          <div className="relative flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-4">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-500/12 text-brand-600 dark:text-brand-400">
-                <Shuffle className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <div>
-                <Label>Recommended</Label>
-                <h2 id="new-mock" className="mt-0.5 text-2xl font-extrabold tracking-tight text-foreground">
-                  Full mock test
-                </h2>
-                <p className="mt-1 max-w-lg text-sm leading-relaxed text-muted-foreground">
-                  100 real past-year questions, picked fresh from every paper each time. The closest thing to exam day.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-stretch gap-2 lg:items-end">
-              <Link
-                href={attemptHref("new")}
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-brand-500 px-7 text-[15px] font-bold text-white shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5 hover:bg-brand-600 hover:shadow-xl hover:shadow-brand-500/30"
+        {/* fresh mock: the one main action, kept short */}
+        <section aria-labelledby="new-mock" className={cn(panel, "relative overflow-hidden p-5 sm:p-6")}>
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-brand-500/10 blur-3xl" aria-hidden="true" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <h2 id="new-mock" className="text-xl font-extrabold tracking-tight text-foreground sm:text-2xl">
+                Full mock test
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">100 fresh past-year questions · {MINUTES * 4} min</p>
+              {/* the four sections in exam order; details are in the tooltip */}
+              <ul
+                className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-muted-foreground"
+                title={`${MINUTES} min per section, no carry-over · no going back to a finished section · +${MARKS_CORRECT} right, ${MARKS_WRONG} wrong`}
               >
-                Start a mock
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-              </Link>
-              <span className="text-center text-xs text-muted-foreground lg:text-right">
-                100 questions · {MINUTES * 4} min · +{MARKS_CORRECT} / {MARKS_WRONG}
-              </span>
+                {SECTIONS.map((s) => (
+                  <li key={s} className="inline-flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: HUE[s] }} aria-hidden="true" />
+                    {s === "gk" ? "GA" : SUBJECT_LABEL[s]}
+                  </li>
+                ))}
+              </ul>
             </div>
+            <Link
+              href={attemptHref("new")}
+              className="group inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-2xl bg-brand-500 px-6 text-sm font-bold text-white shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5 hover:bg-brand-600"
+            >
+              Start a mock
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            </Link>
           </div>
-
-          {/* the four sections, in exam order */}
-          <ol className="relative grid grid-cols-2 gap-px border-t border-border/70 bg-border/70 sm:grid-cols-4">
-            {SECTIONS.map((s, i) => (
-              <li key={s} className="flex flex-col gap-0.5 bg-card px-6 py-4">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Section {i + 1}</span>
-                <span className="flex items-center gap-2 text-sm font-bold text-foreground">
-                  <span className="h-2 w-2 rounded-full" style={{ background: HUE[s] }} aria-hidden="true" />
-                  {s === "gk" ? "General Awareness" : SUBJECT_LABEL[s]}
-                </span>
-                <span className="text-xs text-muted-foreground">25 questions · {MINUTES} min</span>
-              </li>
-            ))}
-          </ol>
+          <p className="relative mt-4 border-t border-border/70 pt-3 text-xs text-muted-foreground">
+            {MINUTES} min per section · no going back · +{MARKS_CORRECT} right, {MARKS_WRONG} wrong
+          </p>
         </section>
-
-        {/* how it runs */}
-        <ul className="flex flex-wrap gap-2">
-          {[
-            { icon: Clock, text: `${MINUTES} minutes per section, no carry-over` },
-            { icon: Lock, text: "No going back to a finished section" },
-            { icon: FileText, text: `+${MARKS_CORRECT} for right, ${MARKS_WRONG} for wrong` },
-          ].map(({ icon: Icon, text }) => (
-            <li key={text} className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground">
-              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
-              {text}
-            </li>
-          ))}
-        </ul>
 
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
           {/* past papers */}
