@@ -298,55 +298,65 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
   }
   // Bigger groups first, so the page doesn't open on rows of single cards.
   sections.sort((x, y) => y[1].length - x[1].length);
+  const card = (t: PyqTopicNode, label?: string) => {
+    const Icon = iconFor(t);
+    const done = Math.min(progress.get(t.id)?.done ?? 0, t.count);
+    const pct = Math.round((done / t.count) * 100);
+    return (
+      <Link
+        href={href(t.id)}
+        className={cn("surface-card flex h-full min-h-40 flex-col gap-2.5 rounded-2xl p-4 transition-all hover:-translate-y-0.5 hover:shadow-md", theme.hoverBorder)}
+      >
+        <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", theme.iconWrap)}>
+          <Icon className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <span>
+          {label && <span className="block text-[11px] font-bold uppercase tracking-wide text-muted-foreground">{label}</span>}
+          <span className="block text-[15px] font-bold leading-snug text-foreground">{t.name}</span>
+        </span>
+        <span className="mt-auto flex flex-col gap-1.5">
+          <span className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
+            <span>{t.count} {t.count === 1 ? "question" : "questions"}</span>
+            <span className="font-semibold text-foreground">{pct}% complete</span>
+          </span>
+          <ProgressBar p={progress.get(t.id)} total={t.count} />
+        </span>
+      </Link>
+    );
+  };
+
+  // Bento: every group is a block under its heading. Groups with several topics are two
+  // columns wide; a topic alone in its group gets a one-column block of its own.
+  const singles = sections.filter(([, list]) => list.length === 1).map(([g, list]) => ({ g, t: list[0] }));
+  const groups = sections.filter(([, list]) => list.length > 1);
   return (
-    <div className="flex flex-col gap-6">
-      {sections.map(([groupName, list]) => (
-      <section key={groupName} className="flex flex-col gap-2.5">
-      {sections.length > 1 && <h3 className="text-sm font-bold text-foreground">{groupName}</h3>}
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
-        {list.map((t) => {
-          const Icon = iconFor(t);
-          const done = Math.min(progress.get(t.id)?.done ?? 0, t.count);
-          const pct = t.count ? Math.round((done / t.count) * 100) : 0;
-          const body = (
-            <>
-              <span className={cn("flex h-11 w-11 items-center justify-center rounded-xl", t.count ? theme.iconWrap : "bg-muted text-muted-foreground")}>
-                <Icon className="h-5 w-5" aria-hidden="true" />
+    <ul className="grid grid-flow-dense grid-cols-2 gap-3 md:grid-cols-4">
+      {groups.map(([groupName, list]) => (
+          <li
+            key={groupName}
+            className={cn(
+              "col-span-2 flex flex-col gap-2.5 rounded-3xl border border-border bg-muted/40 p-3",
+            )}
+          >
+            <h3 className="flex items-baseline justify-between gap-2 px-1 text-sm font-bold text-foreground">
+              {groupName}
+              <span className="text-xs font-medium text-muted-foreground">
+                {list.reduce((n, t) => n + t.count, 0)} questions
               </span>
-              <span>
-                <span className={cn("block text-[15px] font-bold leading-snug", t.count ? "text-foreground" : "text-muted-foreground")}>{t.name}</span>
-              </span>
-              <span className="mt-auto flex flex-col gap-1.5">
-                {t.count > 0 ? (
-                  <>
-                    <span className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
-                      <span>{t.count} {t.count === 1 ? "question" : "questions"}</span>
-                      <span className="font-semibold text-foreground">{pct}% complete</span>
-                    </span>
-                    <ProgressBar p={progress.get(t.id)} total={t.count} />
-                  </>
-                ) : (
-                  <span className="text-xs text-muted-foreground">Not asked yet</span>
-                )}
-              </span>
-            </>
-          );
-          const cls = "surface-card flex h-full min-h-40 flex-col gap-2.5 rounded-2xl p-4";
-          return (
-            <li key={t.id}>
-              {t.count ? (
-                <Link href={href(t.id)} className={cn(cls, "transition-all hover:-translate-y-0.5 hover:shadow-md", theme.hoverBorder)}>
-                  {body}
-                </Link>
-              ) : (
-                <div className={cn(cls, "opacity-55")}>{body}</div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      </section>
+            </h3>
+            <ul className={cn("grid flex-1 gap-3", list.length >= 3 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-2")}>
+              {list.map((t) => (
+                <li key={t.id}>{card(t)}</li>
+              ))}
+            </ul>
+          </li>
       ))}
-    </div>
+      {singles.map(({ g, t }) => (
+        <li key={t.id} className="flex flex-col gap-2.5 rounded-3xl border border-border bg-muted/40 p-3">
+          <h3 className="px-1 text-sm font-bold text-foreground">{g}</h3>
+          <div className="flex-1">{card(t)}</div>
+        </li>
+      ))}
+    </ul>
   );
 }
