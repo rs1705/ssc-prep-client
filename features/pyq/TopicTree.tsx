@@ -316,9 +316,9 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
           <span className="block text-[15px] font-bold leading-snug text-foreground">{t.name}</span>
         </span>
         <span className="mt-auto flex flex-col gap-1.5">
-          <span className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
-            <span>{t.count} {t.count === 1 ? "question" : "questions"}</span>
-            <span className="font-semibold text-foreground">{pct}% complete</span>
+          <span className="flex items-baseline justify-between gap-2 whitespace-nowrap text-xs text-muted-foreground">
+            <span className="truncate">{t.count} {t.count === 1 ? "question" : "questions"}</span>
+            <span className="font-semibold text-foreground" title={`${pct}% complete`}>{pct}%</span>
           </span>
           <ProgressBar p={progress.get(t.id)} total={t.count} />
         </span>
@@ -345,7 +345,7 @@ export function TopicTree({ topics, theme, setSize, topicId, subId, pending, dis
                 {list.reduce((n, t) => n + t.count, 0)} questions
               </span>
             </h3>
-            <ul className={cn("grid flex-1 gap-3", list.length >= 3 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-2")}>
+            <ul className={cn("grid flex-1 gap-3", list.length % 3 === 0 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-2")}>
               {list.map((t) => (
                 <li key={t.id}>{card(t)}</li>
               ))}
