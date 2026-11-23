@@ -36,19 +36,22 @@ export default function DashboardPrototype() {
         <HeaderCountdown />
       </header>
 
+      {/* Today and a quick question on the left; the four subjects, 2x2, beside them. */}
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="flex flex-col gap-5 lg:col-span-2">
           <TodayCard week={week} />
           <QuickQuestion />
         </div>
-        <div className="flex flex-col gap-5">
-          <ReviewCard mistakes={mistakes} />
-          {ready && now && <ResumeCard unfinished={unfinished} activities={activities} now={now} />}
-          {now && <WeekStatsCard activities={activities} now={now} />}
-        </div>
         {now && <SubjectsRow activities={activities} now={now} trees={trees} share={share} leaves={leaves} />}
-        {now && <FocusCard leaves={leaves} now={now} />}
       </div>
+
+      <div className="grid items-start gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <ReviewCard mistakes={mistakes} />
+        {ready && now && <ResumeCard unfinished={unfinished} activities={activities} now={now} />}
+        {now && <WeekStatsCard activities={activities} now={now} />}
+      </div>
+
+      {now && <FocusCard leaves={leaves} now={now} />}
     </div>
   );
 }

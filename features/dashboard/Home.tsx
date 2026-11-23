@@ -262,11 +262,11 @@ export function SubjectsRow({
   leaves: Map<string, LeafInfo>;
 }) {
   return (
-    <section aria-labelledby="subjects-heading" className="lg:col-span-3">
+    <section aria-labelledby="subjects-heading" className="flex flex-col">
       <h2 id="subjects-heading" className="mb-3 text-sm font-bold text-foreground">
         Your subjects
       </h2>
-      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <ul className="grid flex-1 grid-cols-2 gap-3">
         {SUBJECTS.map(({ key, icon: Icon }) => {
           const theme = subjectTheme(key);
           const pyqShare = share(trees[key]);
