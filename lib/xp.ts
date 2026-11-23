@@ -13,6 +13,12 @@ import { readStored, writeStored } from "@/lib/storage";
  * by the larger total.
  */
 
+/**
+ * Off for now: XP is still counted quietly in the background, but nothing shows it
+ * (no toast, no level badge) and nothing is locked by it. Set to true to turn it on.
+ */
+export const XP_ENABLED = false;
+
 export const XP_KEY = "ssc:xp";
 export const XP_EVENT = "ssc:xp-updated";
 /** Fired with the amount just earned, for the "+XP" toast. */

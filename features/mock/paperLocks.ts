@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useAnswered } from "@/features/pyq/answered";
 import { paperLock, type PaperLock } from "@/lib/unlocks";
-import { useXp } from "@/lib/xp";
+import { XP_ENABLED, useXp } from "@/lib/xp";
 import { useGetMockPapersQuery } from "@/redux/PyqApi";
 import { useAttempts } from "./attempts";
 
@@ -19,7 +19,10 @@ export function usePaperLocks() {
     const sorted = [...(papers ?? [])].sort((x, y) => y.year - x.year || (y.date ?? "").localeCompare(x.date ?? ""));
     const tried = new Set(attempts.filter((a) => a.kind === "paper" && a.paperId).map((a) => a.paperId as string));
     const locks = new Map<string, PaperLock>();
-    sorted.forEach((p, i) => locks.set(p.id, paperLock(i, { level: level.level, answered: answeredCount, attempted: tried.has(p.id) })));
+    // With XP off, every paper is open.
+    sorted.forEach((p, i) =>
+      locks.set(p.id, XP_ENABLED ? paperLock(i, { level: level.level, answered: answeredCount, attempted: tried.has(p.id) }) : paperLock(0, { level: 1, answered: 0, attempted: true })),
+    );
     return { sorted, locks, ready: ready && !!papers, level: level.level, answered: answeredCount };
   }, [papers, attempts, level.level, answeredCount, ready]);
 }

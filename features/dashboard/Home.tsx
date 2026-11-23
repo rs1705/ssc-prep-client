@@ -10,7 +10,7 @@ import { HUE, practiseHref, type LeafInfo } from "@/features/pyq/topic-map";
 import { pickForReview, subjectStats, type ActivityEntry, type MistakeEntry } from "@/lib/activity-log";
 import { SUBJECT_LABEL, subjectTheme, type SubjectKey } from "@/lib/subject-theme";
 import { isStepDone, useTodayPlan } from "@/lib/today-plan";
-import { useXp } from "@/lib/xp";
+import { XP_ENABLED, useXp } from "@/lib/xp";
 import { cn } from "@/lib/utils";
 import type { PyqTopicNode } from "@/redux/PyqApi";
 import { CountUp, MistakeFlip } from "./Interactive";
@@ -50,7 +50,7 @@ export function Hero({ name, greeting, unfinished, week }: { name: string; greet
 
       {/* streak and exam date, top right */}
       <div className="relative mb-5 flex flex-wrap items-center gap-2 sm:absolute sm:right-8 sm:top-7 sm:mb-0">
-        <LevelChip />
+        {XP_ENABLED && <LevelChip />}
         <Streak streak={streak} week={week} />
         <ExamChip />
       </div>

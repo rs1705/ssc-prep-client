@@ -2,13 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Trophy } from "lucide-react";
-import { XP_GAIN_EVENT, type Level } from "@/lib/xp";
+import { XP_ENABLED, XP_GAIN_EVENT, type Level } from "@/lib/xp";
 
 /**
  * "+25 XP" after practice, and a bigger card on a level-up. Gains that arrive close
  * together (a set of answers) are added up into one toast.
  */
 export function XpToast() {
+  if (!XP_ENABLED) return null;
+  return <XpToastInner />;
+}
+
+function XpToastInner() {
   const [gain, setGain] = useState<{ amount: number; key: number } | null>(null);
   const [levelUp, setLevelUp] = useState<Level | null>(null);
   const hide = useRef<number | null>(null);
