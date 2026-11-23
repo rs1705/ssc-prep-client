@@ -4,7 +4,8 @@ import { BrandMark } from "@/components/custom/brand-mark";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, PanelLeftClose, PanelLeftOpen, Sun } from "lucide-react";
+import { LogIn, LogOut, Moon, PanelLeftClose, PanelLeftOpen, Sun } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSidebar } from "@/components/custom/sidebar-context";
 import { ExamCountdown } from "@/components/custom/exam-countdown";
 import { useAuth } from "@/context/auth";
@@ -74,8 +75,15 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
   const pathname = usePathname();
   const { isCollapsed, isMounted, toggleSidebar } = useSidebar();
   const { theme, toggleTheme } = useThemeToggle();
-  const { user } = useAuth();
+  const { user, logout, signInWithGoogle } = useAuth();
   const [mounted, setMounted] = useState(false);
+  const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
+  const initials = (user?.displayName ?? "U")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join("");
 
   useEffect(() => {
     setMounted(true);
@@ -214,6 +222,50 @@ export function Sidebar({ isFocusMode = false }: { isFocusMode?: boolean }) {
           </button>
         )}
       </div>
+
+      {/* Account */}
+      {mounted && !isAuthPage && (
+        <div className={`mt-3 border-t border-border pt-3 ${isCollapsed ? "" : "w-full"}`}>
+          {user ? (
+            <div className={`flex items-center ${isCollapsed ? "flex-col gap-1" : "gap-2.5 px-1"}`}>
+              <Avatar className="h-8 w-8 shrink-0" title={isCollapsed ? (user.displayName ?? user.email ?? undefined) : undefined}>
+                {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
+                <AvatarFallback className="bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-xs font-bold text-brand-700 dark:text-brand-400">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              {!isCollapsed && (
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-xs font-bold text-foreground">{user.displayName || "Aspirant"}</div>
+                  <div className="truncate text-xs text-muted-foreground">{user.email}</div>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={logout}
+                aria-label="Sign out"
+                title="Sign out"
+                className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-[color-mix(in_oklab,var(--destructive)_10%,var(--card))] hover:text-destructive"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={signInWithGoogle}
+              title="Sign in"
+              aria-label="Sign in"
+              className={`flex items-center justify-center gap-2 rounded-xl bg-brand-500 font-bold text-white transition-colors hover:bg-brand-600 ${
+                isCollapsed ? "mx-auto h-10 w-10" : "h-10 w-full text-sm"
+              }`}
+            >
+              <LogIn className="h-4 w-4 shrink-0" aria-hidden="true" />
+              {!isCollapsed && "Sign in"}
+            </button>
+          )}
+        </div>
+      )}
     </aside>
   );
 }

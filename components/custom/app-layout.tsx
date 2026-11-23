@@ -60,10 +60,11 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       
       {/* Main Content Area */}
       <div ref={scroller} className="app-canvas flex-1 flex flex-col min-w-0 h-[100dvh] overflow-y-auto">
-        {/* Phones: no top bar on focus pages (the game card has its own header), and on other
-            pages it slides away while scrolling down and comes back on the way up. */}
+        {/* Phones only (desktop has the sidebar): a slim bar with the menu, the brand and the
+            account. Not on focus pages (the game card has its own header); elsewhere it slides
+            away while scrolling down and comes back on the way up. */}
         <div
-          className={`sticky top-0 z-30 w-full shrink-0 border-b-2 border-border/60 bg-background pt-[env(safe-area-inset-top)] backdrop-blur-md transition-transform duration-300 ease-out md:pt-0 ${
+          className={`sticky top-0 z-30 w-full shrink-0 border-b border-border/60 bg-background/90 pt-[env(safe-area-inset-top)] backdrop-blur-md transition-transform duration-300 ease-out md:hidden ${
             isFocusMode ? "max-md:hidden" : ""
           } ${barHidden ? "max-md:-translate-y-full" : ""}`}
         >

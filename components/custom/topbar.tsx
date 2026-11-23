@@ -4,7 +4,7 @@ import { BrandMark } from "@/components/custom/brand-mark";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Home, LogOut, Menu, Moon, Sun } from "lucide-react";
+import { LogOut, Menu, Moon, Sun } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -21,8 +21,6 @@ import { useThemeToggle } from "@/hooks/useThemeToggle";
 import { activeNavPath, navGroups } from "@/lib/nav";
 import { subjectTheme } from "@/lib/subject-theme";
 
-const ICON_BUTTON =
-  "flex h-10 w-10 items-center justify-center rounded-full border-2 border-border bg-card text-foreground/80 transition-colors hover:bg-muted";
 const SIGN_IN_BUTTON =
   "flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-500 hover:bg-brand-600 px-5 text-sm font-bold text-white shadow-md shadow-brand-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/30 active:scale-95";
 
@@ -42,18 +40,10 @@ export function TopBar() {
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith("/signin") || pathname.startsWith("/signup");
   const [mounted, setMounted] = useState(false);
-  const [today, setToday] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    setToday(
-      new Date().toLocaleDateString(undefined, {
-        weekday: "long",
-        day: "numeric",
-        month: "short",
-      }),
-    );
   }, []);
 
   useEffect(() => {
@@ -65,12 +55,12 @@ export function TopBar() {
   const isDark = mounted && theme === "dark";
 
   return (
-    <header className="flex shrink-0 items-center justify-between gap-3 px-4 py-3 sm:px-6 md:px-8">
-      <div className="flex min-w-0 items-center gap-3">
+    <header className="flex h-12 shrink-0 items-center justify-between gap-3 px-3">
+      <div className="flex w-9 items-center">
         {/* Mobile menu */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
-            <button type="button" aria-label="Open menu" className={`${ICON_BUTTON} md:hidden`}>
+            <button type="button" aria-label="Open menu" className="flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 hover:bg-muted">
               <Menu className="h-4 w-4" strokeWidth={1.75} />
             </button>
           </SheetTrigger>
@@ -198,38 +188,24 @@ export function TopBar() {
           </SheetContent>
         </Sheet>
 
-        {/* Today */}
-        {today && (
-          <div className="hidden items-center gap-2 rounded-full border-2 border-border bg-card px-3.5 py-1.5 text-xs font-semibold text-muted-foreground min-[440px]:flex">
-            <CalendarDays className="h-3.5 w-3.5 text-brand-600 dark:text-brand-400" aria-hidden="true" />
-            {today}
-          </div>
-        )}
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3">
-        <Link href={user ? "/dashboard" : "/practice"} aria-label="Home" className={`${ICON_BUTTON} md:hidden`}>
-          <Home className="h-4 w-4" strokeWidth={1.75} />
-        </Link>
-        <button type="button" aria-label="Toggle theme" onClick={toggleTheme} className={`${ICON_BUTTON} md:hidden`}>
-          {isDark ? (
-            <Sun className="h-4 w-4 text-brand-400" strokeWidth={1.75} />
-          ) : (
-            <Moon className="h-4 w-4 text-brand-600" strokeWidth={1.75} />
-          )}
-        </button>
+      {/* Brand */}
+      <Link href={user ? "/dashboard" : "/practice"} aria-label="EptSSC home" className="flex items-center gap-2">
+        <BrandMark className="h-7 w-7 rounded-full" />
+        <span className="font-display text-base font-extrabold tracking-tight text-foreground">
+          Ept<span className="text-brand-600 dark:text-brand-400">SSC</span>
+        </span>
+      </Link>
 
+      <div className="flex w-9 justify-end">
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                aria-label="Account menu"
-                className="ml-1 flex items-center justify-center rounded-full border-2 border-brand-500/40 transition-colors hover:border-brand-500"
-              >
-                <Avatar className="h-9 w-9">
+              <button type="button" aria-label="Account menu" className="flex items-center justify-center rounded-full border-2 border-brand-500/40">
+                <Avatar className="h-8 w-8">
                   {user.photoURL && <AvatarImage src={user.photoURL} alt="" />}
-                  <AvatarFallback className="bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-sm font-bold text-brand-700 dark:text-brand-400">
+                  <AvatarFallback className="bg-[color-mix(in_oklab,var(--brand-500)_15%,var(--card))] text-xs font-bold text-brand-700 dark:text-brand-400">
                     {initialsOf(user.displayName)}
                   </AvatarFallback>
                 </Avatar>
@@ -251,7 +227,7 @@ export function TopBar() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : mounted && !isAuthPage ? (
-          <button type="button" onClick={signInWithGoogle} className={`${SIGN_IN_BUTTON} ml-1`}>
+          <button type="button" onClick={signInWithGoogle} className="h-8 shrink-0 rounded-full bg-brand-500 px-3 text-xs font-bold text-white hover:bg-brand-600">
             Sign in
           </button>
         ) : null}
