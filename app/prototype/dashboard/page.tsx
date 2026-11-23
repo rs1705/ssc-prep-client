@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth";
-import { HeaderCountdown } from "@/features/dashboard/HeaderCountdown";
 import { FocusPanel, Hero, QuickActions, SubjectsPanel, WeekPanel } from "@/features/dashboard/Home";
 import { QuickQuestion } from "@/features/dashboard/Interactive";
 import { useUnfinished } from "@/features/games/unfinished";
 import { useProgressMap } from "@/features/pyq/topic-map";
-import { useActivityLog } from "@/lib/activity-log";
+import { useActivityLog, weekStats } from "@/lib/activity-log";
 import { greetingFor } from "@/lib/greetings";
 
 /**
@@ -28,7 +27,7 @@ export default function DashboardPrototype() {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-      <Hero name={name} greeting={greeting} unfinished={unfinished} />
+      <Hero name={name} greeting={greeting} unfinished={unfinished} week={now ? weekStats(activities, new Date(now)).activeDays : Array(7).fill(false)} />
       <QuickActions />
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -37,7 +36,6 @@ export default function DashboardPrototype() {
           {now && <FocusPanel leaves={leaves} now={now} />}
         </div>
         <aside className="flex flex-col gap-6" aria-label="Your progress">
-          <HeaderCountdown />
           {now && <SubjectsPanel activities={activities} now={now} trees={trees} share={share} />}
           {now && <WeekPanel activities={activities} now={now} />}
         </aside>

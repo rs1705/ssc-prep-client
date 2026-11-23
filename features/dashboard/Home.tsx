@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
-import { ArrowRight, ArrowUpRight, Brain, Check, ClipboardCheck, Flame, Gamepad2, Layers, type LucideIcon } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, ArrowUpRight, Brain, CalendarDays, Check, ClipboardCheck, Flame, Gamepad2, Layers, Pencil, type LucideIcon } from "lucide-react";
+import { EXAM_DATE_AT_KEY, EXAM_DATE_EVENT, EXAM_DATE_KEY, daysUntil, formatDate, todayIso } from "@/components/custom/exam-countdown";
+import { readStored, writeStored } from "@/lib/storage";
 import { resumeHref, type Unfinished } from "@/features/games/unfinished";
 import { HUE, practiseHref, type LeafInfo } from "@/features/pyq/topic-map";
 import { pickForReview, subjectStats, type ActivityEntry, type MistakeEntry } from "@/lib/activity-log";
@@ -30,7 +32,7 @@ export const panel = "rounded-3xl border border-border/70 bg-card";
 
 /* ---------------- Hero: today ---------------- */
 
-export function Hero({ name, greeting, unfinished }: { name: string; greeting: string; unfinished: Unfinished[] }) {
+export function Hero({ name, greeting, unfinished, week }: { name: string; greeting: string; unfinished: Unfinished[]; week: boolean[] }) {
   const { plan, progress, streak, done, total, next, minutesLeft } = useTodayPlan();
   const complete = done === total;
   const resume = unfinished[0];
@@ -45,21 +47,19 @@ export function Hero({ name, greeting, unfinished }: { name: string; greeting: s
       {/* a soft wash of brand colour, nothing more */}
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-500/10 blur-3xl" aria-hidden="true" />
 
+      {/* streak and exam date, top right */}
+      <div className="relative mb-5 flex flex-wrap items-center gap-2 sm:absolute sm:right-8 sm:top-7 sm:mb-0">
+        <Streak streak={streak} week={week} />
+        <ExamChip />
+      </div>
+
       <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <p className="text-sm font-medium text-muted-foreground">{greeting},</p>
           <h1 id="hero-heading" className="mt-0.5 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
             {name}
           </h1>
-          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-            <span>{status}</span>
-            {streak > 0 && (
-              <span className="inline-flex items-center gap-1 font-semibold text-orange-600 dark:text-orange-400">
-                <Flame className="h-4 w-4 motion-safe:animate-flicker" aria-hidden="true" />
-                <CountUp value={streak} />-day streak
-              </span>
-            )}
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">{status}</p>
         </div>
 
         <div className="flex flex-col items-stretch gap-2 sm:items-end">
@@ -120,6 +120,115 @@ export function Hero({ name, greeting, unfinished }: { name: string; greeting: s
         })}
       </ol>
     </section>
+  );
+}
+
+/* ---------------- Streak and exam date ---------------- */
+
+const ISO = /^\d{4}-\d{2}-\d{2}$/;
+
+/** The plan streak with this week's days: ticked when practised; today's open day pulses. */
+function Streak({ streak, week }: { streak: number; week: boolean[] }) {
+  const todayIdx = (new Date().getDay() + 6) % 7;
+  return (
+    <div className="flex items-center gap-2.5 rounded-full border border-border/70 bg-card/80 py-1 pl-2.5 pr-1.5 backdrop-blur">
+      <span
+        className={cn("flex items-center gap-1 text-sm font-extrabold", streak > 0 ? "text-orange-500" : "text-muted-foreground")}
+        title={streak > 0 ? `${streak}-day streak` : "Finish today's plan to start a streak"}
+      >
+        <Flame className={cn("h-4 w-4", streak > 0 && "motion-safe:animate-flicker")} aria-hidden="true" />
+        <CountUp value={streak} />
+        <span className="sr-only">day streak</span>
+      </span>
+      <ol className="flex gap-1" aria-label="This week">
+        {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+          <li
+            key={i}
+            className={cn(
+              "flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold",
+              week[i]
+                ? "bg-orange-500 text-white"
+                : i === todayIdx
+                  ? "border border-dashed border-orange-400 text-orange-500 motion-safe:animate-pulse"
+                  : i < todayIdx
+                    ? "bg-muted text-muted-foreground/60"
+                    : "text-muted-foreground",
+            )}
+          >
+            {week[i] ? <Check className="h-3 w-3 motion-safe:animate-pop" aria-label={`${d}: practised`} /> : d}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/** Days to the exam as a chip; tap to set or change the date (shared with the sidebar). */
+function ExamChip() {
+  const [date, setDate] = useState<string | null>(null);
+  const input = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const load = () => {
+      const v = readStored<string | null>(EXAM_DATE_KEY, null);
+      setDate(v && ISO.test(v) ? v : null);
+    };
+    load();
+    window.addEventListener(EXAM_DATE_EVENT, load);
+    return () => window.removeEventListener(EXAM_DATE_EVENT, load);
+  }, []);
+  const save = (v: string) => {
+    if (!ISO.test(v)) return;
+    writeStored(EXAM_DATE_KEY, v);
+    writeStored(EXAM_DATE_AT_KEY, Date.now());
+    setDate(v);
+    window.dispatchEvent(new Event(EXAM_DATE_EVENT));
+  };
+  const open = () => {
+    const el = input.current;
+    if (!el) return;
+    try {
+      el.showPicker();
+    } catch {
+      el.focus();
+    }
+  };
+  const days = date ? daysUntil(date) : null;
+  const isSet = date !== null && days !== null && days >= 0;
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={open}
+        className={cn(
+          "group flex items-center gap-1.5 rounded-full border py-1.5 pl-2.5 pr-3 text-sm font-semibold backdrop-blur transition-colors",
+          isSet
+            ? "border-border/70 bg-card/80 text-foreground hover:bg-muted"
+            : "border-dashed border-brand-500/60 bg-brand-500/5 text-brand-700 hover:bg-brand-500/10 dark:text-brand-300",
+        )}
+        title={isSet && date ? `Exam on ${formatDate(date)}. Tap to change.` : undefined}
+      >
+        <CalendarDays className="h-4 w-4" aria-hidden="true" />
+        {isSet ? (
+          <>
+            <span className="font-extrabold tabular-nums">{days}</span>
+            {days === 1 ? "day to exam" : days === 0 ? "exam is today" : "days to exam"}
+            <Pencil className="h-3 w-3 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+          </>
+        ) : (
+          "Set exam date"
+        )}
+      </button>
+      <input
+        ref={input}
+        type="date"
+        min={todayIso()}
+        value={date ?? ""}
+        onChange={(e) => save(e.target.value)}
+        aria-label="Exam date"
+        tabIndex={-1}
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
+      />
+    </div>
   );
 }
 
@@ -201,17 +310,25 @@ export function SubjectsPanel({
 }) {
   return (
     <section aria-labelledby="subjects-heading" className={cn(panel, "p-5")}>
-      <Label>
-        <span id="subjects-heading">Your progress</span>
-      </Label>
-      <Donut trees={trees} share={share} />
+      <div className="flex items-baseline justify-between">
+        <Label>
+          <span id="subjects-heading">Your progress</span>
+        </Label>
+        <Link href="/analytics" className="inline-flex items-center gap-0.5 text-xs font-semibold text-muted-foreground hover:text-foreground">
+          Details
+          <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+        </Link>
+      </div>
+      <Link href="/analytics" className="block rounded-2xl transition-colors hover:bg-muted/40" aria-label="Open your analytics">
+        <Donut trees={trees} share={share} />
+      </Link>
       <ul className="mt-3 flex flex-col">
         {SUBJECTS.map((key) => {
           const pct = Math.round(share(trees[key]) * 100);
           const stats = subjectStats(activities, key, now);
           return (
             <li key={key}>
-              <Link href={`/SSC/${key}`} className="group -mx-2 flex flex-col gap-1.5 rounded-xl px-2 py-2.5 transition-colors hover:bg-muted/60">
+              <Link href={`/analytics?subject=${key}`} className="group -mx-2 flex flex-col gap-1.5 rounded-xl px-2 py-2.5 transition-colors hover:bg-muted/60">
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: HUE[key] }} aria-hidden="true" />
                   <span className="flex-1 text-sm font-semibold text-foreground">{SUBJECT_LABEL[key]}</span>
