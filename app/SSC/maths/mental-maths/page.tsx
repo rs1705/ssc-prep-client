@@ -381,10 +381,10 @@ const MentalMaths = () => {
     >
       <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 w-full">
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col gap-6 w-full min-w-0">
+        <div className="flex-1 flex flex-col gap-5 sm:gap-6 w-full min-w-0">
 
         {/* Filter Chips */}
-        <div className="flex w-full overflow-x-auto pb-2 scrollbar-none gap-1.5 surface-card p-1.5 rounded-2xl">
+        <div className="flex w-full overflow-x-auto scrollbar-none gap-1.5 surface-card p-1.5 rounded-2xl">
           <button
             onClick={() => setActiveFilter("all")}
             className={`flex-shrink-0 min-h-10 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer ${
@@ -410,7 +410,7 @@ const MentalMaths = () => {
           ))}
         </div>
 
-        <div className="relative w-full min-h-[500px]">
+        <div className="relative w-full">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeFilter}
@@ -418,7 +418,7 @@ const MentalMaths = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="flex flex-col gap-8 w-full"
+              className="flex flex-col gap-6 sm:gap-8 w-full"
             >
               {MENTAL_MATHS_SECTIONS.filter((s) => activeFilter === "all" || activeFilter === s.id).map((section) => (
                 <section 
@@ -426,7 +426,7 @@ const MentalMaths = () => {
                   className="w-full"
                 >
                 {/* Section Header */}
-                <div className="mb-3.5">
+                <div className="mb-3">
                   <h3 className="text-lg sm:text-xl font-black tracking-tight text-foreground flex items-center gap-2">
                     {section.label}
                     {section.badge && (
@@ -441,14 +441,14 @@ const MentalMaths = () => {
                 </div>
 
                 {/* Section Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 w-full">
                   {section.topics.map((topic, idx) => {
                     const isMixBlitz = topic.id === TOPIC_ID.MIXED;
                     const isTwoCol = section.topics.length === 2 || section.topics.length === 4;
                     const isThreeCol = section.topics.length === 3;
                     
                     const spanClass = isMixBlitz 
-                      ? "lg:col-span-12" 
+                      ? "md:col-span-2 lg:col-span-12"
                       : isTwoCol
                         ? "lg:col-span-6"
                         : isThreeCol

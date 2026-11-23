@@ -80,40 +80,34 @@ export const TopicCard = ({
 
   return (
     <div
-      className={`group relative h-full flex flex-col justify-between p-5 sm:p-6 rounded-3xl bg-card border-2 border-border hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
+      className={`group relative h-full flex flex-col justify-between p-4 sm:p-6 rounded-3xl bg-card border-2 border-border hover:shadow-xl hover:shadow-black/5 ${currentTheme.hoverBorder} ${currentTheme.hoverBg} transition-all duration-300 ease-out hover:-translate-y-1 select-none overflow-hidden`}
       style={{
         animationDelay: `${Math.floor(index / cols) * 80}ms`,
         animationFillMode: "both",
       }}
     >
-      <div className="flex flex-col flex-1 relative z-10">
-        {/* Top Header Row: Icon on left, Badge on right */}
-        <div className="flex items-center justify-between gap-2 mb-3.5">
-          <div
-            className={`flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 ease-out group-hover:scale-110 group-hover:rotate-3 shadow-inner ring-1 ring-border/40 select-none ${currentTheme.iconWrapper}`}
-          >
-            {emoji}
-          </div>
-          {badge && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase border-2 border-border bg-muted text-muted-foreground select-none">
-              {badge}
-            </span>
-          )}
+      {/* Phones: icon beside the name, so several drills fit per screen. Larger screens: icon on top. */}
+      <div className="relative z-10 flex flex-1 items-start gap-3 sm:flex-col sm:gap-3.5">
+        <div
+          className={`flex h-11 w-11 flex-shrink-0 select-none items-center justify-center rounded-2xl shadow-inner ring-1 ring-border/40 transition-all duration-300 ease-out group-hover:rotate-3 group-hover:scale-110 sm:h-12 sm:w-12 ${currentTheme.iconWrapper}`}
+        >
+          {emoji}
         </div>
-
-        {/* Title & Description: Full card width */}
-        <div className="flex flex-col flex-1">
-          <h3 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight">
-            {name}
-          </h3>
-          <p className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed mt-1.5 font-normal">
-            {description}
-          </p>
+        <div className="flex w-full min-w-0 flex-1 flex-col">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <h3 className="text-base font-extrabold tracking-tight text-foreground sm:text-lg">{name}</h3>
+            {badge && (
+              <span className="inline-flex select-none items-center gap-1 rounded-full border-2 border-border bg-muted px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                {badge}
+              </span>
+            )}
+          </div>
+          <p className="mt-1 text-[13px] leading-snug text-muted-foreground">{description}</p>
         </div>
       </div>
 
       {/* Bottom Controls Row */}
-      <div className="flex items-center justify-between mt-5 pt-3.5 border-t-2 border-border/40 relative z-10 gap-2">
+      <div className="flex items-center justify-between mt-3 pt-3 sm:mt-5 sm:pt-3.5 border-t-2 border-border/40 relative z-10 gap-2">
         {/* Left: Stats Pill */}
         <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground/80 bg-[color-mix(in_oklab,var(--muted)_60%,var(--card))] px-2.5 py-1 rounded-lg border-2 border-border truncate max-w-[120px]">
           {stats}

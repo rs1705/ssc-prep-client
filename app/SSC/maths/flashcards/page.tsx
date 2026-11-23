@@ -38,7 +38,7 @@ export default function MathsFlashcardsPage() {
   };
 
   return (
-    <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs centerContent={false}>
+    <TopicPageLayout contentMaxWidthClass="w-full sm:max-w-md md:max-w-[480px]" hideBreadcrumbs centerContent={false}>
       <div className="flex w-full flex-col gap-3">
         <div className="surface-card flex flex-col gap-3 rounded-2xl p-3">
           <div className="flex items-center justify-between gap-2">

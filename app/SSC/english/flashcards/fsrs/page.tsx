@@ -78,7 +78,7 @@ const FsrsPage = () => {
 
   return (
     <>
-      <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
+      <TopicPageLayout contentMaxWidthClass="w-full sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
       <div className="flex flex-col items-center w-full transition-all duration-300">
         {/* Compact Gameplay Stats Header Bar */}
         <div className="flex flex-col gap-1 w-full surface-card rounded-2xl p-2.5 sm:p-3 mb-1 shadow-xs">

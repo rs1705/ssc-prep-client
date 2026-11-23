@@ -39,11 +39,12 @@ export default function PracticeHomePage() {
       description="Every subject in one place. Pick a section of the paper and jump straight into a drill, a deck or a game."
     >
       <div className="flex w-full flex-col gap-6 sm:gap-8">
-        {/* Subject tabs: the selected tab takes its subject's colour. */}
+        {/* Subject tabs: one slim row (a segmented control); the selected tab is a raised
+            card in its subject's colour. */}
         <div
           role="tablist"
           aria-label="Subjects"
-          className="grid w-full grid-cols-2 gap-2 lg:grid-cols-4"
+          className="grid grid-cols-4 gap-1 rounded-2xl border-2 border-border bg-muted p-1 shadow-xs"
         >
           {TABS.map((tab, index) => {
             const active = activeTab === tab.id;
@@ -62,18 +63,15 @@ export default function PracticeHomePage() {
                 tabIndex={active ? 0 : -1}
                 onClick={() => setActiveTab(tab.id)}
                 onKeyDown={(e) => onKeyDown(e, index)}
-                className={`flex min-h-12 items-center justify-center gap-2 rounded-2xl border-2 px-3 py-2 text-sm font-bold transition-all duration-200 ${
+                className={`flex min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-xl px-1 text-[13px] font-extrabold transition-colors duration-150 sm:gap-2 sm:text-sm ${
                   active
-                    ? theme.solid
-                    : `border-border bg-card text-muted-foreground hover:text-foreground ${theme.hoverBorder} ${theme.hoverBg}`
+                    ? `bg-card shadow-sm ${theme.text}`
+                    : "text-muted-foreground hover:bg-card/60 hover:text-foreground"
                 }`}
               >
-                <tab.icon
-                  className={`h-4 w-4 shrink-0 ${active ? "" : theme.text}`}
-                  aria-hidden="true"
-                />
-                <span className="truncate sm:hidden">{tab.short}</span>
-                <span className="hidden truncate sm:inline">{SUBJECT_LABEL[tab.id]}</span>
+                <tab.icon className="hidden h-4 w-4 shrink-0 sm:block" aria-hidden="true" />
+                <span className="truncate lg:hidden">{tab.short}</span>
+                <span className="hidden truncate lg:inline">{SUBJECT_LABEL[tab.id]}</span>
               </button>
             );
           })}

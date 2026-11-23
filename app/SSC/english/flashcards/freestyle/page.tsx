@@ -122,7 +122,7 @@ const FreestylePage = () => {
 
   return (
     <>
-      <TopicPageLayout contentMaxWidthClass="w-full max-w-sm sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
+      <TopicPageLayout contentMaxWidthClass="w-full sm:max-w-md md:max-w-[480px]" hideBreadcrumbs={true} centerContent={false}>
       <Tabs
         defaultValue={activeTab}
         onValueChange={(val) => setActiveTab(val)}

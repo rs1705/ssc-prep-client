@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/context/auth";
 
 interface TopicPageLayoutProps {
@@ -89,6 +89,11 @@ export const TopicPageLayout = ({
     return "/" + segments.slice(0, origIndex + 1).join("/");
   };
 
+  // Pages below a section (Quant → Speed Math) get a back button to that section.
+  // Top-level pages (Practice, Mock Tests, Settings…) are reached from the menu instead.
+  const parentSeg = breadcrumbSegments.length >= 2 ? breadcrumbSegments[breadcrumbSegments.length - 2] : null;
+  const back = parentSeg ? { href: getPathForSegment(parentSeg), label: toLabel(parentSeg) } : null;
+
   return (
     <div className={`flex flex-col items-center w-full mx-auto ${hideBreadcrumbs ? 'pb-0' : 'pb-4'} h-full flex-1 ${centerContent ? 'justify-center' : 'justify-start pt-0'}`}>
       {/* Dynamic Breadcrumbs */}
@@ -132,9 +137,21 @@ export const TopicPageLayout = ({
       {/* Sub-section Header */}
       {title && (
         <div className={`mb-4 sm:mb-6 w-full flex flex-col items-start text-left gap-1 shrink-0 ${contentMaxWidthClass}`}>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-            {title}
-          </h1>
+          <div className="flex w-full min-w-0 items-center gap-2.5">
+            {back && (
+              <Link
+                href={back.href}
+                aria-label={`Back to ${back.label}`}
+                title={`Back to ${back.label}`}
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+              </Link>
+            )}
+            <h1 className="min-w-0 text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+              {title}
+            </h1>
+          </div>
           {description && (
             <p className="text-muted-foreground text-sm max-w-2xl leading-relaxed">
               {description}
